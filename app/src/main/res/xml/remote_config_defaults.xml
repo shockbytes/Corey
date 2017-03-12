@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>exercises</key>
+        <value>
+            []
+        </value>
+    </entry>
+    <entry>
+        <key>exercises_time</key>
+        <value>
+            []
+        </value>
+    </entry>
+    <entry>
+        <key>scheduling_items</key>
+        <value>
+            ["Running", "Swimming"]
+        </value>
+    </entry>
+
+</defaultsMap>

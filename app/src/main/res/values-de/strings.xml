@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Corey</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="cd_imgview_intensity">Intensität wählen</string>
+    <string name="cd_imgview_muscles">Muskelgruppe wählen</string>
+    <string name="cd_imgview_time">Trainingszeit angeben</string>
+    <string name="cd_imgview_training_items">Übung hinzufügen</string>
+    <string name="default_weight_unit">kg</string>
+    <string name="hint_name">Name</string>
+    <string name="no_internet_connection">Keine Internetverbindung</string>
+    <string name="prefs_category_about">Über</string>
+    <string name="prefs_category_workout">Workout</string>
+    <string name="prefs_developer_title">Entwickler</string>
+    <string name="prefs_time_countdown_summary">Zeit bevor Zeittrainings starten</string>
+    <string name="prefs_time_countdown_title">Zeittraining Countdown</string>
+    <string name="prefs_time_countdown_unit">Sekunden</string>
+    <string name="sign_in_cancelled">Einloggen wurde unterbrochen</string>
+    <string name="unknown_error">Ups, da ist etwas schiefgelaufen</string>
+    <string name="unknown_sign_in_response">Unbekannte Antwort</string>
+    <string name="prefs_vibrations_title">Vibration bei Zeittrainings</string>
+    <string name="prefs_vibrations_summary">Vibrationen als Schlusssignal bei Zeittrainings einschalten</string>
+    <string name="dreamweight_card_text">Nur noch %1$s bis du dein Ziel von %2$s erreichst!</string>
+    <string name="format_time_exercise">%1$d Minuten %2$s</string>
+
+    <string name="fragment_create_workout_add_exercise">ÜBUNG HINZUFÜGEN</string>
+    <string name="fragment_create_workout_done">FERTIG</string>
+    <string name="fragment_create_workout_exercises">ÜBUNGEN</string>
+    <string name="fragment_create_workout_general">WORKOUT</string>
+    <string name="spinner_body_template">Körperregion wählen</string>
+    <string name="spinner_intensity_template">Intensität wählen</string>
+    <string name="add_exercise">ÜBUNG HINZUFÜGEN</string>
+    <string name="add_time_exercise">ZEITEN HINZUFÜGEN</string>
+    <string name="hint_duration">Dauer in Minuten</string>
+    <string name="no_trainings">Keine Workouts verfügbar!\nErstelle dein erstes Workout und fang an!</string>
+    <string name="validation_empty_body_region">Wähle eine Körperregion</string>
+    <string name="validation_empty_duration">Gib die Trainingsdauer an</string>
+    <string name="validation_empty_exercises">Workout muss mindestens eine Übung enthalten</string>
+    <string name="validation_empty_intensity">Wähle die Intensität</string>
+    <string name="validation_empty_name">Gib den Namen an</string>
+    <string name="hint_search">Übung suchen</string>
+    <string name="repetitions">WIEDERHOLUNGEN</string>
+    <string name="rest_time">RUHEZEIT</string>
+    <string name="workout_time">TRAININGSZEIT</string>
+    <string name="add">Hinzufügen</string>
+
+
+    <string-array name="training_intensity">
+        <item>Einfach</item>
+        <item>Normal</item>
+        <item>Hart</item>
+        <item>Biest</item>
+    </string-array>
+
+    <string-array name="body_region">
+        <item>Beine</item>
+        <item>Core</item>
+        <item>Arme</item>
+        <item>Brust</item>
+        <item>Ganzer Körper</item>
+    </string-array>
+
+    <string-array name="dreamweight_motivation">
+        <item>Fast geschafft</item>
+        <item>Nur weiter so</item>
+        <item>Gib niemals auf</item>
+        <item>Do it, whatever it takes</item>
+        <item>Keine Ausreden</item>
+        <item>Keep moving</item>
+        <item>Gib alles</item>
+        <item>Ich sehe den Fortschritt</item>
+    </string-array>
+
+    <string-array name="days">
+        <item>MO</item>
+        <item>DI</item>
+        <item>MI</item>
+        <item>DO</item>
+        <item>FR</item>
+        <item>SA</item>
+        <item>SO</item>
+    </string-array>
+
+
+    <string name="duration_with_minutes">%d Minuten</string>
+    <string name="exercises_with_count">%d Übungen</string>
+    <string name="activity_workout_detail_btn_start">Starte %s</string>
+    <string name="workout_message_msg_done">Gut gemacht! Immer weiter so!</string>
+    <string name="workout_message_msg_quit">Willst du wirklich aufgeben?</string>
+    <string name="workout_message_pos_quit">Ich gebe auf</string>
+    <string name="workout_message_neg_quit">Niemals</string>
+    <string name="workout_message_pos_done">Fertig</string>
+    <string name="workout_message_title_done">Workout beendet</string>
+    <string name="workout_message_title_quit">Aufgeben?</string>
+    <string name="desiredweight">Wunschgewicht</string>
+    <string name="dialogfragment_enter_desiredweight_neg_btn">Nein, später</string>
+    <string name="dialogfragment_enter_desiredweight_title">Wunschgewicht</string>
+    <string name="logout">Logout</string>
+    <string name="delete">Löschen</string>
+    <string name="dialogfragment_countdown">Übung beginnt in</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="login">Login</string>
+    <string name="weight_history">Dein Gewichtsverlauf</string>
+    <string name="welcome">Willkommen bei Corey!</string>
+    <string name="snackbar_cannot_load_workouts">Workouts können nicht geladen werden</string>
+    <string name="prefs_category_notifications">Benachrichtigungen</string>
+    <string name="prefs_weigh_notif_day_summary">Wähle den Tag, wenn du dich wiegen möchtest</string>
+    <string name="prefs_weigh_notif_day_title">Tag für Gewichtsmessung</string>
+    <string name="prefs_weigh_notif_title">"Erinnerung für Gewichtsmessung "</string>
+    <string name="prefs_weigh_notif_summary">Erhalte Benachrichtigungen an Tagen wo du dich wiegen willst</string>
+    <string name="prefs_workout_day_notif_title">Workoutbenachrichtigungen</string>
+    <string name="prefs_workout_day_notif_summary">Erhalte Benachrichtigungen an Workouttagen</string>
+    <string name="prefs_workout_day_notif_daytime_summary">Wähle die Tageszeit, wenn du Erinnerungen erhalten möchtest</string>
+    <string name="prefs_workout_day_notif_daytime_title">Zeit für Workoutbenachrichtigungen</string>
+    <string name="tab_my_body">Mein Körper</string>
+    <string name="tab_workout">Workouts</string>
+    <string name="tab_schedule">Wochenplan</string>
+    <string name="notification_weigh_msg">Wieg dich!</string>
+    <string name="notification_weigh_title">Heute ist es wieder soweit!</string>
+    <string name="notification_workout_msg">%s wartet heute auf dich</string>
+    <string name="notification_workout_title">Steh auf und mach was</string>
+    <string name="no_goals">Keine Ziele soweit!</string>
+    <string name="set_goal">Setz dir ein neues Ziel!</string>
+    <string name="your_goals">Deine Ziele</string>
+    <string name="your_crushed_goals">Deine erreichten Ziele</string>
+
+
+</resources>

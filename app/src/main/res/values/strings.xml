@@ -1,0 +1,163 @@
+<resources>
+
+    <string name="app_name">Corey</string>
+    <string name="app_version" translatable="false">1.4</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="tab_workout">Workouts</string>
+    <string name="tab_schedule">Schedule</string>
+    <string name="tab_my_body">My body</string>
+
+    <string name="prefs_vibrations_key" translatable="false">sharedprefs_key_vibrations</string>
+
+    <string name="prefs_category_workout">Workout</string>
+    <string name="prefs_category_about">About</string>
+    <string name="prefs_category_notifications">Notifications</string>
+    <string name="prefs_version_title" translatable="false">Version</string>
+    <string name="prefs_developer_summary" translatable="false">Shockbytes Studio (c) 2015</string>
+    <string name="prefs_developer_title">Developer</string>
+
+    <string name="prefs_time_countdown_key" translatable="false">sharedprefs_key_time_countdown</string>
+    <integer name="prefs_time_countdown_max">10</integer>
+    <integer name="prefs_time_countdown_default">5</integer>
+    <integer name="prefs_time_countdown_offset">0</integer>
+    <string name="prefs_time_countdown_unit">Seconds</string>
+    <string name="prefs_time_countdown_summary">Show countdown before training</string>
+    <string name="prefs_time_countdown_title">Training countdown</string>
+    <string name="prefs_vibrations_title">Vibration feedback</string>
+    <string name="prefs_vibrations_summary">Vibrations indicate the end of an training</string>
+
+    <string name="prefs_workout_day_notif_key" translatable="false">prefs_workout_day_notif_key</string>
+    <string name="prefs_workout_day_notif_summary">Receive reminders on workout days</string>
+    <string name="prefs_workout_day_notif_title">Workout reminder</string>
+
+    <string name="prefs_workout_day_notif_daytime_key" translatable="false">prefs_workout_day_notif_daytime_key</string>
+    <string name="prefs_workout_day_notif_daytime_summary">Pick time of day when to get notified</string>
+    <string name="prefs_workout_day_notif_daytime_title">Workout reminder time</string>
+
+    <string name="prefs_weigh_notif_key" translatable="false">prefs_weigh_notif_key</string>
+    <string name="prefs_weigh_notif_summary">Receive reminders to weigh yourself</string>
+    <string name="prefs_weigh_notif_title">Weigh reminders</string>
+
+    <string name="prefs_weigh_notif_day_key" translatable="false">prefs_weigh_notif_day_key</string>
+    <string name="prefs_weigh_notif_day_summary">Pick the day when you get notified</string>
+    <string name="prefs_weigh_notif_day_title">Weigh reminder day</string>
+
+    <string name="hint_name">Name</string>
+
+    <string name="cd_imgview_time">Pick Training Time</string>
+    <string name="cd_imgview_intensity">Pick intensity</string>
+    <string name="cd_imgview_muscles">Pick muscles</string>
+    <string name="cd_imgview_training_items">Add training items</string>
+
+    <string name="dreamweight_card_text">Just %1$s until you reach your absolute dream weight of %2$s!</string>
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="no_internet_connection">No internet connection available</string>
+    <string name="unknown_error">Sorry, something went wrong</string>
+    <string name="unknown_sign_in_response">Unknown response</string>
+    <string name="default_weight_unit">kg</string>
+
+    <string-array name="dreamweight_motivation">
+        <item>You nearly reached</item>
+        <item>Keep going</item>
+        <item>Never give up</item>
+        <item>Do it, whatever it takes</item>
+        <item>No excuses</item>
+        <item>Keep moving</item>
+        <item>Give it your all</item>
+        <item>I See progress</item>
+    </string-array>
+
+    <string name="format_time_exercise">%1$d minutes %2$s</string>
+    <string name="format_exercise" translatable="false">%1$d %2$s</string>
+
+    <string name="fragment_create_workout_done">DONE</string>
+    <string name="fragment_create_workout_general">GENERAL</string>
+    <string name="fragment_create_workout_exercises">EXERCISES</string>
+    <string name="fragment_create_workout_add_exercise">ADD EXERCISE</string>
+    <string name="spinner_body_template">Choose body region</string>
+    <string name="spinner_intensity_template">Choose intensity</string>
+    <string name="add_time_exercise">ADD TIMING</string>
+    <string name="add_exercise">ADD EXERCISE</string>
+    <string name="hint_duration">Duration in minutes</string>
+    <string name="validation_empty_name">Specify a workout name</string>
+    <string name="validation_empty_duration">Specify workout duration</string>
+    <string name="validation_empty_body_region">Select a body region</string>
+    <string name="validation_empty_intensity">Select an intensity level</string>
+    <string name="validation_empty_exercises">Exercises must not be empty</string>
+    <string name="no_trainings">No workouts available!\nCreate one and start now!</string>
+    <string name="hint_search">Search exercises</string>
+    <string name="repetitions">REPETITIONS</string>
+    <string name="add">Add</string>
+    <string name="workout_time">WORKOUT TIME</string>
+    <string name="rest_time">REST TIME</string>
+    <string name="activity_workout_detail_btn_start">Start %s</string>
+    <string name="duration_with_minutes">%d minutes</string>
+    <string name="exercises_with_count">%d exercises</string>
+
+    <string-array name="training_intensity">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+        <item>Beast</item>
+    </string-array>
+
+    <string-array name="body_region">
+        <item>Legs</item>
+        <item>Core</item>
+        <item>Arms</item>
+        <item>Chest</item>
+        <item>Full body</item>
+    </string-array>
+
+    <string-array name="days">
+        <item>MO</item>
+        <item>TU</item>
+        <item>WE</item>
+        <item>TH</item>
+        <item>FR</item>
+        <item>SA</item>
+        <item>SU</item>
+    </string-array>
+
+    <string name="workout_message_title_quit">Quit workout?</string>
+    <string name="workout_message_title_done">Workout done</string>
+    <string name="workout_message_pos_quit">I give up</string>
+    <string name="workout_message_pos_done">Done</string>
+    <string name="workout_message_neg_done" translatable="false" />
+    <string name="workout_message_msg_quit">Do you really want to give up?</string>
+    <string name="workout_message_msg_done">Nicely done! Great job!</string>
+    <string name="workout_message_neg_quit">No, never</string>
+
+
+    <string name="remote_config_exercises" translatable="false">exercises</string>
+    <string name="remote_config_time_exercises" translatable="false">exercises_time</string>
+    <string name="dialogfragment_enter_desiredweight_title">Desired weight</string>
+    <string name="dialogfragment_enter_desiredweight_neg_btn">No, later</string>
+    <string name="logout">Logout</string>
+    <string name="desiredweight">Desired weight</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="dialogfragment_countdown">Exercise starts in</string>
+    <string name="login">Login</string>
+    <string name="weight_history">Your weight history</string>
+    <string name="welcome">Welcome to Corey!</string>
+
+
+    <string name="transition_workout_card" translatable="false">transition_workout_card</string>
+    <string name="transition_workout_name" translatable="false">transition_workout_name</string>
+    <string name="transition_workout_body_region" translatable="false">transition_workout_body_region</string>
+    <string name="transition_workout_duration" translatable="false">transition_workout_duration</string>
+    <string name="transition_workout_exercise_count" translatable="false">transition_workout_exercise_count</string>
+    <string name="snackbar_cannot_load_workouts">Cannot load workouts</string>
+    <string name="remote_config_scheduling_items" translatable="false">scheduling_items</string>
+    <string name="notification_workout_title">Get up and work out!</string>
+    <string name="notification_workout_msg">%s is waiting for you</string>
+    <string name="notification_weigh_msg">Weigh yourself</string>
+    <string name="notification_weigh_title">Today is weigh day</string>
+    <string name="your_goals">Your goals</string>
+    <string name="no_goals">No goals so far, create one!</string>
+    <string name="your_crushed_goals">Your crushed goals</string>
+    <string name="set_goal">Set a new goal</string>
+
+</resources>

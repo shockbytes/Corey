@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listitem_add_exercise_btn_title"
+    style="?attr/borderlessButtonStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="sans-serif-light"
+    android:padding="0dp"
+    android:textColor="@android:color/secondary_text_light"
+    android:textSize="14sp" />

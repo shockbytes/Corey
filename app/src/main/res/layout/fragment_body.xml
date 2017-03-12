@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryBackground">
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/fragment_body_nestedscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/fragment_body_card_body_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="4dp">
+
+                <RelativeLayout
+                    android:id="@+id/fragment_body_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:paddingBottom="8dp">
+
+                    <ImageView
+                        android:id="@+id/fragment_body_img_avatar"
+                        android:layout_width="104dp"
+                        android:layout_height="104dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="18dp"
+                        android:alpha="0" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/fragment_body_txt_dream_weight"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignBottom="@+id/fragment_body_img_avatar"
+                        android:layout_alignLeft="@+id/fragment_body_img_avatar"
+                        android:layout_alignStart="@+id/fragment_body_img_avatar"
+                        android:alpha="0"
+                        android:background="@drawable/roundshape_dark_background"
+                        android:elevation="4dp"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:textColor="@android:color/white" />
+
+                    <ProgressBar
+                        android:id="@+id/fragment_body_pb_weight"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="155dp"
+                        android:layout_height="155dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="-8dp"
+                        android:indeterminate="false"
+                        android:progressDrawable="@drawable/progress_body_weight_drawable"
+                        android:rotation="90"
+                        android:rotationX="180"
+                        android:rotationY="180"
+                        android:secondaryProgress="00" />
+
+                    <TextView
+                        android:id="@+id/fragment_body_txt_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/fragment_body_img_avatar"
+                        android:layout_marginTop="8dp"
+                        android:alpha="0"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/fragment_body_view_separator"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/fragment_body_txt_name"
+                        android:layout_margin="16dp"
+                        android:background="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/fragment_body_txt_bmi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/fragment_body_view_separator"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginRight="12dp"
+                        android:alpha="0"
+                        android:drawableEnd="@drawable/ic_body_bmi"
+                        android:drawablePadding="8dp"
+                        android:drawableRight="@drawable/ic_body_bmi"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center_vertical"
+                        android:textColor="@android:color/white"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/fragment_body_txt_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/fragment_body_view_separator"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="12dp"
+                        android:alpha="0"
+                        android:drawableLeft="@drawable/ic_body_scale"
+                        android:drawablePadding="8dp"
+                        android:drawableStart="@drawable/ic_body_scale"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center_vertical"
+                        android:textColor="@android:color/white"
+                        android:textSize="17sp" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/fragment_body_card_dream_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:alpha="0"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/material_blue"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/fragment_body_card_dream_weight_txt_headline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/fragment_body_card_dream_weight_txt_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/fragment_body_card_dream_weight_txt_headline"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="sans-serif-light"
+                        android:lineSpacingExtra="4sp"
+                        android:textColor="@android:color/white"
+                        android:textSize="17sp"
+                        android:translationZ="4dp" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/fragment_body_card_weight_graph"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="8dp"
+                android:alpha="0"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/material_indigo"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/fragment_body_card_weight_graph_txt_headline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/weight_history"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/fragment_body_card_weight_graph_linechart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="12dp" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/fragment_body_card_goals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:alpha="0"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorAccent"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/your_goals"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/fragment_body_card_goals_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/your_crushed_goals"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/fragment_body_card_goals_rv_done"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/fragment_body_card_goals_btn_add"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="@string/set_goal"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="repetitions_max">100</integer>
+    <integer name="repetitions_min">1</integer>
+    <integer name="repetitions_default">20</integer>
+    <integer name="duration_max">10</integer>
+    <integer name="duration_min">1</integer>
+    <integer name="duration_default">1</integer>
+</resources>
