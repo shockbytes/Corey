@@ -1,4 +1,4 @@
-package at.shockbytes.corey.adapter;
+package at.shockbytes.corey.common.core.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -146,11 +146,11 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.Vi
     }
     //----------------------------------------------------------------------
 
-    abstract class ViewHolder extends RecyclerView.ViewHolder {
+    public abstract class ViewHolder extends RecyclerView.ViewHolder {
 
         protected T content;
 
-        ViewHolder(final View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 

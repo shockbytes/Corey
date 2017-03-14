@@ -10,6 +10,7 @@ import java.util.List;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.body.goal.Goal;
+import at.shockbytes.corey.common.core.adapter.BaseAdapter;
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -29,7 +30,7 @@ public class GoalAdapter extends BaseAdapter<Goal> {
         return new ViewHolder(layoutInflater.inflate(R.layout.item_goal, parent, false));
     }
 
-    class ViewHolder extends BaseAdapter<Goal>.ViewHolder {
+    public class ViewHolder extends BaseAdapter<Goal>.ViewHolder {
 
         @Bind(R.id.item_goal_text)
         TextView txtGoal;

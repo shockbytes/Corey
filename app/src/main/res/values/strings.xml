@@ -67,7 +67,7 @@
         <item>Give it your all</item>
         <item>I See progress</item>
     </string-array>
-    
+
     <string name="fragment_create_workout_done">DONE</string>
     <string name="fragment_create_workout_general">GENERAL</string>
     <string name="fragment_create_workout_exercises">EXERCISES</string>
