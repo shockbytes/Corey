@@ -4,20 +4,6 @@
     <color name="colorPrimaryDark">#689F38</color>
     <color name="colorAccent">#FF9800</color>
 
-    <!-- Workout colors -->
-    <color name="workout_intensity_easy">#FF6D00</color>
-    <color name="workout_intensity_easy_dark">#E65100</color>
-
-    <color name="workout_intensity_medium">#8BC34A</color>
-    <color name="workout_intensity_medium_dark">#689F38</color>
-
-    <color name="workout_intensity_hard">#2196F3</color>
-    <color name="workout_intensity_hard_dark">#1976D2</color>
-
-    <color name="workout_intensity_beast">#3F51B5</color>
-    <color name="workout_intensity_beast_dark">#303F9F</color>
-    <!-- /Workout colors -->
-
     <color name="current_day">@color/material_red</color>
 
     <color name="primaryBackground">#eee</color>

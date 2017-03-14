@@ -9,8 +9,8 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import at.shockbytes.corey.workout.model.Exercise;
-import at.shockbytes.corey.workout.model.TimeExercise;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
+import at.shockbytes.corey.common.core.workout.model.TimeExercise;
 
 /**
  * @author Martin Macheiner

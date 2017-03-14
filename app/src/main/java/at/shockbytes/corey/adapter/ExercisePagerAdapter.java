@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import at.shockbytes.corey.fragment.workoutpager.ExercisePagerFragment;
 import at.shockbytes.corey.fragment.workoutpager.TimeExercisePagerFragment;
-import at.shockbytes.corey.workout.model.Exercise;
-import at.shockbytes.corey.workout.model.TimeExercise;
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
+import at.shockbytes.corey.common.core.workout.model.TimeExercise;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 
 /**
  * @author Martin Macheiner

@@ -57,7 +57,7 @@ import at.shockbytes.corey.body.points.WeightPoint;
 import at.shockbytes.corey.core.CoreyApp;
 import at.shockbytes.corey.fragment.dialogs.AddGoalDialogFragment;
 import at.shockbytes.corey.storage.live.LiveBodyUpdateListener;
-import at.shockbytes.corey.util.ResourceManager;
+import at.shockbytes.corey.common.core.util.ResourceManager;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

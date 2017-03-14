@@ -9,7 +9,7 @@
             android:summary="@string/prefs_vibrations_summary"
             android:title="@string/prefs_vibrations_title" />
 
-        <at.shockbytes.corey.util.view.SliderPreference
+        <at.shockbytes.corey.common.core.util.view.SliderPreference
             android:defaultValue="@integer/prefs_time_countdown_default"
             android:key="@string/prefs_time_countdown_key"
             android:max="@integer/prefs_time_countdown_max"

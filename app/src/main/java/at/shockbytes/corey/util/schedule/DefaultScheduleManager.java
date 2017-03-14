@@ -15,10 +15,11 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import at.shockbytes.corey.R;
+import at.shockbytes.corey.common.core.util.ResourceManager;
 import at.shockbytes.corey.core.receiver.NotificationReceiver;
 import at.shockbytes.corey.storage.StorageManager;
 import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener;
-import at.shockbytes.corey.util.ResourceManager;
+import at.shockbytes.corey.util.AppResourceManager;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -127,7 +128,7 @@ public class DefaultScheduleManager implements ScheduleManager {
     @Override
     public void postWeighNotification() {
         NotificationManager nm = (NotificationManager) cxt.getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(0x90, ResourceManager.getWeighNotification(cxt));
+        nm.notify(0x90, AppResourceManager.getWeighNotification(cxt));
     }
 
     @Override
@@ -141,7 +142,7 @@ public class DefaultScheduleManager implements ScheduleManager {
                     if (item.getDay() == ResourceManager.getDayOfWeek() && !item.isEmpty()) {
 
                         NotificationManager nm = (NotificationManager) cxt.getSystemService(NOTIFICATION_SERVICE);
-                        nm.notify(0x91, ResourceManager.getWorkoutNotification(cxt, item.getName()));
+                        nm.notify(0x91, AppResourceManager.getWorkoutNotification(cxt, item.getName()));
                         return;
                     }
                 }

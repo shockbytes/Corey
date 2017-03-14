@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="format_time_exercise">%1$d Minuten %2$s</string>
+
+</resources>

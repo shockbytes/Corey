@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.fragment.dialogs.TimeExerciseCountdownDialogFragment;
-import at.shockbytes.corey.workout.model.TimeExercise;
+import at.shockbytes.corey.common.core.workout.model.TimeExercise;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

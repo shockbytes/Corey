@@ -3,8 +3,8 @@ package at.shockbytes.corey.workout;
 import java.util.List;
 
 import at.shockbytes.corey.storage.live.LiveWorkoutUpdateListener;
-import at.shockbytes.corey.workout.model.Exercise;
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 import rx.Observable;
 
 /**

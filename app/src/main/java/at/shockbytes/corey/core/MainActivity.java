@@ -29,7 +29,7 @@ import at.shockbytes.corey.util.AppParams;
 import at.shockbytes.corey.util.schedule.ScheduleManager;
 import at.shockbytes.corey.workout.WorkoutManager;
 import at.shockbytes.corey.body.BodyManager;
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.Icepick;

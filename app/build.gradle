@@ -23,6 +23,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':core')
 
     compile 'com.android.support:support-v4:25.2.0'
     compile 'com.android.support:appcompat-v7:25.2.0'
@@ -44,7 +45,6 @@ dependencies {
     compile 'com.shawnlin:number-picker:2.4.2'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile 'frankiesardo:icepick:3.2.0'
-    //compile 'com.ramotion.foldingcell:folding-cell:1.1.0'
 
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.9'

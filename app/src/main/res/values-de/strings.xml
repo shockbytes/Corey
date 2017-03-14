@@ -21,7 +21,6 @@
     <string name="prefs_vibrations_title">Vibration bei Zeittrainings</string>
     <string name="prefs_vibrations_summary">Vibrationen als Schlusssignal bei Zeittrainings einschalten</string>
     <string name="dreamweight_card_text">Nur noch %1$s bis du dein Ziel von %2$s erreichst!</string>
-    <string name="format_time_exercise">%1$d Minuten %2$s</string>
 
     <string name="fragment_create_workout_add_exercise">ÜBUNG HINZUFÜGEN</string>
     <string name="fragment_create_workout_done">FERTIG</string>

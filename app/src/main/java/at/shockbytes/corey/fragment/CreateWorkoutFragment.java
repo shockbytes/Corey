@@ -30,12 +30,12 @@ import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.ExerciseAdapter;
 import at.shockbytes.corey.adapter.WorkoutCraftingSpinnerAdapter;
 import at.shockbytes.corey.adapter.helper.CoreyItemTouchHelper;
+import at.shockbytes.corey.common.core.util.view.ViewManager;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 import at.shockbytes.corey.fragment.dialogs.AddExercisesDialogFragment;
 import at.shockbytes.corey.util.AppParams;
-import at.shockbytes.corey.util.ResourceManager;
-import at.shockbytes.corey.util.view.ViewManager;
-import at.shockbytes.corey.workout.model.Exercise;
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.util.AppResourceManager;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -227,9 +227,9 @@ public class CreateWorkoutFragment extends Fragment implements AdapterView.OnIte
     private void setupViews() {
 
         spinnerBodyRegion.setAdapter(new WorkoutCraftingSpinnerAdapter(getContext(),
-                ResourceManager.getBodyRegionSpinnerData(getContext())));
+                AppResourceManager.getBodyRegionSpinnerData(getContext())));
         spinnerIntensity.setAdapter(new WorkoutCraftingSpinnerAdapter(getContext(),
-                ResourceManager.getIntensitySpinnerData(getContext())));
+                AppResourceManager.getIntensitySpinnerData(getContext())));
         spinnerIntensity.setOnItemSelectedListener(this);
 
         recyclerViewExercises.setLayoutManager(new LinearLayoutManager(getContext()));

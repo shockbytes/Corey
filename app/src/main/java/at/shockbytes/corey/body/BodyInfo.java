@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.util.Collections;
 import java.util.List;
 
-import at.shockbytes.corey.util.ResourceManager;
+import at.shockbytes.corey.common.core.util.ResourceManager;
 import at.shockbytes.corey.body.points.BmiPoint;
 import at.shockbytes.corey.body.points.BodyFatPoint;
 import at.shockbytes.corey.body.points.WeightPoint;

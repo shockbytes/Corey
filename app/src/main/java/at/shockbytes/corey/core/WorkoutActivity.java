@@ -18,7 +18,7 @@ import android.view.Window;
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.fragment.WorkoutFragment;
 import at.shockbytes.corey.fragment.dialogs.WorkoutMessageDialogFragment;
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 
 public class WorkoutActivity extends AppCompatActivity {
 

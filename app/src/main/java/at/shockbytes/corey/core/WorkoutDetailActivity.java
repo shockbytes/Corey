@@ -25,9 +25,9 @@ import java.util.ArrayList;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.ExerciseAdapter;
-import at.shockbytes.corey.util.ResourceManager;
-import at.shockbytes.corey.workout.model.Exercise;
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.common.core.util.ResourceManager;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

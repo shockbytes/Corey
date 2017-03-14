@@ -16,7 +16,7 @@ import android.view.MenuItem;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.fragment.CreateWorkoutFragment;
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 
 /**
  * @author Martin Macheiner

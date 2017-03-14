@@ -6,8 +6,8 @@ import javax.inject.Inject;
 
 import at.shockbytes.corey.storage.StorageManager;
 import at.shockbytes.corey.storage.live.LiveWorkoutUpdateListener;
-import at.shockbytes.corey.workout.model.Exercise;
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

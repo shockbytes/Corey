@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.shockbytes.corey.R;
-import at.shockbytes.corey.util.ResourceManager;
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.common.core.util.ResourceManager;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

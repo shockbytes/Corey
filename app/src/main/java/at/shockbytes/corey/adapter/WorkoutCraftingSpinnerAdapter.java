@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import at.shockbytes.corey.R;
-import at.shockbytes.corey.util.view.model.SpinnerData;
+import at.shockbytes.corey.common.core.util.view.model.SpinnerData;
 
 /**
  * @author Martin Macheiner

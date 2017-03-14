@@ -1,6 +1,6 @@
 package at.shockbytes.corey.storage.live;
 
-import at.shockbytes.corey.workout.model.Workout;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 
 /**
  * @author Martin Macheiner

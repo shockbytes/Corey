@@ -18,7 +18,7 @@ import at.shockbytes.corey.workout.DefaultWorkoutManager;
 import at.shockbytes.corey.workout.WorkoutManager;
 import at.shockbytes.corey.body.BodyManager;
 import at.shockbytes.corey.body.GoogleFitBodyManager;
-import at.shockbytes.corey.workout.model.Exercise;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
 import dagger.Module;
 import dagger.Provides;
 

@@ -35,7 +35,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static at.shockbytes.corey.util.ResourceManager.roundDoubleWithDigits;
+import static at.shockbytes.corey.common.core.util.ResourceManager.roundDoubleWithDigits;
 
 /**
  * @author Martin Macheiner

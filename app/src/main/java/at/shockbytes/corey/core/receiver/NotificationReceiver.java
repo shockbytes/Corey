@@ -7,7 +7,7 @@ import android.content.Intent;
 import javax.inject.Inject;
 
 import at.shockbytes.corey.core.CoreyApp;
-import at.shockbytes.corey.util.ResourceManager;
+import at.shockbytes.corey.common.core.util.ResourceManager;
 import at.shockbytes.corey.util.schedule.ScheduleManager;
 
 public class NotificationReceiver extends BroadcastReceiver {

@@ -23,7 +23,7 @@
 
     </LinearLayout>
 
-    <at.shockbytes.corey.util.view.NonSwipeableViewPager
+    <at.shockbytes.corey.common.core.util.view.NonSwipeableViewPager
         android:id="@+id/fragment_workout_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
