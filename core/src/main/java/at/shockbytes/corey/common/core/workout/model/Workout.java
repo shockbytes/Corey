@@ -64,8 +64,12 @@ public class Workout implements Comparable<Workout>, Parcelable {
     }
 
     public Workout setName(String name) {
-        this.name = "\"" + name + "\"";
+        this.name = name.replace(" ", "_");
         return this;
+    }
+
+    public String getDisplayableName() {
+        return name.replaceAll("_", " ");
     }
 
     public Workout setDuration(int duration) {
@@ -182,8 +186,9 @@ public class Workout implements Comparable<Workout>, Parcelable {
         return id;
     }
 
-    public void setId(String id) {
+    public Workout setId(String id) {
         this.id = id;
+        return this;
     }
 
     public static final Creator<Workout> CREATOR = new Creator<Workout>() {

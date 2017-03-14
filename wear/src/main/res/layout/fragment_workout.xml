@@ -2,10 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#424242"
     tools:context="at.shockbytes.corey.fragment.WorkoutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:textColor="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
