@@ -5,4 +5,6 @@
     <string name="format_time_exercise">%1$d minutes %2$s</string>
     <string name="format_exercise" translatable="false">%1$d %2$s</string>
 
+    <string name="dialogfragment_countdown">Exercise starts in</string>
+
 </resources>

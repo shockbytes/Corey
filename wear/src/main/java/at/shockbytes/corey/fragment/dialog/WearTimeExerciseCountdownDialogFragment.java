@@ -1,4 +1,4 @@
-package at.shockbytes.corey.fragment.dialogs;
+package at.shockbytes.corey.fragment.dialog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
 
-import at.shockbytes.corey.common.core.R;
+import at.shockbytes.corey.R;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers;
  * @author Martin Macheiner
  *         Date: 21.03.2015.
  */
-public class TimeExerciseCountdownDialogFragment extends DialogFragment {
+public class WearTimeExerciseCountdownDialogFragment extends DialogFragment {
 
     private TextView txtTimer;
 
@@ -30,9 +30,9 @@ public class TimeExerciseCountdownDialogFragment extends DialogFragment {
 
     private static final String ARG_SECONDS = "arg_seconds";
 
-    public static TimeExerciseCountdownDialogFragment newInstance(int seconds) {
+    public static WearTimeExerciseCountdownDialogFragment newInstance(int seconds) {
 
-        TimeExerciseCountdownDialogFragment fragment = new TimeExerciseCountdownDialogFragment();
+        WearTimeExerciseCountdownDialogFragment fragment = new WearTimeExerciseCountdownDialogFragment();
         Bundle args = new Bundle(1);
         args.putInt(ARG_SECONDS, seconds);
         fragment.setArguments(args);
@@ -44,7 +44,7 @@ public class TimeExerciseCountdownDialogFragment extends DialogFragment {
 
     private Subscription subscription = null;
 
-    public TimeExerciseCountdownDialogFragment() {
+    public WearTimeExerciseCountdownDialogFragment() {
     }
 
     public void setCountdownCompleteListener(OnCountDownCompletedListener listener) {
@@ -69,7 +69,7 @@ public class TimeExerciseCountdownDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.dialogfragment_countdown, container, false);
+        View v = inflater.inflate(R.layout.dialogfragment_wear_countdown, container, false);
         txtTimer = (TextView) v.findViewById(R.id.dialogfr_countdown_txt_timer);
         txtTimer.setText(String.valueOf(countdown));
         return v;

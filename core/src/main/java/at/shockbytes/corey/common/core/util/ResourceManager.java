@@ -1,5 +1,6 @@
 package at.shockbytes.corey.common.core.util;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -8,7 +9,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.ColorRes;
@@ -147,6 +150,17 @@ public class ResourceManager {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, res.getDisplayMetrics());
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static Bitmap getBitmap(VectorDrawable vectorDrawable, int padding) {
+
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding);
+        vectorDrawable.draw(canvas);
+        return bitmap;
+    }
+
     private static Bitmap getBitmap(VectorDrawableCompat vectorDrawable, int padding) {
 
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
@@ -165,6 +179,9 @@ public class ResourceManager {
         } else if (drawable instanceof VectorDrawableCompat) {
             int px = convertDpInPixel(24, context);
             return getBitmap((VectorDrawableCompat) drawable, px);
+        } else if (drawable instanceof VectorDrawable) {
+            int px = convertDpInPixel(24, context);
+            return getBitmap((VectorDrawable) drawable, px);
         } else {
             throw new IllegalArgumentException("unsupported drawable type");
         }

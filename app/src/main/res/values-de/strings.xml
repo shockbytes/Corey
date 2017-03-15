@@ -96,7 +96,6 @@
     <string name="dialogfragment_enter_desiredweight_title">Wunschgewicht</string>
     <string name="logout">Logout</string>
     <string name="delete">Löschen</string>
-    <string name="dialogfragment_countdown">Übung beginnt in</string>
     <string name="edit">Bearbeiten</string>
     <string name="login">Login</string>
     <string name="weight_history">Dein Gewichtsverlauf</string>

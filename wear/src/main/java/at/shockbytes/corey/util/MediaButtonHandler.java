@@ -2,6 +2,7 @@ package at.shockbytes.corey.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 
@@ -14,8 +15,11 @@ public class MediaButtonHandler {
 
     private Context context;
 
+    private AudioManager audioManager;
+
     public MediaButtonHandler(Context context) {
         this.context = context;
+        audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }
 
     public void stop() {
@@ -36,6 +40,10 @@ public class MediaButtonHandler {
 
     public void previous() {
         sendIntents(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+    }
+
+    public boolean isMusicPlayed() {
+        return audioManager.isMusicActive();
     }
 
     private void sendIntents(int keycode) {
