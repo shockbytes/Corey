@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import javax.inject.Singleton;
 
+import at.shockbytes.corey.util.MediaButtonHandler;
 import at.shockbytes.corey.workout.DefaultWearableWorkoutManager;
 import at.shockbytes.corey.workout.WearableWorkoutManager;
 import dagger.Module;
@@ -36,5 +37,10 @@ public class WearAppModule {
         return new DefaultWearableWorkoutManager();
     }
 
+    @Provides
+    @Singleton
+    public MediaButtonHandler provideMediaButtonHandler() {
+        return new MediaButtonHandler(app.getApplicationContext());
+    }
 
 }

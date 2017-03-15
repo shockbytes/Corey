@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorPrimary">#8BC34A</color>
+    <color name="colorPrimaryDark">#689F38</color>
+    <color name="colorAccent">#FF9800</color>
+
     <!-- Workout colors -->
     <color name="workout_intensity_easy">#FF6D00</color>
     <color name="workout_intensity_easy_dark">#E65100</color>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/fragment_wear_pageritem_exercise_txt"
+    android:text="100 Liegestütz"
+    android:gravity="center"
+    android:textSize="30sp"
+    android:padding="4dp"
+    android:textColor="@android:color/white"
+    android:layout_height="match_parent">
+
+</TextView>

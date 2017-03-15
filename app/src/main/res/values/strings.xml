@@ -135,7 +135,6 @@
     <string name="desiredweight">Desired weight</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
-    <string name="dialogfragment_countdown">Exercise starts in</string>
     <string name="login">Login</string>
     <string name="weight_history">Your weight history</string>
     <string name="welcome">Welcome to Corey!</string>
