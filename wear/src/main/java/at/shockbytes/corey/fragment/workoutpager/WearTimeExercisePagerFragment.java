@@ -1,11 +1,12 @@
 package at.shockbytes.corey.fragment.workoutpager;
 
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,10 +64,10 @@ public class WearTimeExercisePagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         exercise = getArguments().getParcelable(ARG_EXERCISE);
         vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        isVibrationEnabled = true; // TODO Find a better solution
-        /*
-        isVibrationEnabled = PreferenceManager.getDefaultSharedPreferences(getContext())
-                .getBoolean(getString(R.string.prefs_vibrations_key), false); */
+
+        isVibrationEnabled = true;
+        /*isVibrationEnabled = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getBoolean(getString(R.string.prefs_vibrations_key), true); */
     }
 
     @Override
@@ -86,7 +87,11 @@ public class WearTimeExercisePagerFragment extends Fragment {
     @OnClick(R.id.fragment_wear_pageritem_time_exercise_btn_time)
     protected void onClickButtonStart() {
 
-        int countdown = 5; // TODO Find a better solution
+        int countdown = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getInt(getString(R.string.prefs_time_countdown_key), 5);
+        if (countdown <= 0) {
+            countdown = 5;
+        }
 
         WearTimeExerciseCountdownDialogFragment fragment = WearTimeExerciseCountdownDialogFragment
                 .newInstance(countdown);
@@ -103,14 +108,10 @@ public class WearTimeExercisePagerFragment extends Fragment {
                     public void call(Long aLong) {
 
                         long toGo = secondsUntilFinish - seconds;
+                        displayTime(toGo);
+                        seconds++;
 
-                        // Timer will fire every 10 milliseconds
-                        if (aLong % 100 == 0) {
-                            displayTime(toGo);
-                            seconds++;
-                        }
-
-                        if (toGo < 0) {
+                        if (toGo <= 0) {
                             timerSubscription.unsubscribe();
                         }
                     }
@@ -148,8 +149,9 @@ public class WearTimeExercisePagerFragment extends Fragment {
 
         btnTime.setText(calculateDisplayString(secondsUntilFinish));
         txtExercise.setText(exercise.getDisplayName(getContext()));
+        txtExercise.setSelected(true);
 
-        timerObservable = Observable.interval(10, TimeUnit.MILLISECONDS)
+        timerObservable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
@@ -172,10 +174,10 @@ public class WearTimeExercisePagerFragment extends Fragment {
                 vibrationIntensity = 800;
             } else if (secondsToGo % (exercise.getRestDuration() + exercise.getWorkDuration()) == 0) {
                 // Full round
-                vibrationIntensity = 300;
+                vibrationIntensity = 500;
             } else if (secondsToGo % exercise.getWorkDuration() == 0) {
                 // Work done
-                vibrationIntensity = 150;
+                vibrationIntensity = 300;
             }
             vibrator.vibrate(vibrationIntensity);
         }

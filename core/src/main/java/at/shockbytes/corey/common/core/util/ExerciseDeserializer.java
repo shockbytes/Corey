@@ -1,4 +1,4 @@
-package at.shockbytes.corey.util;
+package at.shockbytes.corey.common.core.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
 
-import at.shockbytes.corey.common.core.R;
+import at.shockbytes.corey.R;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;

@@ -215,7 +215,7 @@ public class CreateWorkoutFragment extends Fragment implements AdapterView.OnIte
 
     private void fillFields() {
 
-        editName.setText(workout.getName());
+        editName.setText(workout.getDisplayableName());
         editDuration.setText(String.valueOf(workout.getDuration()));
         int brIdx = workout.getBodyRegion().ordinal() + 1;
         spinnerBodyRegion.setSelection(brIdx, true);

@@ -12,6 +12,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -46,7 +48,7 @@ import rx.schedulers.Schedulers;
  *         Date: 23.02.2017.
  */
 
-public class FirebaseRealmStorageManager implements StorageManager {
+public class RealmFireStorageManager implements StorageManager {
 
     private final String PREF_DREAMWEIGHT = "dreamweight";
     private final String PREF_LAST_BODY_PULL = "last_body_pull";
@@ -71,7 +73,7 @@ public class FirebaseRealmStorageManager implements StorageManager {
     private List<LiveScheduleUpdateListener> scheduleListener;
 
     @Inject
-    public FirebaseRealmStorageManager(Context context, Gson gson, SharedPreferences preferences) {
+    public RealmFireStorageManager(Context context, Gson gson, SharedPreferences preferences) {
         this.gson = gson;
         this.context = context;
         this.preferences = preferences;
@@ -195,6 +197,38 @@ public class FirebaseRealmStorageManager implements StorageManager {
     }
 
     @Override
+    public void updateWorkoutInformation(int avgPulse, int workoutCountWithPulse,
+                                         int workoutCountSum, int workoutTime) {
+
+        incrementIntegerWorkoutInformation("/body/workoutinfo/pulse", avgPulse);
+        incrementIntegerWorkoutInformation("/body/workoutinfo/count_with_pulse", workoutCountWithPulse);
+        incrementIntegerWorkoutInformation("/body/workoutinfo/count", workoutCountSum);
+        incrementIntegerWorkoutInformation("/body/workoutinfo/time", workoutTime);
+    }
+
+    private void incrementIntegerWorkoutInformation(String path, final int increment) {
+
+        firebase.getReference(path).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+
+                Integer value = mutableData.getValue(Integer.class);
+                if (value == null) {
+                    return Transaction.success(mutableData);
+                }
+                value += increment;
+                mutableData.setValue(value);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+            }
+        });
+    }
+
+    @Override
     public Observable<List<ScheduleItem>> getSchedule() {
         return Observable.just(scheduleItems);
     }
@@ -204,7 +238,7 @@ public class FirebaseRealmStorageManager implements StorageManager {
 
         List<String> items = new ArrayList<>();
         for (Workout w : workouts) {
-            items.add(w.getName());
+            items.add(w.getDisplayableName());
         }
 
         String schedulingItemsAsJson = fireRemoteConfig

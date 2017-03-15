@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import javax.inject.Inject;
 
 import at.shockbytes.corey.R;
+import at.shockbytes.corey.body.wearable.WearableManager;
 import at.shockbytes.corey.fragment.BodyFragment;
 import at.shockbytes.corey.fragment.ScheduleFragment;
 import at.shockbytes.corey.fragment.WorkoutOverviewFragment;
@@ -35,7 +36,8 @@ import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
+        WearableManager.OnWearableDataListener {
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -52,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Inject
     protected ScheduleManager scheduleManager;
+
+    @Inject
+    protected WearableManager wearableManager;
 
     @Bind(R.id.main_content)
     protected FrameLayout mainContent;
@@ -90,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         bodyManager.poke(this);
         workoutManager.poke();
         scheduleManager.poke();
+        wearableManager.connectIfDeviceAvailable(this, this);
 
         if (bodyManager.getDesiredWeight() <= 0) { // Ask for desired weight when not set
             askForDesiredWeight();
@@ -122,6 +128,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        wearableManager.onPause();
     }
 
     @Override
@@ -216,6 +228,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             startActivity(intent, options.toBundle());
         }
+    }
+
+    @Override
+    public void onWearableDataAvailable(int avgPulse, int workouts, int workoutTime) {
+
+        // I don't know what to do with this information, maybe remove callback later
+
     }
 
     /*

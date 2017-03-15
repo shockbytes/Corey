@@ -42,7 +42,7 @@ public class WorkoutActivity extends AppCompatActivity {
         Workout w = getIntent().getParcelableExtra(ARG_WORKOUT);
 
         lockOrientation();
-        setupActionBar(w.getName(), w.getColorResForIntensity(), w.getDarkColorResForIntensity());
+        setupActionBar(w.getDisplayableName(), w.getColorResForIntensity(), w.getDarkColorResForIntensity());
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, WorkoutFragment.newInstance(w))
                 .commit();
