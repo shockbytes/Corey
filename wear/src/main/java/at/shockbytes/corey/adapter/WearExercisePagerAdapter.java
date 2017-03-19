@@ -1,8 +1,8 @@
 package at.shockbytes.corey.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentStatePagerAdapter;
 
 import at.shockbytes.corey.common.core.workout.model.Exercise;
 import at.shockbytes.corey.common.core.workout.model.TimeExercise;
@@ -15,6 +15,8 @@ import at.shockbytes.corey.fragment.workoutpager.WearTimeExercisePagerFragment;
  * @author Martin Macheiner
  *         Date: 03.12.2015.
  */
+
+// FragmentStatePagerAdapter
 public class WearExercisePagerAdapter extends FragmentStatePagerAdapter {
 
     private Workout workout;
@@ -28,6 +30,7 @@ public class WearExercisePagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return workout.getExercises().size();
     }
+
 
     @Override
     public Fragment getItem(int position) {

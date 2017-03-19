@@ -1,14 +1,20 @@
 package at.shockbytes.corey.dagger;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.inject.Singleton;
 
+import at.shockbytes.corey.common.core.util.ExerciseDeserializer;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
+import at.shockbytes.corey.core.CommunicationManager;
 import at.shockbytes.corey.util.MediaButtonHandler;
-import at.shockbytes.corey.workout.DefaultWearableWorkoutManager;
-import at.shockbytes.corey.workout.WearableWorkoutManager;
 import dagger.Module;
 import dagger.Provides;
 
@@ -33,8 +39,15 @@ public class WearAppModule {
 
     @Provides
     @Singleton
-    public WearableWorkoutManager provideTrainingManager() {
-        return new DefaultWearableWorkoutManager();
+    public CommunicationManager provideCommunicationManager(SharedPreferences preferences,
+                                                            Gson gson) {
+        return new CommunicationManager(app.getApplicationContext(), preferences, gson);
+    }
+
+    @Provides
+    @Singleton
+    public Vibrator provideVibrator() {
+        return (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Provides
@@ -43,4 +56,11 @@ public class WearAppModule {
         return new MediaButtonHandler(app.getApplicationContext());
     }
 
+    @Provides
+    @Singleton
+    public Gson provideGson() {
+        return new GsonBuilder()
+                .registerTypeHierarchyAdapter(Exercise.class, new ExerciseDeserializer())
+                .create();
+    }
 }

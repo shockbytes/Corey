@@ -101,13 +101,13 @@ public class WorkoutDetailActivity extends AppCompatActivity {
 
     private void initializeViews() {
 
-        btnStart.setText(getString(R.string.activity_workout_detail_btn_start, workout.getName()));
+        btnStart.setText(getString(R.string.activity_workout_detail_btn_start, workout.getDisplayableName()));
 
         imgViewExtToolbar.setBackgroundResource(workout.getColorResForIntensity());
         imgViewMuscles.setImageDrawable(ResourceManager.createRoundedBitmapFromResource(this,
                 workout.getImageResForBodyRegion(), workout.getColorResForIntensity()));
 
-        txtName.setText(workout.getName());
+        txtName.setText(workout.getDisplayableName());
         txtDuration.setText(getString(R.string.duration_with_minutes, workout.getDuration()));
         txtExerciseCount.setText(getString(R.string.exercises_with_count, workout.getExerciseCount()));
 

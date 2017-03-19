@@ -234,7 +234,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.ViewHold
 
             content = w;
 
-            txtTitle.setText(w.getName());
+            txtTitle.setText(w.getDisplayableName());
             txtDuration.setText(context.getString(R.string.duration_with_minutes, w.getDuration()));
             txtWorkoutCount.setText(context.getString(R.string.exercises_with_count, w.getExerciseCount()));
 

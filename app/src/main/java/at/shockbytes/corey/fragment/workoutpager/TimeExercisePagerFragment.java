@@ -33,6 +33,9 @@ public class TimeExercisePagerFragment extends Fragment {
 
     private static final String ARG_EXERCISE = "arg_exercise";
 
+    private final int TIMER_MILLIS = 20;
+    private final int TICKS_FOR_SECOND = 50;
+
     private TimeExercise exercise;
 
     private Vibrator vibrator;
@@ -110,7 +113,7 @@ public class TimeExercisePagerFragment extends Fragment {
                         progressBar.setProgress(progressBar.getProgress() + 10);
 
                         // Timer will fire every 10 milliseconds
-                        if (aLong % 100 == 0) {
+                        if (aLong % TICKS_FOR_SECOND == 0) {
                             displayTime(toGo);
                             seconds++;
                         }
@@ -156,7 +159,8 @@ public class TimeExercisePagerFragment extends Fragment {
         txtTime.setText(calculateDisplayString(secondsUntilFinish));
         txtExercise.setText(exercise.getDisplayName(getContext()));
 
-        timerObservable = Observable.interval(10, TimeUnit.MILLISECONDS)
+        timerObservable = Observable.interval(TIMER_MILLIS, TimeUnit.MILLISECONDS)
+                .onBackpressureDrop()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

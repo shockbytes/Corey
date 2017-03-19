@@ -31,4 +31,5 @@ dependencies {
     compile 'net.danlew:android.joda:2.9.5.1'
     compile 'com.jakewharton:butterknife:7.0.1'
 
+    compile 'com.google.code.gson:gson:2.7'
 }

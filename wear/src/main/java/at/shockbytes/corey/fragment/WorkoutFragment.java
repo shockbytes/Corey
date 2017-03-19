@@ -1,12 +1,22 @@
 package at.shockbytes.corey.fragment;
 
 
+import android.Manifest;
+import android.app.Fragment;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,25 +24,25 @@ import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Arrays;
 
 import javax.inject.Inject;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.WearExercisePagerAdapter;
 import at.shockbytes.corey.common.core.util.view.NonSwipeableViewPager;
-import at.shockbytes.corey.common.core.workout.model.Exercise;
-import at.shockbytes.corey.common.core.workout.model.TimeExercise;
 import at.shockbytes.corey.common.core.workout.model.Workout;
+import at.shockbytes.corey.core.CommunicationManager;
 import at.shockbytes.corey.core.WearCoreyApp;
+import at.shockbytes.corey.core.WorkoutActivity;
 import at.shockbytes.corey.util.MediaButtonHandler;
+import at.shockbytes.corey.workout.PulseLogger;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WorkoutFragment extends Fragment {
+import static android.content.Context.SENSOR_SERVICE;
+
+public class WorkoutFragment extends Fragment implements SensorEventListener, WorkoutActivity.OnWorkoutNavigationListener {
 
     private static final String ARG_WORKOUT = "arg_workout";
 
@@ -65,9 +75,21 @@ public class WorkoutFragment extends Fragment {
     @Inject
     protected MediaButtonHandler mediaButtonHandler;
 
-    private Workout workout;
+    @Inject
+    protected Vibrator vibrator;
+
+    @Inject
+    protected CommunicationManager communicationManager;
 
     private BottomSheetBehavior bottomSheetBehavior;
+
+    private Workout workout;
+
+    private PulseLogger pulseLogger;
+
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private final int SENSOR_REQUEST_CODE = 0x4103;
 
     public WorkoutFragment() {
         // Required empty public constructor
@@ -106,28 +128,82 @@ public class WorkoutFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.fragment_workout_btn_back)
-    protected void onClickBack() {
+    @Override
+    public void onPause() {
+        super.onPause();
 
-        int item = viewPager.getCurrentItem() - 1;
-        boolean isFirst = item < 0;
-        if (!isFirst) {
-            viewPager.setCurrentItem(item, true);
-            progressBar.setProgress(item + 1);
+        if (sensor != null) {
+            sensorManager.unregisterListener(this);
         }
     }
 
-    @OnClick(R.id.fragment_workout_btn_next)
-    protected void onClickNext() {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == SENSOR_REQUEST_CODE && permissions[0].equals(Manifest.permission.BODY_SENSORS) &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initializeHeartRate();
+        }
+    }
+
+    @Override
+    public void moveToNext() {
 
         int item = viewPager.getCurrentItem() + 1;
         boolean isLast = item >= (workout.getExerciseCount());
         if (!isLast) {
+            vibrator.vibrate(150);
             viewPager.setCurrentItem(item, true);
             progressBar.setProgress(item + 1);
         } else {
+            vibrator.vibrate(new long[] {0, 300,150, 300}, -1);
             stopWorkout();
         }
+    }
+
+    @Override
+    public void moveToPrevious() {
+
+        int item = viewPager.getCurrentItem() - 1;
+        boolean isFirst = item < 0;
+        if (!isFirst) {
+            vibrator.vibrate(150);
+            viewPager.setCurrentItem(item, true);
+            progressBar.setProgress(item + 1);
+        } else {
+            vibrator.vibrate(new long[] {0, 200,100, 200}, -1);
+        }
+    }
+
+    @Override
+    public void onEnterAmbient() {
+
+    }
+
+    @Override
+    public void onUpdateAmbient() {
+
+    }
+
+    @Override
+    public void onExitAmbient() {
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        int pulse = (int) event.values[0];
+        pulseLogger.logPulse(pulse);
+        String text = (pulse > 0) ? String.valueOf(pulse) : "---";
+        txtPulse.setText(text);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     @OnClick(R.id.fragment_workout_btn_music)
@@ -151,14 +227,13 @@ public class WorkoutFragment extends Fragment {
     protected void onClickMediaStartPause() {
 
         int icon = mediaButtonHandler.isMusicPlayed()
-                ? R.drawable.ic_play
+                ? R.drawable.ic_music_play
                 : R.drawable.ic_music_pause;
         imgbtnMediaPlayPause.setImageResource(icon);
 
         mediaButtonHandler.playPause();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
-
 
     private void setupViews() {
 
@@ -181,15 +256,17 @@ public class WorkoutFragment extends Fragment {
 
         int icon = mediaButtonHandler.isMusicPlayed()
                 ? R.drawable.ic_music_pause
-                : R.drawable.ic_play;
+                : R.drawable.ic_music_play;
         imgbtnMediaPlayPause.setImageResource(icon);
 
+        progressBar.setProgressTintList(ColorStateList
+                .valueOf(ContextCompat.getColor(getContext(), workout.getColorResForIntensity())));
     }
 
     private void setupWorkout() {
 
-        // TODO Remove later
-        workout.setExercises(Arrays.asList(new Exercise("MARS", 10), new Exercise("Sars", 20), new TimeExercise("schräge Planke", 2, 30,30)));
+        pulseLogger = new PulseLogger();
+        initializeHeartRate();
 
         viewPager.setAdapter(new WearExercisePagerAdapter(getFragmentManager(), workout));
         viewPager.setPageMargin(32);
@@ -203,8 +280,33 @@ public class WorkoutFragment extends Fragment {
     }
 
     private void stopWorkout() {
-        Toast.makeText(getContext(), "Finished", Toast.LENGTH_SHORT).show();
+
         chronometer.stop();
+
+        long elapsedSeconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 60000;
+        int avgPulse = pulseLogger.getAveragePulse(true);
+
+        communicationManager.synchronizeWorkoutInformation(avgPulse, 1,
+                (int) (Math.ceil(elapsedSeconds/60)));
+
+        getActivity().finishAfterTransition();
+    }
+
+    private void initializeHeartRate() {
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.BODY_SENSORS)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            sensorManager = (SensorManager) getContext().getSystemService(SENSOR_SERVICE);
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+            if (sensor != null) {
+                int interval = 1000000;
+                sensorManager.registerListener(this, sensor, interval);
+            }
+        } else {
+            requestPermissions(new String[] {Manifest.permission.BODY_SENSORS}
+                    , SENSOR_REQUEST_CODE);
+        }
     }
 
 }

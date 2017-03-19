@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/wear_background"
-    android:padding="8dp">
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:deviceIds="wear_round">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginBottom="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:text="@string/dialogfragment_countdown"
@@ -25,6 +27,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textColor="@android:color/tertiary_text_light"
-        android:textSize="104sp"
+        android:textSize="56sp"
         android:textStyle="bold" />
 </LinearLayout>

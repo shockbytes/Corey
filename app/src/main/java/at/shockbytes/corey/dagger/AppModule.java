@@ -9,9 +9,11 @@ import com.google.gson.GsonBuilder;
 
 import javax.inject.Singleton;
 
-import at.shockbytes.corey.storage.FirebaseRealmStorageManager;
+import at.shockbytes.corey.body.wearable.AndroidWearManager;
+import at.shockbytes.corey.body.wearable.WearableManager;
+import at.shockbytes.corey.storage.RealmFireStorageManager;
 import at.shockbytes.corey.storage.StorageManager;
-import at.shockbytes.corey.util.ExerciseDeserializer;
+import at.shockbytes.corey.common.core.util.ExerciseDeserializer;
 import at.shockbytes.corey.util.schedule.DefaultScheduleManager;
 import at.shockbytes.corey.util.schedule.ScheduleManager;
 import at.shockbytes.corey.workout.DefaultWorkoutManager;
@@ -63,7 +65,16 @@ public class AppModule {
     @Provides
     @Singleton
     public StorageManager provideStorageManager(SharedPreferences preferences, Gson gson) {
-        return new FirebaseRealmStorageManager(app.getApplicationContext(), gson, preferences);
+        return new RealmFireStorageManager(app.getApplicationContext(), gson, preferences);
+    }
+
+    @Provides
+    @Singleton
+    public WearableManager provideWearableManager(WorkoutManager workoutManager,
+                                                  StorageManager storageManager,
+                                                  SharedPreferences preferences, Gson gson) {
+        return new AndroidWearManager(app.getApplicationContext(), workoutManager, storageManager,
+                preferences, gson);
     }
 
     @Provides

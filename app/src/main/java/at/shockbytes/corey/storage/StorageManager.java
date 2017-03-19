@@ -33,6 +33,12 @@ public interface StorageManager {
     Observable<List<Exercise>> getExercises();
     // ---------------------------------------------------
 
+    // --------------- Workout information ---------------
+
+    void updateWorkoutInformation(int avgPulse, int workoutCountWithPulse,
+                                  int workoutCountSum, int workoutTime);
+    // ---------------------------------------------------
+
     // -------------------- Schedules --------------------
     Observable<List<ScheduleItem>> getSchedule();
 
