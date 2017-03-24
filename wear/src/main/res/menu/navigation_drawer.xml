@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Workout"
+        android:icon="@drawable/ic_bodyregion_core"
+        android:id="@+id/menu_drawer_workout"/>
+
+    <item
+        android:title="Running"
+        android:icon="@drawable/ic_body_heart"
+        android:id="@+id/menu_drawer_running"/>
+
+    <item
+        android:title="Settings"
+        android:icon="@drawable/ic_music_pause"
+        android:id="@+id/menu_drawer_settings"/>
+
+</menu>

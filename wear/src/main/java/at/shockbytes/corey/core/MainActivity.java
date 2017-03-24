@@ -1,32 +1,42 @@
 package at.shockbytes.corey.core;
 
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.wearable.activity.WearableActivity;
-import android.support.wearable.view.WearableRecyclerView;
-import android.view.View;
+import android.support.wearable.view.drawer.WearableDrawerLayout;
+import android.support.wearable.view.drawer.WearableNavigationDrawer;
+import android.view.Gravity;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import at.shockbytes.corey.R;
-import at.shockbytes.corey.adapter.WearWorkoutOverviewAdapter;
-import at.shockbytes.corey.common.core.adapter.BaseAdapter;
+import at.shockbytes.corey.adapter.CoreyNavigationAdapter;
 import at.shockbytes.corey.common.core.workout.model.Workout;
-import at.shockbytes.corey.util.MyOffsettingHelper;
+import at.shockbytes.corey.fragment.RunningFragment;
+import at.shockbytes.corey.fragment.WorkoutOverviewFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends WearableActivity implements BaseAdapter.OnItemClickListener<Workout>,
-        CommunicationManager.OnHandheldDataListener {
+public class MainActivity extends WearableActivity
+        implements CommunicationManager.OnHandheldDataListener, CoreyNavigationAdapter.OnNavigationItemSelectedListener {
+
+    public interface OnWorkoutsLoadedListener {
+
+        void onWorkoutLoaded(List<Workout> workouts);
+    }
 
     @Inject
     protected CommunicationManager communicationManager;
 
-    @Bind(R.id.fragment_main_rv)
-    protected WearableRecyclerView recyclerView;
+    @Bind(R.id.main_navigation_drawer)
+    protected WearableNavigationDrawer navigationDrawer;
+
+    @Bind(R.id.main_drawer_layout)
+    protected WearableDrawerLayout drawerLayout;
+
+    private OnWorkoutsLoadedListener workoutListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +45,11 @@ public class MainActivity extends WearableActivity implements BaseAdapter.OnItem
         ((WearCoreyApp) getApplication()).getAppComponent().inject(this);
         ButterKnife.bind(this);
         setAmbientEnabled();
+        setupNavigationDrawer();
 
         communicationManager.connectIfDeviceAvailable(this);
 
-        setupRecyclerView(new ArrayList<Workout>());
+        onNavigationItemSelected(0);
     }
 
     @Override
@@ -60,30 +71,74 @@ public class MainActivity extends WearableActivity implements BaseAdapter.OnItem
     }
 
     @Override
-    public void onItemClick(Workout workout, View v) {
-
-        startActivity(WorkoutActivity.newIntent(getApplicationContext(), workout),
-                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
-    }
-
-    private void setupRecyclerView(List<Workout> data) {
-
-        WearWorkoutOverviewAdapter adapter = new WearWorkoutOverviewAdapter(getApplicationContext(), data);
-
-        recyclerView.setCenterEdgeItems(true);
-        recyclerView.setOffsettingHelper(new MyOffsettingHelper());
-        recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(this);
-    }
-
-    @Override
     public void onWorkoutsAvailable(List<Workout> workouts) {
-        setupRecyclerView(workouts);
+        if (workoutListener != null) {
+            workoutListener.onWorkoutLoaded(workouts);
+        }
     }
 
     @Override
     public void onCachedWorkoutsAvailable(List<Workout> workouts) {
-        setupRecyclerView(workouts);
+        if (workoutListener != null) {
+            workoutListener.onWorkoutLoaded(workouts);
+        }
+    }
+
+    @Override
+    public void onNavigationItemSelected(int index) {
+
+        switch(index) {
+
+            case 0:
+                showWorkoutFragment();
+                break;
+
+            case 1:
+                showRunningFragment();
+                break;
+
+            case 2:
+                showSettings();
+                break;
+        }
+    }
+
+    private void showWorkoutFragment() {
+
+        WorkoutOverviewFragment workoutOverviewFragment = WorkoutOverviewFragment
+                .newInstance(communicationManager.getCachedWorkouts());
+        workoutListener = workoutOverviewFragment;
+        getFragmentManager().beginTransaction()
+                .replace(R.id.main_content, workoutOverviewFragment)
+                .commit();
+    }
+
+    private void showRunningFragment() {
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.main_content, RunningFragment.newInstance())
+                .commit();
+    }
+
+    private void showSettings() {
+        startActivity(CoreyPreferenceActivity.newIntent(this));
+    }
+
+    private void setupNavigationDrawer() {
+
+        navigationDrawer.setAdapter(new CoreyNavigationAdapter(this, getNavigationItems(), this));
+        drawerLayout.peekDrawer(Gravity.TOP);
+    }
+
+    private List<CoreyNavigationAdapter.NavigationItem> getNavigationItems() {
+
+        return Arrays.asList(
+                new CoreyNavigationAdapter.NavigationItem(R.string.navigation_workout,
+                        R.drawable.ic_workout),
+                new CoreyNavigationAdapter.NavigationItem(R.string.navigation_running,
+                        R.drawable.ic_running_new),
+                new CoreyNavigationAdapter.NavigationItem(R.string.navigation_settings,
+                        R.drawable.ic_settings));
     }
 
 }

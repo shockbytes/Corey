@@ -20,6 +20,7 @@ import com.google.android.gms.wearable.Wearable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,6 +50,8 @@ public class CommunicationManager implements GoogleApiClient.OnConnectionFailedL
 
     private Gson gson;
     private SharedPreferences preferences;
+
+    private List<Workout> cachedWorkouts;
 
     @Inject
     public CommunicationManager(Context context, SharedPreferences preferences, Gson gson) {
@@ -176,6 +179,7 @@ public class CommunicationManager implements GoogleApiClient.OnConnectionFailedL
                                 new TypeToken<List<Workout>>() {
                                 }.getType());
 
+                        cachedWorkouts = workouts;
                         if (handheldDataListener != null) {
                             handheldDataListener.onWorkoutsAvailable(workouts);
                         }
@@ -188,6 +192,14 @@ public class CommunicationManager implements GoogleApiClient.OnConnectionFailedL
                 .putInt(context.getString(R.string.prefs_time_countdown_key), countdown)
                 .putBoolean(context.getString(R.string.prefs_vibrations_key), isVibrationEnabled)
                 .apply();
+    }
+
+    public ArrayList<Workout> getCachedWorkouts() {
+
+        if (cachedWorkouts == null) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(cachedWorkouts);
     }
 
     private void grabWorkouts(final boolean isOffline) {
@@ -204,6 +216,7 @@ public class CommunicationManager implements GoogleApiClient.OnConnectionFailedL
                                         new TypeToken<List<Workout>>() {
                                         }.getType());
 
+                                cachedWorkouts = workouts;
                                 if (handheldDataListener != null) {
 
                                     if (!isOffline) {

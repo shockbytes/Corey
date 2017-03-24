@@ -14,14 +14,12 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,7 +32,6 @@ import at.shockbytes.corey.common.core.workout.model.Workout;
 import at.shockbytes.corey.core.CommunicationManager;
 import at.shockbytes.corey.core.WearCoreyApp;
 import at.shockbytes.corey.core.WorkoutActivity;
-import at.shockbytes.corey.util.MediaButtonHandler;
 import at.shockbytes.corey.workout.PulseLogger;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,7 +39,8 @@ import butterknife.OnClick;
 
 import static android.content.Context.SENSOR_SERVICE;
 
-public class WorkoutFragment extends Fragment implements SensorEventListener, WorkoutActivity.OnWorkoutNavigationListener {
+public class WorkoutFragment extends Fragment implements SensorEventListener,
+        WorkoutActivity.OnWorkoutNavigationListener {
 
     private static final String ARG_WORKOUT = "arg_workout";
 
@@ -66,22 +64,11 @@ public class WorkoutFragment extends Fragment implements SensorEventListener, Wo
     @Bind(R.id.fragment_workout_progress)
     protected ProgressBar progressBar;
 
-    @Bind(R.id.fragment_workout_bottom_sheet)
-    protected View bottomSheetView;
-
-    @Bind(R.id.fragment_workout_media_btn_start_pause)
-    protected ImageButton imgbtnMediaPlayPause;
-
-    @Inject
-    protected MediaButtonHandler mediaButtonHandler;
-
     @Inject
     protected Vibrator vibrator;
 
     @Inject
     protected CommunicationManager communicationManager;
-
-    private BottomSheetBehavior bottomSheetBehavior;
 
     private Workout workout;
 
@@ -208,56 +195,12 @@ public class WorkoutFragment extends Fragment implements SensorEventListener, Wo
 
     @OnClick(R.id.fragment_workout_btn_music)
     protected void onClickMusic() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
 
-    @OnClick(R.id.fragment_workout_media_btn_previous)
-    protected void onClickMediaPrevious() {
-        mediaButtonHandler.previous();
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-    }
-
-    @OnClick(R.id.fragment_workout_media_btn_next)
-    protected void onClickMediaNext() {
-        mediaButtonHandler.next();
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-    }
-
-    @OnClick(R.id.fragment_workout_media_btn_start_pause)
-    protected void onClickMediaStartPause() {
-
-        int icon = mediaButtonHandler.isMusicPlayed()
-                ? R.drawable.ic_music_play
-                : R.drawable.ic_music_pause;
-        imgbtnMediaPlayPause.setImageResource(icon);
-
-        mediaButtonHandler.playPause();
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        //WearMusicControlDialogFragment fragment = WearMusicControlDialogFragment.newInstance();
+        //fragment.show(((AppCompatActivity)getActivity()).getSupportFragmentManager(), fragment.getTag());
     }
 
     private void setupViews() {
-
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-        bottomSheetBehavior.setHideable(true);
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        int icon = mediaButtonHandler.isMusicPlayed()
-                ? R.drawable.ic_music_pause
-                : R.drawable.ic_music_play;
-        imgbtnMediaPlayPause.setImageResource(icon);
 
         progressBar.setProgressTintList(ColorStateList
                 .valueOf(ContextCompat.getColor(getContext(), workout.getColorResForIntensity())));

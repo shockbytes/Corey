@@ -1,12 +1,49 @@
 <resources>
     <string name="app_name">Corey</string>
-    <string name="hello_world">Hello World!</string>
 
-    <string name="title_activity_workout">WorkoutActivity</string>
-    <string name="hello_round">Hello Round World!</string>
-    <string name="hello_square">Hello Square World!</string>
     <string name="prefs_vibrations_key">vibration_wear_enabled</string>
     <string name="prefs_time_countdown_key">prefs_wear_countdown_time</string>
     <string name="prefs_average_pulse_key">prefs_wear_average_pulse</string>
     <string name="prefs_workout_count_key">prefs_wear_workout_count</string>
+
+    <string name="navigation_workout">Workout</string>
+    <string name="navigation_running">Running</string>
+    <string name="navigation_settings">Settings</string>
+
+    <string name="wear_pref_vibration_key">wear_vibration_key</string>
+    <string name="wear_pref_vibration_title">Enable vibration</string>
+    <string name="wear_pref_vibration_summary_on">ENABLED</string>
+    <string name="wear_pref_vibration_summary_off">DISABLED</string>
+    <string name="wear_pref_countdown_key">wear_countdown_key</string>
+    <string name="wear_pref_countdown_title">Workout countdown</string>
+    <string name="wear_pref_countdown_default_value">5</string>
+    <string name="wear_pref_version_title">Version</string>
+    <string name="wear_pref_verstion_summary">0.8b</string>
+
+    <string-array name="pref_countdown_entries">
+        <item>1 second</item>
+        <item>2 seconds</item>
+        <item>3 seconds</item>
+        <item>4 seconds</item>
+        <item>5 seconds</item>
+        <item>6 seconds</item>
+        <item>7 seconds</item>
+        <item>8 seconds</item>
+        <item>9 seconds</item>
+        <item>10 seconds</item>
+    </string-array>
+
+    <string-array name="pref_countdown_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
 </resources>

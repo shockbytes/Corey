@@ -65,9 +65,8 @@ public class WearTimeExercisePagerFragment extends Fragment {
         exercise = getArguments().getParcelable(ARG_EXERCISE);
         vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
-        isVibrationEnabled = true;
-        /*isVibrationEnabled = PreferenceManager.getDefaultSharedPreferences(getContext())
-                .getBoolean(getString(R.string.prefs_vibrations_key), true); */
+        isVibrationEnabled = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getBoolean(getString(R.string.wear_pref_vibration_key), true);
     }
 
     @Override
@@ -88,10 +87,10 @@ public class WearTimeExercisePagerFragment extends Fragment {
     protected void onClickButtonStart() {
 
         int countdown = PreferenceManager.getDefaultSharedPreferences(getContext())
-                .getInt(getString(R.string.prefs_time_countdown_key), 5);
-        if (countdown <= 0) {
+                .getInt(getString(R.string.wear_pref_countdown_key), 5);
+        /* if (countdown <= 0) {
             countdown = 5;
-        }
+        } */
 
         WearTimeExerciseCountdownDialogFragment fragment = WearTimeExerciseCountdownDialogFragment
                 .newInstance(countdown);

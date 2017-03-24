@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/wear_pref_vibration_key"
+        android:summaryOff="@string/wear_pref_vibration_summary_off"
+        android:summaryOn="@string/wear_pref_vibration_summary_on"
+        android:title="@string/wear_pref_vibration_title"
+        app:wear_icon="@drawable/ic_vibration" />
+
+    <ListPreference
+        android:defaultValue="@string/wear_pref_countdown_default_value"
+        android:entries="@array/pref_countdown_entries"
+        android:entryValues="@array/pref_countdown_values"
+        android:key="@string/wear_pref_countdown_key"
+        android:title="@string/wear_pref_countdown_title"
+        app:wear_icon="@drawable/ic_stopwatch" />
+
+</PreferenceScreen>
