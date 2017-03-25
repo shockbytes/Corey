@@ -118,7 +118,7 @@
     <string name="notification_workout_msg">%s wartet heute auf dich</string>
     <string name="notification_workout_title">Steh auf und mach was</string>
     <string name="no_goals">Keine Ziele soweit!</string>
-    <string name="set_goal">Setz dir ein neues Ziel!</string>
+    <string name="set_goal">Neues Ziel setzen!</string>
     <string name="your_goals">Deine Ziele</string>
     <string name="your_crushed_goals">Deine erreichten Ziele</string>
 

@@ -7,11 +7,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.view.animation.Interpolator;
+import android.view.animation.Transformation;
 
 public class ViewManager {
 
@@ -137,5 +138,34 @@ public class ViewManager {
 		}
 		v.startAnimation(a);		
 	}
-	
+
+    public static void backgroundColorTransition(final View v, final int from, final int to) {
+
+        ValueAnimator anim = ValueAnimator.ofFloat(0, 1);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                //Get current position
+                float position = animation.getAnimatedFraction();
+
+                //Blend colors and apply to bars
+                int blended = blendColors(from, to, position);
+                v.setBackground(new ColorDrawable(blended));
+            }
+        });
+        anim.setDuration(250).start();
+    }
+
+    private static int blendColors(int from, int to, float ratio) {
+
+        final float inverseRatio = 1f - ratio;
+
+        float r = Color.red(to) * ratio + Color.red(from) * inverseRatio;
+        float g = Color.green(to) * ratio + Color.green(from) * inverseRatio;
+        float b = Color.blue(to) * ratio + Color.blue(from) * inverseRatio;
+
+        return Color.rgb((int) r, (int) g, (int) b);
+    }
+
 }

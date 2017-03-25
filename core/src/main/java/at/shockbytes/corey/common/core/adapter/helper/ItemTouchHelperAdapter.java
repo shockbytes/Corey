@@ -1,4 +1,4 @@
-package at.shockbytes.corey.adapter.helper;
+package at.shockbytes.corey.common.core.adapter.helper;
 
 /**
  * @author Martin Macheiner

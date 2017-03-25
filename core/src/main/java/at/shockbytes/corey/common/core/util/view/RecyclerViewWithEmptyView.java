@@ -11,23 +11,23 @@ import android.view.View;
  */
 public class RecyclerViewWithEmptyView extends RecyclerView{
 
-    private View mEmptyView;
+    private View emptyView;
 
     private AdapterDataObserver emptyObserver = new AdapterDataObserver() {
         @Override
         public void onChanged() {
 
             Adapter<?> adapter = getAdapter();
-            if(adapter != null && mEmptyView != null){
+            if(adapter != null && emptyView != null){
 
                 //Show empty view
-                if(adapter.getItemCount() == 0 && mEmptyView.getAlpha() == 0){
-                    mEmptyView.animate().alpha(1).start();
+                if(adapter.getItemCount() == 0 && emptyView.getAlpha() == 0){
+                    emptyView.animate().alpha(1).start();
                     setNestedScrollingEnabled(false);
                 }
                 //Hide empty view
-                else if(adapter.getItemCount() != 0 && mEmptyView.getAlpha() == 1){
-                    mEmptyView.animate().alpha(0).start();
+                else if(adapter.getItemCount() != 0 && emptyView.getAlpha() == 1){
+                    emptyView.animate().alpha(0).start();
                     setNestedScrollingEnabled(true);
                 }
             }
@@ -57,7 +57,7 @@ public class RecyclerViewWithEmptyView extends RecyclerView{
     }
 
     public void setEmptyView(View emptyView){
-        mEmptyView = emptyView;
+        this.emptyView = emptyView;
     }
 
 

@@ -49,19 +49,13 @@ public class DefaultScheduleManager implements ScheduleManager {
     @Override
     public void poke() {
 
-        // TODO Do not hardcode hour and minute and maybe insert guard below
-        /*
-        if (!isWeighNotificationDeliveryEnabled() && !isWorkoutNotificationDeliveryEnabled()) {
-            // Delivery for both not enabled, our job is done here
-            return;
-        } */
-
         int REQ_CODE = 0x9238;
 
         AlarmManager alarmManager = (AlarmManager) cxt.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(cxt, NotificationReceiver.class);
         PendingIntent pIntent = PendingIntent.getBroadcast(cxt, REQ_CODE, intent, 0);
 
+        // TODO v2.1 Do not hardcode hour and minute and maybe insert guard below
         int hour = 8;
         int minute = 30;
 
@@ -122,7 +116,7 @@ public class DefaultScheduleManager implements ScheduleManager {
 
     @Override
     public int getDayOfWeighNotificationDelivery() {
-        return preferences.getInt(cxt.getString(R.string.prefs_weigh_notif_day_key), -1);
+        return preferences.getInt(cxt.getString(R.string.prefs_weigh_notif_day_key), 0);
     }
 
     @Override

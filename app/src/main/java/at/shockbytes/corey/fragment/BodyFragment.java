@@ -54,19 +54,21 @@ import at.shockbytes.corey.body.BodyInfo;
 import at.shockbytes.corey.body.BodyManager;
 import at.shockbytes.corey.body.goal.Goal;
 import at.shockbytes.corey.body.points.WeightPoint;
+import at.shockbytes.corey.common.core.util.ResourceManager;
+import at.shockbytes.corey.common.core.util.view.ViewManager;
 import at.shockbytes.corey.core.CoreyApp;
 import at.shockbytes.corey.fragment.dialogs.AddGoalDialogFragment;
 import at.shockbytes.corey.storage.live.LiveBodyUpdateListener;
-import at.shockbytes.corey.common.core.util.ResourceManager;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.functions.Action1;
 
-public class BodyFragment extends Fragment implements Palette.PaletteAsyncListener, Callback, LiveBodyUpdateListener, AddGoalDialogFragment.OnGoalMessagedAddedListener {
+public class BodyFragment extends Fragment implements Palette.PaletteAsyncListener, Callback,
+        LiveBodyUpdateListener, AddGoalDialogFragment.OnGoalMessagedAddedListener,
+        GoalAdapter.OnGoalActionClickedListener {
 
     // -------------------------- Views --------------------------
-
     @Bind(R.id.fragment_body_pb_weight)
     protected ProgressBar progressBarWeight;
 
@@ -112,9 +114,6 @@ public class BodyFragment extends Fragment implements Palette.PaletteAsyncListen
     @Bind(R.id.fragment_body_card_goals_rv)
     protected RecyclerView recyclerViewGoals;
 
-    @Bind(R.id.fragment_body_card_goals_rv_done)
-    protected RecyclerView recyclerViewGoalsDone;
-
     // -----------------------------------------------------------
 
     @Inject
@@ -126,7 +125,6 @@ public class BodyFragment extends Fragment implements Palette.PaletteAsyncListen
     private FirebaseUser user;
 
     private GoalAdapter goalAdapter;
-    private GoalAdapter goalDoneAdapter;
 
     public static BodyFragment newInstance() {
         return new BodyFragment();
@@ -190,10 +188,10 @@ public class BodyFragment extends Fragment implements Palette.PaletteAsyncListen
     @Override
     public void onGenerated(Palette palette) {
 
-        int headerColor = palette.getDarkMutedColor(ContextCompat
-                .getColor(getContext(), R.color.colorPrimary));
+        int defaultColor = ContextCompat.getColor(getContext(), R.color.colorPrimary);
+        int headerColor = palette.getDarkMutedColor(defaultColor);
         if (headerLayout != null) {
-            headerLayout.setBackgroundColor(headerColor);
+            ViewManager.backgroundColorTransition(headerLayout, defaultColor, headerColor);
         }
     }
 
@@ -214,7 +212,6 @@ public class BodyFragment extends Fragment implements Palette.PaletteAsyncListen
         imgAvatar.setImageResource(R.drawable.ic_user);
     }
 
-
     @Override
     public void onDesiredWeightChanged(int changed) {
         bodyInfo.setDreamWeight(changed);
@@ -226,25 +223,31 @@ public class BodyFragment extends Fragment implements Palette.PaletteAsyncListen
     public void onBodyGoalAdded(Goal g) {
 
         if (!g.isDone()) {
-            goalAdapter.addEntityAtLast(g);
+            goalAdapter.addEntityAtFirst(g);
         } else {
-            goalDoneAdapter.addEntityAtLast(g);
+            goalAdapter.addEntityAtLast(g);
         }
     }
 
     @Override
     public void onBodyGoalDeleted(Goal g) {
-
-        if (!g.isDone()) {
-            goalAdapter.deleteEntity(g);
-        } else {
-            goalDoneAdapter.deleteEntity(g);
-        }
+        goalAdapter.deleteEntity(g);
     }
 
     @Override
     public void onBodyGoalChanged(Goal g) {
-        // TODO
+        goalAdapter.updateEntity(g);
+    }
+
+    @Override
+    public void onDeleteGoalClicked(Goal g) {
+        bodyManager.removeBodyGoal(g);
+    }
+
+    @Override
+    public void onFinishGoalClicked(Goal g) {
+        g.setDone(true);
+        bodyManager.updateBodyGoal(g);
     }
 
     @Override
@@ -263,9 +266,9 @@ public class BodyFragment extends Fragment implements Palette.PaletteAsyncListen
     private void setupBodyFragment() {
 
         setupUserCard();
+        setupGoalCard();
         setupDesiredWeightCard();
         setupWeightCard();
-        setupGoalCard();
 
         animateViews(true);
 
@@ -345,19 +348,14 @@ public class BodyFragment extends Fragment implements Palette.PaletteAsyncListen
 
     private void setupGoalCard() {
 
-
-        // TODO Setup recyclerviews
         recyclerViewGoals.setLayoutManager(new LinearLayoutManager(getContext()));
         goalAdapter = new GoalAdapter(getContext(), new ArrayList<Goal>());
+        goalAdapter.setOnGoalActionClickedListener(this);
         recyclerViewGoals.setAdapter(goalAdapter);
-
-
-        goalDoneAdapter = new GoalAdapter(getContext(), new ArrayList<Goal>());
 
         bodyManager.getBodyGoals().subscribe(new Action1<List<Goal>>() {
             @Override
             public void call(List<Goal> goals) {
-
                 for (Goal g : goals) {
                     onBodyGoalAdded(g);
                 }

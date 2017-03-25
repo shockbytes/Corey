@@ -1,4 +1,4 @@
-package at.shockbytes.corey.adapter.helper;
+package at.shockbytes.corey.common.core.adapter.helper;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
@@ -8,14 +8,14 @@ import android.support.v7.widget.helper.ItemTouchHelper;
  * @author Martin Macheiner
  *         Date: 09.09.2015.
  */
-public class CoreyItemTouchHelper extends ItemTouchHelper.Callback {
+public class ShockItemTouchHelper extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter adapter;
 
     private boolean allowSwipeToDismiss;
     private boolean allowDragInAllDirections;
 
-    public CoreyItemTouchHelper(ItemTouchHelperAdapter adapter, boolean allowSwipeToDismiss,
+    public ShockItemTouchHelper(ItemTouchHelperAdapter adapter, boolean allowSwipeToDismiss,
                                 boolean allowDragInAllDirections) {
         this.adapter = adapter;
         this.allowSwipeToDismiss = allowSwipeToDismiss;

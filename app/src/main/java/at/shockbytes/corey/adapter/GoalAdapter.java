@@ -1,6 +1,7 @@
 package at.shockbytes.corey.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -21,13 +22,26 @@ import butterknife.OnClick;
 
 public class GoalAdapter extends BaseAdapter<Goal> {
 
+    public interface OnGoalActionClickedListener {
+
+        void onDeleteGoalClicked(Goal g);
+
+        void onFinishGoalClicked(Goal g);
+    }
+
+    private OnGoalActionClickedListener onGoalActionClickedListener;
+
     public GoalAdapter(Context cxt, List<Goal> data) {
         super(cxt, data);
     }
 
     @Override
     public BaseAdapter<Goal>.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(layoutInflater.inflate(R.layout.item_goal, parent, false));
+        return new ViewHolder(inflater.inflate(R.layout.item_goal, parent, false));
+    }
+
+    public void setOnGoalActionClickedListener(OnGoalActionClickedListener listener) {
+        onGoalActionClickedListener = listener;
     }
 
     public class ViewHolder extends BaseAdapter<Goal>.ViewHolder {
@@ -47,12 +61,28 @@ public class GoalAdapter extends BaseAdapter<Goal> {
             content = goal;
 
             txtGoal.setText(goal.getMessage());
-            imgBtnDone.setVisibility(goal.isDone() ? View.GONE : View.VISIBLE);
+
+            if (goal.isDone()) {
+                imgBtnDone.setImageResource(R.drawable.ic_cancel);
+                txtGoal.setPaintFlags(txtGoal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                imgBtnDone.setImageResource(R.drawable.ic_done);
+                txtGoal.setPaintFlags(txtGoal.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            }
         }
 
         @OnClick(R.id.item_goal_btn_done)
-        protected void onClickDone() {
-            // TODO
+        void onClickDone() {
+
+            if (onGoalActionClickedListener != null) {
+
+                if (content.isDone()) {
+                    onGoalActionClickedListener.onDeleteGoalClicked(content);
+                } else {
+                    onGoalActionClickedListener.onFinishGoalClicked(content);
+                }
+
+            }
         }
 
     }

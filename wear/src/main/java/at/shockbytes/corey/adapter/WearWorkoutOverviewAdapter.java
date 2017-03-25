@@ -27,7 +27,7 @@ public class WearWorkoutOverviewAdapter extends BaseAdapter<Workout> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(layoutInflater.inflate(R.layout.item_wear_workout_overview, parent, false));
+        return new ViewHolder(inflater.inflate(R.layout.item_wear_workout_overview, parent, false));
     }
 
     public class ViewHolder extends BaseAdapter<Workout>.ViewHolder {

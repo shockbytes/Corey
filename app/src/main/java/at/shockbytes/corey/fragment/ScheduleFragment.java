@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.DaysScheduleAdapter;
 import at.shockbytes.corey.adapter.ScheduleAdapter;
-import at.shockbytes.corey.adapter.helper.CoreyItemTouchHelper;
+import at.shockbytes.corey.common.core.adapter.helper.ShockItemTouchHelper;
 import at.shockbytes.corey.core.CoreyApp;
 import at.shockbytes.corey.fragment.dialogs.InsertScheduleDialogFragment;
 import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener;
@@ -81,8 +81,8 @@ public class ScheduleFragment extends Fragment implements LiveScheduleUpdateList
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initializeViews();
     }
 
@@ -161,7 +161,7 @@ public class ScheduleFragment extends Fragment implements LiveScheduleUpdateList
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.addItemDecoration(new EqualSpaceItemDecoration(
                 ResourceManager.convertDpInPixel(4, getContext())));
-        ItemTouchHelper.Callback callback = new CoreyItemTouchHelper(adapter, true, false);
+        ItemTouchHelper.Callback callback = new ShockItemTouchHelper(adapter, true, false);
         adapter.setOnItemMoveListener(this);
         adapter.setOnItemClickListener(this);
 

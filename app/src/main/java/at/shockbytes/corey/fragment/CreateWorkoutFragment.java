@@ -29,7 +29,7 @@ import java.util.List;
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.ExerciseAdapter;
 import at.shockbytes.corey.adapter.WorkoutCraftingSpinnerAdapter;
-import at.shockbytes.corey.adapter.helper.CoreyItemTouchHelper;
+import at.shockbytes.corey.common.core.adapter.helper.ShockItemTouchHelper;
 import at.shockbytes.corey.common.core.util.view.ViewManager;
 import at.shockbytes.corey.common.core.workout.model.Exercise;
 import at.shockbytes.corey.common.core.workout.model.Workout;
@@ -41,7 +41,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @SuppressWarnings("ConstantConditions")
-public class CreateWorkoutFragment extends Fragment implements AdapterView.OnItemSelectedListener, AddExercisesDialogFragment.OnExerciseCreatedListener {
+public class CreateWorkoutFragment extends Fragment implements AdapterView.OnItemSelectedListener,
+        AddExercisesDialogFragment.OnExerciseCreatedListener {
 
     private enum CardState {EXPANDED, COLLAPSED}
 
@@ -236,7 +237,7 @@ public class CreateWorkoutFragment extends Fragment implements AdapterView.OnIte
         exerciseAdapter = new ExerciseAdapter(getContext(), new ArrayList<Exercise>());
         exerciseAdapter.setItemsMovable(true);
         //exerciseAdapter.setOnItemMoveListener(this);
-        ItemTouchHelper.Callback callback = new CoreyItemTouchHelper(exerciseAdapter, true, false);
+        ItemTouchHelper.Callback callback = new ShockItemTouchHelper(exerciseAdapter, true, false);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerViewExercises);
         recyclerViewExercises.setAdapter(exerciseAdapter);

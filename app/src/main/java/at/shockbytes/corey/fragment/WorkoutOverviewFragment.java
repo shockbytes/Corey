@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.WorkoutAdapter;
+import at.shockbytes.corey.common.core.adapter.BaseAdapter;
 import at.shockbytes.corey.core.CoreyApp;
 import at.shockbytes.corey.core.CreateWorkoutActivity;
 import at.shockbytes.corey.core.WorkoutDetailActivity;
@@ -41,7 +42,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  *         Date: 26.10.2015.
  */
 public class
-WorkoutOverviewFragment extends Fragment implements WorkoutAdapter.OnItemClickListener,
+WorkoutOverviewFragment extends Fragment implements BaseAdapter.OnItemClickListener<Workout>,
         WorkoutAdapter.OnWorkoutPopupItemSelectedListener, LiveWorkoutUpdateListener {
 
     public static WorkoutOverviewFragment newInstance() {
@@ -59,8 +60,8 @@ WorkoutOverviewFragment extends Fragment implements WorkoutAdapter.OnItemClickLi
     @Bind(R.id.fragment_training_rv)
     protected RecyclerViewWithEmptyView recyclerView;
 
-    @Bind(R.id.fragment_training_empty_view)
-    protected View emptyView;
+    //@Bind(R.id.fragment_training_empty_view)
+    //protected View emptyView;
 
     public WorkoutOverviewFragment() {
     }
@@ -144,7 +145,7 @@ WorkoutOverviewFragment extends Fragment implements WorkoutAdapter.OnItemClickLi
         recyclerView.setLayoutManager(getLayoutManagerForOrientation());
         adapter = new WorkoutAdapter(getActivity(), new ArrayList<Workout>(), this);
         adapter.setOnItemClickListener(this);
-        recyclerView.setEmptyView(emptyView);
+        // recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
 
         workoutManager.getWorkouts().subscribe(new Action1<List<Workout>>() {

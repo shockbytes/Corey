@@ -26,10 +26,20 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.Vi
         void onItemLongClick(T t, View v);
     }
 
+    public interface OnItemMoveListener<T> {
+
+        void onItemMove(T t, int from, int to);
+
+        void onItemMoveFinished();
+
+        void onItemDismissed(T t, int position);
+    }
+
     protected List<T> data;
-    protected LayoutInflater layoutInflater;
+    protected LayoutInflater inflater;
     protected Context context;
 
+    protected OnItemMoveListener<T> onItemMoveListener;
     protected OnItemClickListener<T> onItemClickListener;
     protected OnItemLongClickListener<T> onItemLongClickListener;
 
@@ -38,7 +48,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.Vi
     public BaseAdapter(Context cxt, List<T> data) {
 
         context = cxt;
-        layoutInflater = LayoutInflater.from(cxt);
+        inflater = LayoutInflater.from(cxt);
         this.data = new ArrayList<>();
 
         setData(data);
@@ -60,6 +70,10 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.Vi
 
     public void setOnItemLongClickListener(OnItemLongClickListener<T> listener) {
         onItemLongClickListener = listener;
+    }
+
+    public void setOnItemMoveListener(OnItemMoveListener<T> listener) {
+        onItemMoveListener = listener;
     }
 
     //-----------------------------Data Section-----------------------------
@@ -94,6 +108,11 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.Vi
             data.set(location, entity);
             notifyItemChanged(location);
         }
+    }
+
+    public void replace(T changed, int arrayIdx) {
+        data.set(arrayIdx, changed);
+        notifyItemChanged(arrayIdx);
     }
 
     public void moveEntity(int i, int dest) {
