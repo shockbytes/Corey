@@ -55,7 +55,7 @@ public class WearTimeExerciseCountdownDialogFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCancelable(false);
-        setStyle(STYLE_NO_TITLE, 0);
+        setStyle(STYLE_NO_TITLE, android.R.style.Theme_Material_Dialog_Presentation);
         countdown = getArguments().getInt(ARG_SECONDS);
     }
 

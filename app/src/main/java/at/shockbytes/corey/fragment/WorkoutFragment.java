@@ -11,11 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ProgressBar;
 
+import javax.inject.Inject;
+
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.ExercisePagerAdapter;
-import at.shockbytes.corey.fragment.dialogs.WorkoutMessageDialogFragment;
 import at.shockbytes.corey.common.core.util.view.NonSwipeableViewPager;
 import at.shockbytes.corey.common.core.workout.model.Workout;
+import at.shockbytes.corey.fragment.dialogs.WorkoutMessageDialogFragment;
+import at.shockbytes.corey.workout.WorkoutManager;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,6 +36,9 @@ public class WorkoutFragment extends Fragment {
     }
 
     private Workout workout;
+
+    @Inject
+    protected WorkoutManager workoutManager;
 
     @Bind(R.id.fragment_workout_viewpager)
     protected NonSwipeableViewPager viewPager;
@@ -105,13 +111,17 @@ public class WorkoutFragment extends Fragment {
             viewPager.setCurrentItem(item, true);
             progressBar.setProgress(item + 1);
         } else {
-            stopWorkout();
+            finish();
         }
     }
 
-    private void stopWorkout() {
+    private void finish() {
 
         chronometer.stop();
+
+        long elapsedSeconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 60000;
+        int time = (int) (Math.ceil(elapsedSeconds/60));
+        workoutManager.updatePhoneWorkoutInformation(1, time);
 
         WorkoutMessageDialogFragment fragment = WorkoutMessageDialogFragment
                 .newInstance(WorkoutMessageDialogFragment.MessageType.DONE);

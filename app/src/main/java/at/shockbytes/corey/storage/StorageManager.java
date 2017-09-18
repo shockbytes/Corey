@@ -35,8 +35,9 @@ public interface StorageManager {
 
     // --------------- Workout information ---------------
 
-    void updateWorkoutInformation(int avgPulse, int workoutCountWithPulse,
-                                  int workoutCountSum, int workoutTime);
+    void updatePhoneWorkoutInformation(int workouts, int workoutTime);
+
+    void updateWearWorkoutInformation(int avgPulse, int workoutsWithPulse, int workoutTime);
     // ---------------------------------------------------
 
     // -------------------- Schedules --------------------

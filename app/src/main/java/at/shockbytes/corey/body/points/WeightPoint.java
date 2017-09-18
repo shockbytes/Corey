@@ -1,5 +1,7 @@
 package at.shockbytes.corey.body.points;
 
+import android.support.annotation.NonNull;
+
 import io.realm.RealmObject;
 
 public class WeightPoint extends RealmObject implements Comparable<WeightPoint> {
@@ -34,7 +36,7 @@ public class WeightPoint extends RealmObject implements Comparable<WeightPoint> 
 
 
     @Override
-    public int compareTo(WeightPoint weightPoint) {
-        return (int) (weight - weightPoint.weight);
+    public int compareTo(@NonNull WeightPoint weightPoint) {
+        return (int) (time - weightPoint.time);
     }
 }

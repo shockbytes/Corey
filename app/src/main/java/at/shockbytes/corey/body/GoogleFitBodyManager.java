@@ -26,9 +26,9 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import at.shockbytes.corey.body.goal.Goal;
-import at.shockbytes.corey.storage.StorageManager;
 import at.shockbytes.corey.body.points.BodyFatPoint;
 import at.shockbytes.corey.body.points.WeightPoint;
+import at.shockbytes.corey.storage.StorageManager;
 import at.shockbytes.corey.storage.live.LiveBodyUpdateListener;
 import io.realm.RealmList;
 import rx.Observable;
@@ -205,7 +205,10 @@ public class GoogleFitBodyManager implements BodyManager, ResultCallback<DataRea
 
     private DataReadRequest buildGoogleFitRequest() {
 
-        long startMillis = storageManager.getLastBodyInfoPull();
+        long startMillis = storageManager.getLastBodyInfoPull() - 1209600000L; // Minus 2 weeks
+        if (startMillis < 0) {
+            startMillis = 1;
+        }
         //long startMillis = 1;
         long endMillis = System.currentTimeMillis();
 
@@ -223,9 +226,8 @@ public class GoogleFitBodyManager implements BodyManager, ResultCallback<DataRea
     }
 
     private void loadFitnessData() {
-
-        DataReadRequest request = buildGoogleFitRequest();
-        Fitness.HistoryApi.readData(apiClient, request).setResultCallback(this, 1, TimeUnit.MINUTES);
+        Fitness.HistoryApi.readData(apiClient, buildGoogleFitRequest())
+                .setResultCallback(this, 1, TimeUnit.MINUTES);
     }
 
 }

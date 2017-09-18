@@ -106,7 +106,7 @@ public class WorkoutFragment extends Fragment implements SensorEventListener,
     @Override
     public void onStart() {
         super.onStart();
-        setupWorkout();
+        startWorkout();
     }
 
     @Override
@@ -206,7 +206,7 @@ public class WorkoutFragment extends Fragment implements SensorEventListener,
                 .valueOf(ContextCompat.getColor(getContext(), workout.getColorResForIntensity())));
     }
 
-    private void setupWorkout() {
+    private void startWorkout() {
 
         pulseLogger = new PulseLogger();
         initializeHeartRate();
@@ -229,8 +229,7 @@ public class WorkoutFragment extends Fragment implements SensorEventListener,
         long elapsedSeconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 60000;
         int avgPulse = pulseLogger.getAveragePulse(true);
 
-        communicationManager.synchronizeWorkoutInformation(avgPulse, 1,
-                (int) (Math.ceil(elapsedSeconds/60)));
+        communicationManager.syncWorkoutInformation(avgPulse, (int) (Math.ceil(elapsedSeconds/60)));
 
         getActivity().finishAfterTransition();
     }

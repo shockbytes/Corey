@@ -2,18 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_running"
+        android:title="@string/tab_running"
+        android:icon="@drawable/ic_tab_running"/>
+
+    <item
         android:id="@+id/navigation_workouts"
-        android:icon="@drawable/ic_tab_workout"
-        android:title="Workouts" />
+        android:title="@string/tab_workout"
+        android:icon="@drawable/ic_tab_workout" />
 
     <item
         android:id="@+id/navigation_schedule"
-        android:icon="@drawable/ic_tab_schedule"
-        android:title="Schedule" />
+        android:title="@string/tab_schedule"
+        android:icon="@drawable/ic_tab_schedule" />
 
     <item
         android:id="@+id/navigation_my_body"
-        android:icon="@drawable/ic_tab_my_body"
-        android:title="My body" />
+        android:title="@string/tab_my_body"
+        android:icon="@drawable/ic_tab_my_body" />
 
 </menu>

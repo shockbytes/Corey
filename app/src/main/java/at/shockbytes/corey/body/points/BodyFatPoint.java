@@ -1,8 +1,10 @@
 package at.shockbytes.corey.body.points;
 
+import android.support.annotation.NonNull;
+
 import io.realm.RealmObject;
 
-public class BodyFatPoint extends RealmObject {
+public class BodyFatPoint extends RealmObject implements Comparable<BodyFatPoint> {
 
     private long time;
     private double bodyFat;
@@ -32,4 +34,8 @@ public class BodyFatPoint extends RealmObject {
         this.bodyFat = bodyFat;
     }
 
+    @Override
+    public int compareTo(@NonNull BodyFatPoint bodyFatPoint) {
+        return (int) (time - bodyFatPoint.time);
+    }
 }

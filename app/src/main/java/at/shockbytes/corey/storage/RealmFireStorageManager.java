@@ -197,35 +197,17 @@ public class RealmFireStorageManager implements StorageManager {
     }
 
     @Override
-    public void updateWorkoutInformation(int avgPulse, int workoutCountWithPulse,
-                                         int workoutCountSum, int workoutTime) {
-
-        incrementIntegerWorkoutInformation("/body/workoutinfo/pulse", avgPulse);
-        incrementIntegerWorkoutInformation("/body/workoutinfo/count_with_pulse", workoutCountWithPulse);
-        incrementIntegerWorkoutInformation("/body/workoutinfo/count", workoutCountSum);
+    public void updatePhoneWorkoutInformation(int workouts, int workoutTime) {
+        incrementIntegerWorkoutInformation("/body/workoutinfo/count", workouts);
         incrementIntegerWorkoutInformation("/body/workoutinfo/time", workoutTime);
     }
 
-    private void incrementIntegerWorkoutInformation(String path, final int increment) {
-
-        firebase.getReference(path).runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-
-                Integer value = mutableData.getValue(Integer.class);
-                if (value == null) {
-                    return Transaction.success(mutableData);
-                }
-                value += increment;
-                mutableData.setValue(value);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-            }
-        });
+    @Override
+    public void updateWearWorkoutInformation(int avgPulse, int workoutsWithPulse, int workoutTime) {
+        incrementIntegerWorkoutInformation("/body/workoutinfo/pulse", avgPulse);
+        incrementIntegerWorkoutInformation("/body/workoutinfo/count_with_pulse", workoutsWithPulse);
+        incrementIntegerWorkoutInformation("/body/workoutinfo/count", workoutsWithPulse);
+        incrementIntegerWorkoutInformation("/body/workoutinfo/time", workoutTime);
     }
 
     @Override
@@ -489,7 +471,7 @@ public class RealmFireStorageManager implements StorageManager {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 Goal g = dataSnapshot.getValue(Goal.class);
-                Log.wtf("Corey", "Firebase - Goal added: " + g.toString());
+                //Log.wtf("Corey", "Firebase - Goal added: " + g.toString());
                 goals.add(g);
                 for (LiveBodyUpdateListener l : bodyListener) {
                     l.onBodyGoalAdded(g);
@@ -500,7 +482,7 @@ public class RealmFireStorageManager implements StorageManager {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
                 Goal g = dataSnapshot.getValue(Goal.class);
-                Log.wtf("Corey", "Firebase - Goal changed: " + g.toString());
+                //Log.wtf("Corey", "Firebase - Goal changed: " + g.toString());
                 goals.set(goals.indexOf(g), g);
                 for (LiveBodyUpdateListener l : bodyListener) {
                     l.onBodyGoalChanged(g);
@@ -511,7 +493,7 @@ public class RealmFireStorageManager implements StorageManager {
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
                 Goal g = dataSnapshot.getValue(Goal.class);
-                Log.wtf("Corey", "Firebase - Goal deleted: " + g.toString());
+                //Log.wtf("Corey", "Firebase - Goal deleted: " + g.toString());
                 goals.remove(g);
                 for (LiveBodyUpdateListener l : bodyListener) {
                     l.onBodyGoalDeleted(g);
@@ -544,6 +526,28 @@ public class RealmFireStorageManager implements StorageManager {
                 //.migration(new DanteRealmMigration())
                 .build();
         realm = Realm.getInstance(config);
+    }
+
+    private void incrementIntegerWorkoutInformation(String path, final int increment) {
+
+        firebase.getReference(path).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+
+                Integer value = mutableData.getValue(Integer.class);
+                if (value == null) {
+                    return Transaction.success(mutableData);
+                }
+                value += increment;
+                mutableData.setValue(value);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+            }
+        });
     }
 
 }

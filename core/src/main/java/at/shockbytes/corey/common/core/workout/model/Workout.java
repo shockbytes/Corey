@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +70,7 @@ public class Workout implements Comparable<Workout>, Parcelable {
         return this;
     }
 
+    @Exclude
     public String getDisplayableName() {
         return name.replaceAll("_", " ");
     }
@@ -108,6 +111,7 @@ public class Workout implements Comparable<Workout>, Parcelable {
         return intensity;
     }
 
+    @Exclude
     public int getColorResForIntensity() {
 
         int color = 0;
@@ -129,6 +133,7 @@ public class Workout implements Comparable<Workout>, Parcelable {
         return color;
     }
 
+    @Exclude
     public int getDarkColorResForIntensity() {
 
         int color = 0;
@@ -150,6 +155,7 @@ public class Workout implements Comparable<Workout>, Parcelable {
         return color;
     }
 
+    @Exclude
     public int getImageResForBodyRegion() {
 
         int bodyRegionImage = 0;

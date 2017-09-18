@@ -7,4 +7,6 @@
 
     <string name="dialogfragment_countdown">Exercise starts in</string>
 
+    <string name="capability">corey_wear_capability</string>
+
 </resources>

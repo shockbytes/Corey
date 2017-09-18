@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">Corey</string>
-    <string name="app_version" translatable="false">1.8</string>
+    <string name="app_version" translatable="false">1.9b</string>
     <string name="action_settings">Settings</string>
 
     <string name="tab_workout">Workouts</string>
@@ -155,5 +155,6 @@
     <string name="no_goals">No goals so far, create one!</string>
     <string name="your_crushed_goals">Your crushed goals</string>
     <string name="set_goal">Set a new goal</string>
+    <string name="tab_running">Running</string>
 
 </resources>

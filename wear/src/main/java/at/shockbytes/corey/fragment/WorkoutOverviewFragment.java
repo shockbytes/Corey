@@ -11,11 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.WearWorkoutOverviewAdapter;
 import at.shockbytes.corey.common.core.adapter.BaseAdapter;
+import at.shockbytes.corey.common.core.util.WorkoutNameComparator;
 import at.shockbytes.corey.common.core.workout.model.Workout;
 import at.shockbytes.corey.core.MainActivity;
 import at.shockbytes.corey.core.WorkoutActivity;
@@ -86,6 +88,7 @@ public class WorkoutOverviewFragment extends Fragment
 
     private void setupRecyclerView() {
 
+        Collections.sort(workouts, new WorkoutNameComparator());
         WearWorkoutOverviewAdapter adapter = new WearWorkoutOverviewAdapter(getContext(), workouts);
 
         recyclerView.setCenterEdgeItems(true);

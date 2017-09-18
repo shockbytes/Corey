@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -21,7 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import javax.inject.Inject;
 
 import at.shockbytes.corey.R;
+import at.shockbytes.corey.body.BodyManager;
 import at.shockbytes.corey.body.wearable.WearableManager;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 import at.shockbytes.corey.fragment.BodyFragment;
 import at.shockbytes.corey.fragment.ScheduleFragment;
 import at.shockbytes.corey.fragment.WorkoutOverviewFragment;
@@ -29,15 +30,13 @@ import at.shockbytes.corey.fragment.dialogs.DesiredWeightDialogFragment;
 import at.shockbytes.corey.util.AppParams;
 import at.shockbytes.corey.util.schedule.ScheduleManager;
 import at.shockbytes.corey.workout.WorkoutManager;
-import at.shockbytes.corey.body.BodyManager;
-import at.shockbytes.corey.common.core.workout.model.Workout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
-        WearableManager.OnWearableDataListener {
+public class MainActivity extends AppCompatActivity
+        implements TabLayout.OnTabSelectedListener {
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -62,15 +61,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected FrameLayout mainContent;
 
     @Bind(R.id.main_layout)
-    protected CoordinatorLayout mainLayout;
+    protected View mainLayout;
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
-
-    /*
-    @Bind(R.id.bottom_navigation)
-    protected BottomNavigationView bottomNavigationView;
-    */
 
     @Bind(R.id.main_appbar)
     protected AppBarLayout appBar;
@@ -88,14 +82,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         ((CoreyApp) getApplication()).getAppComponent().inject(this);
         ButterKnife.bind(this);
 
-        tabPosition = 1; // Initialize it with one, can be overwritten by statement below
+        tabPosition = 2; // Initialize it with one, can be overwritten by statement below
         Icepick.restoreInstanceState(this, savedInstanceState);
 
         initializeViews();
         bodyManager.poke(this);
         workoutManager.poke();
         scheduleManager.poke();
-        wearableManager.connectIfDeviceAvailable(this, this);
+        wearableManager.connect(this);
 
         if (bodyManager.getDesiredWeight() <= 0) { // Ask for desired weight when not set
             askForDesiredWeight();
@@ -158,43 +152,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
     }
 
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-
-        tabPosition = tab.getPosition(); // Store it for IcePick
-
-        appBar.setExpanded(true, true);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-
-        switch (tab.getPosition()) {
-
-            case 0:
-                fabNewWorkout.show();
-                ft.replace(R.id.main_content, WorkoutOverviewFragment.newInstance());
-                break;
-
-            case 1:
-                fabNewWorkout.hide();
-                ft.replace(R.id.main_content, ScheduleFragment.newInstance());
-                break;
-
-            case 2:
-                fabNewWorkout.hide();
-                ft.replace(R.id.main_content, BodyFragment.newInstance());
-                break;
-        }
-        ft.commit();
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-    }
-
     private void initializeViews() {
 
         setSupportActionBar(toolbar);
@@ -203,9 +160,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         if (initialTab != null) {
             initialTab.select();
         }
-
-        //bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        //onNavigationItemSelected(bottomNavigationView.getMenu().getItem(1));
 
         fabNewWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,41 +185,45 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onWearableDataAvailable(int avgPulse, int workouts, int workoutTime) {
-
-        // I don't know what to do with this information, maybe remove callback later
-
-    }
-
-    /*
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public void onTabSelected(TabLayout.Tab tab) {
 
         appBar.setExpanded(true, true);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 
-        switch (item.getItemId()) {
+        tabPosition = tab.getPosition();
+        switch (tabPosition) {
 
-            case R.id.navigation_workouts:
-                tabPosition = 0;
+            case 0:
+                fabNewWorkout.hide();
+                //ft.replace(R.id.main_content, RunningOverviewFragment.newInstance());
+                break;
+
+            case 1:
                 fabNewWorkout.show();
                 ft.replace(R.id.main_content, WorkoutOverviewFragment.newInstance());
                 break;
 
-            case R.id.navigation_schedule:
-                tabPosition = 1;
+            case 2:
                 fabNewWorkout.hide();
                 ft.replace(R.id.main_content, ScheduleFragment.newInstance());
                 break;
 
-            case R.id.navigation_my_body:
-                tabPosition = 2;
+            case 3:
                 fabNewWorkout.hide();
                 ft.replace(R.id.main_content, BodyFragment.newInstance());
                 break;
         }
         ft.commit();
-        return true;
-    } */
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }

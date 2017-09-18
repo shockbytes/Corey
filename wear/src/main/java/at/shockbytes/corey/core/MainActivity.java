@@ -136,7 +136,7 @@ public class MainActivity extends WearableActivity
                 new CoreyNavigationAdapter.NavigationItem(R.string.navigation_workout,
                         R.drawable.ic_workout),
                 new CoreyNavigationAdapter.NavigationItem(R.string.navigation_running,
-                        R.drawable.ic_running_new),
+                        R.drawable.ic_tab_running),
                 new CoreyNavigationAdapter.NavigationItem(R.string.navigation_settings,
                         R.drawable.ic_settings));
     }

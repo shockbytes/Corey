@@ -26,6 +26,8 @@ public interface WorkoutManager {
 
     Observable<List<Exercise>> getExercises();
 
+    void updatePhoneWorkoutInformation(int workouts, int workoutTime);
+
     void registerLiveForWorkoutUpdates(LiveWorkoutUpdateListener listener);
 
     void unregisterLiveForWorkoutUpdates(LiveWorkoutUpdateListener listener);

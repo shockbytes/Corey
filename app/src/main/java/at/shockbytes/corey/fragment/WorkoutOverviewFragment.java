@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.WorkoutAdapter;
 import at.shockbytes.corey.common.core.adapter.BaseAdapter;
+import at.shockbytes.corey.common.core.util.WorkoutNameComparator;
 import at.shockbytes.corey.core.CoreyApp;
 import at.shockbytes.corey.core.CreateWorkoutActivity;
 import at.shockbytes.corey.core.WorkoutDetailActivity;
@@ -151,6 +153,7 @@ WorkoutOverviewFragment extends Fragment implements BaseAdapter.OnItemClickListe
         workoutManager.getWorkouts().subscribe(new Action1<List<Workout>>() {
             @Override
             public void call(List<Workout> workouts) {
+                Collections.sort(workouts, new WorkoutNameComparator());
                 adapter.setData(workouts);
             }
         }, new Action1<Throwable>() {

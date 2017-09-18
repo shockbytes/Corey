@@ -86,8 +86,9 @@ public class WearTimeExercisePagerFragment extends Fragment {
     @OnClick(R.id.fragment_wear_pageritem_time_exercise_btn_time)
     protected void onClickButtonStart() {
 
-        int countdown = PreferenceManager.getDefaultSharedPreferences(getContext())
-                .getInt(getString(R.string.wear_pref_countdown_key), 5);
+        int countdown = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getString(getString(R.string.wear_pref_countdown_key),
+                            getString(R.string.wear_pref_countdown_default_value)));
         /* if (countdown <= 0) {
             countdown = 5;
         } */

@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
-import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.gson.Gson;
@@ -34,12 +33,10 @@ import rx.functions.Action1;
  */
 
 public class AndroidWearManager implements WearableManager,
-        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
-        DataApi.DataListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, MessageApi.MessageListener {
 
     private Context context;
     private GoogleApiClient apiClient;
-    private OnWearableDataListener wearableDataListener;
 
     private Gson gson;
     private WorkoutManager workoutManager;
@@ -58,10 +55,7 @@ public class AndroidWearManager implements WearableManager,
     }
 
     @Override
-    public void connectIfDeviceAvailable(FragmentActivity activity,
-                                         OnWearableDataListener wearableDataListener) {
-
-        this.wearableDataListener = wearableDataListener;
+    public void connect(FragmentActivity activity) {
 
         if (apiClient == null) {
             apiClient = new GoogleApiClient.Builder(context)
@@ -84,20 +78,9 @@ public class AndroidWearManager implements WearableManager,
     }
 
     @Override
-    public void synchronizeCountdownAndVibration(int countdown, boolean isVibrationEnabled) {
-
-        PutDataRequest countdownRequest = PutDataRequest.create("/countdown");
-        countdownRequest.setData(String.valueOf(countdown).getBytes());
-        PutDataRequest vibrationRequest = PutDataRequest.create("/vibration");
-        vibrationRequest.setData(String.valueOf(isVibrationEnabled).getBytes());
-
-        Wearable.DataApi.putDataItem(apiClient, countdownRequest);
-        Wearable.DataApi.putDataItem(apiClient, vibrationRequest);
-    }
-
-    @Override
     public void onPause() {
-        Wearable.DataApi.removeListener(apiClient, this);
+        Wearable.MessageApi.removeListener(apiClient, this);
+        Wearable.CapabilityApi.removeLocalCapability(apiClient, context.getString(R.string.capability));
     }
 
     @Override
@@ -110,7 +93,8 @@ public class AndroidWearManager implements WearableManager,
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Wearable.DataApi.addListener(apiClient, this);
+        Wearable.MessageApi.addListener(apiClient, this);
+        Wearable.CapabilityApi.addLocalCapability(apiClient, context.getString(R.string.capability));
         synchronize();
     }
 
@@ -120,49 +104,32 @@ public class AndroidWearManager implements WearableManager,
     }
 
     @Override
-    public void onDataChanged(DataEventBuffer dataEventBuffer) {
+    public void onMessageReceived(MessageEvent messageEvent) {
 
-        int avgPulse = 0;
-        int workouts = 0;
-        int workoutTime = 0;
-        for (DataEvent event : dataEventBuffer) {
-            if (event.getType() == DataEvent.TYPE_CHANGED) {
-                DataItem item = event.getDataItem();
-                String path = item.getUri().getPath();
-                String data = new String(item.getData());
-                switch (path) {
-                    case "/avg_pulse":
-                        avgPulse = Integer.parseInt(data);
-                        break;
-                    case "/workout_count":
-                        workouts = Integer.parseInt(data);
-                        break;
-                    case "/workout_time":
-                        workoutTime = Integer.parseInt(data);
-                        break;
-                }
-            }
+        Log.wtf("Corey", "information received! + " + messageEvent.toString());
+        if (messageEvent.getPath().equals("/wear_information")) {
+            Toast.makeText(context, new String(messageEvent.getData()), Toast.LENGTH_SHORT).show();
+            grabDataFromMessage(messageEvent);
         }
 
-        storageManager.updateWorkoutInformation(avgPulse, workouts, workouts, workoutTime);
-
-        if (wearableDataListener != null && (avgPulse != 0 || workouts != 0 || workoutTime != 0)) {
-            wearableDataListener.onWearableDataAvailable(avgPulse, workouts, workoutTime);
-            resetSharedObjects();
-        }
     }
 
-    private void resetSharedObjects() {
+    private void grabDataFromMessage(MessageEvent messageEvent) {
 
-        PutDataRequest pulseRequest = PutDataRequest.create("/avg_pulse");
-        pulseRequest.setData(String.valueOf(0).getBytes());
-        Wearable.DataApi.putDataItem(apiClient, pulseRequest);
-        PutDataRequest workoutCountRequest = PutDataRequest.create("/workout_count");
-        workoutCountRequest.setData(String.valueOf(0).getBytes());
-        Wearable.DataApi.putDataItem(apiClient, workoutCountRequest);
-        PutDataRequest workoutTimeRequest = PutDataRequest.create("/workout_time");
-        workoutTimeRequest.setData(String.valueOf(0).getBytes());
-        Wearable.DataApi.putDataItem(apiClient, workoutTimeRequest);
+        String data = new String(messageEvent.getData());
+        String[] s = data.split(",");
+
+        try {
+
+            int pulse = Integer.parseInt(s[0]);
+            int workouts = Integer.parseInt(s[1]);
+            int time = Integer.parseInt(s[2]);
+
+            storageManager.updateWearWorkoutInformation(pulse, workouts, time);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void synchronize() {
@@ -173,11 +140,6 @@ public class AndroidWearManager implements WearableManager,
                 synchronizeWorkouts(workouts);
             }
         });
-
-        boolean isVibrationEnabled = preferences.getBoolean(context
-                .getString(R.string.prefs_vibrations_key), false);
-        int countdown = preferences.getInt(context
-                .getString(R.string.prefs_time_countdown_key), 5);
-        synchronizeCountdownAndVibration(countdown, isVibrationEnabled);
     }
+
 }

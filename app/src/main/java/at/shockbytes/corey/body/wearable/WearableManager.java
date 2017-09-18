@@ -13,17 +13,9 @@ import at.shockbytes.corey.common.core.workout.model.Workout;
 
 public interface WearableManager {
 
-    interface OnWearableDataListener {
-
-        void onWearableDataAvailable(int avgPulse, int workouts, int workoutTime);
-
-    }
-
-    void connectIfDeviceAvailable(FragmentActivity activity, OnWearableDataListener wearableDataListener);
+    void connect(FragmentActivity activity);
 
     void synchronizeWorkouts(List<Workout> workouts);
-
-    void synchronizeCountdownAndVibration(int countdown, boolean isVibrationEnabled);
 
     void onPause();
 

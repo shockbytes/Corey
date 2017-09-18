@@ -61,6 +61,11 @@ public class DefaultWorkoutManager implements WorkoutManager {
     }
 
     @Override
+    public void updatePhoneWorkoutInformation(int workouts, int workoutTime) {
+        storageManager.updatePhoneWorkoutInformation(workouts, workoutTime);
+    }
+
+    @Override
     public void registerLiveForWorkoutUpdates(LiveWorkoutUpdateListener listener) {
         storageManager.registerLiveWorkoutUpdates(listener);
     }
