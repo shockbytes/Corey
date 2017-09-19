@@ -6,6 +6,7 @@ import at.shockbytes.corey.core.MainActivity;
 import at.shockbytes.corey.core.receiver.NotificationReceiver;
 import at.shockbytes.corey.core.receiver.OnBootReceiver;
 import at.shockbytes.corey.fragment.BodyFragment;
+import at.shockbytes.corey.fragment.RunningFragment;
 import at.shockbytes.corey.fragment.ScheduleFragment;
 import at.shockbytes.corey.fragment.WorkoutOverviewFragment;
 import at.shockbytes.corey.fragment.dialogs.AddExercisesDialogFragment;
@@ -28,6 +29,8 @@ public interface AppComponent {
     void inject(ScheduleFragment fragment);
 
     void inject(WorkoutOverviewFragment fragment);
+
+    void inject(RunningFragment fragment);
 
     void inject(AddExercisesDialogFragment dialogFragment);
 

@@ -4,6 +4,13 @@
     <color name="colorPrimary">#8BC34A</color>
     <color name="colorPrimaryDark">#689F38</color>
     <color name="colorAccent">#FF9800</color>
+    
+    <!-- Running colors -->
+    <color name="running_mode_free_run">#795548</color>
+    <color name="running_mode_distance">#00DD99</color>
+    <color name="running_mode_time">#9C27B0</color>
+    <color name="running_mode_calories">#F44336</color>
+    <!-- /Running colors -->
 
     <!-- Workout colors -->
     <color name="workout_intensity_easy">#FF6D00</color>

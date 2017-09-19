@@ -9,18 +9,22 @@ import com.google.gson.GsonBuilder;
 
 import javax.inject.Singleton;
 
+import at.shockbytes.corey.body.BodyManager;
+import at.shockbytes.corey.body.GoogleFitBodyManager;
 import at.shockbytes.corey.body.wearable.AndroidWearManager;
 import at.shockbytes.corey.body.wearable.WearableManager;
+import at.shockbytes.corey.common.core.running.DefaultRunningManager;
+import at.shockbytes.corey.common.core.running.RunningManager;
+import at.shockbytes.corey.common.core.running.location.GooglePlayLocationManager;
+import at.shockbytes.corey.common.core.running.location.LocationManager;
+import at.shockbytes.corey.common.core.util.ExerciseDeserializer;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
 import at.shockbytes.corey.storage.RealmFireStorageManager;
 import at.shockbytes.corey.storage.StorageManager;
-import at.shockbytes.corey.common.core.util.ExerciseDeserializer;
 import at.shockbytes.corey.util.schedule.DefaultScheduleManager;
 import at.shockbytes.corey.util.schedule.ScheduleManager;
 import at.shockbytes.corey.workout.DefaultWorkoutManager;
 import at.shockbytes.corey.workout.WorkoutManager;
-import at.shockbytes.corey.body.BodyManager;
-import at.shockbytes.corey.body.GoogleFitBodyManager;
-import at.shockbytes.corey.common.core.workout.model.Exercise;
 import dagger.Module;
 import dagger.Provides;
 
@@ -76,6 +80,19 @@ public class AppModule {
         return new AndroidWearManager(app.getApplicationContext(), workoutManager, storageManager,
                 preferences, gson);
     }
+
+    @Provides
+    @Singleton
+    public RunningManager provideRunningManager() {
+        return new DefaultRunningManager(app.getApplicationContext());
+    }
+
+    @Provides
+    @Singleton
+    public LocationManager provideLocationManager() {
+        return new GooglePlayLocationManager(app.getApplicationContext());
+    }
+
 
     @Provides
     @Singleton

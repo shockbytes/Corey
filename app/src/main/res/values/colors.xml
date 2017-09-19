@@ -7,6 +7,7 @@
     <color name="controls">#767676</color>
     <color name="controls_light">#FFF</color>
 
+    <color name="help_background">#DD212121</color>
 
     <color name="material_purple">#9C27B0</color>
     <color name="material_indigo">#3F51B5</color>

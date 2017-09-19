@@ -11,4 +11,7 @@ public class AppParams {
 
     public static final String INTENT_EXTRA_NEW_WORKOUT = "new_workout";
     public static final String INTENT_EXTRA_WORKOUT_UPDATED  = "workout_updated";
+
+    public static final int HELP_SHOW_DELAY = 2000;
+
 }

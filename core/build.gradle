@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         minSdkVersion 16
@@ -34,5 +34,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
 
     compile 'com.google.firebase:firebase-database:11.2.0'
+
+    compile 'com.google.android.gms:play-services-location:11.2.0'
+    compile 'com.google.android.gms:play-services-maps:11.2.0'
 
 }

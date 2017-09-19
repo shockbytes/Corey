@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_running"
-                android:icon="@drawable/ic_running_new" />
+                android:icon="@drawable/ic_tab_running" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
     <FrameLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/main_bottom_navigation"
         android:layout_below="@+id/main_appbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

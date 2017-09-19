@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="at.shockbytes.corey">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -37,6 +39,9 @@
         <activity android:name=".core.WorkoutDetailActivity" />
         <activity android:name=".core.WorkoutActivity" />
 
+        <activity android:name=".core.RunningActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <receiver
             android:name=".core.receiver.NotificationReceiver"
             android:enabled="true"
@@ -49,6 +54,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
+
     </application>
 
 </manifest>

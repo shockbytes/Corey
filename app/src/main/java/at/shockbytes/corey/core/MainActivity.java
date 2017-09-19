@@ -24,6 +24,7 @@ import at.shockbytes.corey.body.BodyManager;
 import at.shockbytes.corey.body.wearable.WearableManager;
 import at.shockbytes.corey.common.core.workout.model.Workout;
 import at.shockbytes.corey.fragment.BodyFragment;
+import at.shockbytes.corey.fragment.RunningOverviewFragment;
 import at.shockbytes.corey.fragment.ScheduleFragment;
 import at.shockbytes.corey.fragment.WorkoutOverviewFragment;
 import at.shockbytes.corey.fragment.dialogs.DesiredWeightDialogFragment;
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity
 
             case 0:
                 fabNewWorkout.hide();
-                //ft.replace(R.id.main_content, RunningOverviewFragment.newInstance());
+                ft.replace(R.id.main_content, RunningOverviewFragment.newInstance());
                 break;
 
             case 1:
