@@ -27,15 +27,16 @@ import javax.inject.Inject;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.WearExercisePagerAdapter;
-import at.shockbytes.corey.common.core.util.view.NonSwipeableViewPager;
 import at.shockbytes.corey.common.core.workout.model.Workout;
 import at.shockbytes.corey.core.CommunicationManager;
 import at.shockbytes.corey.core.WearCoreyApp;
 import at.shockbytes.corey.core.WorkoutActivity;
 import at.shockbytes.corey.workout.PulseLogger;
-import butterknife.Bind;
+import at.shockbytes.util.view.NonSwipeableViewPager;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -52,16 +53,16 @@ public class WorkoutFragment extends Fragment implements SensorEventListener,
         return fragment;
     }
 
-    @Bind(R.id.fragment_workout_viewpager)
+    @BindView(R.id.fragment_workout_viewpager)
     protected NonSwipeableViewPager viewPager;
 
-    @Bind(R.id.fragment_workout_chronometer)
+    @BindView(R.id.fragment_workout_chronometer)
     protected Chronometer chronometer;
 
-    @Bind(R.id.fragment_workout_txt_pulse)
+    @BindView(R.id.fragment_workout_txt_pulse)
     protected TextView txtPulse;
 
-    @Bind(R.id.fragment_workout_progress)
+    @BindView(R.id.fragment_workout_progress)
     protected ProgressBar progressBar;
 
     @Inject
@@ -78,6 +79,8 @@ public class WorkoutFragment extends Fragment implements SensorEventListener,
     private Sensor sensor;
     private final int SENSOR_REQUEST_CODE = 0x4103;
 
+    private Unbinder unbinder;
+
     public WorkoutFragment() {
         // Required empty public constructor
     }
@@ -93,7 +96,7 @@ public class WorkoutFragment extends Fragment implements SensorEventListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_workout, container, false);
-        ButterKnife.bind(this, v);
+        unbinder = ButterKnife.bind(this, v);
         return v;
     }
 
@@ -112,7 +115,10 @@ public class WorkoutFragment extends Fragment implements SensorEventListener,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     @Override

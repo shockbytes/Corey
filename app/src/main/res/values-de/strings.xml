@@ -91,7 +91,7 @@
     <string name="workout_message_pos_done">Fertig</string>
     <string name="workout_message_title_done">Workout beendet</string>
     <string name="workout_message_title_quit">Aufgeben?</string>
-    <string name="desiredweight">Wunschgewicht</string>
+    <string name="desired_weight">Wunschgewicht</string>
     <string name="dialogfragment_enter_desiredweight_neg_btn">Nein, später</string>
     <string name="dialogfragment_enter_desiredweight_title">Wunschgewicht</string>
     <string name="logout">Logout</string>

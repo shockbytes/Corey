@@ -1,9 +1,19 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
+def daggerVersion = "2.14.1"
+def butterknifeVersion = "8.8.1"
+def supportVersion = "26.1.0"
+def rxJavaVersion = "2.1.6"
+def rxAndroidVersion = "2.0.1"
+def playServicesVersion = "11.8.0"
+def shockUtilVersion = "2.1.0"
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "at.shockbytes.corey"
@@ -12,6 +22,7 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -19,27 +30,42 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        disable 'RestrictedApi'
+    }
+}
+
+androidExtensions {
+    experimental = true
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':core')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':core')
 
-    compile 'com.google.android.support:wearable:2.0.5'
-    compile 'com.google.android.gms:play-services-wearable:11.2.0'
-    provided 'com.google.android.wearable:wearable:2.0.4'
-    compile 'com.android.support:design:26.0.0'
-    compile 'com.android.support:cardview-v7:26.0.0'
-    compile 'com.android.support:support-v13:26.0.0'
+    implementation "com.google.android.support:wearable:2.1.0"
+    compileOnly "com.google.android.wearable:wearable:2.1.0"
 
-    compile 'com.google.dagger:dagger:2.9'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.9'
-    compile 'net.danlew:android.joda:2.9.5.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'me.denley.wearpreferenceactivity:wearpreferenceactivity:0.5.0'
+    implementation "com.google.android.gms:play-services-wearable:$playServicesVersion"
+    implementation "com.android.support:design:$supportVersion"
+    implementation "com.android.support:cardview-v7:$supportVersion"
+    implementation "com.android.support:support-v13:$supportVersion"
 
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
-    provided 'javax.annotation:jsr250-api:1.0'
-    compile 'com.google.code.gson:gson:2.7'
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+
+    implementation "com.github.shockbytes:ShockUtil:$shockUtilVersion"
+
+    implementation "net.danlew:android.joda:2.9.9.2"
+    implementation "me.denley.wearpreferenceactivity:wearpreferenceactivity:0.5.0"
+    implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+
+    implementation "com.jakewharton:butterknife:$butterknifeVersion"
+    kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    compileOnly "javax.annotation:jsr250-api:1.0"
+    implementation "com.google.code.gson:gson:2.8.2"
 }

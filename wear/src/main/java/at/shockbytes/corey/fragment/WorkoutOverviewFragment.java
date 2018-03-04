@@ -16,14 +16,15 @@ import java.util.List;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.WearWorkoutOverviewAdapter;
-import at.shockbytes.corey.common.core.adapter.BaseAdapter;
 import at.shockbytes.corey.common.core.util.WorkoutNameComparator;
 import at.shockbytes.corey.common.core.workout.model.Workout;
 import at.shockbytes.corey.core.MainActivity;
 import at.shockbytes.corey.core.WorkoutActivity;
 import at.shockbytes.corey.util.MyOffsettingHelper;
-import butterknife.Bind;
+import at.shockbytes.util.adapter.BaseAdapter;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,10 +43,12 @@ public class WorkoutOverviewFragment extends Fragment
     }
 
 
-    @Bind(R.id.fragment_workout_overview_rv)
+    @BindView(R.id.fragment_workout_overview_rv)
     protected WearableRecyclerView recyclerView;
 
     private List<Workout> workouts;
+
+    private Unbinder unbinder;
 
     public WorkoutOverviewFragment() {
         // Required empty public constructor
@@ -62,7 +65,7 @@ public class WorkoutOverviewFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_workout_overview, container, false);
-        ButterKnife.bind(this, v);
+        unbinder = ButterKnife.bind(this, v);
         return v;
     }
 
@@ -75,7 +78,10 @@ public class WorkoutOverviewFragment extends Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     @Override

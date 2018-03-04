@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:cxt="at.shockbytes.corey.fragment.WorkoutFragment">
+    tools:cxt="at.shockbytes.corey.ui.fragment.WorkoutFragment">
 
     <LinearLayout
         android:id="@+id/fragment_workout_header_layout"
@@ -23,7 +23,7 @@
 
     </LinearLayout>
 
-    <at.shockbytes.corey.common.core.util.view.NonSwipeableViewPager
+    <at.shockbytes.util.view.NonSwipeableViewPager
         android:id="@+id/fragment_workout_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

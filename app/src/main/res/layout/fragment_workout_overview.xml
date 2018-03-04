@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/primaryBackground">
 
-    <at.shockbytes.corey.common.core.util.view.RecyclerViewWithEmptyView
+    <at.shockbytes.util.view.RecyclerViewWithEmptyView
         android:id="@+id/fragment_training_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

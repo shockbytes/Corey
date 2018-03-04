@@ -136,7 +136,7 @@
     <string name="dialogfragment_enter_desiredweight_title">Desired weight</string>
     <string name="dialogfragment_enter_desiredweight_neg_btn">No, later</string>
     <string name="logout">Logout</string>
-    <string name="desiredweight">Desired weight</string>
+    <string name="desired_weight">Desired weight</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="login">Login</string>
@@ -165,5 +165,8 @@
     <string name="running_mode_distance">DISTANCE</string>
     <string name="running_mode_calories">CALORIES</string>
     <string name="running_mode_time">TIME</string>
+    <string name="menu_main_account">Account</string>
+    <string name="error_account_photo">Cannot load your profile image</string>
+    <string name="anonymous_user">Anonymous User</string>
 
 </resources>

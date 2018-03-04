@@ -3,7 +3,7 @@ package at.shockbytes.corey.util.schedule;
 import java.util.List;
 
 import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * @author Martin Macheiner

@@ -18,15 +18,14 @@ import java.util.concurrent.TimeUnit;
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.common.core.workout.model.TimeExercise;
 import at.shockbytes.corey.fragment.dialog.WearTimeExerciseCountdownDialogFragment;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class WearTimeExercisePagerFragment extends Fragment {
 
@@ -39,14 +38,13 @@ public class WearTimeExercisePagerFragment extends Fragment {
 
     private int secondsUntilFinish;
     private Observable<Long> timerObservable;
-    private Subscription timerSubscription;
+    private Disposable timerDisposable;
 
-    @Bind(R.id.fragment_wear_pageritem_time_exercise_txt_exercise)
+    @BindView(R.id.fragment_wear_pageritem_time_exercise_txt_exercise)
     protected TextView txtExercise;
 
-    @Bind(R.id.fragment_wear_pageritem_time_exercise_btn_time)
+    @BindView(R.id.fragment_wear_pageritem_time_exercise_btn_time)
     protected TextView btnTime;
-
 
     public WearTimeExercisePagerFragment() {
     }
@@ -100,24 +98,24 @@ public class WearTimeExercisePagerFragment extends Fragment {
             @Override
             public void onCountdownCompleted() {
 
-                timerSubscription = timerObservable.subscribe(new Action1<Long>() {
+                timerDisposable = timerObservable.subscribe(new Consumer<Long>() {
 
                     long seconds = 0;
 
                     @Override
-                    public void call(Long aLong) {
+                    public void accept(Long aLong) {
 
                         long toGo = secondsUntilFinish - seconds;
                         displayTime(toGo);
                         seconds++;
 
                         if (toGo <= 0) {
-                            timerSubscription.unsubscribe();
+                            timerDisposable.dispose();
                         }
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         Log.wtf("Corey", throwable.toString());
                     }
                 });
@@ -129,8 +127,8 @@ public class WearTimeExercisePagerFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (timerSubscription != null && !timerSubscription.isUnsubscribed()) {
-            timerSubscription.unsubscribe();
+        if (timerDisposable != null && !timerDisposable.isDisposed()) {
+            timerDisposable.dispose();
         }
     }
 
@@ -138,8 +136,8 @@ public class WearTimeExercisePagerFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if (timerSubscription != null && !isVisibleToUser) {
-            timerSubscription.unsubscribe();
+        if (timerDisposable != null && !isVisibleToUser) {
+            timerDisposable.dispose();
         }
     }
 

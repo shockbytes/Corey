@@ -18,9 +18,10 @@ import android.widget.Toast;
 import java.util.List;
 
 import at.shockbytes.corey.R;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * @author Martin Macheiner
@@ -38,14 +39,16 @@ public class WearMusicControlDialogFragment extends BottomSheetDialogFragment {
     }
 
 
-    @Bind(R.id.fragment_music_control_btn_play_pause)
+    @BindView(R.id.fragment_music_control_btn_play_pause)
     protected ImageButton imgbtnPlayPause;
 
-    @Bind(R.id.fragment_music_control_btn_previous)
+    @BindView(R.id.fragment_music_control_btn_previous)
     protected ImageButton imgbtnPrevious;
 
-    @Bind(R.id.fragment_music_control_btn_next)
+    @BindView(R.id.fragment_music_control_btn_next)
     protected ImageButton imgbtnNext;
+
+    private Unbinder unbinder;
 
     private BottomSheetBehavior.BottomSheetCallback behaviorCallback
             = new BottomSheetBehavior.BottomSheetCallback() {
@@ -76,7 +79,7 @@ public class WearMusicControlDialogFragment extends BottomSheetDialogFragment {
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
         View contentView = View.inflate(getContext(), R.layout.dialogfragment_music_control, null);
-        ButterKnife.bind(this, contentView);
+        unbinder = ButterKnife.bind(this, contentView);
         dialog.setContentView(contentView);
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
@@ -119,7 +122,7 @@ public class WearMusicControlDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
 

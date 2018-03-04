@@ -2,10 +2,10 @@ package at.shockbytes.corey.workout;
 
 import java.util.List;
 
-import at.shockbytes.corey.storage.live.LiveWorkoutUpdateListener;
 import at.shockbytes.corey.common.core.workout.model.Exercise;
 import at.shockbytes.corey.common.core.workout.model.Workout;
-import rx.Observable;
+import at.shockbytes.corey.storage.live.LiveWorkoutUpdateListener;
+import io.reactivex.Observable;
 
 /**
  * @author Martin Macheiner

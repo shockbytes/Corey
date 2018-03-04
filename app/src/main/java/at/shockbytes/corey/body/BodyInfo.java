@@ -7,7 +7,7 @@ import java.util.List;
 import at.shockbytes.corey.body.points.BmiPoint;
 import at.shockbytes.corey.body.points.BodyFatPoint;
 import at.shockbytes.corey.body.points.WeightPoint;
-import at.shockbytes.corey.common.core.util.ResourceManager;
+import at.shockbytes.util.AppUtils;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -90,7 +90,7 @@ public class BodyInfo extends RealmObject {
 
         for (WeightPoint wp : weightPoints) {
             double bmi = wp.getWeight() / (height * height);
-            bmiPoints.add(new BmiPoint(wp.getTime(), ResourceManager.roundDoubleWithDigits(bmi, 1)));
+            bmiPoints.add(new BmiPoint(wp.getTime(), AppUtils.INSTANCE.roundDouble(bmi, 1)));
         }
         // Store a the last bmi point
         if (bmiPoints.size() > 0) {

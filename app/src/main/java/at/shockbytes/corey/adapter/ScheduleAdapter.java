@@ -13,9 +13,9 @@ import java.util.Collections;
 import java.util.List;
 
 import at.shockbytes.corey.R;
-import at.shockbytes.corey.common.core.adapter.helper.ItemTouchHelperAdapter;
 import at.shockbytes.corey.util.schedule.ScheduleItem;
-import butterknife.Bind;
+import at.shockbytes.util.adapter.ItemTouchHelperAdapter;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -318,7 +318,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         private ScheduleItem item;
         private int position;
 
-        @Bind(R.id.item_schedule_txt_name)
+        @BindView(R.id.item_schedule_txt_name)
         TextView txtName;
 
         ViewHolder(final View itemView) {

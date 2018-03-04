@@ -12,7 +12,7 @@ import java.util.List;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.common.core.workout.model.Exercise;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -181,7 +181,7 @@ public class AddExerciseAdapter extends RecyclerView.Adapter<AddExerciseAdapter.
 
         private Exercise exercise;
 
-        @Bind(R.id.listitem_add_exercise_btn_title)
+        @BindView(R.id.listitem_add_exercise_btn_title)
         Button btnTitle;
 
         ViewHolder(final View itemView) {

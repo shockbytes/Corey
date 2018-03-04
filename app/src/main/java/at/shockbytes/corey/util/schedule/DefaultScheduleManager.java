@@ -15,15 +15,15 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import at.shockbytes.corey.R;
-import at.shockbytes.corey.common.core.util.ResourceManager;
+import at.shockbytes.corey.common.core.util.CoreyUtils;
 import at.shockbytes.corey.core.receiver.NotificationReceiver;
 import at.shockbytes.corey.storage.StorageManager;
 import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener;
-import at.shockbytes.corey.util.AppResourceManager;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import at.shockbytes.corey.util.AppCoreyUtils;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -122,29 +122,29 @@ public class DefaultScheduleManager implements ScheduleManager {
     @Override
     public void postWeighNotification() {
         NotificationManager nm = (NotificationManager) cxt.getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(0x90, AppResourceManager.getWeighNotification(cxt));
+        nm.notify(0x90, AppCoreyUtils.INSTANCE.getWeighNotification(cxt));
     }
 
     @Override
     public void tryPostWorkoutNotification() {
 
-        getSchedule().subscribe(new Action1<List<ScheduleItem>>() {
+        getSchedule().subscribe(new Consumer<List<ScheduleItem>>() {
             @Override
-            public void call(List<ScheduleItem> scheduleItems) {
+            public void accept(List<ScheduleItem> scheduleItems) {
 
                 for (ScheduleItem item : scheduleItems) {
-                    if (item.getDay() == ResourceManager.getDayOfWeek() && !item.isEmpty()) {
+                    if (item.getDay() == CoreyUtils.INSTANCE.getDayOfWeek() && !item.isEmpty()) {
 
                         NotificationManager nm = (NotificationManager) cxt.getSystemService(NOTIFICATION_SERVICE);
-                        nm.notify(0x91, AppResourceManager.getWorkoutNotification(cxt, item.getName()));
+                        nm.notify(0x91, AppCoreyUtils.INSTANCE.getWorkoutNotification(cxt, item.getName()));
                         return;
                     }
                 }
 
             }
-        }, new Action1<Throwable>() {
+        }, new Consumer<Throwable>() {
             @Override
-            public void call(Throwable throwable) {
+            public void accept(Throwable throwable) {
                 Log.wtf("Corey", "Cannot retrieve workouts: " + throwable.getLocalizedMessage());
             }
         });

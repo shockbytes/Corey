@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.shockbytes.corey.R;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -176,7 +176,7 @@ public class AddScheduleItemAdapter extends RecyclerView.Adapter<AddScheduleItem
 
         private String item;
 
-        @Bind(R.id.listitem_add_exercise_btn_title)
+        @BindView(R.id.listitem_add_exercise_btn_title)
         Button btnTitle;
 
         ViewHolder(final View itemView) {

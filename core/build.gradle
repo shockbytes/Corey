@@ -1,8 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+def butterknifeVersion = "8.8.1"
+def supportVersion = "26.1.0"
+def firebaseVersion = "11.8.0"
+def playServicesVersion = "11.8.0"
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 16
@@ -19,23 +27,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        disable 'RestrictedApi'
+    }
+}
+
+androidExtensions {
+    experimental = true
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:26.0.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:design:26.0.0'
-    compile 'com.android.support:cardview-v7:26.0.0'
+    api "com.android.support:appcompat-v7:$supportVersion"
+    api "com.android.support:design:$supportVersion"
+    api "com.android.support:cardview-v7:$supportVersion"
+    api "com.android.support:percent:$supportVersion"
 
-    compile 'net.danlew:android.joda:2.9.5.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    api "net.danlew:android.joda:2.9.9.2"
+    api "com.google.code.gson:gson:2.8.2"
 
-    compile 'com.google.code.gson:gson:2.7'
+    api "com.jakewharton:butterknife:$butterknifeVersion"
+    kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
-    compile 'com.google.firebase:firebase-database:11.2.0'
+    api "com.google.firebase:firebase-database:$firebaseVersion"
 
-    compile 'com.google.android.gms:play-services-location:11.2.0'
-    compile 'com.google.android.gms:play-services-maps:11.2.0'
+    api "com.google.android.gms:play-services-location:$playServicesVersion"
+    api "com.google.android.gms:play-services-maps:$playServicesVersion"
 
 }

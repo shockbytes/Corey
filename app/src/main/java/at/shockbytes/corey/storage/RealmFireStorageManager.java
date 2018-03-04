@@ -29,19 +29,19 @@ import at.shockbytes.corey.BuildConfig;
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.body.BodyInfo;
 import at.shockbytes.corey.body.goal.Goal;
+import at.shockbytes.corey.common.core.workout.model.Exercise;
+import at.shockbytes.corey.common.core.workout.model.TimeExercise;
+import at.shockbytes.corey.common.core.workout.model.Workout;
 import at.shockbytes.corey.storage.live.LiveBodyUpdateListener;
 import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener;
 import at.shockbytes.corey.storage.live.LiveWorkoutUpdateListener;
 import at.shockbytes.corey.util.schedule.ScheduleItem;
-import at.shockbytes.corey.common.core.workout.model.Exercise;
-import at.shockbytes.corey.common.core.workout.model.TimeExercise;
-import at.shockbytes.corey.common.core.workout.model.Workout;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * @author Martin Macheiner
@@ -187,10 +187,10 @@ public class RealmFireStorageManager implements StorageManager {
         String[] timeExercisesAsArray = gson.fromJson(timeExercisesAsJson, String[].class);
 
         for (String e : exercisesAsArray) {
-            exercises.add(new Exercise(e));
+            exercises.add(new Exercise(e, 0));
         }
         for (String te : timeExercisesAsArray) {
-            exercises.add(new TimeExercise(te));
+            exercises.add(new TimeExercise(te, 0, 0, 0));
         }
 
         return Observable.just(exercises);
@@ -251,17 +251,9 @@ public class RealmFireStorageManager implements StorageManager {
 
     @Override
     public Observable<BodyInfo> getLocalBodyInfo() {
-
-        BodyInfo info = realm.where(BodyInfo.class).findFirst();
-        if (info != null) {
-            return Observable.just(info)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io());
-        } else {
-            return Observable.just(new BodyInfo())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io());
-        }
+        return Observable.just(realm.where(BodyInfo.class).findFirst())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -270,14 +262,14 @@ public class RealmFireStorageManager implements StorageManager {
         getLocalBodyInfo()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<BodyInfo>() {
+                .subscribe(new Consumer<BodyInfo>() {
                     @Override
-                    public void call(BodyInfo bodyInfo) {
+                    public void accept(BodyInfo bodyInfo) {
                         appendAndStoreLocalBodyInfo(bodyInfo, info);
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         Log.wtf("Corey", throwable.toString());
                     }
                 });

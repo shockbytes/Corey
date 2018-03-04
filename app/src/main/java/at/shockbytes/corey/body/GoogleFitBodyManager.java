@@ -30,12 +30,12 @@ import at.shockbytes.corey.body.points.BodyFatPoint;
 import at.shockbytes.corey.body.points.WeightPoint;
 import at.shockbytes.corey.storage.StorageManager;
 import at.shockbytes.corey.storage.live.LiveBodyUpdateListener;
+import at.shockbytes.util.AppUtils;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.RealmList;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-import static at.shockbytes.corey.common.core.util.ResourceManager.roundDoubleWithDigits;
 
 /**
  * @author Martin Macheiner
@@ -171,7 +171,7 @@ public class GoogleFitBodyManager implements BodyManager, ResultCallback<DataRea
             for (Field field : dp.getDataType().getFields()) {
                 weight = dp.getValue(field).asFloat();
             }
-            weightPoints.add(new WeightPoint(time, roundDoubleWithDigits(weight, 1)));
+            weightPoints.add(new WeightPoint(time, AppUtils.INSTANCE.roundDouble(weight, 1)));
         }
         return weightPoints;
     }
@@ -185,7 +185,7 @@ public class GoogleFitBodyManager implements BodyManager, ResultCallback<DataRea
             for (Field field : dp.getDataType().getFields()) {
                 bodyFat = dp.getValue(field).asFloat();
             }
-            bodyFatPoints.add(new BodyFatPoint(time, roundDoubleWithDigits(bodyFat, 1)));
+            bodyFatPoints.add(new BodyFatPoint(time, AppUtils.INSTANCE.roundDouble(bodyFat, 1)));
         }
         return bodyFatPoints;
     }
@@ -197,7 +197,7 @@ public class GoogleFitBodyManager implements BodyManager, ResultCallback<DataRea
             int size = set.getDataPoints().size();
             DataPoint dp = set.getDataPoints().get(size - 1);
             for (Field field : dp.getDataType().getFields()) {
-                height = roundDoubleWithDigits(dp.getValue(field).asFloat(), 2);
+                height = AppUtils.INSTANCE.roundDouble(dp.getValue(field).asFloat(), 2);
             }
         }
         return height;

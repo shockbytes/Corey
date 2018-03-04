@@ -6,7 +6,7 @@ import java.util.List;
 
 import at.shockbytes.corey.body.goal.Goal;
 import at.shockbytes.corey.storage.live.LiveBodyUpdateListener;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * @author Martin Macheiner

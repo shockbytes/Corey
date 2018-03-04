@@ -11,10 +11,11 @@ import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
 import at.shockbytes.corey.R;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author Martin Macheiner
@@ -42,7 +43,7 @@ public class WearTimeExerciseCountdownDialogFragment extends DialogFragment {
     private int countdown;
     private OnCountDownCompletedListener listener;
 
-    private Subscription subscription = null;
+    private Disposable disposable = null;
 
     public WearTimeExerciseCountdownDialogFragment() {
     }
@@ -70,7 +71,7 @@ public class WearTimeExerciseCountdownDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.dialogfragment_wear_countdown, container, false);
-        txtTimer = (TextView) v.findViewById(R.id.dialogfr_countdown_txt_timer);
+        txtTimer = v.findViewById(R.id.dialogfr_countdown_txt_timer);
         txtTimer.setText(String.valueOf(countdown));
         return v;
     }
@@ -84,26 +85,26 @@ public class WearTimeExerciseCountdownDialogFragment extends DialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
     }
 
     private void initialize() {
 
-        subscription = rx.Observable.interval(1, TimeUnit.SECONDS)
+        disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
-                .subscribe(new Action1<Long>() {
+                .subscribe(new Consumer<Long>() {
                     @Override
-                    public void call(Long aLong) {
+                    public void accept(Long aLong) {
 
                         countdown--;
                         if (countdown <= 0) {
                             if (listener != null) {
                                 listener.onCountdownCompleted();
                             }
-                            subscription.unsubscribe();
+                            disposable.dispose();
                             dismiss();
                         }
                         txtTimer.setText(String.valueOf(countdown));

@@ -4,13 +4,25 @@
     tools:cxt=".MainActivity">
 
     <item
-        android:id="@+id/action_logout"
-        android:title="@string/logout"
-        app:showAsAction="never" />
+        android:id="@+id/action_account"
+        android:title="@string/menu_main_account"
+        android:icon="@drawable/ic_account"
+        app:showAsAction="always" >
 
-    <item android:id="@+id/action_desired_weight"
-        android:title="@string/desiredweight"
-        app:showAsAction="never" />
+        <menu>
+
+            <item android:id="@+id/action_desired_weight"
+                android:title="@string/desired_weight"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_logout"
+                android:title="@string/logout"
+                app:showAsAction="never" />
+
+        </menu>
+    </item>
+
 
     <item
         android:id="@+id/action_settings"

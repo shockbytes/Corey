@@ -1,0 +1,28 @@
+package at.shockbytes.corey.core
+
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+
+import at.shockbytes.corey.R
+import preference.WearPreferenceActivity
+
+/**
+ * @author Martin Macheiner
+ * Date: 23.03.2017.
+ */
+
+class CoreyPreferenceActivity : WearPreferenceActivity() {
+
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        addPreferencesFromResource(R.xml.preferences)
+    }
+
+    companion object {
+
+        fun newIntent(context: Context): Intent {
+            return Intent(context, CoreyPreferenceActivity::class.java)
+        }
+    }
+}

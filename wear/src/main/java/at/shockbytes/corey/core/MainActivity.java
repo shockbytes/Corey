@@ -16,8 +16,9 @@ import at.shockbytes.corey.adapter.CoreyNavigationAdapter;
 import at.shockbytes.corey.common.core.workout.model.Workout;
 import at.shockbytes.corey.fragment.RunningFragment;
 import at.shockbytes.corey.fragment.WorkoutOverviewFragment;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MainActivity extends WearableActivity
         implements CommunicationManager.OnHandheldDataListener, CoreyNavigationAdapter.OnNavigationItemSelectedListener {
@@ -30,20 +31,22 @@ public class MainActivity extends WearableActivity
     @Inject
     protected CommunicationManager communicationManager;
 
-    @Bind(R.id.main_navigation_drawer)
+    @BindView(R.id.main_navigation_drawer)
     protected WearableNavigationDrawer navigationDrawer;
 
-    @Bind(R.id.main_drawer_layout)
+    @BindView(R.id.main_drawer_layout)
     protected WearableDrawerLayout drawerLayout;
 
     private OnWorkoutsLoadedListener workoutListener;
+
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ((WearCoreyApp) getApplication()).getAppComponent().inject(this);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         setAmbientEnabled();
         setupNavigationDrawer();
 
@@ -61,7 +64,9 @@ public class MainActivity extends WearableActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     @Override
@@ -116,12 +121,12 @@ public class MainActivity extends WearableActivity
     private void showRunningFragment() {
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.main_content, RunningFragment.newInstance())
+                .replace(R.id.main_content, RunningFragment.Companion.newInstance())
                 .commit();
     }
 
     private void showSettings() {
-        startActivity(CoreyPreferenceActivity.newIntent(this));
+        startActivity(CoreyPreferenceActivity.Companion.newIntent(this));
     }
 
     private void setupNavigationDrawer() {
