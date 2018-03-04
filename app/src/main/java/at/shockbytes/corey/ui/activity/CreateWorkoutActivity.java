@@ -43,6 +43,7 @@ public class CreateWorkoutActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_create_workout);
         setupActionBar();
+        setResult(RESULT_CANCELED, new Intent());
 
         if (getIntent().getExtras() != null) {
             workout = getIntent().getExtras().getParcelable(ARG_EDIT);
