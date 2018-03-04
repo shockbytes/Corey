@@ -62,7 +62,7 @@ public class ScheduleFragment extends BaseFragment implements LiveScheduleUpdate
     @Override
     public void onStop() {
         super.onStop();
-        scheduleManager.unregisterLiveForScheduleUpdates(this);
+        scheduleManager.unregisterLiveForScheduleUpdates();
     }
 
     @Override

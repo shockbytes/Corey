@@ -64,7 +64,7 @@ public class DefaultScheduleManager implements ScheduleManager {
         cal.set(Calendar.MINUTE, minute);
         cal.set(Calendar.SECOND, 0);
 
-        //Add a day if alarm is set for before current time, so the alarm is triggered the next day
+        //Add a day if alarm is set for before current timeStamp, so the alarm is triggered the next day
         if (cal.before(Calendar.getInstance())) {
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -86,7 +86,9 @@ public class DefaultScheduleManager implements ScheduleManager {
 
     @Override
     public Observable<List<String>> getItemsForScheduling() {
-        return storageManager.getItemsForScheduling();
+        return storageManager.getItemsForScheduling()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -157,8 +159,8 @@ public class DefaultScheduleManager implements ScheduleManager {
     }
 
     @Override
-    public void unregisterLiveForScheduleUpdates(LiveScheduleUpdateListener listener) {
-        storageManager.unregisterLiveScheduleUpdates(listener);
+    public void unregisterLiveForScheduleUpdates() {
+        storageManager.unregisterLiveScheduleUpdates();
     }
 
 }

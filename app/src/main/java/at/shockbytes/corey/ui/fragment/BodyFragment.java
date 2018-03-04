@@ -49,10 +49,10 @@ import javax.inject.Inject;
 
 import at.shockbytes.corey.R;
 import at.shockbytes.corey.adapter.GoalAdapter;
-import at.shockbytes.corey.body.BodyInfo;
+import at.shockbytes.corey.body.info.BodyInfo;
 import at.shockbytes.corey.body.BodyManager;
 import at.shockbytes.corey.body.goal.Goal;
-import at.shockbytes.corey.body.points.WeightPoint;
+import at.shockbytes.corey.body.info.WeightPoint;
 import at.shockbytes.corey.common.core.util.CoreyUtils;
 import at.shockbytes.corey.common.core.util.view.CoreyViewManager;
 import at.shockbytes.corey.dagger.AppComponent;
@@ -171,7 +171,7 @@ public class BodyFragment extends BaseFragment implements Palette.PaletteAsyncLi
     @Override
     public void onStop() {
         super.onStop();
-        bodyManager.unregisterLiveBodyUpdates(this);
+        bodyManager.unregisterLiveBodyUpdates();
     }
 
     @Override
@@ -317,7 +317,7 @@ public class BodyFragment extends BaseFragment implements Palette.PaletteAsyncLi
         final String[] labels = new String[weightPoints.size()];
         for (int i = 0; i < weightPoints.size(); i++) {
             WeightPoint wp = weightPoints.get(i);
-            labels[i] = CoreyUtils.INSTANCE.formatDate(wp.getTime(), true);
+            labels[i] = CoreyUtils.INSTANCE.formatDate(wp.getTimeStamp(), true);
             entries.add(new Entry(i, (float) wp.getWeight()));
         }
 
@@ -366,7 +366,7 @@ public class BodyFragment extends BaseFragment implements Palette.PaletteAsyncLi
 
         String weight = bodyInfo.getLatestWeightPoint().getWeight() + " " + weightUnit;
         txtWeight.setText(weight);
-        String bmi = "BMI: " + bodyInfo.getLatestBmi().getBmi();
+        String bmi = "BMI: " + bodyInfo.getLatestBmi();
         txtBMI.setText(bmi);
         String dreamWeight = bodyInfo.getDreamWeight() + weightUnit;
         txtDreamWeight.setText(dreamWeight);
@@ -383,7 +383,7 @@ public class BodyFragment extends BaseFragment implements Palette.PaletteAsyncLi
     private void animateViews(boolean animateCards) {
 
         int weightProgress = CoreyUtils.INSTANCE.calculateDreamWeightProgress(
-                bodyInfo.getStartWeight(),
+                bodyInfo.getHighestWeight(),
                 bodyInfo.getLatestWeightPoint().getWeight(),
                 bodyInfo.getDreamWeight());
 

@@ -7,7 +7,7 @@ import at.shockbytes.corey.common.core.running.location.GooglePlayLocationManage
 import at.shockbytes.corey.common.core.running.location.LocationManager
 import at.shockbytes.corey.common.core.util.ExerciseDeserializer
 import at.shockbytes.corey.common.core.workout.model.Exercise
-import at.shockbytes.corey.storage.RealmFireStorageManager
+import at.shockbytes.corey.storage.FirebaseStorageManager
 import at.shockbytes.corey.storage.StorageManager
 import at.shockbytes.corey.user.FirebaseUserManager
 import at.shockbytes.corey.user.UserManager
@@ -51,7 +51,7 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideStorageManager(preferences: SharedPreferences, gson: Gson): StorageManager {
-        return RealmFireStorageManager(app.applicationContext, gson, preferences)
+        return FirebaseStorageManager(app.applicationContext, gson, preferences)
     }
 
     @Provides

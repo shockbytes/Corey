@@ -5,7 +5,6 @@ import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.dagger.AppModule
 import at.shockbytes.corey.dagger.DaggerAppComponent
 import at.shockbytes.corey.dagger.WorkoutModule
-import io.realm.Realm
 import net.danlew.android.joda.JodaTimeAndroid
 
 /**
@@ -20,7 +19,6 @@ class CoreyApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Realm.init(this)
         JodaTimeAndroid.init(this)
 
         appComponent = DaggerAppComponent.builder()

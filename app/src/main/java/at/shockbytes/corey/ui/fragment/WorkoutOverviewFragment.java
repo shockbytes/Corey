@@ -62,7 +62,7 @@ public class WorkoutOverviewFragment extends BaseFragment
 
     @Override
     public void onDestroy() {
-        workoutManager.unregisterLiveForWorkoutUpdates(this);
+        workoutManager.unregisterLiveForWorkoutUpdates();
         super.onDestroy();
     }
 

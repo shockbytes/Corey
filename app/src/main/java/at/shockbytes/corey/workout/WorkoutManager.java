@@ -30,6 +30,6 @@ public interface WorkoutManager {
 
     void registerLiveForWorkoutUpdates(LiveWorkoutUpdateListener listener);
 
-    void unregisterLiveForWorkoutUpdates(LiveWorkoutUpdateListener listener);
+    void unregisterLiveForWorkoutUpdates();
 
 }

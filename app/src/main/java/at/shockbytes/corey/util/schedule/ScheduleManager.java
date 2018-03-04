@@ -36,6 +36,6 @@ public interface ScheduleManager {
 
     void registerLiveForScheduleUpdates(LiveScheduleUpdateListener listener);
 
-    void unregisterLiveForScheduleUpdates(LiveScheduleUpdateListener listener);
+    void unregisterLiveForScheduleUpdates();
 
 }

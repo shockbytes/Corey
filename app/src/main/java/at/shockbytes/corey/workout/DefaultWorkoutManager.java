@@ -71,8 +71,8 @@ public class DefaultWorkoutManager implements WorkoutManager {
     }
 
     @Override
-    public void unregisterLiveForWorkoutUpdates(LiveWorkoutUpdateListener listener) {
-        storageManager.unregisterLiveWorkoutUpdates(listener);
+    public void unregisterLiveForWorkoutUpdates() {
+        storageManager.unregisterLiveWorkoutUpdates();
     }
 
 }
