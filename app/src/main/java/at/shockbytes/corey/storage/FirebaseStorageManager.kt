@@ -51,7 +51,7 @@ class FirebaseStorageManager(private val context: Context,
 
             val exercises = mutableListOf<Exercise>()
             exercisesAsArray.mapTo(exercises) { Exercise(it) }
-            timeExercisesAsArray.mapTo(exercises) { TimeExercise(it) }
+            timeExercisesAsArray.mapTo(exercises) { TimeExercise(name = it) }
 
             return Observable.just(exercises)
         }
@@ -217,11 +217,9 @@ class FirebaseStorageManager(private val context: Context,
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String) {
-                Log.wtf("Corey", "moved: " + dataSnapshot.toString() + " / " + s)
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.wtf("Corey", "cancelled: " + databaseError.message)
+            override fun onCancelled(databaseError: DatabaseError?) {
             }
         })
 
@@ -236,8 +234,7 @@ class FirebaseStorageManager(private val context: Context,
                 }
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.wtf("Corey", "Desired weight cancelled: " + databaseError.message)
+            override fun onCancelled(databaseError: DatabaseError?) {
             }
         })
 
@@ -273,8 +270,7 @@ class FirebaseStorageManager(private val context: Context,
                 Log.wtf("Corey", "ScheduleItem moved: " + dataSnapshot.toString() + " / " + s)
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.wtf("Corey", "ScheduleItem cancelled: " + databaseError.message)
+            override fun onCancelled(databaseError: DatabaseError?) {
             }
         })
 
@@ -307,12 +303,9 @@ class FirebaseStorageManager(private val context: Context,
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String) {
-                Log.wtf("Corey", "BodyGoal moved: " + dataSnapshot.toString() + " / " + s)
-
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.wtf("Corey", "BodyGoal cancelled: " + databaseError.message)
+            override fun onCancelled(databaseError: DatabaseError?) {
             }
         })
 
@@ -336,7 +329,7 @@ class FirebaseStorageManager(private val context: Context,
                 return Transaction.success(mutableData)
             }
 
-            override fun onComplete(databaseError: DatabaseError, b: Boolean,
+            override fun onComplete(databaseError: DatabaseError?, b: Boolean,
                                     dataSnapshot: DataSnapshot) {
             }
         })

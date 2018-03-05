@@ -7,18 +7,7 @@
     tools:context="at.shockbytes.corey.ui.activity.WorkoutActivity"
     tools:deviceIds="wear_round">
 
-    <ImageButton
-        android:id="@+id/fragment_workout_btn_music"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_music"
-        android:tint="@android:color/white"
-        android:visibility="gone" />
-
-    <android.support.wearable.view.BoxInsetLayout
+    <android.support.wear.widget.BoxInsetLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
@@ -92,7 +81,7 @@
                 android:layout_marginTop="2dp"
                 android:background="#ccc" />
 
-            <at.shockbytes.corey.common.core.util.view.NonSwipeableViewPager
+            <at.shockbytes.util.view.NonSwipeableViewPager
                 android:id="@+id/fragment_workout_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -118,7 +107,7 @@
             android:format24Hour="HH:mm"
             android:gravity="center" />
 
-    </android.support.wearable.view.BoxInsetLayout>
+    </android.support.wear.widget.BoxInsetLayout>
 
 </RelativeLayout>
 

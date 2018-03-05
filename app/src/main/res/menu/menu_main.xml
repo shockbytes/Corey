@@ -3,6 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:cxt=".MainActivity">
 
+
+    <item
+        android:id="@+id/action_watch"
+        android:title="@string/menu_main_watch"
+        android:icon="@drawable/ic_watch"
+        android:visible="false"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_account"
         android:title="@string/menu_main_account"

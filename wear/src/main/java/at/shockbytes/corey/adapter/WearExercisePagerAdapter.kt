@@ -5,8 +5,8 @@ import android.app.FragmentManager
 import android.support.v13.app.FragmentStatePagerAdapter
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.common.core.workout.model.Workout
-import at.shockbytes.corey.fragment.workoutpager.WearExercisePagerFragment
-import at.shockbytes.corey.fragment.workoutpager.WearTimeExercisePagerFragment
+import at.shockbytes.corey.ui.fragment.workoutpager.WearExercisePagerFragment
+import at.shockbytes.corey.ui.fragment.workoutpager.WearTimeExercisePagerFragment
 
 
 /**

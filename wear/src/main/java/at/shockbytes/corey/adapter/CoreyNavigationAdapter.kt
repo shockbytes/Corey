@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.v4.content.ContextCompat
-import android.support.wearable.view.drawer.WearableNavigationDrawer
+import android.support.wear.widget.drawer.WearableNavigationDrawerView
 
 
 /**
@@ -14,14 +14,8 @@ import android.support.wearable.view.drawer.WearableNavigationDrawer
  */
 
 class CoreyNavigationAdapter(private val context: Context,
-                             private val items: List<NavigationItem>,
-                             private var listener: OnNavigationItemSelectedListener?)
-    : WearableNavigationDrawer.WearableNavigationDrawerAdapter() {
-
-    interface OnNavigationItemSelectedListener {
-
-        fun onNavigationItemSelected(index: Int)
-    }
+                             private val items: List<NavigationItem>)
+    : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
 
     override fun getItemText(i: Int): String {
         return context.getString(items[i].text)
@@ -31,16 +25,8 @@ class CoreyNavigationAdapter(private val context: Context,
         return ContextCompat.getDrawable(context, items[i].drawable)
     }
 
-    override fun onItemSelected(i: Int) {
-        listener?.onNavigationItemSelected(i)
-    }
-
     override fun getCount(): Int {
         return items.size
-    }
-
-    fun setOnNavigationItemSelectedListener(listener: OnNavigationItemSelectedListener) {
-        this.listener = listener
     }
 
     class NavigationItem(@param:StringRes var text: Int, @param:DrawableRes var drawable: Int)

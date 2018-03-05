@@ -20,7 +20,6 @@ class WearCoreyApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        //Realm.init(this);
         JodaTimeAndroid.init(this)
 
         appComponent = DaggerWearAppComponent.builder()

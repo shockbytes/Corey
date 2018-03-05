@@ -3,7 +3,6 @@ package at.shockbytes.corey.body
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
-import android.util.Log
 import android.widget.Toast
 import at.shockbytes.corey.body.goal.Goal
 import at.shockbytes.corey.body.info.BodyInfo
@@ -116,7 +115,6 @@ class GoogleFitBodyManager(private val context: Context,
         _bodyInfo = BodyInfo(getWeightList(res.getDataSet(DataType.TYPE_WEIGHT)),
                 getHeight(res.getDataSet(DataType.TYPE_HEIGHT)),
                 desiredWeight)
-        Log.wtf("Corey", "BodyInfo loaded!")
     }
 
     // -----------------------------------------------------------------------------------------
@@ -124,7 +122,6 @@ class GoogleFitBodyManager(private val context: Context,
     private fun loadFitnessData() {
         Fitness.HistoryApi.readData(apiClient, buildGoogleFitRequest())
                 .setResultCallback(this, 1, TimeUnit.MINUTES)
-        Log.wtf("Corey", "Request fitness data")
     }
 
     private fun buildGoogleFitRequest(): DataReadRequest {

@@ -165,8 +165,10 @@
     <string name="running_mode_distance">DISTANCE</string>
     <string name="running_mode_calories">CALORIES</string>
     <string name="running_mode_time">TIME</string>
-    <string name="menu_main_account">Account</string>
+    <string name="menu_main_account" translatable="false">Account</string>
     <string name="error_account_photo">Cannot load your profile image</string>
     <string name="anonymous_user">Anonymous User</string>
+    <string name="menu_main_watch">Watch connected</string>
+    <string name="watch_connected">Connected with %s</string>
 
 </resources>

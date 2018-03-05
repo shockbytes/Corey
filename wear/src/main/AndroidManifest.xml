@@ -21,7 +21,7 @@
             android:required="false" />
 
         <activity
-            android:name=".core.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.DeviceDefault.Light">
             <intent-filter>
@@ -31,11 +31,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".core.WorkoutActivity" >
+            android:name=".ui.activity.WorkoutActivity" >
         </activity>
         <!--android:theme="@style/Theme.AppCompat.NoActionBar" -->
 
-        <activity android:name=".core.CoreyPreferenceActivity">
+        <activity android:name=".ui.activity.CoreyPreferenceActivity">
 
         </activity>
 

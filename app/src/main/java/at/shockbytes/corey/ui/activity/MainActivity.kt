@@ -14,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import at.shockbytes.corey.R
 import at.shockbytes.corey.body.BodyManager
+import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.activity.core.BaseActivity
@@ -55,12 +56,20 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
 
 
     private lateinit var menuItemAccount: MenuItem
+    private lateinit var menuItemWatch: MenuItem
+
+    private var watchInfo: WatchInfo = WatchInfo(null, false) // default is not connected
 
     private val mainLayout: View by bindView(R.id.main_layout)
     private val toolbar: Toolbar by bindView(R.id.toolbar)
     private val appBar: AppBarLayout by bindView(R.id.main_appbar)
     private val tabLayout: TabLayout by bindView(R.id.main_tablayout)
     private val fabNewWorkout: FloatingActionButton by bindView(R.id.main_fab_edit)
+
+    private val nodeStateChangedListener: ((WatchInfo) -> Unit) = {
+        watchInfo = it
+        setupWatchMenuItem()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +82,6 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
         bodyManager.poke(this)
         workoutManager.poke()
         scheduleManager.poke()
-        wearableManager.connect(this)
 
         if (bodyManager.desiredWeight <= 0) { // Ask for desired weight when not set
             askForDesiredWeight()
@@ -87,10 +95,12 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         menuItemAccount = menu.findItem(R.id.action_account)
+        menuItemWatch = menu.findItem(R.id.action_watch)
 
         // Do this here, because here is the only place where
         // the menu item is already initialized
-        personalizeMenu()
+        setupPersonalMenuItem()
+        setupWatchMenuItem()
 
         return true
     }
@@ -106,9 +116,15 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
             R.id.action_settings -> activityTransition(SettingsActivity.newIntent(applicationContext), -1)
             R.id.action_logout -> signOut()
             R.id.action_desired_weight -> askForDesiredWeight()
+            R.id.action_watch -> showToast(menuItemWatch.title.toString())
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        wearableManager.onStart(nodeStateChangedListener)
     }
 
     override fun onPause() {
@@ -178,7 +194,7 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
         }
     }
 
-    private fun personalizeMenu() {
+    private fun setupPersonalMenuItem() {
         userManager.loadAccountImage(this)
                 .subscribe({ bm ->
                     menuItemAccount.icon = AppUtils.createRoundedBitmap(this, bm)
@@ -188,6 +204,11 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
                 })
         menuItemAccount.title = userManager.user.name
         menuItemAccount.isEnabled = true
+    }
+
+    private fun setupWatchMenuItem() {
+        menuItemWatch.isVisible = watchInfo.isConnected
+        menuItemWatch.title = getString(R.string.watch_connected,watchInfo.name) ?: getString(R.string.menu_main_watch)
     }
 
     private fun askForDesiredWeight() {

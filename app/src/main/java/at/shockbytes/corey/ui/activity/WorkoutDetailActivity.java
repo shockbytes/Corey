@@ -87,7 +87,7 @@ public class WorkoutDetailActivity extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            workout = getIntent().getExtras().getParcelable(ARG_WORKOUT);
+            workout = getIntent().getParcelableExtra(ARG_WORKOUT);
             if (workout != null) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

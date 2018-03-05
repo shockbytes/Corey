@@ -1,4 +1,4 @@
-package at.shockbytes.corey.core
+package at.shockbytes.corey.ui.activity
 
 import android.content.Context
 import android.content.Intent

@@ -1,22 +1,18 @@
 package at.shockbytes.corey.wearable
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.os.Bundle
-import android.support.v4.app.FragmentActivity
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.storage.StorageManager
 import at.shockbytes.corey.workout.WorkoutManager
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.wearable.MessageApi
-import com.google.android.gms.wearable.MessageEvent
-import com.google.android.gms.wearable.PutDataRequest
-import com.google.android.gms.wearable.Wearable
+import com.google.android.gms.wearable.*
+import com.google.android.gms.wearable.CapabilityClient
 import com.google.gson.Gson
+
 
 /**
  * @author Martin Macheiner
@@ -26,23 +22,25 @@ import com.google.gson.Gson
 class AndroidWearManager(private val context: Context,
                          private val workoutManager: WorkoutManager,
                          private val storageManager: StorageManager,
-                         private val preferences: SharedPreferences,
                          private val gson: Gson)
-    : WearableManager, GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks, MessageApi.MessageListener {
+    : WearableManager, MessageClient.OnMessageReceivedListener, CapabilityClient.OnCapabilityChangedListener {
 
-    private var apiClient: GoogleApiClient? = null
+    private var nodeListener: ((WatchInfo) -> Unit)? = null
 
-    override fun connect(activity: FragmentActivity) {
+    override fun onStart(nodeListener: ((WatchInfo) -> Unit)?) {
+        this.nodeListener = nodeListener
 
-        if (apiClient == null) {
-            apiClient = GoogleApiClient.Builder(context)
-                    .addApi(Wearable.API)
-                    .enableAutoManage(activity, 1, this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build()
-        }
+        Wearable.getMessageClient(context).addListener(this)
+        Wearable.getCapabilityClient(context).addLocalCapability(context.getString(R.string.capability_device))
+        Wearable.getCapabilityClient(context)
+                .addListener(this, Uri.parse("wear://"), CapabilityClient.FILTER_REACHABLE)
+        synchronize()
+    }
+
+    override fun onPause() {
+        Wearable.getMessageClient(context).removeListener(this)
+        Wearable.getCapabilityClient(context).removeLocalCapability(context.getString(R.string.capability_device))
+        Wearable.getCapabilityClient(context).removeListener(this)
     }
 
     override fun synchronizeWorkouts(workouts: List<Workout>) {
@@ -51,29 +49,7 @@ class AndroidWearManager(private val context: Context,
         val serializedWorkouts = gson.toJson(workouts)
         request.data = serializedWorkouts.toByteArray()
 
-        Wearable.DataApi.putDataItem(apiClient, request)
-    }
-
-    override fun onPause() {
-        Wearable.MessageApi.removeListener(apiClient, this)
-        Wearable.CapabilityApi.removeLocalCapability(apiClient, context.getString(R.string.capability))
-    }
-
-    override fun onConnectionFailed(connectionResult: ConnectionResult) {
-
-        Toast.makeText(context,
-                "Cannot connect to wearable: " + connectionResult.errorMessage!!,
-                Toast.LENGTH_LONG).show()
-    }
-
-    override fun onConnected(bundle: Bundle?) {
-        Wearable.MessageApi.addListener(apiClient, this)
-        Wearable.CapabilityApi.addLocalCapability(apiClient, context.getString(R.string.capability))
-        synchronize()
-    }
-
-    override fun onConnectionSuspended(i: Int) {
-
+        Wearable.getDataClient(context).putDataItem(request).addOnCompleteListener { }
     }
 
     override fun onMessageReceived(messageEvent: MessageEvent) {
@@ -85,23 +61,26 @@ class AndroidWearManager(private val context: Context,
         }
     }
 
+    override fun onCapabilityChanged(info: CapabilityInfo) {
+        if (info.nodes.size > 0) {
+            val connectedNode = info.nodes.iterator().next() // Assume first node is watch
+            nodeListener?.invoke(WatchInfo(connectedNode?.displayName, true))
+        } else {
+            nodeListener?.invoke(WatchInfo(null, false))
+        }
+    }
+
     private fun grabDataFromMessage(messageEvent: MessageEvent) {
 
-        val data = String(messageEvent.data)
-        val s = data.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val s = String(messageEvent.data).split(",".toRegex()).dropLastWhile { it.isEmpty() }
 
-        try {
+        val pulse = s[0].toIntOrNull()
+        val workouts = s[1].toIntOrNull()
+        val time = s[2].toIntOrNull()
 
-            val pulse = Integer.parseInt(s[0])
-            val workouts = Integer.parseInt(s[1])
-            val time = Integer.parseInt(s[2])
-
+        if (pulse != null && workouts != null && time != null) {
             storageManager.updateWearWorkoutInformation(pulse, workouts, time)
-
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
-
     }
 
     private fun synchronize() {

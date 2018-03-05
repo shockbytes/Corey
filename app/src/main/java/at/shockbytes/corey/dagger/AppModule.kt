@@ -58,9 +58,8 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideWearableManager(workoutManager: WorkoutManager,
                                storageManager: StorageManager,
-                               preferences: SharedPreferences, gson: Gson): WearableManager {
-        return AndroidWearManager(app.applicationContext, workoutManager, storageManager,
-                preferences, gson)
+                               gson: Gson): WearableManager {
+        return AndroidWearManager(app.applicationContext, workoutManager, storageManager, gson)
     }
 
     @Provides

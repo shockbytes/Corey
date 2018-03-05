@@ -1,7 +1,6 @@
 package at.shockbytes.corey.wearable
 
-import android.support.v4.app.FragmentActivity
-
+import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
 
 /**
@@ -11,10 +10,10 @@ import at.shockbytes.corey.common.core.workout.model.Workout
 
 interface WearableManager {
 
-    fun connect(activity: FragmentActivity)
-
-    fun synchronizeWorkouts(workouts: List<Workout>)
+    fun onStart(nodeListener: ((WatchInfo) -> Unit)? = null)
 
     fun onPause()
+
+    fun synchronizeWorkouts(workouts: List<Workout>)
 
 }

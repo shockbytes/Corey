@@ -1,4 +1,4 @@
-package at.shockbytes.corey.fragment.workoutpager
+package at.shockbytes.corey.ui.fragment.workoutpager
 
 
 import android.app.Fragment
@@ -30,7 +30,7 @@ class WearExercisePagerFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle): View? {
+                              savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_wear_pageritem_exercise, container, false)
         unbinder = ButterKnife.bind(this, v)
         return v
