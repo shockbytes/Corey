@@ -26,4 +26,8 @@
     <color name="workout_intensity_beast_dark">#303F9F</color>
     <!-- /Workout colors -->
 
+    <color name="body_card_dream_weight">#2196F3</color>
+    <color name="body_card_weight_history">#3F51B5</color>
+    <color name="body_card_goals">#FF9800</color>
+
 </resources>

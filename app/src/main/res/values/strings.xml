@@ -54,7 +54,7 @@
     <string name="cd_imgview_muscles">Pick muscles</string>
     <string name="cd_imgview_training_items">Add training items</string>
 
-    <string name="dreamweight_card_text">Just %1$s until you reach your absolute dream weight of %2$s!</string>
+    <string name="dreamweight_card_text">until you reach your goal of %s!</string>
     <string name="sign_in_cancelled">Sign in cancelled</string>
     <string name="no_internet_connection">No internet connection available</string>
     <string name="unknown_error">Sorry, something went wrong</string>
@@ -140,7 +140,7 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="login">Login</string>
-    <string name="weight_history">Your weight history</string>
+    <string name="weight_history">My weight history</string>
     <string name="welcome">Welcome to Corey!</string>
 
 
@@ -155,7 +155,7 @@
     <string name="notification_workout_msg">%s is waiting for you</string>
     <string name="notification_weigh_msg">Weigh yourself</string>
     <string name="notification_weigh_title">Today is weigh day</string>
-    <string name="your_goals">Your goals</string>
+    <string name="my_goals">My goals</string>
     <string name="no_goals">No goals so far, create one!</string>
     <string name="your_crushed_goals">Your crushed goals</string>
     <string name="set_goal">Set a new goal</string>
@@ -170,5 +170,7 @@
     <string name="anonymous_user">Anonymous User</string>
     <string name="menu_main_watch">Watch connected</string>
     <string name="watch_connected">Connected with %s</string>
+    <string name="weight">Weight</string>
+    <string name="body_card_dream_weight_title">My desired weight</string>
 
 </resources>

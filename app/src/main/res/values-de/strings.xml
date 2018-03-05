@@ -20,7 +20,7 @@
     <string name="unknown_sign_in_response">Unbekannte Antwort</string>
     <string name="prefs_vibrations_title">Vibration bei Zeittrainings</string>
     <string name="prefs_vibrations_summary">Vibrationen als Schlusssignal bei Zeittrainings einschalten</string>
-    <string name="dreamweight_card_text">Nur noch %1$s bis du dein Ziel von %2$s erreichst!</string>
+    <string name="dreamweight_card_text">bis zum Ziel von %s!</string>
 
     <string name="fragment_create_workout_add_exercise">ÜBUNG HINZUFÜGEN</string>
     <string name="fragment_create_workout_done">FERTIG</string>
@@ -98,7 +98,7 @@
     <string name="delete">Löschen</string>
     <string name="edit">Bearbeiten</string>
     <string name="login">Login</string>
-    <string name="weight_history">Dein Gewichtsverlauf</string>
+    <string name="weight_history">Mein Gewichtsverlauf</string>
     <string name="welcome">Willkommen bei Corey!</string>
     <string name="snackbar_cannot_load_workouts">Workouts können nicht geladen werden</string>
     <string name="prefs_category_notifications">Benachrichtigungen</string>
@@ -117,9 +117,9 @@
     <string name="notification_weigh_title">Heute ist es wieder soweit!</string>
     <string name="notification_workout_msg">%s wartet heute auf dich</string>
     <string name="notification_workout_title">Steh auf und mach was</string>
-    <string name="no_goals">Keine Ziele soweit!</string>
-    <string name="set_goal">Neues Ziel setzen!</string>
-    <string name="your_goals">Deine Ziele</string>
+    <string name="no_goals">Keine Ziele soweit…</string>
+    <string name="set_goal">Neues Ziel setzen</string>
+    <string name="my_goals">Meine Ziele</string>
     <string name="your_crushed_goals">Deine erreichten Ziele</string>
     <string name="start_run">STARTE LAUF</string>
     <string name="tab_running">Running</string>
@@ -134,6 +134,8 @@
     <string name="error_account_photo">Profilbild konnte nicht geladen werden</string>
     <string name="menu_main_watch">Watch verbunden</string>
     <string name="watch_connected">Verbunden mit %s</string>
+    <string name="weight">Gewicht</string>
+    <string name="body_card_dream_weight_title">Mein Zielgewicht</string>
 
 
 </resources>

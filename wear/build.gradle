@@ -9,7 +9,7 @@ def supportVersion = "26.1.0"
 def rxJavaVersion = "2.1.6"
 def rxAndroidVersion = "2.0.1"
 def playServicesVersion = "11.8.0"
-def shockUtilVersion = "2.1.1"
+def shockUtilVersion = "2.1.2"
 def wearableVersion = "2.2.0"
 
 android {

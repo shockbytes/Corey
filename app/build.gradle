@@ -12,7 +12,7 @@ def firebaseVersion = "11.8.0"
 def firebaseUIVersion = "3.2.2"
 def playServicesVersion = "11.8.0"
 def icePickVersion = "3.2.0"
-def shockUtilVersion = "2.1.1"
+def shockUtilVersion = "2.1.2"
 
 android {
     compileSdkVersion 26
