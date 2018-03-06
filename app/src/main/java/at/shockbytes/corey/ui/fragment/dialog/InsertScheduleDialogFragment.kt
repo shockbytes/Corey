@@ -15,6 +15,8 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.AddScheduleItemAdapter
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.schedule.ScheduleManager
+import at.shockbytes.util.adapter.BaseAdapter
+import io.reactivex.functions.BiPredicate
 import kotterknife.bindView
 import java.util.*
 import javax.inject.Inject
@@ -24,8 +26,7 @@ import javax.inject.Inject
  * Date: 24.02.2017.
  */
 
-class InsertScheduleDialogFragment : BottomSheetDialogFragment(),
-        AddScheduleItemAdapter.OnItemClickListener, TextWatcher {
+class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher, BaseAdapter.OnItemClickListener<String> {
 
     @Inject
     protected lateinit var scheduleManager: ScheduleManager
@@ -45,14 +46,12 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(),
     }
 
     private var addScheduleItemAdapter: AddScheduleItemAdapter? = null
-    private var onScheduleItemSelectedListener: ((item: String, day: Int) -> Unit)? = null
+    private var onScheduleItemSelectedListener: ((item: String) -> Unit)? = null
 
-    private var editDay: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as CoreyApp).appComponent.inject(this)
-        editDay = arguments!!.getInt(ARG_DAY)
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {
@@ -67,11 +66,6 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(),
         setupViews()
     }
 
-    override fun onItemClick(item: String, v: View) {
-        onScheduleItemSelectedListener?.invoke(item, editDay)
-        dismiss()
-    }
-
     override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
     override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
@@ -80,7 +74,12 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(),
 
     override fun afterTextChanged(editable: Editable) {}
 
-    fun setOnScheduleItemSelectedListener(listener: ((item: String, day: Int) -> Unit)): InsertScheduleDialogFragment {
+    override fun onItemClick(t: String, v: View) {
+        onScheduleItemSelectedListener?.invoke(t)
+        dismiss()
+    }
+
+    fun setOnScheduleItemSelectedListener(listener: ((item: String) -> Unit)): InsertScheduleDialogFragment {
         this.onScheduleItemSelectedListener = listener
         return this
     }
@@ -88,8 +87,9 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(),
     private fun setupViews() {
 
         recyclerView.layoutManager = GridLayoutManager(context, 3)
-        addScheduleItemAdapter = AddScheduleItemAdapter(context, ArrayList())
-        addScheduleItemAdapter?.setOnItemClickListener(this)
+        addScheduleItemAdapter = AddScheduleItemAdapter(context!!, ArrayList(),
+                BiPredicate { item, query -> item.contains(query) })
+        addScheduleItemAdapter?.onItemClickListener = this
         recyclerView.adapter = addScheduleItemAdapter
 
         scheduleManager.itemsForScheduling.subscribe { data ->
@@ -101,12 +101,9 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(),
 
     companion object {
 
-        private const val ARG_DAY = "arg_day"
-
-        fun newInstance(day: Int): InsertScheduleDialogFragment {
+        fun newInstance(): InsertScheduleDialogFragment {
             val fragment = InsertScheduleDialogFragment()
             val args = Bundle()
-            args.putInt(ARG_DAY, day)
             fragment.arguments = args
             return fragment
         }

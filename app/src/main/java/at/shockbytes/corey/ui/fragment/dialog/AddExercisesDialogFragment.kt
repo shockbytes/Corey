@@ -19,7 +19,9 @@ import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.workout.WorkoutManager
+import at.shockbytes.util.adapter.BaseAdapter
 import com.shawnlin.numberpicker.NumberPicker
+import io.reactivex.functions.BiPredicate
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -28,8 +30,7 @@ import javax.inject.Inject
  * Date:    24.02.2017.
  */
 
-class AddExercisesDialogFragment : BottomSheetDialogFragment(),
-        AddExerciseAdapter.OnItemClickListener, TextWatcher {
+class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, BaseAdapter.OnItemClickListener<Exercise> {
 
     @Inject
     protected lateinit var workoutManager: WorkoutManager
@@ -138,8 +139,9 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(),
         viewFlipper.setOutAnimation(context, R.anim.slide_out_left)
 
         rvAddExercises.layoutManager = GridLayoutManager(context, 3)
-        exerciseAdapter = AddExerciseAdapter(context, listOf())
-        exerciseAdapter.setOnItemClickListener(this)
+        exerciseAdapter = AddExerciseAdapter(context!!, listOf(),
+                BiPredicate { item, query -> item.name.contains(query) })
+        exerciseAdapter.onItemClickListener = this
         rvAddExercises.adapter = exerciseAdapter
 
         workoutManager.exercises.subscribe { exercises ->

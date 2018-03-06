@@ -1,6 +1,7 @@
 package at.shockbytes.corey.adapter
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -30,18 +31,23 @@ class DaysScheduleAdapter(context: Context,
         private val txtName: TextView by bindView(R.id.item_schedule_days_txt_name)
 
         override fun bind(t: String) {
-
             val split = t.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val item = split[0]
             val position = Integer.parseInt(split[1])
 
             txtName.text = item
 
+            val bgColor: Int
+            val txtColor: Int
             if (LocalDate.now().dayOfWeek - 1 == position) {
-                txtName.setBackgroundResource(R.color.current_day)
+                bgColor = android.R.color.white
+                txtColor = ContextCompat.getColor(context, R.color.colorAccent)
             } else {
-                txtName.setBackgroundResource(R.color.colorAccent)
+                bgColor = R.color.colorAccent
+                txtColor = ContextCompat.getColor(context, android.R.color.white)
             }
+            txtName.setBackgroundResource(bgColor)
+            txtName.setTextColor(txtColor)
         }
     }
 

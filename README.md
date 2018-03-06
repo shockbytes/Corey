@@ -4,6 +4,7 @@
 - [ ] Fix Wear layout
 - [ ] Fix open TODOs
 - [ ] Main ViewPager
+- [x] Shrink down ScheduleAdapter code
 - [x] 100% Kotlin code + structure refactoring (base classes)
 - [x] Refactor BodyFragment code
 - [x] Bug in SliderPreference (Kotlin Nullability)
