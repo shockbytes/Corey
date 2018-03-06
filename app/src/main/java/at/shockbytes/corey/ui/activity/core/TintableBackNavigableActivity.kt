@@ -8,6 +8,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.support.annotation.ColorInt
+import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.text.Spannable
@@ -49,11 +50,15 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         }
     }
 
-    fun tintSystemBarsWithText(@ColorInt actionBarColor: Int = ContextCompat.getColor(applicationContext, abDefColor),
-                               @ColorInt statusBarColor: Int = ContextCompat.getColor(applicationContext, sbDefColor),
-                               @ColorInt actionBarTextColor: Int = ContextCompat.getColor(applicationContext, abTextDefColor),
+    fun tintSystemBarsWithText(@ColorRes abColor: Int = abDefColor,
+                               @ColorRes sbColor: Int = sbDefColor,
+                               @ColorRes abtColor: Int = abTextDefColor,
                                newTitle: String = title.toString(),
                                animated: Boolean = false) {
+
+        val actionBarColor = ContextCompat.getColor(applicationContext, abColor)
+        val statusBarColor = ContextCompat.getColor(applicationContext, sbColor)
+        val actionBarTextColor = ContextCompat.getColor(applicationContext, abtColor)
 
         // Set and tint text of action bar
         val text = SpannableString(newTitle)
@@ -70,12 +75,17 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
             }
         }
         tintHomeAsUpIndicator(tint = true, tintColor = actionBarTextColor)
+
+        // Store reference if colors are changing multiple times
+        abDefColor = abColor
+        sbDefColor = sbColor
+        abTextDefColor = abtColor
     }
 
     private fun tintSystemBarsAnimated(@ColorInt newColor: Int, @ColorInt newColorDark: Int) {
 
-        val primary = ContextCompat.getColor(this, R.color.colorPrimary)
-        val primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+        val primary = ContextCompat.getColor(this, abDefColor)
+        val primaryDark = ContextCompat.getColor(this, sbDefColor)
 
         val animatorToolbar = ValueAnimator.ofObject(ArgbEvaluator(), primary, newColor)
                 .setDuration(300)

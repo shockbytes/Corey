@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.transition.Fade
@@ -46,8 +45,7 @@ class WorkoutDetailActivity : TintableBackNavigableActivity() {
         setContentView(R.layout.activity_workout_detail)
 
         workout = intent.getParcelableExtra(ARG_WORKOUT)
-        tintSystemBarsWithText(ContextCompat.getColor(this, workout.colorResForIntensity),
-                ContextCompat.getColor(this, workout.darkColorResForIntensity), newTitle = "")
+        tintSystemBarsWithText(workout.colorResForIntensity, workout.darkColorResForIntensity, newTitle = "")
         setupViews()
     }
 
