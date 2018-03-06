@@ -12,7 +12,7 @@ import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.storage.live.LiveBodyUpdateListener
 import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener
 import at.shockbytes.corey.storage.live.LiveWorkoutUpdateListener
-import at.shockbytes.corey.util.schedule.ScheduleItem
+import at.shockbytes.corey.schedule.ScheduleItem
 import com.google.firebase.database.*
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -202,7 +202,7 @@ class FirebaseStorageManager(private val context: Context,
                 workoutListener?.onWorkoutAdded(w)
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String) {
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
                 val changed = gson.fromJson(dataSnapshot.value.toString(), Workout::class.java)
 
                 _workouts[_workouts.indexOf(changed)] = changed
@@ -248,7 +248,7 @@ class FirebaseStorageManager(private val context: Context,
                 }
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String) {
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
 
                 val changed = dataSnapshot.getValue(ScheduleItem::class.java)
                 if (changed != null) {
@@ -284,7 +284,7 @@ class FirebaseStorageManager(private val context: Context,
                 }
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String) {
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
 
                 val g = dataSnapshot.getValue(Goal::class.java)
                 if (g != null) {

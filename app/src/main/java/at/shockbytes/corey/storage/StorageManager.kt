@@ -6,7 +6,7 @@ import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.storage.live.LiveBodyUpdateListener
 import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener
 import at.shockbytes.corey.storage.live.LiveWorkoutUpdateListener
-import at.shockbytes.corey.util.schedule.ScheduleItem
+import at.shockbytes.corey.schedule.ScheduleItem
 import io.reactivex.Observable
 
 /**

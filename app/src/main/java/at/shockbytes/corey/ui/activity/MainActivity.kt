@@ -17,14 +17,14 @@ import at.shockbytes.corey.body.BodyManager
 import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.schedule.ScheduleManager
 import at.shockbytes.corey.ui.activity.core.BaseActivity
 import at.shockbytes.corey.ui.fragment.BodyFragment
 import at.shockbytes.corey.ui.fragment.ScheduleFragment
 import at.shockbytes.corey.ui.fragment.WorkoutOverviewFragment
-import at.shockbytes.corey.ui.fragment.dialogs.DesiredWeightDialogFragment
+import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.user.UserManager
 import at.shockbytes.corey.util.AppParams
-import at.shockbytes.corey.util.schedule.ScheduleManager
 import at.shockbytes.corey.wearable.WearableManager
 import at.shockbytes.corey.workout.WorkoutManager
 import at.shockbytes.util.AppUtils
@@ -189,7 +189,7 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
         initialTab?.select()
 
         fabNewWorkout.setOnClickListener {
-            activityTransition(CreateWorkoutActivity.newIntent(applicationContext, null),
+            activityTransition(CreateWorkoutActivity.newIntent(applicationContext),
                     AppParams.REQUEST_CODE_CREATE_WORKOUT)
         }
     }

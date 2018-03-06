@@ -1,6 +1,6 @@
 package at.shockbytes.corey.storage.live
 
-import at.shockbytes.corey.util.schedule.ScheduleItem
+import at.shockbytes.corey.schedule.ScheduleItem
 
 /**
  * @author Martin Macheiner

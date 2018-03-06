@@ -1,8 +1,6 @@
 package at.shockbytes.corey.common.core.running
 
-import android.content.Context
 import android.location.Location
-
 import at.shockbytes.corey.common.core.util.RunUtils
 
 
@@ -11,7 +9,7 @@ import at.shockbytes.corey.common.core.util.RunUtils
  * Date: 05.09.2017.
  */
 
-class DefaultRunningManager(private val context: Context) : RunningManager {
+class DefaultRunningManager : RunningManager {
 
     override var isRecording: Boolean = false
         get() = run != null
@@ -44,7 +42,7 @@ class DefaultRunningManager(private val context: Context) : RunningManager {
 
         run?.time = timeInMs
         run?.averagePace = RunUtils.calculatePace(timeInMs, run?.distance ?: 0.0)
-        val weight = 80.0 // TODO Get weight from BodyManager
+        val weight = 80.0
         run?.calories = RunUtils.calculateCaloriesBurned(run?.distance ?: 0.0, weight)
     }
 

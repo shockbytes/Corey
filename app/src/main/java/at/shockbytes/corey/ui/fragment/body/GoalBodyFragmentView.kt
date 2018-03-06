@@ -9,7 +9,7 @@ import at.shockbytes.corey.body.BodyManager
 import at.shockbytes.corey.body.goal.Goal
 import at.shockbytes.corey.body.info.BodyInfo
 import at.shockbytes.corey.ui.fragment.BaseFragment
-import at.shockbytes.corey.ui.fragment.dialogs.AddGoalDialogFragment
+import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
 import at.shockbytes.corey.user.CoreyUser
 import butterknife.BindView
 import butterknife.OnClick

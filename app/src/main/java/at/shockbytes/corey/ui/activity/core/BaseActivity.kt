@@ -1,12 +1,13 @@
 package at.shockbytes.corey.ui.activity.core
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.transition.Explode
-import android.transition.Slide
-import android.view.Gravity
+import android.transition.Fade
 import android.view.Window
 import android.widget.Toast
 import at.shockbytes.corey.core.CoreyApp
@@ -25,7 +26,7 @@ abstract class BaseActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (enableActivityTransition) {
                 window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-                window.exitTransition = Slide(Gravity.BOTTOM)
+                window.exitTransition = Fade()
                 window.enterTransition = Explode()
             }
         }
@@ -40,6 +41,14 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unbinder?.unbind()
+    }
+
+    protected fun lockOrientation() {
+        val o = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        else
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        requestedOrientation = o
     }
 
     protected fun showSnackbar(text: String) {

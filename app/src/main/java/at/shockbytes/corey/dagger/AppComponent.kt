@@ -7,9 +7,10 @@ import at.shockbytes.corey.ui.fragment.BodyFragment
 import at.shockbytes.corey.ui.fragment.ScheduleFragment
 import at.shockbytes.corey.ui.fragment.WorkoutFragment
 import at.shockbytes.corey.ui.fragment.WorkoutOverviewFragment
-import at.shockbytes.corey.ui.fragment.dialogs.AddExercisesDialogFragment
-import at.shockbytes.corey.ui.fragment.dialogs.DesiredWeightDialogFragment
-import at.shockbytes.corey.ui.fragment.dialogs.InsertScheduleDialogFragment
+import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment
+import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
+import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
+import at.shockbytes.corey.ui.fragment.workoutpager.TimeExercisePagerFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -30,6 +31,8 @@ interface AppComponent {
     fun inject(fragment: WorkoutOverviewFragment)
 
     fun inject(fragment: WorkoutFragment)
+
+    fun inject(fragment: TimeExercisePagerFragment)
 
     fun inject(dialogFragment: AddExercisesDialogFragment)
 

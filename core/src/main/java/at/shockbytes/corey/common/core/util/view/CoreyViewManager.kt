@@ -54,7 +54,7 @@ object CoreyViewManager {
             //Get current position
             val position = animation.animatedFraction
 
-            //Blend colors and apply to bars
+            //Blend colors and apply to view
             val blended = blendColors(from, to, position)
             v.background = ColorDrawable(blended)
         }

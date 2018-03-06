@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import at.shockbytes.corey.R;
-import at.shockbytes.corey.util.schedule.ScheduleItem;
+import at.shockbytes.corey.schedule.ScheduleItem;
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;

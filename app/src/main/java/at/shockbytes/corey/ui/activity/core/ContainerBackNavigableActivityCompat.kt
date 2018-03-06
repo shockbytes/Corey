@@ -1,21 +1,21 @@
 package at.shockbytes.corey.ui.activity.core
 
-import android.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import at.shockbytes.corey.dagger.AppComponent
 
 /**
  * @author Martin Macheiner
  * Date: 23.12.2017.
  */
-abstract class ContainerBackNavigableActivity : BackNavigableActivity() {
+abstract class ContainerBackNavigableActivityCompat : BackNavigableActivity() {
 
     abstract val displayFragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        fragmentManager.beginTransaction()
+        supportFragmentManager.beginTransaction()
                 .replace(android.R.id.content, displayFragment)
                 .commit()
     }

@@ -12,7 +12,7 @@ import at.shockbytes.corey.ui.fragment.workoutpager.TimeExercisePagerFragment
  * @author Martin Macheiner
  * Date: 03.12.2015.
  */
-class ExercisePagerAdapter(fm: FragmentManager, private val workout: Workout) : FragmentStatePagerAdapter(fm) {
+class ExercisePagerAdapter(fm: FragmentManager?, private val workout: Workout) : FragmentStatePagerAdapter(fm) {
 
     override fun getCount(): Int {
         return workout.exercises.size

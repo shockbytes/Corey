@@ -1,4 +1,4 @@
-package at.shockbytes.corey.ui.fragment.dialogs
+package at.shockbytes.corey.ui.fragment.dialog
 
 import android.app.Dialog
 import android.os.Bundle

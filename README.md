@@ -1,9 +1,10 @@
 # Corey - Personal Training Mate
 
 ## Version 2.1
-- [ ] 100% Kotlin code + structure refactoring (base classes)
-- [ ] Main ViewPager
 - [ ] Fix Wear layout
+- [ ] Fix open TODOs
+- [ ] Main ViewPager
+- [x] 100% Kotlin code + structure refactoring (base classes)
 - [x] Refactor BodyFragment code
 - [x] Bug in SliderPreference (Kotlin Nullability)
 - [x] Replace deprecated watch connection code

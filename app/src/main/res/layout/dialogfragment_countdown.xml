@@ -16,7 +16,7 @@
         android:textColor="@android:color/primary_text_light" />
 
     <TextView
-        android:id="@+id/dialogfr_countdown_txt_timer"
+        android:id="@+id/dialogfragment_countdown_txt_timer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

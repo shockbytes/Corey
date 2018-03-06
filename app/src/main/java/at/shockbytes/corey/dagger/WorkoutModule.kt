@@ -35,7 +35,7 @@ class WorkoutModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideRunningManager(): RunningManager {
-        return DefaultRunningManager(app.applicationContext)
+        return DefaultRunningManager()
     }
 
 

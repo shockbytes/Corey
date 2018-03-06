@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/prefs_category_workout">
 
@@ -9,7 +10,7 @@
             android:summary="@string/prefs_vibrations_summary"
             android:title="@string/prefs_vibrations_title" />
 
-        <at.shockbytes.util.view.SliderPreference
+        <at.shockbytes.corey.common.core.util.view.SliderPreference
             android:defaultValue="@integer/prefs_time_countdown_default"
             android:key="@string/prefs_time_countdown_key"
             android:max="@integer/prefs_time_countdown_max"
@@ -27,12 +28,11 @@
             android:summary="@string/prefs_workout_day_notif_summary"
             android:title="@string/prefs_workout_day_notif_title" />
 
-        <!--
         <Preference
             android:title="@string/prefs_workout_day_notif_daytime_title"
             android:dependency="@string/prefs_workout_day_notif_key"
             android:key="@string/prefs_workout_day_notif_daytime_key"
-            android:summary="@string/prefs_workout_day_notif_daytime_summary"/> -->
+            android:summary="@string/prefs_workout_day_notif_daytime_summary"/>
 
         <SwitchPreference
             android:defaultValue="false"

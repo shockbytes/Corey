@@ -23,9 +23,14 @@ import at.shockbytes.corey.R
 
 abstract class TintableBackNavigableActivity : BackNavigableActivity() {
 
-    private val abDefColor = R.color.colorPrimary
-    private val abTextDefColor = android.R.color.white
-    private val sbDefColor = R.color.colorPrimaryDark
+    interface OnTintSystemBarListener {
+
+        fun tint(to: Int, toDark: Int)
+    }
+
+    private var abDefColor = R.color.colorPrimary
+    private var abTextDefColor = android.R.color.white
+    private var sbDefColor = R.color.colorPrimaryDark
 
     private var upIndicator: Int = R.drawable.ic_back_arrow
 
@@ -44,30 +49,27 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         }
     }
 
-    fun tintSystemBarsWithText(@ColorInt actionBarColor: Int?, @ColorInt actionBarTextColor: Int?,
-                               @ColorInt statusBarColor: Int?, title: String?,
+    fun tintSystemBarsWithText(@ColorInt actionBarColor: Int = ContextCompat.getColor(applicationContext, abDefColor),
+                               @ColorInt statusBarColor: Int = ContextCompat.getColor(applicationContext, sbDefColor),
+                               @ColorInt actionBarTextColor: Int = ContextCompat.getColor(applicationContext, abTextDefColor),
+                               newTitle: String = title.toString(),
                                animated: Boolean = false) {
 
-        // Default initialize if not set
-        val abColor = actionBarColor ?: ContextCompat.getColor(applicationContext, abDefColor)
-        val abtColor = actionBarTextColor ?: ContextCompat.getColor(applicationContext, abTextDefColor)
-        val sbColor = statusBarColor ?: ContextCompat.getColor(applicationContext, sbDefColor)
-
         // Set and tint text of action bar
-        val text = SpannableString(title)
-        text.setSpan(ForegroundColorSpan(abtColor), 0, text.length,
+        val text = SpannableString(newTitle)
+        text.setSpan(ForegroundColorSpan(actionBarTextColor), 0, text.length,
                 Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         supportActionBar?.title = text
 
         if (animated) {
-            tintSystemBarsAnimated(abColor, sbColor)
+            tintSystemBarsAnimated(actionBarColor, statusBarColor)
         } else {
-            supportActionBar?.setBackgroundDrawable(ColorDrawable(abColor))
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(actionBarColor))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.statusBarColor = sbColor
+                window.statusBarColor = statusBarColor
             }
         }
-        tintHomeAsUpIndicator(tint = true, tintColor = abtColor)
+        tintHomeAsUpIndicator(tint = true, tintColor = actionBarTextColor)
     }
 
     private fun tintSystemBarsAnimated(@ColorInt newColor: Int, @ColorInt newColorDark: Int) {

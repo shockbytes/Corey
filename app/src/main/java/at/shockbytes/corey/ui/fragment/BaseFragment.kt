@@ -1,6 +1,7 @@
 package at.shockbytes.corey.ui.fragment
 
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -65,6 +66,10 @@ abstract class BaseFragment : Fragment() {
             val duration = if (showLong) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
             Snackbar.make(view!!, text, duration).show()
         }
+    }
+
+    protected fun showSnackbar(@StringRes text: Int, showLong: Boolean = true) {
+        showSnackbar(getString(text), showLong)
     }
 
     @JvmOverloads
