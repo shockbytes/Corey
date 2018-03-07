@@ -8,8 +8,8 @@ import at.shockbytes.corey.R
 import preference.WearPreferenceActivity
 
 /**
- * @author Martin Macheiner
- * Date: 23.03.2017.
+ * @author  Martin Macheiner
+ * Date:    23.03.2017.
  */
 
 class CoreyPreferenceActivity : WearPreferenceActivity() {

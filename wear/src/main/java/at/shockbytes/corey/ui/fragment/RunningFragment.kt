@@ -7,23 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.corey.R
+import at.shockbytes.corey.dagger.WearAppComponent
 import butterknife.ButterKnife
 import butterknife.Unbinder
 
-class RunningFragment : Fragment() {
+class RunningFragment : WearableBaseFragment() {
 
-    private var unbinder: Unbinder? = null
+    override val layoutId = R.layout.fragment_running
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_running, container, false)
-        unbinder = ButterKnife.bind(this, v)
-        return v
+    override fun setupViews() {
+        // Setup views
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        unbinder?.unbind()
+    override fun injectToGraph(appComponent: WearAppComponent) {
+        appComponent.inject(this)
     }
 
     companion object {

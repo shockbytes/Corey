@@ -17,6 +17,7 @@
             android:id="@+id/fragment_workout_main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:boxedEdges="top|bottom"
             app:layout_box="top|bottom">
 
             <LinearLayout

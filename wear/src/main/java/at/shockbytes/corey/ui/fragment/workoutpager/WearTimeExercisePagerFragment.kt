@@ -1,18 +1,15 @@
 package at.shockbytes.corey.ui.fragment.workoutpager
 
 
-import android.app.Fragment
-import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Vibrator
-import android.preference.PreferenceManager
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
+import at.shockbytes.corey.dagger.WearAppComponent
+import at.shockbytes.corey.ui.fragment.WearableBaseFragment
 import at.shockbytes.corey.ui.fragment.dialog.WearTimeExerciseCountdownDialogFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,12 +17,18 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @Suppress("DEPRECATION")
-class WearTimeExercisePagerFragment : Fragment() {
+class WearTimeExercisePagerFragment : WearableBaseFragment() {
+
+    @Inject
+    protected lateinit var vibrator: Vibrator
+
+    @Inject
+    protected lateinit var preferences: SharedPreferences
 
     private lateinit var exercise: TimeExercise
-    private lateinit var vibrator: Vibrator
     private lateinit var timerObservable: Observable<Long>
 
     private var isVibrationEnabled: Boolean = false
@@ -35,35 +38,46 @@ class WearTimeExercisePagerFragment : Fragment() {
     private val txtExercise: TextView by bindView(R.id.fragment_wear_pageritem_time_exercise_txt_exercise)
     private val btnTime: TextView by bindView(R.id.fragment_wear_pageritem_time_exercise_btn_time)
 
+    override val layoutId = R.layout.fragment_wear_pageritem_time_exercise
+
+    override fun setupViews() {
+
+        btnTime.isEnabled = true
+        btnTime.setOnClickListener {
+            onClickButtonStart()
+            btnTime.isEnabled = false // Avoid multiple clicks
+        }
+
+        secondsUntilFinish = exercise.workoutDurationInSeconds
+
+        btnTime.text = calculateDisplayString(secondsUntilFinish)
+        txtExercise.text = exercise.getDisplayName(context)
+        txtExercise.isSelected = true
+
+        timerObservable = Observable.interval(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+    }
+
+    override fun injectToGraph(appComponent: WearAppComponent) {
+        appComponent.inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         exercise = arguments.getParcelable(ARG_EXERCISE)
-        vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        isVibrationEnabled = PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(getString(R.string.wear_pref_vibration_key), true)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_wear_pageritem_time_exercise, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initialize()
+        isVibrationEnabled = preferences.getBoolean(getString(R.string.wear_pref_vibration_key), true)
     }
 
     private fun onClickButtonStart() {
 
-        val countdown = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(getString(R.string.wear_pref_countdown_key), getString(R.string.wear_pref_countdown_default_value)))
+        val countdown = preferences.getString(getString(R.string.wear_pref_countdown_key),
+                getString(R.string.wear_pref_countdown_default_value)).toInt()
 
-        WearTimeExerciseCountdownDialogFragment
-                .newInstance(countdown).setCountdownCompleteListener {
-
+        WearTimeExerciseCountdownDialogFragment.newInstance(countdown)
+                .setCountdownCompleteListener {
                     startExerciseTimer()
-
                 }
                 .show(fragmentManager, "countdown-start")
     }
@@ -75,7 +89,9 @@ class WearTimeExercisePagerFragment : Fragment() {
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        timerDisposable?.dispose()
+        if (!isVisibleToUser) {
+            timerDisposable?.dispose()
+        }
     }
 
     private fun startExerciseTimer() {
@@ -93,21 +109,6 @@ class WearTimeExercisePagerFragment : Fragment() {
         }, { throwable -> Log.wtf("Corey", throwable.toString()) })
     }
 
-    private fun initialize() {
-
-        btnTime.setOnClickListener { onClickButtonStart() }
-
-        secondsUntilFinish = exercise.workoutDurationInSeconds
-
-        btnTime.text = calculateDisplayString(secondsUntilFinish)
-        txtExercise.text = exercise.getDisplayName(context)
-        txtExercise.isSelected = true
-
-        timerObservable = Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-    }
-
     private fun calculateDisplayString(s: Int): String {
         var seconds = s
         var mins = 0
@@ -121,13 +122,15 @@ class WearTimeExercisePagerFragment : Fragment() {
     private fun vibrate(secondsToGo: Long) {
 
         if (isVibrationEnabled) {
-            var vibrationIntensity = 0
-            when {
-                secondsToGo == 0L -> vibrationIntensity = 800
-                secondsToGo % (exercise.restDuration + exercise.workDuration) == 0L -> vibrationIntensity = 500 // Full round
-                secondsToGo % exercise.workDuration == 0L -> vibrationIntensity = 300 // Work period done
+            val vibrationIntensity = when {
+                secondsToGo == 0L -> 800L
+                secondsToGo % (exercise.restDuration + exercise.workDuration) == 0L -> 500L // Full round
+                secondsToGo % exercise.workDuration == 0L -> 300L // Work period done
+                else -> -1
             }
-            vibrator.vibrate(vibrationIntensity.toLong())
+            if (vibrationIntensity > 0) {
+                vibrator.vibrate(vibrationIntensity)
+            }
         }
     }
 

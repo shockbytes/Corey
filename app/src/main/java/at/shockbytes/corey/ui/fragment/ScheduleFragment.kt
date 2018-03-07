@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.util.Log
 import android.widget.Toast
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.DaysScheduleAdapter
@@ -24,8 +23,8 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 /**
- * @author Martin Macheiner
- * Date: 26.10.2015.
+ * @author  Martin Macheiner
+ * Date:    26.10.2015.
  */
 class ScheduleFragment : BaseFragment(), LiveScheduleUpdateListener,
         BaseAdapter.OnItemMoveListener<ScheduleItem> {
@@ -104,7 +103,6 @@ class ScheduleFragment : BaseFragment(), LiveScheduleUpdateListener,
         touchHelper.attachToRecyclerView(recyclerView)
 
         scheduleManager.schedule.subscribe({ scheduleItems ->
-            Log.wtf("Corey", "Schedule items loaded")
             adapter.data = scheduleItems.toMutableList()
         }, { throwable ->
             throwable.printStackTrace()

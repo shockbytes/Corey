@@ -2,7 +2,6 @@ package at.shockbytes.corey.ui.fragment
 
 
 import android.Manifest
-import android.app.Fragment
 import android.content.Context.SENSOR_SERVICE
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -15,9 +14,6 @@ import android.os.SystemClock
 import android.os.Vibrator
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Chronometer
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -25,7 +21,7 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.WearExercisePagerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.core.CommunicationManager
-import at.shockbytes.corey.core.WearCoreyApp
+import at.shockbytes.corey.dagger.WearAppComponent
 import at.shockbytes.corey.ui.activity.WorkoutActivity
 import at.shockbytes.corey.workout.PulseLogger
 import at.shockbytes.util.view.NonSwipeableViewPager
@@ -33,7 +29,7 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 @Suppress("DEPRECATION")
-class WorkoutFragment : Fragment(),
+class WorkoutFragment : WearableBaseFragment(),
         SensorEventListener, WorkoutActivity.OnWorkoutNavigationListener {
 
     private val viewPager: NonSwipeableViewPager by bindView(R.id.fragment_workout_viewpager)
@@ -55,19 +51,20 @@ class WorkoutFragment : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity.application as WearCoreyApp).appComponent.inject(this)
         workout = arguments.getParcelable(ARG_WORKOUT)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_workout, container, false)
+    override val layoutId = R.layout.fragment_workout
+
+    override fun injectToGraph(appComponent: WearAppComponent) {
+        appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupViews()
+    override fun setupViews() {
+        progressBar.progressTintList = ColorStateList
+                .valueOf(ContextCompat.getColor(context, workout.colorResForIntensity))
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -132,11 +129,6 @@ class WorkoutFragment : Fragment(),
     }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
-    }
-
-    private fun setupViews() {
-        progressBar.progressTintList = ColorStateList
-                .valueOf(ContextCompat.getColor(context, workout.colorResForIntensity))
     }
 
     private fun startWorkout() {

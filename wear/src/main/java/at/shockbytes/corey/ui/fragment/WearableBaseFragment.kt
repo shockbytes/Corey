@@ -1,23 +1,21 @@
 package at.shockbytes.corey.ui.fragment
 
+import android.app.Fragment
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import at.shockbytes.corey.core.CoreyApp
-import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.core.WearCoreyApp
+import at.shockbytes.corey.dagger.WearAppComponent
 import butterknife.ButterKnife
 import butterknife.Unbinder
 
 /**
  * @author  Martin Macheiner
- * Date:    29.11.2017.
+ * Date:    07.03.2017.
  */
-abstract class BaseFragment : Fragment() {
+abstract class WearableBaseFragment : Fragment() {
 
     private var unbinder: Unbinder? = null
 
@@ -25,7 +23,7 @@ abstract class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        injectToGraph((activity?.application as CoreyApp).appComponent)
+        injectToGraph((activity?.application as WearCoreyApp).appComponent)
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -46,39 +44,13 @@ abstract class BaseFragment : Fragment() {
 
     protected abstract fun setupViews()
 
-    protected abstract fun injectToGraph(appComponent: AppComponent)
+    protected abstract fun injectToGraph(appComponent: WearAppComponent)
 
-    @JvmOverloads
-    protected fun showSnackbar(text: String, actionText: String,
-                               showIndefinite: Boolean = false,  action: () -> Unit) {
-        if (view != null) {
-            val duration = if (showIndefinite) Snackbar.LENGTH_INDEFINITE else Snackbar.LENGTH_LONG
-            Snackbar.make(view!!, text, duration)
-                    .setAction(actionText) {
-                        action()
-                    }.show()
-        }
-    }
-
-    @JvmOverloads
-    protected fun showSnackbar(text: String, showLong: Boolean = true) {
-        if (view != null) {
-            val duration = if (showLong) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
-            Snackbar.make(view!!, text, duration).show()
-        }
-    }
-
-    protected fun showSnackbar(@StringRes text: Int, showLong: Boolean = true) {
-        showSnackbar(getString(text), showLong)
-    }
-
-    @JvmOverloads
     protected fun showToast(text: String, showLong: Boolean = true) {
         val duration = if (showLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         Toast.makeText(context, text, duration).show()
     }
 
-    @JvmOverloads
     protected fun showToast(text: Int, showLong: Boolean = true) {
         showToast(getString(text), showLong)
     }

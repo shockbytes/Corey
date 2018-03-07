@@ -1,9 +1,13 @@
 # Corey - Personal Training Mate
 
+## Version 2.2
+- [ ] Fix notifications
+- [ ] Web UI
+
 ## Version 2.1
-- [ ] Fix Wear layout
 - [ ] Fix open TODOs
 - [ ] Main ViewPager
+- [x] Fix Wear layout
 - [x] Shrink down ScheduleAdapter code
 - [x] 100% Kotlin code + structure refactoring (base classes)
 - [x] Refactor BodyFragment code
