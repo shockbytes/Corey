@@ -30,4 +30,6 @@
     <color name="body_card_weight_history">#3F51B5</color>
     <color name="body_card_goals">#FF9800</color>
 
+    <color name="brand_color">#CACACA</color>
+
 </resources>

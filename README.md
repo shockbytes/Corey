@@ -3,10 +3,12 @@
 ## Version 2.2
 - [ ] Fix notifications
 - [ ] Web UI
+- [ ] Workout statistics
 
 ## Version 2.1
 - [ ] Fix open TODOs
 - [ ] Main ViewPager
+- [x] Splash screen loading
 - [x] Fix Wear layout
 - [x] Shrink down ScheduleAdapter code
 - [x] 100% Kotlin code + structure refactoring (base classes)
