@@ -1,5 +1,6 @@
 package at.shockbytes.corey.ui.fragment
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
@@ -81,6 +82,10 @@ abstract class BaseFragment : Fragment() {
     @JvmOverloads
     protected fun showToast(text: Int, showLong: Boolean = true) {
         showToast(getString(text), showLong)
+    }
+
+    protected fun isPortrait(): Boolean {
+        return resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
     }
 
 }

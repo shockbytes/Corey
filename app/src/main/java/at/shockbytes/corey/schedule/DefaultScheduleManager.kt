@@ -13,7 +13,7 @@ import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.receiver.NotificationReceiver
 import at.shockbytes.corey.storage.StorageManager
 import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener
-import at.shockbytes.corey.util.AppCoreyUtils
+import at.shockbytes.corey.util.CoreyAppUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -90,7 +90,7 @@ class DefaultScheduleManager(private val storageManager: StorageManager,
 
     override fun postWeighNotification() {
         val nm = cxt.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        nm.notify(0x90, AppCoreyUtils.getWeighNotification(cxt))
+        nm.notify(0x90, CoreyAppUtils.getWeighNotification(cxt))
     }
 
     override fun tryPostWorkoutNotification() {
@@ -98,7 +98,7 @@ class DefaultScheduleManager(private val storageManager: StorageManager,
             for (item in scheduleItems) {
                 if (item.day == CoreyUtils.getDayOfWeek() && !item.isEmpty) {
                     val nm = cxt.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                    nm.notify(0x91, AppCoreyUtils.getWorkoutNotification(cxt, item.name))
+                    nm.notify(0x91, CoreyAppUtils.getWorkoutNotification(cxt, item.name))
                     return@subscribe
                 }
             }

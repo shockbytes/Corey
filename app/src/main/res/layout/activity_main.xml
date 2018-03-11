@@ -5,7 +5,6 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:cxt=".core.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -27,36 +26,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabIndicatorColor="@android:color/white"
-            app:tabMode="fixed">
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_workout"
-                android:icon="@drawable/ic_tab_workout" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_schedule"
-                android:icon="@drawable/ic_tab_schedule" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_my_body"
-                android:icon="@drawable/ic_tab_my_body" />
-
-        </android.support.design.widget.TabLayout>
+            app:tabMode="fixed" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/main_content"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/main_bottom_navigation"
-        android:layout_below="@+id/main_appbar"
+        android:layout_below="@+id/appbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
@@ -65,7 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
-        app:layout_anchor="@+id/main_content"
+        android:focusable="true"
+        app:layout_anchor="@+id/viewpager"
         app:layout_anchorGravity="bottom|right|end"
         app:layout_behavior="at.shockbytes.util.view.ScrollAwareFloatingActionButtonBehavior"
         app:srcCompat="@drawable/ic_add" />

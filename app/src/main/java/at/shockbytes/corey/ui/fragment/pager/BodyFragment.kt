@@ -1,8 +1,10 @@
-package at.shockbytes.corey.ui.fragment
+package at.shockbytes.corey.ui.fragment.pager
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.body.BodyManager
 import at.shockbytes.corey.body.goal.Goal
@@ -14,9 +16,12 @@ import at.shockbytes.util.AppUtils
 import kotterknife.bindView
 import javax.inject.Inject
 
-class BodyFragment : BaseFragment(), LiveBodyUpdateListener {
+class BodyFragment : BasePagerFragment(), LiveBodyUpdateListener {
 
     private val container: LinearLayout by bindView(R.id.fragment_body_nsv_content)
+    private val errorView: View by bindView(R.id.fragment_body_error_layout)
+    private val btnError: Button by bindView(R.id.fragment_body_error_layout_btn_refresh)
+    private val txtError: TextView by bindView(R.id.fragment_body_error_layout_txt_cause)
 
     @Inject
     protected lateinit var bodyManager: BodyManager
@@ -29,20 +34,9 @@ class BodyFragment : BaseFragment(), LiveBodyUpdateListener {
     override val layoutId = R.layout.fragment_body
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        bodyManager.bodyInfo.subscribe({
-            fragmentViews = listOf(ProfileBodyFragmentView(this, it, bodyManager, userManager.user),
-                    DreamWeightBodyFragmentView(this, it, bodyManager, userManager.user),
-                    WeightHistoryBodyFragmentView(this, it, bodyManager, userManager.user),
-                    GoalBodyFragmentView(this, it, bodyManager, userManager.user))
-            setupViews()
-        }) { throwable ->
-            throwable.printStackTrace()
-            // TODO Show error screen
-        }
+        loadViews()
     }
 
     override fun onDestroyView() {
@@ -57,8 +51,11 @@ class BodyFragment : BaseFragment(), LiveBodyUpdateListener {
         appComponent.inject(this)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun registerForLiveEvents() {
+        bodyManager.registerLiveBodyUpdates(this)
+    }
+
+    override fun unregisterForLiveEvents() {
         bodyManager.unregisterLiveBodyUpdates()
     }
 
@@ -91,16 +88,45 @@ class BodyFragment : BaseFragment(), LiveBodyUpdateListener {
             it.setupView()
         }
         animateViews()
-        bodyManager.registerLiveBodyUpdates(this)
     }
 
     // ------------------------------------------------------------------------------
+
+    private fun loadViews() {
+        bodyManager.bodyInfo.subscribe({
+            fragmentViews = listOf(ProfileBodyFragmentView(this, it, bodyManager, userManager.user),
+                    DreamWeightBodyFragmentView(this, it, bodyManager, userManager.user),
+                    WeightHistoryBodyFragmentView(this, it, bodyManager, userManager.user),
+                    GoalBodyFragmentView(this, it, bodyManager, userManager.user))
+            hideErrorView()
+            setupViews()
+        }) { throwable ->
+            throwable.printStackTrace()
+            showErrorView(throwable.localizedMessage)
+        }
+    }
 
     private fun animateViews() {
         fragmentViews?.forEachIndexed { idx, view ->
             val startDelay = (cardAnimStartDelay * (idx + 1)).toLong()
             view.animateView(startDelay)
         }
+    }
+
+    private fun showErrorView(cause: String) {
+        errorView.visibility = View.VISIBLE
+        errorView.animate().alpha(1f).start()
+
+        btnError.setOnClickListener {
+            loadViews()
+        }
+
+        txtError.text = cause
+    }
+
+    private fun hideErrorView() {
+        errorView.visibility = View.GONE
+        errorView.alpha = 0f
     }
 
     companion object {

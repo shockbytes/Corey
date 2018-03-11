@@ -29,11 +29,9 @@ object CoreyUtils {
 
         if (weight <= dreamWeight) {
             return 100
-        } else if (weight >= startWeight) {
-            return 0
         }
 
-        val diff = startWeight - dreamWeight
+        val diff = Math.max(startWeight, weight) - dreamWeight
         val weightAligned = weight - dreamWeight
         return 100 - Math.round(100 / diff * weightAligned).toInt()
     }

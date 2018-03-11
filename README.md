@@ -6,8 +6,8 @@
 - [ ] Workout statistics
 
 ## Version 2.1
-- [ ] Fix open TODOs
-- [ ] Main ViewPager
+- [ ] Settings entry for daily notifications
+- [x] Main ViewPager
 - [x] Splash screen loading
 - [x] Fix Wear layout
 - [x] Shrink down ScheduleAdapter code

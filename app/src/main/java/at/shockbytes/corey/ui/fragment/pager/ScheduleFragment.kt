@@ -1,4 +1,4 @@
-package at.shockbytes.corey.ui.fragment
+package at.shockbytes.corey.ui.fragment.pager
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -26,7 +26,7 @@ import javax.inject.Inject
  * @author  Martin Macheiner
  * Date:    26.10.2015.
  */
-class ScheduleFragment : BaseFragment(), LiveScheduleUpdateListener,
+class ScheduleFragment : BasePagerFragment(), LiveScheduleUpdateListener,
         BaseAdapter.OnItemMoveListener<ScheduleItem> {
 
     @Inject
@@ -47,13 +47,12 @@ class ScheduleFragment : BaseFragment(), LiveScheduleUpdateListener,
 
     override val layoutId = R.layout.fragment_schedule
 
-    override fun onStart() {
-        super.onStart()
+
+    override fun registerForLiveEvents() {
         scheduleManager.registerLiveForScheduleUpdates(this)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun unregisterForLiveEvents() {
         scheduleManager.unregisterLiveForScheduleUpdates()
     }
 

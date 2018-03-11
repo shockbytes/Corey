@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.graphics.drawable.BitmapDrawable
 import android.support.v4.content.ContextCompat
 import android.support.v7.graphics.Palette
+import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -97,7 +98,6 @@ class ProfileBodyFragmentView(fragment: BaseFragment,
     }
 
     override fun onGenerated(palette: Palette) {
-
         val defaultColor = ContextCompat.getColor(fragment.context!!, R.color.colorPrimary)
         val headerColor = palette.getDarkMutedColor(defaultColor)
         CoreyViewManager.backgroundColorTransition(headerLayout, defaultColor, headerColor)
@@ -113,7 +113,7 @@ class ProfileBodyFragmentView(fragment: BaseFragment,
     }
 
     override fun onError() {
-        imgAvatar.setImageResource(R.drawable.ic_user)
+        imgAvatar.setImageResource(R.drawable.ic_user_default)
     }
 
     private fun animateContent() {
@@ -122,6 +122,10 @@ class ProfileBodyFragmentView(fragment: BaseFragment,
                 bodyInfo.highestWeight,
                 bodyInfo.latestWeightPoint.weight,
                 bodyInfo.dreamWeight.toDouble())
+
+        Log.wtf("Corey", "highest weight: ${bodyInfo.highestWeight} / Latest: ${bodyInfo.latestWeightPoint.weight} / Dream: ${bodyInfo.dreamWeight}")
+        Log.wtf("Corey", "Progress: $weightProgress")
+
 
         // Animate image
         val imgAnimAlpha = ObjectAnimator.ofFloat(imgAvatar, "alpha", 0f, 1f)

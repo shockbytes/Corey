@@ -145,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/run_btn_white_button"
+            android:background="@drawable/btn_lined_white"
             android:padding="16dp"
             android:text="@string/start_run"
             android:textColor="#fff"

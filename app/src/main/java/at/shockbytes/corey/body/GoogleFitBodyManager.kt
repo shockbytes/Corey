@@ -13,13 +13,11 @@ import at.shockbytes.util.AppUtils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.ResultCallback
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.data.DataSet
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.request.DataReadRequest
-import com.google.android.gms.fitness.result.DataReadResult
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -32,22 +30,19 @@ import java.util.concurrent.TimeUnit
  */
 class GoogleFitBodyManager(private val context: Context,
                            private val storageManager: StorageManager) : BodyManager,
-        ResultCallback<DataReadResult>, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private var apiClient: GoogleApiClient? = null
-    private var _bodyInfo: BodyInfo? = null
+    private var _bodyInfo: BodyInfo = BodyInfo()
 
     override val bodyInfo: Observable<BodyInfo>
         get() {
-            return if (_bodyInfo != null) {
-                Observable.just(_bodyInfo!!)
+            return if (_bodyInfo.isNotEmpty) {
+                Observable.just(_bodyInfo)
             } else {
-                loadFitnessData() // Request new data if nothing is available
-                Observable.just(BodyInfo())
+                loadFitnessDataSync() // Request new data if nothing is available
             }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
         }
-
 
     override var desiredWeight: Int
         get() = storageManager.desiredWeight
@@ -111,17 +106,25 @@ class GoogleFitBodyManager(private val context: Context,
                 Toast.LENGTH_LONG).show()
     }
 
-    override fun onResult(res: DataReadResult) {
-        _bodyInfo = BodyInfo(getWeightList(res.getDataSet(DataType.TYPE_WEIGHT)),
-                getHeight(res.getDataSet(DataType.TYPE_HEIGHT)),
-                desiredWeight)
-    }
-
     // -----------------------------------------------------------------------------------------
 
     private fun loadFitnessData() {
         Fitness.HistoryApi.readData(apiClient, buildGoogleFitRequest())
-                .setResultCallback(this, 1, TimeUnit.MINUTES)
+                .setResultCallback { res ->
+                    _bodyInfo = BodyInfo(getWeightList(res.getDataSet(DataType.TYPE_WEIGHT)),
+                            getHeight(res.getDataSet(DataType.TYPE_HEIGHT)),
+                            desiredWeight)
+                }
+    }
+
+    private fun loadFitnessDataSync(): Observable<BodyInfo> {
+        return Observable.fromCallable {
+            val res = Fitness.HistoryApi.readData(apiClient, buildGoogleFitRequest()).await()
+            _bodyInfo = BodyInfo(getWeightList(res.getDataSet(DataType.TYPE_WEIGHT)),
+                    getHeight(res.getDataSet(DataType.TYPE_HEIGHT)),
+                    desiredWeight)
+            _bodyInfo
+        }
     }
 
     private fun buildGoogleFitRequest(): DataReadRequest {

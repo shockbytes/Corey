@@ -1,6 +1,5 @@
-package at.shockbytes.corey.ui.fragment
+package at.shockbytes.corey.ui.fragment.pager
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
@@ -27,7 +26,7 @@ import javax.inject.Inject
  * @author Martin Macheiner
  * Date: 26.10.2015.
  */
-class WorkoutOverviewFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Workout>,
+class WorkoutOverviewFragment : BasePagerFragment(), BaseAdapter.OnItemClickListener<Workout>,
         WorkoutAdapter.OnWorkoutPopupItemSelectedListener, LiveWorkoutUpdateListener {
 
     @Inject
@@ -38,7 +37,7 @@ class WorkoutOverviewFragment : BaseFragment(), BaseAdapter.OnItemClickListener<
     private val recyclerView: RecyclerViewWithEmptyView by bindView(R.id.fragment_training_rv)
 
     private val layoutManagerForOrientation: RecyclerView.LayoutManager
-        get() = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        get() = if (isPortrait()) {
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         } else {
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -46,8 +45,12 @@ class WorkoutOverviewFragment : BaseFragment(), BaseAdapter.OnItemClickListener<
 
     override val layoutId = R.layout.fragment_workout_overview
 
-    override fun onDestroy() {
-        super.onDestroy()
+
+    override fun registerForLiveEvents() {
+        workoutManager.registerLiveForWorkoutUpdates(this)
+    }
+
+    override fun unregisterForLiveEvents() {
         workoutManager.unregisterLiveForWorkoutUpdates()
     }
 
@@ -70,7 +73,7 @@ class WorkoutOverviewFragment : BaseFragment(), BaseAdapter.OnItemClickListener<
                         getString(R.string.transition_workout_name)),
                 Pair(v.findViewById(R.id.item_training_container_exercises),
                         getString(R.string.transition_workout_exercise_count)))
-        activity!!.startActivity(intent, options.toBundle())
+        activity?.startActivity(intent, options.toBundle())
     }
 
     override fun onDelete(w: Workout?) {
@@ -100,8 +103,6 @@ class WorkoutOverviewFragment : BaseFragment(), BaseAdapter.OnItemClickListener<
             throwable.printStackTrace()
             showSnackbar(getString(R.string.snackbar_cannot_load_workouts))
         }
-
-        workoutManager.registerLiveForWorkoutUpdates(this)
     }
 
     override fun onWorkoutAdded(workout: Workout) {

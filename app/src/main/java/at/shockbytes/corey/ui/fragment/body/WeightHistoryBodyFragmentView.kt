@@ -18,8 +18,8 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import java.util.*
 
 /**
- * @author Martin Macheiner
- * Date: 05-Mar-18.
+ * @author  Martin Macheiner
+ * Date:    05.03.2018.
  */
 
 class WeightHistoryBodyFragmentView(fragment: BaseFragment,

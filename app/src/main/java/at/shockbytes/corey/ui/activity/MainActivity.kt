@@ -8,20 +8,19 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import at.shockbytes.corey.R
+import at.shockbytes.corey.adapter.CoreyPagerAdapter
 import at.shockbytes.corey.body.BodyManager
 import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.schedule.ScheduleManager
 import at.shockbytes.corey.ui.activity.core.BaseActivity
-import at.shockbytes.corey.ui.fragment.BodyFragment
-import at.shockbytes.corey.ui.fragment.ScheduleFragment
-import at.shockbytes.corey.ui.fragment.WorkoutOverviewFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.user.UserManager
 import at.shockbytes.corey.util.AppParams
@@ -33,7 +32,7 @@ import icepick.State
 import kotterknife.bindView
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
+class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @State
     @JvmField
@@ -60,8 +59,8 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
 
     private var watchInfo: WatchInfo = WatchInfo(null, false) // default is not connected
 
-    private val mainLayout: View by bindView(R.id.main_layout)
     private val toolbar: Toolbar by bindView(R.id.toolbar)
+    private val viewpager: ViewPager by bindView(R.id.viewpager)
     private val appBar: AppBarLayout by bindView(R.id.main_appbar)
     private val tabLayout: TabLayout by bindView(R.id.main_tablayout)
     private val fabNewWorkout: FloatingActionButton by bindView(R.id.main_fab_edit)
@@ -74,18 +73,10 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        tabPosition = 1 // Initialize it with one, can be overwritten by statement below
-        Icepick.restoreInstanceState(this, savedInstanceState)
-
+        setupIcepick(savedInstanceState)
+        setupManagers()
         initializeViews()
-        bodyManager.poke(this)
-        workoutManager.poke()
-        scheduleManager.poke()
-
-        if (bodyManager.desiredWeight <= 0) { // Ask for desired weight when not set
-            askForDesiredWeight()
-        }
+        initializeTabs()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -118,7 +109,6 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
             R.id.action_desired_weight -> askForDesiredWeight()
             R.id.action_watch -> showToast(menuItemWatch.title.toString())
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -147,50 +137,52 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
         }
     }
 
-    override fun onTabSelected(tab: TabLayout.Tab) {
+    override fun onPageSelected(position: Int) {
 
+        tabPosition = position
         appBar.setExpanded(true, true)
-        val ft = supportFragmentManager.beginTransaction()
-        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
 
-        tabPosition = tab.position
-        when (tabPosition) {
-            0 -> {
-                fabNewWorkout.show()
-                ft.replace(R.id.main_content, WorkoutOverviewFragment.newInstance())
-            }
-            1 -> {
-                fabNewWorkout.hide()
-                ft.replace(R.id.main_content, ScheduleFragment.newInstance())
-            }
-            2 -> {
-                fabNewWorkout.hide()
-                ft.replace(R.id.main_content, BodyFragment.newInstance())
-            }
+        if (position == 0) {
+            fabNewWorkout.show()
+        } else {
+            fabNewWorkout.hide()
         }
-        ft.commit()
     }
 
-    override fun onTabUnselected(tab: TabLayout.Tab) {
-    }
-
-    override fun onTabReselected(tab: TabLayout.Tab) {
-    }
+    override fun onPageScrollStateChanged(state: Int) {}
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
     // --------------------------------------------------------------------------------
 
     private fun initializeViews() {
 
+        // Setup ActionBar
         setSupportActionBar(toolbar)
 
-        // Setup TabLayout
-        tabLayout.addOnTabSelectedListener(this)
-        val initialTab = tabLayout.getTabAt(tabPosition)
-        initialTab?.select()
-
+        // Setup Fab
         fabNewWorkout.setOnClickListener {
             activityTransition(CreateWorkoutActivity.newIntent(applicationContext),
                     AppParams.REQUEST_CODE_CREATE_WORKOUT)
+        }
+    }
+
+    private fun initializeTabs() {
+
+        // Setup the ViewPager
+        val pagerAdapter = CoreyPagerAdapter(applicationContext, supportFragmentManager)
+        viewpager.adapter = pagerAdapter
+        viewpager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
+        viewpager.addOnPageChangeListener(this)
+        viewpager.offscreenPageLimit = 2
+        tabLayout.setupWithViewPager(viewpager, false)
+
+        // Select the tab
+        val initialTab = tabLayout.getTabAt(tabPosition)
+        initialTab?.select()
+
+        // Set the icons of the tabs
+        for (i in 0..tabLayout.tabCount) {
+            tabLayout.getTabAt(i)?.icon = ContextCompat.getDrawable(this, pagerAdapter.getPageIcon(i))
         }
     }
 
@@ -200,7 +192,6 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
                     menuItemAccount.icon = AppUtils.createRoundedBitmap(this, bm)
                 }, { throwable: Throwable ->
                     throwable.printStackTrace()
-                    showToast(R.string.error_account_photo)
                 })
         menuItemAccount.title = userManager.user.name
         menuItemAccount.isEnabled = true
@@ -208,7 +199,7 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
 
     private fun setupWatchMenuItem() {
         menuItemWatch.isVisible = watchInfo.isConnected
-        menuItemWatch.title = getString(R.string.watch_connected,watchInfo.name) ?: getString(R.string.menu_main_watch)
+        menuItemWatch.title = getString(R.string.watch_connected, watchInfo.name) ?: getString(R.string.menu_main_watch)
     }
 
     private fun askForDesiredWeight() {
@@ -227,6 +218,21 @@ class MainActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
     private fun signOut() {
         userManager.signOut()
         supportFinishAfterTransition()
+    }
+
+    private fun setupIcepick(savedInstanceState: Bundle?) {
+        tabPosition = 1 // Initialize it with one, can be overwritten by statement below
+        Icepick.restoreInstanceState(this, savedInstanceState)
+    }
+
+    private fun setupManagers() {
+        bodyManager.poke(this)
+        workoutManager.poke()
+        scheduleManager.poke()
+
+        if (bodyManager.desiredWeight <= 0) { // Ask for desired weight when not set
+            askForDesiredWeight()
+        }
     }
 
 

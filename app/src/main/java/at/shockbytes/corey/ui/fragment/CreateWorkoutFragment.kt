@@ -23,7 +23,7 @@ import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment
-import at.shockbytes.corey.util.AppCoreyUtils
+import at.shockbytes.corey.util.CoreyAppUtils
 import at.shockbytes.corey.util.AppParams
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.ViewManager
@@ -105,9 +105,9 @@ class CreateWorkoutFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     override fun setupViews() {
 
         spinnerBodyRegion.adapter = WorkoutCraftingSpinnerAdapter(context!!,
-                AppCoreyUtils.getBodyRegionSpinnerData(context!!))
+                CoreyAppUtils.getBodyRegionSpinnerData(context!!))
         spinnerIntensity.adapter = WorkoutCraftingSpinnerAdapter(context!!,
-                AppCoreyUtils.getIntensitySpinnerData(context!!))
+                CoreyAppUtils.getIntensitySpinnerData(context!!))
         spinnerIntensity.onItemSelectedListener = this
 
         recyclerViewExercises.layoutManager = LinearLayoutManager(context)

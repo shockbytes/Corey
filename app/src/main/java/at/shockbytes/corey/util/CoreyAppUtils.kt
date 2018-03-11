@@ -2,6 +2,7 @@ package at.shockbytes.corey.util
 
 import android.app.Notification
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.support.v4.app.NotificationCompat
@@ -15,7 +16,7 @@ import java.util.*
  * Date: 14.03.2017.
  */
 
-object AppCoreyUtils {
+object CoreyAppUtils {
 
     private val channelId: String = "corey_notifications"
 

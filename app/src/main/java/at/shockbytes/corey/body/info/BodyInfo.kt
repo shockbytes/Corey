@@ -10,6 +10,9 @@ data class BodyInfo(var weightPoints: List<WeightPoint> = listOf(),
                     var height: Double = 0.toDouble(),
                     var dreamWeight: Int = 0) {
 
+    val isNotEmpty: Boolean
+        get() = weightPoints.isNotEmpty()
+
     val startWeight: Double
         get() = if (weightPoints.isNotEmpty()) {
             weightPoints[0].weight
@@ -19,7 +22,7 @@ data class BodyInfo(var weightPoints: List<WeightPoint> = listOf(),
         get() = weightPoints.min()?.weight ?: startWeight
 
     val highestWeight: Double
-        get() = weightPoints.max()?.weight ?: startWeight
+        get() = weightPoints.sortedByDescending { it.weight }.first().weight
 
     val latestBmi: Double
         get() {
