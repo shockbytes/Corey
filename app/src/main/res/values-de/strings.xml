@@ -80,6 +80,15 @@
         <item>SO</item>
     </string-array>
 
+    <string-array name="daysFull">
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+        <item>Samstag</item>
+        <item>Sonntag</item>
+    </string-array>
 
     <string name="duration_with_minutes">%d Minuten</string>
     <string name="exercises_with_count">%d Übungen</string>
@@ -102,14 +111,14 @@
     <string name="welcome">Willkommen bei Corey!</string>
     <string name="snackbar_cannot_load_workouts">Workouts können nicht geladen werden</string>
     <string name="prefs_category_notifications">Benachrichtigungen</string>
-    <string name="prefs_weigh_notif_day_summary">Wähle den Tag, wenn du dich wiegen möchtest</string>
-    <string name="prefs_weigh_notif_day_title">Tag für Gewichtsmessung</string>
-    <string name="prefs_weigh_notif_title">"Erinnerung für Gewichtsmessung "</string>
-    <string name="prefs_weigh_notif_summary">Erhalte Benachrichtigungen an Tagen wo du dich wiegen willst</string>
-    <string name="prefs_workout_day_notif_title">Workoutbenachrichtigungen</string>
-    <string name="prefs_workout_day_notif_summary">Erhalte Benachrichtigungen an Workouttagen</string>
-    <string name="prefs_workout_day_notif_daytime_summary">Wähle die Tageszeit, wenn du Erinnerungen erhalten möchtest</string>
-    <string name="prefs_workout_day_notif_daytime_title">Zeit für Workoutbenachrichtigungen</string>
+    <string name="prefs_weigh_notification_day_summary">Wähle den Tag, wenn du dich wiegen möchtest</string>
+    <string name="prefs_weigh_notification_day_title">Tag für Gewichtsmessung</string>
+    <string name="prefs_weigh_notification_title">"Erinnerung für Gewichtsmessung "</string>
+    <string name="prefs_weigh_notification_summary">Erhalte Benachrichtigungen an Tagen wo du dich wiegen willst</string>
+    <string name="prefs_workout_day_notification_title">Workoutbenachrichtigungen</string>
+    <string name="prefs_workout_day_notification_summary">Erhalte Benachrichtigungen an Workouttagen</string>
+    <string name="prefs_workout_day_notification_daytime_summary">Wähle die Tageszeit, wenn du Erinnerungen erhalten möchtest</string>
+    <string name="prefs_workout_day_notification_daytime_title">Zeit für Workoutbenachrichtigungen</string>
     <string name="tab_my_body">Mein Körper</string>
     <string name="tab_workout">Workouts</string>
     <string name="tab_schedule">Wochenplan</string>
@@ -136,6 +145,8 @@
     <string name="watch_connected">Verbunden mit %s</string>
     <string name="weight">Gewicht</string>
     <string name="body_card_dream_weight_title">Mein Zielgewicht</string>
+    <string name="reload">Laden</string>
+    <string name="error_fetch_body_info">Deine Körperdaten können nicht geladen werden</string>
 
 
 </resources>

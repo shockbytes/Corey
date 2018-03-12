@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">Corey</string>
-    <string name="app_version" translatable="false">2.1b</string>
+    <string name="app_version" translatable="false">2.1</string>
     <string name="action_settings">Settings</string>
 
     <string name="tab_workout">Workouts</string>
@@ -31,21 +31,21 @@
     <string name="prefs_vibrations_title">Vibration feedback</string>
     <string name="prefs_vibrations_summary">Vibrations indicate the end of an training</string>
 
-    <string name="prefs_workout_day_notif_key" translatable="false">prefs_workout_day_notif_key</string>
-    <string name="prefs_workout_day_notif_summary">Receive reminders on workout days</string>
-    <string name="prefs_workout_day_notif_title">Workout reminder</string>
+    <string name="prefs_workout_day_notification_key" translatable="false">prefs_workout_day_notif_key</string>
+    <string name="prefs_workout_day_notification_summary">Receive reminders on workout days</string>
+    <string name="prefs_workout_day_notification_title">Workout reminder</string>
 
-    <string name="prefs_workout_day_notif_daytime_key" translatable="false">prefs_workout_day_notif_daytime_key</string>
-    <string name="prefs_workout_day_notif_daytime_summary">Pick time of day when to get notified</string>
-    <string name="prefs_workout_day_notif_daytime_title">Workout reminder time</string>
+    <string name="prefs_workout_day_notification_daytime_key" translatable="false">prefs_workout_day_notif_daytime_key</string>
+    <string name="prefs_workout_day_notification_daytime_summary">Pick time of day when to get notified</string>
+    <string name="prefs_workout_day_notification_daytime_title">Workout reminder time</string>
 
-    <string name="prefs_weigh_notif_key" translatable="false">prefs_weigh_notif_key</string>
-    <string name="prefs_weigh_notif_summary">Receive reminders to weigh yourself</string>
-    <string name="prefs_weigh_notif_title">Weigh reminders</string>
+    <string name="prefs_weigh_notification_key" translatable="false">prefs_weigh_notif_key</string>
+    <string name="prefs_weigh_notification_summary">Receive reminders to weigh yourself</string>
+    <string name="prefs_weigh_notification_title">Weigh reminders</string>
 
-    <string name="prefs_weigh_notif_day_key" translatable="false">prefs_weigh_notif_day_key</string>
-    <string name="prefs_weigh_notif_day_summary">Pick the day when you get notified</string>
-    <string name="prefs_weigh_notif_day_title">Weigh reminder day</string>
+    <string name="prefs_weigh_notification_day_key" translatable="false">prefs_weigh_notif_day_key</string>
+    <string name="prefs_weigh_notification_day_summary">Pick the day when you get notified</string>
+    <string name="prefs_weigh_notification_day_title">Weigh reminder day</string>
 
     <string name="hint_name">Name</string>
 
@@ -121,6 +121,25 @@
         <item>SU</item>
     </string-array>
 
+    <string-array name="daysFull">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <string-array name="workoutDaytimeReminder">
+        <item>06:00</item>
+        <item>08:00</item>
+        <item>10:00</item>
+        <item>12:00</item>
+        <item>15:00</item>
+        <item>18:00</item>
+    </string-array>
+
     <string name="workout_message_title_quit">Quit workout?</string>
     <string name="workout_message_title_done">Workout done</string>
     <string name="workout_message_pos_quit">I give up</string>
@@ -174,5 +193,6 @@
     <string name="body_card_dream_weight_title">My desired weight</string>
     <string name="error_fetch_body_info">Unable to fetch your body information</string>
     <string name="reload">Reload</string>
+    <string name="prefs_workout_day_notification_daytime_defValue" translatable="false">08:00</string>
 
 </resources>

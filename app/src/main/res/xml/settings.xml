@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/prefs_category_workout">
 
@@ -24,28 +23,31 @@
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="@string/prefs_workout_day_notif_key"
-            android:summary="@string/prefs_workout_day_notif_summary"
-            android:title="@string/prefs_workout_day_notif_title" />
+            android:key="@string/prefs_workout_day_notification_key"
+            android:summary="@string/prefs_workout_day_notification_summary"
+            android:title="@string/prefs_workout_day_notification_title" />
 
-        <Preference
-            android:title="@string/prefs_workout_day_notif_daytime_title"
-            android:dependency="@string/prefs_workout_day_notif_key"
-            android:key="@string/prefs_workout_day_notif_daytime_key"
-            android:summary="@string/prefs_workout_day_notif_daytime_summary"/>
+        <ListPreference
+            android:defaultValue="@string/prefs_workout_day_notification_daytime_defValue"
+            android:dependency="@string/prefs_workout_day_notification_key"
+            android:entries="@array/workoutDaytimeReminder"
+            android:entryValues="@array/workoutDaytimeReminder"
+            android:key="@string/prefs_workout_day_notification_daytime_key"
+            android:title="@string/prefs_workout_day_notification_daytime_title" />
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="@string/prefs_weigh_notif_key"
-            android:summary="@string/prefs_weigh_notif_summary"
-            android:title="@string/prefs_weigh_notif_title" />
+            android:key="@string/prefs_weigh_notification_key"
+            android:summary="@string/prefs_weigh_notification_summary"
+            android:title="@string/prefs_weigh_notification_title" />
 
-        <Preference
+        <ListPreference
             android:defaultValue="0"
-            android:title="@string/prefs_weigh_notif_day_title"
-            android:dependency="@string/prefs_weigh_notif_key"
-            android:key="@string/prefs_weigh_notif_day_key"
-            android:summary="@string/prefs_weigh_notif_day_summary"/>
+            android:dependency="@string/prefs_weigh_notification_key"
+            android:entries="@array/daysFull"
+            android:entryValues="@array/daysValues"
+            android:key="@string/prefs_weigh_notification_day_key"
+            android:title="@string/prefs_weigh_notification_day_title" />
 
     </PreferenceCategory>
 

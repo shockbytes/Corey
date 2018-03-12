@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
  */
 
 class DefaultScheduleManager(private val storageManager: StorageManager,
-                             private val cxt: Context,
+                             private val context: Context,
                              private val preferences: SharedPreferences) : ScheduleManager {
 
     override val schedule: Observable<List<ScheduleItem>>
@@ -40,24 +40,21 @@ class DefaultScheduleManager(private val storageManager: StorageManager,
                 .subscribeOn(Schedulers.io())
 
     override val isWorkoutNotificationDeliveryEnabled: Boolean
-        get() = preferences.getBoolean(cxt.getString(R.string.prefs_workout_day_notif_key), false)
+        get() = preferences.getBoolean(context.getString(R.string.prefs_workout_day_notification_key), false)
 
     override val isWeighNotificationDeliveryEnabled: Boolean
-        get() = preferences.getBoolean(cxt.getString(R.string.prefs_weigh_notif_key), false)
+        get() = preferences.getBoolean(context.getString(R.string.prefs_weigh_notification_key), false)
 
     override val dayOfWeighNotificationDelivery: Int
-        get() = preferences.getInt(cxt.getString(R.string.prefs_weigh_notif_day_key), 0)
+        get() = preferences.getInt(context.getString(R.string.prefs_weigh_notification_day_key), 0)
 
     override fun poke() {
 
-        val alarmManager = cxt.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(cxt, NotificationReceiver::class.java)
-        val pIntent = PendingIntent.getBroadcast(cxt, 0x9238, intent, 0)
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, NotificationReceiver::class.java)
+        val pIntent = PendingIntent.getBroadcast(context, 0x9238, intent, 0)
 
-        // TODO v2.1 Do not hardcode hour and minute
-        val hour = 8
-        val minute = 30
-
+        val (hour, minute) = readNotificationTimeFromPreferences()
         val cal = Calendar.getInstance()
         cal.set(Calendar.HOUR_OF_DAY, hour)
         cal.set(Calendar.MINUTE, minute)
@@ -89,20 +86,21 @@ class DefaultScheduleManager(private val storageManager: StorageManager,
     }
 
     override fun postWeighNotification() {
-        val nm = cxt.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        nm.notify(0x90, CoreyAppUtils.getWeighNotification(cxt))
+        val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        nm.notify(0x90, CoreyAppUtils.getWeighNotification(context))
     }
 
     override fun tryPostWorkoutNotification() {
         schedule.subscribe({ scheduleItems ->
-            for (item in scheduleItems) {
-                if (item.day == CoreyUtils.getDayOfWeek() && !item.isEmpty) {
-                    val nm = cxt.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                    nm.notify(0x91, CoreyAppUtils.getWorkoutNotification(cxt, item.name))
-                    return@subscribe
-                }
-            }
-        }, { throwable -> Log.wtf("Corey", "Cannot retrieve workouts: " + throwable.localizedMessage) })
+            scheduleItems
+                    .filter { it.day == CoreyUtils.getDayOfWeek() && !it.isEmpty }
+                    .firstOrNull { item ->
+                        postWorkoutNotification(item)
+                        true
+                    }
+        }, { throwable ->
+            Log.wtf("Corey", "Cannot retrieve workouts: " + throwable.localizedMessage)
+        })
     }
 
     override fun registerLiveForScheduleUpdates(listener: LiveScheduleUpdateListener) {
@@ -111,6 +109,19 @@ class DefaultScheduleManager(private val storageManager: StorageManager,
 
     override fun unregisterLiveForScheduleUpdates() {
         storageManager.unregisterLiveScheduleUpdates()
+    }
+
+    private fun readNotificationTimeFromPreferences(): List<Int> {
+
+        val str = preferences.getString(context.getString(R.string.prefs_workout_day_notification_daytime_key),
+                context.getString(R.string.prefs_workout_day_notification_daytime_defValue))
+        return str.split(":")
+                .mapTo(mutableListOf()) { it.toInt() }
+    }
+
+    private fun postWorkoutNotification(item: ScheduleItem) {
+        val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        nm.notify(0x91, CoreyAppUtils.getWorkoutNotification(context, item.name))
     }
 
 }

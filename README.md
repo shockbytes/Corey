@@ -1,12 +1,13 @@
 # Corey - Personal Training Mate
 
 ## Version 2.2
-- [ ] Fix notifications
+- [ ] Fix notification icons + delivery
 - [ ] Web UI
 - [ ] Workout statistics
+- [ ] Improved scheduling (remove swipe-to-dismiss, add Coach (auto-schedule) functionality?)
 
 ## Version 2.1
-- [ ] Settings entry for daily notifications
+- [x] Settings entry for daily notifications
 - [x] Main ViewPager
 - [x] Splash screen loading
 - [x] Fix Wear layout
