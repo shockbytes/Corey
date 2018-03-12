@@ -194,5 +194,7 @@
     <string name="error_fetch_body_info">Unable to fetch your body information</string>
     <string name="reload">Reload</string>
     <string name="prefs_workout_day_notification_daytime_defValue" translatable="false">08:00</string>
+    <string name="label_create_workout">Create Workout</string>
+    <string name="label_settings">Settings</string>
 
 </resources>

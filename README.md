@@ -5,6 +5,7 @@
 - [ ] Web UI
 - [ ] Workout statistics
 - [ ] Improved scheduling (remove swipe-to-dismiss, add Coach (auto-schedule) functionality?)
+- [ ] Remove files, which don't belong into Git (firebase, google)
 
 ## Version 2.1
 - [x] Settings entry for daily notifications

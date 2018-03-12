@@ -147,6 +147,8 @@
     <string name="body_card_dream_weight_title">Mein Zielgewicht</string>
     <string name="reload">Laden</string>
     <string name="error_fetch_body_info">Deine Körperdaten können nicht geladen werden</string>
+    <string name="label_create_workout">Workout erstellen</string>
+    <string name="label_settings">Einstellungen</string>
 
 
 </resources>

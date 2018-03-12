@@ -32,10 +32,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activity.SettingsActivity"
-            android:label="Settings" />
+            android:label="@string/label_settings" />
         <activity
             android:name=".ui.activity.CreateWorkoutActivity"
-            android:label="Create Workout"
+            android:label="@string/label_create_workout"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.WorkoutDetailActivity" />
         <activity android:name=".ui.activity.WorkoutActivity" />
