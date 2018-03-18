@@ -1,10 +1,8 @@
-package at.shockbytes.corey.storage.live
-
-import at.shockbytes.corey.schedule.ScheduleItem
+package at.shockbytes.corey.schedule
 
 /**
- * @author Martin Macheiner
- * Date: 27.02.2017.
+ * @author  Martin Macheiner
+ * Date:    27.02.2017
  */
 
 interface LiveScheduleUpdateListener {

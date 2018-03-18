@@ -130,7 +130,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             val isUpdated = data.getBooleanExtra(AppParams.INTENT_EXTRA_WORKOUT_UPDATED, false)
 
             if (!isUpdated) {
-                workoutManager.addWorkout(w)
+                workoutManager.storeWorkout(w)
             } else {
                 workoutManager.updateWorkout(w)
             }

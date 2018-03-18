@@ -2,7 +2,6 @@ package at.shockbytes.corey.workout
 
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.Workout
-import at.shockbytes.corey.storage.live.LiveWorkoutUpdateListener
 import io.reactivex.Observable
 
 /**
@@ -18,16 +17,18 @@ interface WorkoutManager {
 
     fun poke()
 
-    fun addWorkout(w: Workout)
+    fun storeWorkout(workout: Workout)
 
-    fun deleteWorkout(w: Workout)
+    fun deleteWorkout(workout: Workout)
 
-    fun updateWorkout(w: Workout)
+    fun updateWorkout(workout: Workout)
 
     fun updatePhoneWorkoutInformation(workouts: Int, workoutTime: Int)
 
-    fun registerLiveForWorkoutUpdates(listener: LiveWorkoutUpdateListener)
+    fun updateWearWorkoutInformation(avgPulse: Int, workoutsWithPulse: Int, workoutTime: Int)
 
-    fun unregisterLiveForWorkoutUpdates()
+    fun registerLiveWorkoutUpdates(listener: LiveWorkoutUpdateListener)
+
+    fun unregisterLiveWorkoutUpdates()
 
 }

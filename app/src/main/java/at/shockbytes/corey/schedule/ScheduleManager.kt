@@ -1,6 +1,5 @@
 package at.shockbytes.corey.schedule
 
-import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener
 import io.reactivex.Observable
 
 /**
@@ -32,8 +31,8 @@ interface ScheduleManager {
 
     fun tryPostWorkoutNotification()
 
-    fun registerLiveForScheduleUpdates(listener: LiveScheduleUpdateListener)
+    fun registerLiveScheduleUpdates(listener: LiveScheduleUpdateListener)
 
-    fun unregisterLiveForScheduleUpdates()
+    fun unregisterLiveScheduleUpdates()
 
 }

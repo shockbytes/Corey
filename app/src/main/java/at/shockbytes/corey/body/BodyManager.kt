@@ -4,7 +4,6 @@ import android.support.v4.app.FragmentActivity
 
 import at.shockbytes.corey.body.goal.Goal
 import at.shockbytes.corey.body.info.BodyInfo
-import at.shockbytes.corey.storage.live.LiveBodyUpdateListener
 import io.reactivex.Observable
 
 /**

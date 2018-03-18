@@ -1,20 +1,23 @@
 package at.shockbytes.corey.dagger
 
 import android.app.Application
+import android.content.SharedPreferences
 import at.shockbytes.corey.body.BodyManager
 import at.shockbytes.corey.body.GoogleFitBodyManager
 import at.shockbytes.corey.common.core.running.DefaultRunningManager
 import at.shockbytes.corey.common.core.running.RunningManager
-import at.shockbytes.corey.storage.StorageManager
-import at.shockbytes.corey.workout.DefaultWorkoutManager
+import at.shockbytes.corey.workout.FirebaseWorkoutManager
 import at.shockbytes.corey.workout.WorkoutManager
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * @author Martin Macheiner
- * Date: 04-Mar-18.
+ * @author  Martin Macheiner
+ * Date:    04.03.2018
  */
 
 @Module
@@ -22,14 +25,17 @@ class WorkoutModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideWorkoutManager(storageManager: StorageManager): WorkoutManager {
-        return DefaultWorkoutManager(storageManager)
+    fun provideWorkoutManager(gson: Gson,
+                              remoteConfig: FirebaseRemoteConfig,
+                              firebase: FirebaseDatabase): WorkoutManager {
+        return FirebaseWorkoutManager(app.applicationContext, gson, remoteConfig, firebase)
     }
 
     @Provides
     @Singleton
-    fun provideBodyManager(storageManager: StorageManager): BodyManager {
-        return GoogleFitBodyManager(app.applicationContext, storageManager)
+    fun provideBodyManager(preferences: SharedPreferences,
+                           firebase: FirebaseDatabase): BodyManager {
+        return GoogleFitBodyManager(app.applicationContext, preferences, firebase)
     }
 
     @Provides

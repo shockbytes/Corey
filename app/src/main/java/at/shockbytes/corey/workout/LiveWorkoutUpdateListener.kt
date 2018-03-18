@@ -1,10 +1,10 @@
-package at.shockbytes.corey.storage.live
+package at.shockbytes.corey.workout
 
 import at.shockbytes.corey.common.core.workout.model.Workout
 
 /**
- * @author Martin Macheiner
- * Date: 27.02.2017.
+ * @author  Martin Macheiner
+ * Date:    27.02.2017
  */
 
 interface LiveWorkoutUpdateListener {
