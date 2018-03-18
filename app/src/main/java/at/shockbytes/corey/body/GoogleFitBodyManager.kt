@@ -1,14 +1,14 @@
 package at.shockbytes.corey.body
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.widget.Toast
+import at.shockbytes.corey.R
 import at.shockbytes.corey.body.goal.Goal
 import at.shockbytes.corey.body.info.BodyInfo
 import at.shockbytes.corey.body.info.WeightPoint
-import at.shockbytes.corey.storage.StorageManager
-import at.shockbytes.corey.storage.live.LiveBodyUpdateListener
 import at.shockbytes.util.AppUtils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.Scopes
@@ -18,6 +18,7 @@ import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.data.DataSet
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.request.DataReadRequest
+import com.google.firebase.database.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,14 +27,44 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author  Martin Macheiner
- * Date:    04.08.2016.
+ * Date:    04.08.2016
  */
 class GoogleFitBodyManager(private val context: Context,
-                           private val storageManager: StorageManager) : BodyManager,
+                           private val preferences: SharedPreferences,
+                           private val firebase: FirebaseDatabase) : BodyManager,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    init {
+        setupFirebase()
+    }
 
     private var apiClient: GoogleApiClient? = null
     private var _bodyInfo: BodyInfo = BodyInfo()
+
+    private var _desiredWeight: Int = -1
+    private var _goals: MutableList<Goal> = mutableListOf()
+
+    private var bodyListener: LiveBodyUpdateListener? = null
+
+    override var desiredWeight: Int
+        get() {
+            // No sync with firebase, use local cached value
+            return if (_desiredWeight < 0) {
+                preferences.getInt(PREF_DREAM_WEIGHT, 0)
+            } else _desiredWeight
+        }
+        set(value) {
+            preferences.edit().putInt(PREF_DREAM_WEIGHT, value).apply()
+            firebase.getReference("/body/desired").setValue(value)
+        }
+
+    override val weightUnit: String
+        get() = preferences.getString(PREF_WEIGHT_UNIT, context.getString(R.string.default_weight_unit))
+
+    override val bodyGoals: Observable<List<Goal>>
+        get() = Observable.just(_goals.toList())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
 
     override val bodyInfo: Observable<BodyInfo>
         get() {
@@ -43,20 +74,6 @@ class GoogleFitBodyManager(private val context: Context,
                 loadFitnessDataSync() // Request new data if nothing is available
             }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
         }
-
-    override var desiredWeight: Int
-        get() = storageManager.desiredWeight
-        set(desiredWeight) {
-            storageManager.desiredWeight = desiredWeight
-        }
-
-    override val weightUnit: String
-        get() = storageManager.weightUnit
-
-    override val bodyGoals: Observable<List<Goal>>
-        get() = storageManager.goals
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
 
     override fun poke(activity: FragmentActivity) {
 
@@ -72,26 +89,6 @@ class GoogleFitBodyManager(private val context: Context,
         }
     }
 
-    override fun updateBodyGoal(g: Goal) {
-        storageManager.updateBodyGoal(g)
-    }
-
-    override fun removeBodyGoal(g: Goal) {
-        storageManager.removeBodyGoal(g)
-    }
-
-    override fun storeBodyGoal(g: Goal) {
-        storageManager.storeBodyGoal(g)
-    }
-
-    override fun registerLiveBodyUpdates(listener: LiveBodyUpdateListener) {
-        storageManager.registerLiveBodyUpdates(listener)
-    }
-
-    override fun unregisterLiveBodyUpdates() {
-        storageManager.unregisterLiveBodyUpdates()
-    }
-
     override fun onConnected(bundle: Bundle?) {
         loadFitnessData()
     }
@@ -104,6 +101,28 @@ class GoogleFitBodyManager(private val context: Context,
         Toast.makeText(context,
                 "Exception while connecting to Google Play Services: ${connectionResult.errorMessage}",
                 Toast.LENGTH_LONG).show()
+    }
+
+    override fun registerLiveBodyUpdates(listener: LiveBodyUpdateListener) {
+        this.bodyListener = listener
+    }
+
+    override fun unregisterLiveBodyUpdates() {
+        bodyListener = null
+    }
+
+    override fun updateBodyGoal(g: Goal) {
+        firebase.getReference("/body/goal").child(g.id).setValue(g)
+    }
+
+    override fun removeBodyGoal(g: Goal) {
+        firebase.getReference("/body/goal").child(g.id).removeValue()
+    }
+
+    override fun storeBodyGoal(g: Goal) {
+        val ref = firebase.getReference("/body/goal").push()
+        g.id = ref.key
+        ref.setValue(g)
     }
 
     // -----------------------------------------------------------------------------------------
@@ -153,6 +172,68 @@ class GoogleFitBodyManager(private val context: Context,
             val dp = set.dataPoints[set.dataPoints.size - 1]
             AppUtils.roundDouble(dp.getValue(dp.dataType.fields[0]).asFloat().toDouble(), 2)
         } else 0.0
+    }
+
+    private fun setupFirebase() {
+
+        firebase.getReference("/body/desired").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val data = dataSnapshot.value
+                if (data != null) {
+                    _desiredWeight = Integer.parseInt(data.toString())
+
+                    preferences.edit().putInt(PREF_DREAM_WEIGHT, _desiredWeight).apply()
+                    bodyListener?.onDesiredWeightChanged(_desiredWeight)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError?) {
+            }
+        })
+
+        firebase.getReference("body/goal").addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+
+                val g = dataSnapshot.getValue(Goal::class.java)
+                if (g != null) {
+                    _goals.add(g)
+                    bodyListener?.onBodyGoalAdded(g)
+                }
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+
+                val g = dataSnapshot.getValue(Goal::class.java)
+                if (g != null) {
+                    _goals[_goals.indexOf(g)] = g
+                    bodyListener?.onBodyGoalChanged(g)
+                }
+            }
+
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+
+                val g = dataSnapshot.getValue(Goal::class.java)
+                if (g != null) {
+                    _goals.remove(g)
+                    bodyListener?.onBodyGoalDeleted(g)
+                }
+            }
+
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String) {
+            }
+
+            override fun onCancelled(databaseError: DatabaseError?) {
+            }
+        })
+
+    }
+
+
+    companion object {
+
+        private const val PREF_DREAM_WEIGHT = "dreamweight"
+        private const val PREF_WEIGHT_UNIT = "weight_unit"
+
     }
 
 }

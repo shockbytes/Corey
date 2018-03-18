@@ -7,7 +7,7 @@ import android.view.View
 import android.view.animation.AnticipateOvershootInterpolator
 import at.shockbytes.corey.body.BodyManager
 import at.shockbytes.corey.body.info.BodyInfo
-import at.shockbytes.corey.storage.live.LiveBodyUpdateListener
+import at.shockbytes.corey.body.LiveBodyUpdateListener
 import at.shockbytes.corey.ui.fragment.BaseFragment
 import at.shockbytes.corey.user.CoreyUser
 import butterknife.ButterKnife

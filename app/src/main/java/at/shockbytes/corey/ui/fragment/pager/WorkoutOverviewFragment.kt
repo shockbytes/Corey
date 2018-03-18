@@ -12,10 +12,10 @@ import at.shockbytes.corey.adapter.WorkoutAdapter
 import at.shockbytes.corey.common.core.util.WorkoutNameComparator
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.storage.live.LiveWorkoutUpdateListener
 import at.shockbytes.corey.ui.activity.CreateWorkoutActivity
 import at.shockbytes.corey.ui.activity.WorkoutDetailActivity
 import at.shockbytes.corey.util.AppParams
+import at.shockbytes.corey.workout.LiveWorkoutUpdateListener
 import at.shockbytes.corey.workout.WorkoutManager
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.RecyclerViewWithEmptyView
@@ -47,11 +47,11 @@ class WorkoutOverviewFragment : BasePagerFragment(), BaseAdapter.OnItemClickList
 
 
     override fun registerForLiveEvents() {
-        workoutManager.registerLiveForWorkoutUpdates(this)
+        workoutManager.registerLiveWorkoutUpdates(this)
     }
 
     override fun unregisterForLiveEvents() {
-        workoutManager.unregisterLiveForWorkoutUpdates()
+        workoutManager.unregisterLiveWorkoutUpdates()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

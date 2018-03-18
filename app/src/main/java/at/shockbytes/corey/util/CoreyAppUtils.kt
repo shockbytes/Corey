@@ -2,7 +2,6 @@ package at.shockbytes.corey.util
 
 import android.app.Notification
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.support.v4.app.NotificationCompat
@@ -18,13 +17,13 @@ import java.util.*
 
 object CoreyAppUtils {
 
-    private val channelId: String = "corey_notifications"
+    private const val channelId: String = "corey_notifications"
 
     fun getWorkoutNotification(context: Context, name: String): Notification {
 
         return NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_tab_workout)
-                .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_notification_workout))
+                .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_notification_workout))
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setAutoCancel(true)
                 .setContentText(context.getString(R.string.notification_workout_msg, name))
@@ -38,7 +37,7 @@ object CoreyAppUtils {
 
         return NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_tab_workout)
-                .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_notification_weigh))
+                .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_notification_weigh))
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setAutoCancel(true)
                 .setContentText(context.getString(R.string.notification_weigh_msg))

@@ -9,7 +9,7 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.body.BodyManager
 import at.shockbytes.corey.body.goal.Goal
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.storage.live.LiveBodyUpdateListener
+import at.shockbytes.corey.body.LiveBodyUpdateListener
 import at.shockbytes.corey.ui.fragment.body.*
 import at.shockbytes.corey.user.UserManager
 import at.shockbytes.util.AppUtils

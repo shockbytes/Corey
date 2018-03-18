@@ -1,4 +1,4 @@
-package at.shockbytes.corey.storage.live
+package at.shockbytes.corey.body
 
 import at.shockbytes.corey.body.goal.Goal
 

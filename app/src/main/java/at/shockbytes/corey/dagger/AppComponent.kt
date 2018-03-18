@@ -20,7 +20,7 @@ import javax.inject.Singleton
  * Date: 21.02.2017.
  */
 @Singleton
-@Component(modules = [AppModule::class, WorkoutModule::class])
+@Component(modules = [AppModule::class, WorkoutModule::class, FirebaseModule::class])
 interface AppComponent {
 
     fun inject(activity: MainActivity)

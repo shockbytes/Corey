@@ -11,9 +11,14 @@ import android.util.Log
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.receiver.NotificationReceiver
-import at.shockbytes.corey.storage.StorageManager
-import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener
 import at.shockbytes.corey.util.CoreyAppUtils
+import at.shockbytes.corey.workout.WorkoutManager
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -25,19 +30,37 @@ import java.util.concurrent.TimeUnit
  * Date: 22.02.2017.
  */
 
-class DefaultScheduleManager(private val storageManager: StorageManager,
-                             private val context: Context,
-                             private val preferences: SharedPreferences) : ScheduleManager {
+class FirebaseScheduleManager(private val context: Context,
+                              private val preferences: SharedPreferences,
+                              private val gson: Gson,
+                              private val workoutManager: WorkoutManager,
+                              private val remoteConfig: FirebaseRemoteConfig,
+                              private val firebase: FirebaseDatabase) : ScheduleManager {
+
+    init {
+        setupFirebase()
+    }
+
+    private val scheduleItems: MutableList<ScheduleItem> = mutableListOf()
+    private var scheduleListener: LiveScheduleUpdateListener? = null
 
     override val schedule: Observable<List<ScheduleItem>>
-        get() = storageManager.schedule
+        get() = Observable.just(scheduleItems.toList())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
 
     override val itemsForScheduling: Observable<List<String>>
-        get() = storageManager.itemsForScheduling
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+        get() = Observable.fromCallable {
+            val items = mutableListOf<String>()
+            workoutManager.workouts.blockingFirst().mapTo(items) { it.displayableName }
+
+            val schedulingItemsAsJson = remoteConfig
+                    .getString(context.getString(R.string.remote_config_scheduling_items))
+            val remoteConfigItems = gson.fromJson(schedulingItemsAsJson, Array<String>::class.java)
+            items.addAll(remoteConfigItems)
+
+            items.toList()
+        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
 
     override val isWorkoutNotificationDeliveryEnabled: Boolean
         get() = preferences.getBoolean(context.getString(R.string.prefs_workout_day_notification_key), false)
@@ -74,15 +97,18 @@ class DefaultScheduleManager(private val storageManager: StorageManager,
     }
 
     override fun insertScheduleItem(item: ScheduleItem): ScheduleItem {
-        return storageManager.insertScheduleItem(item)
+        val ref = firebase.getReference("/schedule").push()
+        item.id = ref.key
+        ref.setValue(item)
+        return item
     }
 
     override fun updateScheduleItem(item: ScheduleItem) {
-        storageManager.updateScheduleItem(item)
+        firebase.getReference("/schedule").child(item.id).setValue(item)
     }
 
     override fun deleteScheduleItem(item: ScheduleItem) {
-        storageManager.deleteScheduleItem(item)
+        firebase.getReference("/schedule").child(item.id).removeValue()
     }
 
     override fun postWeighNotification() {
@@ -93,26 +119,22 @@ class DefaultScheduleManager(private val storageManager: StorageManager,
     override fun tryPostWorkoutNotification() {
         schedule.subscribe({ scheduleItems ->
             scheduleItems
-                    .filter { it.day == CoreyUtils.getDayOfWeek() && !it.isEmpty }
-                    .firstOrNull { item ->
-                        postWorkoutNotification(item)
-                        true
-                    }
+                    .firstOrNull { it.day == CoreyUtils.getDayOfWeek() && !it.isEmpty }
+                    ?.let { item -> postWorkoutNotification(item) }
         }, { throwable ->
             Log.wtf("Corey", "Cannot retrieve workouts: " + throwable.localizedMessage)
         })
     }
 
-    override fun registerLiveForScheduleUpdates(listener: LiveScheduleUpdateListener) {
-        storageManager.registerLiveScheduleUpdates(listener)
+    override fun registerLiveScheduleUpdates(listener: LiveScheduleUpdateListener) {
+        this.scheduleListener = listener
     }
 
-    override fun unregisterLiveForScheduleUpdates() {
-        storageManager.unregisterLiveScheduleUpdates()
+    override fun unregisterLiveScheduleUpdates() {
+        scheduleListener = null
     }
 
     private fun readNotificationTimeFromPreferences(): List<Int> {
-
         val str = preferences.getString(context.getString(R.string.prefs_workout_day_notification_daytime_key),
                 context.getString(R.string.prefs_workout_day_notification_daytime_defValue))
         return str.split(":")
@@ -122,6 +144,44 @@ class DefaultScheduleManager(private val storageManager: StorageManager,
     private fun postWorkoutNotification(item: ScheduleItem) {
         val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         nm.notify(0x91, CoreyAppUtils.getWorkoutNotification(context, item.name))
+    }
+
+    private fun setupFirebase() {
+        firebase.getReference("/schedule").addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+
+                val item = dataSnapshot.getValue(ScheduleItem::class.java)
+                if (item != null) {
+                    scheduleItems.add(item)
+                    scheduleListener?.onScheduleItemAdded(item)
+                }
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+
+                val changed = dataSnapshot.getValue(ScheduleItem::class.java)
+                if (changed != null) {
+                    scheduleItems[scheduleItems.indexOf(changed)] = changed
+                    scheduleListener?.onScheduleItemChanged(changed)
+                }
+            }
+
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+
+                val removed = dataSnapshot.getValue(ScheduleItem::class.java)
+                if (removed != null) {
+                    scheduleItems.remove(removed)
+                    scheduleListener?.onScheduleItemDeleted(removed)
+                }
+            }
+
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String) {
+                Log.wtf("Corey", "ScheduleItem moved: " + dataSnapshot.toString() + " / " + s)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError?) {
+            }
+        })
     }
 
 }

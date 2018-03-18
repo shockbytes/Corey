@@ -11,9 +11,9 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.DaysScheduleAdapter
 import at.shockbytes.corey.adapter.ScheduleAdapter
 import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.schedule.LiveScheduleUpdateListener
 import at.shockbytes.corey.schedule.ScheduleItem
 import at.shockbytes.corey.schedule.ScheduleManager
-import at.shockbytes.corey.storage.live.LiveScheduleUpdateListener
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
@@ -49,11 +49,11 @@ class ScheduleFragment : BasePagerFragment(), LiveScheduleUpdateListener,
 
 
     override fun registerForLiveEvents() {
-        scheduleManager.registerLiveForScheduleUpdates(this)
+        scheduleManager.registerLiveScheduleUpdates(this)
     }
 
     override fun unregisterForLiveEvents() {
-        scheduleManager.unregisterLiveForScheduleUpdates()
+        scheduleManager.unregisterLiveScheduleUpdates()
     }
 
     override fun onScheduleItemAdded(item: ScheduleItem) {

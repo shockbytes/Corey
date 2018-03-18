@@ -13,8 +13,8 @@ import butterknife.BindView
 import java.util.*
 
 /**
- * @author Martin Macheiner
- * Date: 05-Mar-18.
+ * @author  Martin Macheiner
+ * Date:    05.03.2018
  */
 
 class DreamWeightBodyFragmentView(fragment: BaseFragment,
@@ -60,7 +60,7 @@ class DreamWeightBodyFragmentView(fragment: BaseFragment,
         val title = titles[Random().nextInt(titles.size - 1)]
         txtHeadline.text = title
 
-        val diff = AppUtils.roundDouble(bodyInfo.latestWeightPoint.weight - bodyInfo.dreamWeight.toDouble(), 1)
+        val diff = AppUtils.roundDouble(bodyInfo.latestWeightPoint.weight - bodyInfo.dreamWeight, 1)
         txtDiff.text = "$diff $weightUnit"
 
         txtContent.text = fragment.getString(R.string.dreamweight_card_text,

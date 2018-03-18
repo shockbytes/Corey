@@ -1,9 +1,9 @@
 # Corey - Personal Training Mate
 
 ## Version 2.2
-- [ ] Fix notification icons + delivery
+- [x] Fix notification icons + delivery
 - [ ] Web UI
-- [ ] Workout statistics
+- [ ] Workout statistics card (in BodyFragment)
 - [ ] Improved scheduling (remove swipe-to-dismiss, add Coach (auto-schedule) functionality?)
 - [ ] Remove files, which don't belong into Git (firebase, google)
 
