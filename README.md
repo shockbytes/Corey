@@ -3,9 +3,10 @@
 ## Version 2.2
 - [x] Fix notification icons + delivery
 - [x] Fix git structure
+- [x] Equipment support for exercises and workouts
+- [ ] Improved scheduling (remove swipe-to-dismiss, add Coach (auto-schedule) functionality?)
 - [ ] Web UI
 - [ ] Workout statistics card (in BodyFragment)
-- [ ] Improved scheduling (remove swipe-to-dismiss, add Coach (auto-schedule) functionality?)
 
 ## Version 2.1
 - [x] Settings entry for daily notifications
