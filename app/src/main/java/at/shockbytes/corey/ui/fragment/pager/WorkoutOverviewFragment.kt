@@ -72,7 +72,9 @@ class WorkoutOverviewFragment : BasePagerFragment(), BaseAdapter.OnItemClickList
                 Pair(v.findViewById(R.id.item_training_txt_title),
                         getString(R.string.transition_workout_name)),
                 Pair(v.findViewById(R.id.item_training_container_exercises),
-                        getString(R.string.transition_workout_exercise_count)))
+                        getString(R.string.transition_workout_exercise_count)),
+                Pair(v.findViewById(R.id.item_training_imgview_equipment),
+                        getString(R.string.transition_workout_equipment)))
         activity?.startActivity(intent, options.toBundle())
     }
 

@@ -67,6 +67,12 @@ data class Workout(var id: String = "",
             }
         }
 
+    val equipment: Equipment
+        @Exclude
+        get() {
+            val max = exercises.map { it.equipment.ordinal }.max() ?: 0
+            return Equipment.fromIndex(max)
+        }
 
     fun setName(value: String) {
         name = value.replace(" ", "_")
@@ -76,10 +82,8 @@ data class Workout(var id: String = "",
         return name
     }
 
-
     override fun compareTo(other: Workout): Int {
         return id.compareTo(other.id)
     }
-
 
 }

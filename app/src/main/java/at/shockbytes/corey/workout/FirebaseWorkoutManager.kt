@@ -27,25 +27,29 @@ class FirebaseWorkoutManager(private val context: Context,
         setupFirebase()
     }
 
+    private val timeExerciseGson = Gson()
+
     private var workoutListener: LiveWorkoutUpdateListener? = null
     private var _workouts: MutableList<Workout> = mutableListOf()
 
     override val exercises: Observable<List<Exercise>>
-        get() {
+        get() = Observable.fromCallable {
 
             val exercisesAsJson = remoteConfig.getString(context.getString(R.string.remote_config_exercises))
             val timeExercisesAsJson = remoteConfig.getString(context.getString(R.string.remote_config_time_exercises))
 
-            val exercisesAsArray = gson.fromJson(exercisesAsJson, Array<String>::class.java)
-            val timeExercisesAsArray = gson.fromJson(timeExercisesAsJson, Array<String>::class.java)
+            val exercisesAsArray = gson.fromJson(exercisesAsJson, Array<Exercise>::class.java)
+            val timeExercisesAsArray = timeExerciseGson.fromJson(timeExercisesAsJson, Array<TimeExercise>::class.java)
 
+            // Concatenate both arrays to one list
+            //exercisesAsArray.plus(timeExercisesAsArray).toList()
             val exercises = mutableListOf<Exercise>()
-            exercisesAsArray.mapTo(exercises) { Exercise(it) }
-            timeExercisesAsArray.mapTo(exercises) { TimeExercise(name = it) }
+            exercisesAsArray.mapTo(exercises) { it }
+            timeExercisesAsArray.mapTo(exercises) { it }
+            exercises.toList()
 
-            return Observable.just(exercises.toList()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-        }
+        }.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
 
     override val workouts: Observable<List<Workout>>
         get() = Observable.just(_workouts.toList())
@@ -59,6 +63,7 @@ class FirebaseWorkoutManager(private val context: Context,
                         // Once the config is successfully fetched
                         // it must be activated before newly fetched values are returned.
                         remoteConfig.activateFetched()
+                        Log.d ("Corey", "RemoteConfig fetch successful!")
                     } else {
                         Log.d("Corey", "RemoteConfig fetch failed!")
                     }

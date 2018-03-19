@@ -166,6 +166,7 @@
     <string name="transition_workout_card" translatable="false">transition_workout_card</string>
     <string name="transition_workout_name" translatable="false">transition_workout_name</string>
     <string name="transition_workout_body_region" translatable="false">transition_workout_body_region</string>
+    <string name="transition_workout_equipment" translatable="false">transition_workout_equipment</string>
     <string name="transition_workout_duration" translatable="false">transition_workout_duration</string>
     <string name="transition_workout_exercise_count" translatable="false">transition_workout_exercise_count</string>
     <string name="snackbar_cannot_load_workouts">Cannot load workouts</string>

@@ -1,10 +1,7 @@
 package at.shockbytes.corey.adapter
 
 import android.content.Context
-import android.support.v7.view.menu.MenuPopupHelper
-import android.support.v7.widget.CardView
 import android.support.v7.widget.PopupMenu
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +9,15 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 
 /**
- * @author Martin Macheiner
- * Date: 27.10.2015.
+ * @author  Martin Macheiner
+ * Date:    27.10.2015
  */
 class WorkoutAdapter(cxt: Context,
                      data: List<Workout>,
@@ -42,18 +40,16 @@ class WorkoutAdapter(cxt: Context,
 
         private val popupMenu: PopupMenu
 
-        private val cardView: CardView by bindView(R.id.item_training_cardview)
         private val txtTitle: TextView by bindView(R.id.item_training_txt_title)
         private val txtDuration: TextView by bindView(R.id.item_training_txt_duration)
         private val txtWorkoutCount: TextView by bindView(R.id.item_training_txt_workouts)
         private val imgViewBodyRegion: ImageView by bindView(R.id.item_training_imgview_body_region)
+        private val imgViewEquipment: ImageView by bindView(R.id.item_training_imgview_equipment)
         private val imgBtnOverflow: ImageButton by bindView(R.id.item_training_imgbtn_overflow)
 
         init {
             popupMenu = PopupMenu(context, imgBtnOverflow)
-            popupMenu.menuInflater.inflate(R.menu.menu_popup_workout, popupMenu.menu)
-            popupMenu.setOnMenuItemClickListener(this)
-            tryShowIconsInPopupMenu(popupMenu)
+            setupPopupMenu()
         }
 
         override fun bind(t: Workout) {
@@ -68,6 +64,8 @@ class WorkoutAdapter(cxt: Context,
 
             imgBtnOverflow.setOnClickListener { popupMenu.show() }
 
+            imgViewEquipment.setImageDrawable(AppUtils.createRoundedBitmapFromResource(context,
+                    CoreyUtils.getImageByEquipment(t.equipment), R.color.equipmentBackground))
         }
 
         override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -80,18 +78,11 @@ class WorkoutAdapter(cxt: Context,
             return true
         }
 
-        private fun tryShowIconsInPopupMenu(menu: PopupMenu) {
-
-            try {
-                val fieldPopup = menu.javaClass.getDeclaredField("mPopup")
-                fieldPopup.isAccessible = true
-                val popup = fieldPopup.get(menu) as MenuPopupHelper
-                popup.setForceShowIcon(true)
-            } catch (e: Exception) {
-                Log.d("Corey", "Cannot force to show icons in popupmenu")
-            }
+        private fun setupPopupMenu() {
+            popupMenu.menuInflater.inflate(R.menu.menu_popup_workout, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener(this)
+            CoreyUtils.tryShowIconsInPopupMenu(popupMenu)
         }
-
     }
 
 }

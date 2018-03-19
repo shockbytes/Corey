@@ -11,11 +11,13 @@ import at.shockbytes.corey.common.core.R
  * Date: 20.03.2015.
  */
 
-open class Exercise(open var name: String = "", open var repetitions: Int = 0) : Parcelable {
+open class Exercise(open var name: String = "", open var repetitions: Int = 0,
+                    open var equipment: Equipment = Equipment.BODYWEIGHT) : Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
-            parcel.readInt())
+            parcel.readInt(),
+            parcel.readSerializable() as Equipment)
 
     open fun getDisplayName(context: Context): String {
         return if (repetitions == 0) {
@@ -26,6 +28,7 @@ open class Exercise(open var name: String = "", open var repetitions: Int = 0) :
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeInt(repetitions)
+        parcel.writeSerializable(equipment)
     }
 
     override fun describeContents(): Int {

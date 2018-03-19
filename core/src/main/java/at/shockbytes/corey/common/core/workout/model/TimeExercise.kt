@@ -3,7 +3,6 @@ package at.shockbytes.corey.common.core.workout.model
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import android.util.Log
 import at.shockbytes.corey.common.core.R
 import com.google.firebase.database.Exclude
 
@@ -16,9 +15,9 @@ import com.google.firebase.database.Exclude
 @Exclude private var o_name: String = "",
                    @Exclude private var o_reps: Int = 0,
  */
-class TimeExercise(name: String, reps: Int = 0,
+class TimeExercise(name: String, reps: Int = 0, eq: Equipment = Equipment.BODYWEIGHT,
                    var workDuration: Int = 0,
-                   var restDuration: Int = workDuration) : Exercise(name, reps), Parcelable {
+                   var restDuration: Int = workDuration) : Exercise(name, reps, eq), Parcelable {
 
     val workoutDurationInSeconds: Int
         @Exclude
@@ -27,6 +26,7 @@ class TimeExercise(name: String, reps: Int = 0,
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readInt(),
+            parcel.readSerializable() as Equipment,
             parcel.readInt(),
             parcel.readInt())
 

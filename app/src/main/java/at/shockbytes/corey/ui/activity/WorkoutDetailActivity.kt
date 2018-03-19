@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.ExerciseAdapter
+import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.activity.core.TintableBackNavigableActivity
@@ -27,6 +28,7 @@ class WorkoutDetailActivity : TintableBackNavigableActivity() {
 
     private val imgViewExtToolbar: ImageView by bindView(R.id.activity_training_detail_imgview_ext_toolbar)
     private val imgViewMuscles: ImageView by bindView(R.id.activity_training_detail_imgview_body_region)
+    private val imgViewEquipment: ImageView by bindView(R.id.activity_training_detail_imgview_equipment)
     private val txtDuration: TextView by bindView(R.id.activity_training_detail_txt_duration)
     private val txtExerciseCount: TextView by bindView(R.id.activity_training_detail_txt_exercise_count)
     private val recyclerViewExercises: RecyclerView by bindView(R.id.activity_training_recyclerview)
@@ -84,6 +86,9 @@ class WorkoutDetailActivity : TintableBackNavigableActivity() {
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this)
             startActivity(WorkoutActivity.newIntent(applicationContext, workout), options.toBundle())
         }
+
+        imgViewEquipment.setImageDrawable(AppUtils.createRoundedBitmapFromResource(this,
+                CoreyUtils.getImageByEquipment(workout.equipment), R.color.equipmentBackground))
     }
 
     companion object {
