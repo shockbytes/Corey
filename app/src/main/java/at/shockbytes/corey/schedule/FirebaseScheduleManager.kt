@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.support.v4.app.FragmentActivity
 import android.util.Log
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
@@ -26,8 +27,8 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
- * @author Martin Macheiner
- * Date: 22.02.2017.
+ * @author  Martin Macheiner
+ * Date:    22.02.2017
  */
 
 class FirebaseScheduleManager(private val context: Context,
@@ -71,7 +72,7 @@ class FirebaseScheduleManager(private val context: Context,
     override val dayOfWeighNotificationDelivery: Int
         get() = preferences.getInt(context.getString(R.string.prefs_weigh_notification_day_key), 0)
 
-    override fun poke() {
+    override fun poke(activity: FragmentActivity?) {
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, NotificationReceiver::class.java)

@@ -4,7 +4,7 @@
 - [x] Fix notification icons + delivery
 - [x] Fix git structure
 - [x] Equipment support for exercises and workouts
-- [ ] Improved scheduling (remove swipe-to-dismiss, add Coach (auto-schedule) functionality?)
+- [x] Improved scheduling (remove swipe-to-dismiss)
 - [ ] Web UI
 - [ ] Workout statistics card (in BodyFragment)
 

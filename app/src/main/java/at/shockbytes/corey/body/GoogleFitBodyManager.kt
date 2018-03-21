@@ -75,9 +75,8 @@ class GoogleFitBodyManager(private val context: Context,
             }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
         }
 
-    override fun poke(activity: FragmentActivity) {
-
-        if (apiClient == null) {
+    override fun poke(activity: FragmentActivity?) {
+        if (apiClient == null && activity != null) {
             apiClient = GoogleApiClient.Builder(context)
                     .addApi(Fitness.HISTORY_API)
                     .addApi(Fitness.RECORDING_API)

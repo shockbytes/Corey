@@ -1,6 +1,7 @@
 package at.shockbytes.corey.workout
 
 import android.content.Context
+import android.support.v4.app.FragmentActivity
 import android.util.Log
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Exercise
@@ -56,7 +57,7 @@ class FirebaseWorkoutManager(private val context: Context,
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
 
-    override fun poke() {
+    override fun poke(activity: FragmentActivity?) {
         remoteConfig.fetch()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -71,9 +72,10 @@ class FirebaseWorkoutManager(private val context: Context,
     }
 
     override fun storeWorkout(workout: Workout) {
-        val ref = firebase.getReference("/workout").push()
-        workout.id = ref.key
-        ref.setValue(workout)
+        firebase.getReference("/workout").push().let { ref ->
+            workout.id = ref.key
+            ref.setValue(workout)
+        }
     }
 
     override fun deleteWorkout(workout: Workout) {

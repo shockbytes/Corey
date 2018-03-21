@@ -1,21 +1,20 @@
 package at.shockbytes.corey.workout
 
+import at.shockbytes.corey.common.core.util.Pokeable
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.Workout
 import io.reactivex.Observable
 
 /**
- * @author Martin Macheiner
- * Date: 21.02.2017.
+ * @author  Martin Macheiner
+ * Date:    21.02.2017
  */
 
-interface WorkoutManager {
+interface WorkoutManager : Pokeable {
 
     val workouts: Observable<List<Workout>>
 
     val exercises: Observable<List<Exercise>>
-
-    fun poke()
 
     fun storeWorkout(workout: Workout)
 

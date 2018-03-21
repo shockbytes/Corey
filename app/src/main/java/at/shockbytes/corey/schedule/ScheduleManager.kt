@@ -1,5 +1,6 @@
 package at.shockbytes.corey.schedule
 
+import at.shockbytes.corey.common.core.util.Pokeable
 import io.reactivex.Observable
 
 /**
@@ -7,7 +8,7 @@ import io.reactivex.Observable
  * Date: 21.02.2017.
  */
 
-interface ScheduleManager {
+interface ScheduleManager : Pokeable {
 
     val schedule: Observable<List<ScheduleItem>>
 
@@ -18,8 +19,6 @@ interface ScheduleManager {
     val isWeighNotificationDeliveryEnabled: Boolean
 
     val dayOfWeighNotificationDelivery: Int
-
-    fun poke()
 
     fun insertScheduleItem(item: ScheduleItem): ScheduleItem
 

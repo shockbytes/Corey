@@ -3,23 +3,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
-def daggerVersion = "2.14.1"
-def butterknifeVersion = "8.8.1"
-def supportVersion = "26.1.0"
-def rxJavaVersion = "2.1.6"
-def rxAndroidVersion = "2.0.1"
-def playServicesVersion = "11.8.0"
-def shockUtilVersion = "2.1.2"
 def wearableVersion = "2.2.0"
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "at.shockbytes.corey"
         minSdkVersion 23
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true

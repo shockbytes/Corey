@@ -53,17 +53,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     @Inject
     protected lateinit var userManager: UserManager
 
-
     private lateinit var menuItemAccount: MenuItem
     private lateinit var menuItemWatch: MenuItem
-
-    private var watchInfo: WatchInfo = WatchInfo(null, false) // default is not connected
 
     private val toolbar: Toolbar by bindView(R.id.toolbar)
     private val viewpager: ViewPager by bindView(R.id.viewpager)
     private val appBar: AppBarLayout by bindView(R.id.main_appbar)
     private val tabLayout: TabLayout by bindView(R.id.main_tablayout)
     private val fabNewWorkout: FloatingActionButton by bindView(R.id.main_fab_edit)
+
+    private var watchInfo: WatchInfo = WatchInfo(null, false) // default is not connected
 
     private val nodeStateChangedListener: ((WatchInfo) -> Unit) = {
         watchInfo = it

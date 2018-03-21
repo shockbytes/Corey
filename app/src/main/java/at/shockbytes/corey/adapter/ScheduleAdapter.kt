@@ -3,6 +3,7 @@ package at.shockbytes.corey.adapter
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.schedule.ScheduleItem
@@ -21,6 +22,7 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
 
 
     private var onScheduleItemSelectedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit)? = null
+    private var onScheduleItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit)? = null
 
     override var data: MutableList<ScheduleItem>
         get() = super.data
@@ -68,6 +70,10 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
 
     fun setOnScheduleItemSelectedListener(listener: (item: ScheduleItem, v: View, position: Int) -> Unit) {
         onScheduleItemSelectedListener = listener
+    }
+
+    fun setOnScheduleItemDismissedListener(listener: (item: ScheduleItem, position: Int) -> Unit) {
+        onScheduleItemDismissedListener = listener
     }
 
     //-----------------------------Data Section-----------------------------
@@ -128,14 +134,20 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
         private var itemPosition: Int = 0
 
         private val txtName: TextView by bindView(R.id.item_schedule_txt_name)
+        private val btnClear: ImageButton by bindView(R.id.item_schedule_btn_clear)
 
         init {
             itemView.setOnClickListener {
                 onScheduleItemSelectedListener?.invoke(item, itemView, itemPosition)
             }
+            btnClear.setOnClickListener {
+                // animateDismiss()
+                onScheduleItemDismissedListener?.invoke(item, itemPosition)
+            }
         }
 
-        override fun bind(t: ScheduleItem) { // Not needed in this case
+        override fun bind(t: ScheduleItem) {
+            // Not needed in this case
         }
 
         fun bind(item: ScheduleItem, position: Int) {
@@ -143,10 +155,19 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
             itemPosition = position
             txtName.text = item.name
         }
+
+        private fun animateDismiss() {
+            // TODO Investigate this, why this does not work!
+            if (!item.isEmpty) {
+                itemView.animate().rotationY(itemView.rotationY + 180f).setDuration(1000)
+                        .withEndAction {
+                            itemView.rotationY = 0f
+                        }.start()
+            }
+        }
     }
 
     companion object {
-
         const val MAX_SCHEDULES = 7
     }
 

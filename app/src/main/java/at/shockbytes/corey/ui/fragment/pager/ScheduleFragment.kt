@@ -92,10 +92,13 @@ class ScheduleFragment : BasePagerFragment(), LiveScheduleUpdateListener,
         recyclerView.adapter = adapter
         recyclerView.isNestedScrollingEnabled = false
         recyclerView.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, context!!)))
-        val callback = BaseItemTouchHelper(adapter, true, BaseItemTouchHelper.DragAccess.ALL)
+        val callback = BaseItemTouchHelper(adapter, false, BaseItemTouchHelper.DragAccess.ALL)
         adapter.onItemMoveListener = this
         adapter.setOnScheduleItemSelectedListener { item, _, position ->
             onScheduleItemClicked(item, position)
+        }
+        adapter.setOnScheduleItemDismissedListener { item, position ->
+            onItemDismissed(item, position)
         }
 
         touchHelper = ItemTouchHelper(callback)

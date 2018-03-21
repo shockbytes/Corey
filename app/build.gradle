@@ -2,26 +2,19 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.fabric'
 
-def daggerVersion = "2.14.1"
-def butterknifeVersion = "8.8.1"
-def supportVersion = "26.1.0"
-def rxJavaVersion = "2.1.6"
-def rxAndroidVersion = "2.0.1"
-def firebaseVersion = "11.8.0"
-def firebaseUIVersion = "3.2.2"
-def playServicesVersion = "11.8.0"
 def icePickVersion = "3.2.0"
-def shockUtilVersion = "2.1.2"
+def crashlyticsVersion = "2.9.1"
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "at.shockbytes.corey"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -45,9 +38,9 @@ androidExtensions {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation (project(':core')) /*{
+    implementation (project(':core')) {
         exclude group: 'com.google.android.gms'
-    }*/
+    }
 
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"
@@ -65,6 +58,8 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$firebaseVersion"
     implementation "com.google.firebase:firebase-auth:$firebaseVersion"
     implementation "com.firebaseui:firebase-ui-auth:$firebaseUIVersion"
+
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"

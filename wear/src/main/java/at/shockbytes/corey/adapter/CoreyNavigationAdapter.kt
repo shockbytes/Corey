@@ -9,8 +9,8 @@ import android.support.wear.widget.drawer.WearableNavigationDrawerView
 
 
 /**
- * @author Martin Macheiner
- * Date: 23.03.2017.
+ * @author  Martin Macheiner
+ * Date:    23.03.2017
  */
 
 class CoreyNavigationAdapter(private val context: Context,
@@ -22,7 +22,7 @@ class CoreyNavigationAdapter(private val context: Context,
     }
 
     override fun getItemDrawable(i: Int): Drawable {
-        return ContextCompat.getDrawable(context, items[i].drawable)
+        return ContextCompat.getDrawable(context, items[i].drawable)!! // Should never be null!!!
     }
 
     override fun getCount(): Int {
