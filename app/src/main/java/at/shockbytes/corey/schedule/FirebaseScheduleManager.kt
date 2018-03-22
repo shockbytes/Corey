@@ -14,6 +14,7 @@ import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.receiver.NotificationReceiver
 import at.shockbytes.corey.util.CoreyAppUtils
 import at.shockbytes.corey.workout.WorkoutManager
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -70,7 +71,8 @@ class FirebaseScheduleManager(private val context: Context,
         get() = preferences.getBoolean(context.getString(R.string.prefs_weigh_notification_key), false)
 
     override val dayOfWeighNotificationDelivery: Int
-        get() = preferences.getInt(context.getString(R.string.prefs_weigh_notification_day_key), 0)
+        get() = preferences.getString(context.getString(R.string.prefs_weigh_notification_day_key),
+                context.getString(R.string.prefs_weigh_notification_day_default_value)).toInt()
 
     override fun poke(activity: FragmentActivity?) {
 
@@ -117,13 +119,16 @@ class FirebaseScheduleManager(private val context: Context,
         nm.notify(0x90, CoreyAppUtils.getWeighNotification(context))
     }
 
-    override fun tryPostWorkoutNotification() {
+    override fun postWorkoutNotification() {
         schedule.subscribe({ scheduleItems ->
             scheduleItems
                     .firstOrNull { it.day == CoreyUtils.getDayOfWeek() && !it.isEmpty }
-                    ?.let { item -> postWorkoutNotification(item) }
+                    ?.let { item -> postWorkoutNotificationForToday(item) }
         }, { throwable ->
-            Log.wtf("Corey", "Cannot retrieve workouts: " + throwable.localizedMessage)
+            Log.wtf("Corey", "Cannot retrieve workouts: ${throwable.localizedMessage}")
+            Crashlytics.logException(throwable)
+            Crashlytics.log(10, "Corey",
+                    "Cannot retrieve workouts in postWorkoutNotification(): ${throwable.localizedMessage}")
         })
     }
 
@@ -142,7 +147,7 @@ class FirebaseScheduleManager(private val context: Context,
                 .mapTo(mutableListOf()) { it.toInt() }
     }
 
-    private fun postWorkoutNotification(item: ScheduleItem) {
+    private fun postWorkoutNotificationForToday(item: ScheduleItem) {
         val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         nm.notify(0x91, CoreyAppUtils.getWorkoutNotification(context, item.name))
     }

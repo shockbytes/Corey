@@ -44,6 +44,7 @@
     <string name="prefs_weigh_notification_title">Weigh reminders</string>
 
     <string name="prefs_weigh_notification_day_key" translatable="false">prefs_weigh_notif_day_key</string>
+    <string name="prefs_weigh_notification_day_default_value" translatable="false">0</string>
     <string name="prefs_weigh_notification_day_summary">Pick the day when you get notified</string>
     <string name="prefs_weigh_notification_day_title">Weigh reminder day</string>
 

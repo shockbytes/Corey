@@ -28,7 +28,7 @@ interface ScheduleManager : Pokeable {
 
     fun postWeighNotification()
 
-    fun tryPostWorkoutNotification()
+    fun postWorkoutNotification()
 
     fun registerLiveScheduleUpdates(listener: LiveScheduleUpdateListener)
 

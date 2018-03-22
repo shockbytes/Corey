@@ -21,7 +21,7 @@ class NotificationReceiver : BroadcastReceiver() {
             manager.postWeighNotification()
         }
         if (manager.isWorkoutNotificationDeliveryEnabled) {
-            manager.tryPostWorkoutNotification()
+            manager.postWorkoutNotification()
         }
     }
 

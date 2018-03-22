@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.graphics.drawable.BitmapDrawable
 import android.support.v4.content.ContextCompat
 import android.support.v7.graphics.Palette
-import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -122,11 +121,7 @@ class ProfileBodyFragmentView(fragment: BaseFragment,
                 bodyInfo.highestWeight,
                 bodyInfo.latestWeightPoint.weight,
                 bodyInfo.dreamWeight.toDouble())
-
-        Log.wtf("Corey", "highest weight: ${bodyInfo.highestWeight} / Latest: ${bodyInfo.latestWeightPoint.weight} / Dream: ${bodyInfo.dreamWeight}")
-        Log.wtf("Corey", "Progress: $weightProgress")
-
-
+        
         // Animate image
         val imgAnimAlpha = ObjectAnimator.ofFloat(imgAvatar, "alpha", 0f, 1f)
         val imgAnimScaleX = ObjectAnimator.ofFloat(imgAvatar, "scaleX", 0.7f, 1f)
