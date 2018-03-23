@@ -6,22 +6,20 @@ import android.support.v7.widget.CardView
 import android.view.View
 import android.view.animation.AnticipateOvershootInterpolator
 import at.shockbytes.corey.body.BodyManager
-import at.shockbytes.corey.body.info.BodyInfo
 import at.shockbytes.corey.body.LiveBodyUpdateListener
+import at.shockbytes.corey.body.info.BodyInfo
 import at.shockbytes.corey.ui.fragment.BaseFragment
-import at.shockbytes.corey.user.CoreyUser
 import butterknife.ButterKnife
 import butterknife.Unbinder
 
 /**
- * @author Martin Macheiner
- * Date: 05-Mar-18.
+ * @author  Martin Macheiner
+ * Date:    05.03.2018
  */
 
 abstract class BodyFragmentView(protected val fragment: BaseFragment,
                                 protected val bodyInfo: BodyInfo,
-                                protected val bodyManager: BodyManager,
-                                protected val user: CoreyUser) : LiveBodyUpdateListener {
+                                protected val bodyManager: BodyManager) : LiveBodyUpdateListener {
 
     private var unbinder: Unbinder? = null
 

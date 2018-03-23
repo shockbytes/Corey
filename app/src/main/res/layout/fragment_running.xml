@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:drawablePadding="8dp"
-                    android:drawableTop="@drawable/ic_run_distance"
+                    android:drawableTop="@drawable/ic_stats_distance"
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="32sp" />
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
                     android:drawablePadding="8dp"
-                    android:drawableTop="@drawable/ic_run_calories"
+                    android:drawableTop="@drawable/ic_stats_calories"
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />

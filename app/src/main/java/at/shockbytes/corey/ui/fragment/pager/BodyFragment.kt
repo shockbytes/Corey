@@ -31,6 +31,15 @@ class BodyFragment : BasePagerFragment(), LiveBodyUpdateListener {
 
     private var fragmentViews: List<BodyFragmentView>? = null
 
+    private val viewLayoutParam: LinearLayout.LayoutParams by lazy {
+        val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        val px4 = AppUtils.convertDpInPixel(4, context!!)
+        val px8 = AppUtils.convertDpInPixel(8, context!!)
+        layoutParams.setMargins(px8, px8, px8, px4)
+        layoutParams
+    }
+
     override val layoutId = R.layout.fragment_body
 
 
@@ -76,18 +85,14 @@ class BodyFragment : BasePagerFragment(), LiveBodyUpdateListener {
     }
 
     public override fun setupViews() {
-
-        val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        val px4 = AppUtils.convertDpInPixel(4, context!!)
-        val px8 = AppUtils.convertDpInPixel(8, context!!)
-        layoutParams.setMargins(px8, px8, px8, px4)
-
-        fragmentViews?.forEach {
-            container.addView(it.view, layoutParams)
-            it.setupView()
+        fragmentViews?.forEachIndexed { idx, view ->
+            // Setup view
+            container.addView(view.view, viewLayoutParam)
+            view.setupView()
+            // Animate view
+            val startDelay = (cardAnimStartDelay * (idx + 1)).toLong()
+            view.animateView(startDelay)
         }
-        animateViews()
     }
 
     // ------------------------------------------------------------------------------
@@ -95,24 +100,18 @@ class BodyFragment : BasePagerFragment(), LiveBodyUpdateListener {
     private fun loadViews() {
         bodyManager.bodyInfo.subscribe({ info ->
 
-            fragmentViews = listOf(ProfileBodyFragmentView(this, info, bodyManager, userManager.user),
-                    DreamWeightBodyFragmentView(this, info, bodyManager, userManager.user),
-                    WeightHistoryBodyFragmentView(this, info, bodyManager, userManager.user),
-                    GoalBodyFragmentView(this, info, bodyManager, userManager.user),
-                    StatisticsBodyFragmentView(this, info, bodyManager, userManager.user))
+            fragmentViews = listOf(
+                    ProfileBodyFragmentView(this, info, bodyManager, userManager.user),
+                    DreamWeightBodyFragmentView(this, info, bodyManager),
+                    WeightHistoryBodyFragmentView(this, info, bodyManager),
+                    GoalBodyFragmentView(this, info, bodyManager),
+                    StatisticsBodyFragmentView(this, info, bodyManager))
 
             hideErrorView()
             setupViews()
         }) { throwable ->
             throwable.printStackTrace()
             showErrorView(throwable.localizedMessage)
-        }
-    }
-
-    private fun animateViews() {
-        fragmentViews?.forEachIndexed { idx, view ->
-            val startDelay = (cardAnimStartDelay * (idx + 1)).toLong()
-            view.animateView(startDelay)
         }
     }
 

@@ -23,9 +23,8 @@ import java.util.*
  */
 
 class WeightHistoryBodyFragmentView(fragment: BaseFragment,
-                                  bodyInfo: BodyInfo,
-                                  bodyManager: BodyManager,
-                                  user: CoreyUser) : BodyFragmentView(fragment, bodyInfo, bodyManager, user) {
+                                    bodyInfo: BodyInfo,
+                                    bodyManager: BodyManager) : BodyFragmentView(fragment, bodyInfo, bodyManager) {
 
     @BindView(R.id.fragment_body_card_weight_graph)
     protected lateinit var cardView: CardView

@@ -60,7 +60,7 @@
                 android:layout_height="match_parent"
                 android:padding="12dp"
                 app:tint="@color/running_mode_distance"
-                app:srcCompat="@drawable/ic_run_distance" />
+                app:srcCompat="@drawable/ic_stats_distance" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                 android:layout_height="match_parent"
                 android:padding="12dp"
                 app:tint="@color/running_mode_calories"
-                app:srcCompat="@drawable/ic_run_calories" />
+                app:srcCompat="@drawable/ic_stats_calories" />
 
             <TextView
                 android:layout_width="match_parent"

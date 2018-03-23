@@ -7,7 +7,6 @@ import at.shockbytes.corey.body.BodyManager
 import at.shockbytes.corey.body.goal.Goal
 import at.shockbytes.corey.body.info.BodyInfo
 import at.shockbytes.corey.ui.fragment.BaseFragment
-import at.shockbytes.corey.user.CoreyUser
 import at.shockbytes.util.AppUtils
 import butterknife.BindView
 import java.util.*
@@ -19,8 +18,7 @@ import java.util.*
 
 class DreamWeightBodyFragmentView(fragment: BaseFragment,
                                   bodyInfo: BodyInfo,
-                                  bodyManager: BodyManager,
-                                  user: CoreyUser) : BodyFragmentView(fragment, bodyInfo, bodyManager, user) {
+                                  bodyManager: BodyManager) : BodyFragmentView(fragment, bodyInfo, bodyManager) {
 
     @BindView(R.id.fragment_body_card_dream_weight)
     protected lateinit var cardView: CardView

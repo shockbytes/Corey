@@ -10,19 +10,17 @@ import at.shockbytes.corey.body.goal.Goal
 import at.shockbytes.corey.body.info.BodyInfo
 import at.shockbytes.corey.ui.fragment.BaseFragment
 import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
-import at.shockbytes.corey.user.CoreyUser
 import butterknife.BindView
 import butterknife.OnClick
 
 /**
- * @author Martin Macheiner
- * Date: 05-Mar-18.
+ * @author  Martin Macheiner
+ * Date:    05.03.2018
  */
 class GoalBodyFragmentView(fragment: BaseFragment,
-                                  bodyInfo: BodyInfo,
-                                  bodyManager: BodyManager,
-                                  user: CoreyUser) : BodyFragmentView(fragment, bodyInfo, bodyManager, user),
-        GoalAdapter.OnGoalActionClickedListener {
+                           bodyInfo: BodyInfo,
+                           bodyManager: BodyManager)
+    : BodyFragmentView(fragment, bodyInfo, bodyManager), GoalAdapter.OnGoalActionClickedListener {
 
     private lateinit var goalAdapter: GoalAdapter
 

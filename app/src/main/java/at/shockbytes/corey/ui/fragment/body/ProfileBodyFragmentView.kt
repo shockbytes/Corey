@@ -33,8 +33,8 @@ import com.squareup.picasso.Picasso
 class ProfileBodyFragmentView(fragment: BaseFragment,
                               bodyInfo: BodyInfo,
                               bodyManager: BodyManager,
-                              user: CoreyUser)
-    : BodyFragmentView(fragment, bodyInfo, bodyManager, user), Palette.PaletteAsyncListener, Callback {
+                              private val user: CoreyUser)
+    : BodyFragmentView(fragment, bodyInfo, bodyManager), Palette.PaletteAsyncListener, Callback {
 
     @BindView(R.id.fragment_body_pb_weight)
     protected lateinit var progressBarWeight: ProgressBar
@@ -121,7 +121,7 @@ class ProfileBodyFragmentView(fragment: BaseFragment,
                 bodyInfo.highestWeight,
                 bodyInfo.latestWeightPoint.weight,
                 bodyInfo.dreamWeight.toDouble())
-        
+
         // Animate image
         val imgAnimAlpha = ObjectAnimator.ofFloat(imgAvatar, "alpha", 0f, 1f)
         val imgAnimScaleX = ObjectAnimator.ofFloat(imgAvatar, "scaleX", 0.7f, 1f)

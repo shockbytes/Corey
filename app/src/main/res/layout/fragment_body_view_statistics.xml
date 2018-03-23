@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/body_card_statistics"
-        android:orientation="vertical"
         android:padding="8dp">
 
         <TextView
@@ -35,20 +34,120 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:id="@+id/fragment_body_card_statistics_txt_workouts"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
-            android:text="Coming soon..."
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_stats_workout"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:lines="2"
             android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_body_card_statistics_txt_header" />
+
+        <TextView
+            android:id="@+id/fragment_body_card_statistics_txt_pulse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_stats_pulse"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:lines="2"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_body_card_statistics_txt_workouts" />
+
+        <TextView
+            android:id="@+id/fragment_body_card_statistics_txt_calories"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_stats_calories"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:lines="2"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_body_card_statistics_txt_pulse" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/fragment_body_card_statistics_txt_workout_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_stats_clock"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:lines="2"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_body_card_statistics_txt_header" />
+
+        <TextView
+            android:id="@+id/fragment_body_card_statistics_txt_distance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_stats_distance"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:lines="2"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_body_card_statistics_txt_workout_time" />
+
+        <TextView
+            android:id="@+id/fragment_body_card_statistics_txt_longest_workout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_stats_time"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:lines="2"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_body_card_statistics_txt_distance" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
