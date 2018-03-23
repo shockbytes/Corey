@@ -5,8 +5,8 @@
 - [x] Fix git structure
 - [x] Equipment support for exercises and workouts
 - [x] Improved scheduling (remove swipe-to-dismiss)
-- [ ] Web UI
 - [ ] Workout statistics card (in BodyFragment)
+- [ ] Web UI
 
 ## Version 2.1
 - [x] Settings entry for daily notifications

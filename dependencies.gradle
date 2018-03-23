@@ -1,10 +1,4 @@
 ext {
-
-    version = [
-            daggerVersion : "2.14.1",
-            butterknifeVersion : "8.8.1"
-    ]
-
     daggerVersion = "2.14.1"
     butterknifeVersion = "8.8.1"
     supportVersion = "27.0.2"

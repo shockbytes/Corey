@@ -7,9 +7,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.body.BodyManager
+import at.shockbytes.corey.body.LiveBodyUpdateListener
 import at.shockbytes.corey.body.goal.Goal
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.body.LiveBodyUpdateListener
 import at.shockbytes.corey.ui.fragment.body.*
 import at.shockbytes.corey.user.UserManager
 import at.shockbytes.util.AppUtils
@@ -93,11 +93,14 @@ class BodyFragment : BasePagerFragment(), LiveBodyUpdateListener {
     // ------------------------------------------------------------------------------
 
     private fun loadViews() {
-        bodyManager.bodyInfo.subscribe({
-            fragmentViews = listOf(ProfileBodyFragmentView(this, it, bodyManager, userManager.user),
-                    DreamWeightBodyFragmentView(this, it, bodyManager, userManager.user),
-                    WeightHistoryBodyFragmentView(this, it, bodyManager, userManager.user),
-                    GoalBodyFragmentView(this, it, bodyManager, userManager.user))
+        bodyManager.bodyInfo.subscribe({ info ->
+
+            fragmentViews = listOf(ProfileBodyFragmentView(this, info, bodyManager, userManager.user),
+                    DreamWeightBodyFragmentView(this, info, bodyManager, userManager.user),
+                    WeightHistoryBodyFragmentView(this, info, bodyManager, userManager.user),
+                    GoalBodyFragmentView(this, info, bodyManager, userManager.user),
+                    StatisticsBodyFragmentView(this, info, bodyManager, userManager.user))
+
             hideErrorView()
             setupViews()
         }) { throwable ->
@@ -117,10 +120,7 @@ class BodyFragment : BasePagerFragment(), LiveBodyUpdateListener {
         errorView.visibility = View.VISIBLE
         errorView.animate().alpha(1f).start()
 
-        btnError.setOnClickListener {
-            loadViews()
-        }
-
+        btnError.setOnClickListener { loadViews() }
         txtError.text = cause
     }
 

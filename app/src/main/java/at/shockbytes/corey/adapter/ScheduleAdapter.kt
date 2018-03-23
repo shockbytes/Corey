@@ -125,7 +125,7 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
             }
         }
         // Safe to do so, because all nulls are already replaced
-        return array.map { it!! }.toMutableList()
+        return array.mapTo(mutableListOf()) { it!! }
     }
 
     internal inner class ViewHolder(itemView: View) : BaseAdapter<ScheduleItem>.ViewHolder(itemView) {
@@ -141,13 +141,11 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
                 onScheduleItemSelectedListener?.invoke(item, itemView, itemPosition)
             }
             btnClear.setOnClickListener {
-                // animateDismiss()
                 onScheduleItemDismissedListener?.invoke(item, itemPosition)
             }
         }
 
-        override fun bind(t: ScheduleItem) {
-            // Not needed in this case
+        override fun bind(t: ScheduleItem) { // Not needed in this case
         }
 
         fun bind(item: ScheduleItem, position: Int) {
@@ -156,15 +154,6 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
             txtName.text = item.name
         }
 
-        private fun animateDismiss() {
-            // TODO Investigate this, why this does not work!
-            if (!item.isEmpty) {
-                itemView.animate().rotationY(itemView.rotationY + 180f).setDuration(1000)
-                        .withEndAction {
-                            itemView.rotationY = 0f
-                        }.start()
-            }
-        }
     }
 
     companion object {

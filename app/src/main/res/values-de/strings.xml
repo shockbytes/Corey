@@ -149,6 +149,7 @@
     <string name="error_fetch_body_info">Deine Körperdaten können nicht geladen werden</string>
     <string name="label_create_workout">Workout erstellen</string>
     <string name="label_settings">Einstellungen</string>
+    <string name="body_card_statistics_title">Meine Statistiken</string>
 
 
 </resources>
