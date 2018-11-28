@@ -16,7 +16,6 @@ import at.shockbytes.corey.adapter.AddScheduleItemAdapter
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.schedule.ScheduleManager
 import at.shockbytes.util.adapter.BaseAdapter
-import io.reactivex.functions.BiPredicate
 import kotterknife.bindView
 import java.util.*
 import javax.inject.Inject
@@ -25,8 +24,8 @@ import javax.inject.Inject
  * @author Martin Macheiner
  * Date: 24.02.2017.
  */
-
-class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher, BaseAdapter.OnItemClickListener<String> {
+class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
+        BaseAdapter.OnItemClickListener<AddScheduleItemAdapter.ScheduleDisplayItem> {
 
     @Inject
     protected lateinit var scheduleManager: ScheduleManager
@@ -46,7 +45,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher, B
     }
 
     private var addScheduleItemAdapter: AddScheduleItemAdapter? = null
-    private var onScheduleItemSelectedListener: ((item: String) -> Unit)? = null
+    private var onScheduleItemSelectedListener: ((item: AddScheduleItemAdapter.ScheduleDisplayItem) -> Unit)? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,12 +73,12 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher, B
 
     override fun afterTextChanged(editable: Editable) {}
 
-    override fun onItemClick(t: String, v: View) {
+    override fun onItemClick(t: AddScheduleItemAdapter.ScheduleDisplayItem, v: View) {
         onScheduleItemSelectedListener?.invoke(t)
         dismiss()
     }
 
-    fun setOnScheduleItemSelectedListener(listener: ((item: String) -> Unit)): InsertScheduleDialogFragment {
+    fun setOnScheduleItemSelectedListener(listener: ((item: AddScheduleItemAdapter.ScheduleDisplayItem) -> Unit)): InsertScheduleDialogFragment {
         this.onScheduleItemSelectedListener = listener
         return this
     }
@@ -87,13 +86,12 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher, B
     private fun setupViews() {
 
         recyclerView.layoutManager = GridLayoutManager(context, 3)
-        addScheduleItemAdapter = AddScheduleItemAdapter(context!!, ArrayList(),
-                BiPredicate { item, query -> item.contains(query) })
+        addScheduleItemAdapter = AddScheduleItemAdapter(context!!, ArrayList()) { item, query -> item.title.contains(query) }
         addScheduleItemAdapter?.onItemClickListener = this
         recyclerView.adapter = addScheduleItemAdapter
 
         scheduleManager.itemsForScheduling.subscribe { data ->
-            addScheduleItemAdapter?.setData(data, false)
+            addScheduleItemAdapter?.setData(data.map { AddScheduleItemAdapter.ScheduleDisplayItem(it) }, false)
         }
 
         editTextFilter.addTextChangedListener(this)

@@ -87,7 +87,7 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
 
     fun updateScheduleItem(item: ScheduleItem) {
 
-        val oldLocation = getLocation(data, item)
+        val oldLocation = getLocation(item)
         val newLocation = item.day
         if (newLocation >= 0 && oldLocation != newLocation) {
             val newLocationItem = data[newLocation]
@@ -145,7 +145,7 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
             }
         }
 
-        override fun bind(t: ScheduleItem) { // Not needed in this case
+        override fun bindToView(t: ScheduleItem) { // Not needed in this case
         }
 
         fun bind(item: ScheduleItem, position: Int) {

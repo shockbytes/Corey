@@ -30,7 +30,7 @@ class DaysScheduleAdapter(context: Context,
 
         private val txtName: TextView by bindView(R.id.item_schedule_days_txt_name)
 
-        override fun bind(t: String) {
+        override fun bindToView(t: String) {
             val split = t.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val item = split[0]
             val position = Integer.parseInt(split[1])

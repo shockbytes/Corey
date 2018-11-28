@@ -73,7 +73,7 @@ class FirebaseWorkoutManager(private val context: Context,
 
     override fun storeWorkout(workout: Workout) {
         firebase.getReference("/workout").push().let { ref ->
-            workout.id = ref.key
+            workout.id = ref.key ?: ""
             ref.setValue(workout)
         }
     }
@@ -119,8 +119,7 @@ class FirebaseWorkoutManager(private val context: Context,
             }
 
             override fun onComplete(databaseError: DatabaseError?, b: Boolean,
-                                    dataSnapshot: DataSnapshot) {
-            }
+                                    dataSnapshot: DataSnapshot?) = Unit
         })
     }
 
@@ -148,11 +147,9 @@ class FirebaseWorkoutManager(private val context: Context,
                 workoutListener?.onWorkoutDeleted(removed)
             }
 
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String) {
-            }
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) = Unit
 
-            override fun onCancelled(databaseError: DatabaseError?) {
-            }
+            override fun onCancelled(databaseError: DatabaseError) = Unit
         })
 
     }

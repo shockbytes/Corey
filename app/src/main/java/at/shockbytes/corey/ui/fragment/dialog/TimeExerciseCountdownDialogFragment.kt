@@ -37,7 +37,7 @@ class TimeExerciseCountdownDialogFragment : DialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        dialog.window.attributes.windowAnimations = R.style.DialogAnimation
+        dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

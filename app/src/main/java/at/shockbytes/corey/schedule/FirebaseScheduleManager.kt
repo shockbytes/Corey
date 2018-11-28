@@ -101,7 +101,7 @@ class FirebaseScheduleManager(private val context: Context,
 
     override fun insertScheduleItem(item: ScheduleItem): ScheduleItem {
         val ref = firebase.getReference("/schedule").push()
-        item.id = ref.key
+        item.id = ref.key ?: ""
         ref.setValue(item)
         return item
     }
@@ -142,7 +142,7 @@ class FirebaseScheduleManager(private val context: Context,
 
     private fun readNotificationTimeFromPreferences(): List<Int> {
         val str = preferences.getString(context.getString(R.string.prefs_workout_day_notification_daytime_key),
-                context.getString(R.string.prefs_workout_day_notification_daytime_defValue))
+                context.getString(R.string.prefs_workout_day_notification_daytime_defValue)) ?: ""
         return str.split(":")
                 .mapTo(mutableListOf()) { it.toInt() }
     }
@@ -156,8 +156,7 @@ class FirebaseScheduleManager(private val context: Context,
         firebase.getReference("/schedule").addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
 
-                val item = dataSnapshot.getValue(ScheduleItem::class.java)
-                if (item != null) {
+                dataSnapshot.getValue(ScheduleItem::class.java)?.let { item ->
                     scheduleItems.add(item)
                     scheduleListener?.onScheduleItemAdded(item)
                 }
@@ -165,8 +164,7 @@ class FirebaseScheduleManager(private val context: Context,
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
 
-                val changed = dataSnapshot.getValue(ScheduleItem::class.java)
-                if (changed != null) {
+                dataSnapshot.getValue(ScheduleItem::class.java)?.let { changed ->
                     scheduleItems[scheduleItems.indexOf(changed)] = changed
                     scheduleListener?.onScheduleItemChanged(changed)
                 }
@@ -174,19 +172,17 @@ class FirebaseScheduleManager(private val context: Context,
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
 
-                val removed = dataSnapshot.getValue(ScheduleItem::class.java)
-                if (removed != null) {
+                dataSnapshot.getValue(ScheduleItem::class.java)?.let { removed ->
                     scheduleItems.remove(removed)
                     scheduleListener?.onScheduleItemDeleted(removed)
                 }
             }
 
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String) {
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
                 Log.wtf("Corey", "ScheduleItem moved: " + dataSnapshot.toString() + " / " + s)
             }
 
-            override fun onCancelled(databaseError: DatabaseError?) {
-            }
+            override fun onCancelled(databaseError: DatabaseError) = Unit
         })
     }
 

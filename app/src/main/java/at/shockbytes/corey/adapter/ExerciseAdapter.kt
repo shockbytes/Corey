@@ -79,7 +79,7 @@ class ExerciseAdapter(context: Context, data: List<Exercise>)
         private val txtName: TextView by bindView(R.id.item_exercise_txt_name)
         private val imgViewMove: ImageView by bindView(R.id.item_exercise_imgview_move)
 
-        override fun bind(t: Exercise) {
+        override fun bindToView(t: Exercise) {
             content = t
 
             txtName.text = t.getDisplayName(context)

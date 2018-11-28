@@ -7,31 +7,31 @@ import android.widget.Button
 
 
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.Sortable
 import at.shockbytes.util.adapter.BaseAdapter
-import io.reactivex.functions.BiPredicate
 import kotterknife.bindView
 
 /**
  * @author  Martin Macheiner
  * Date:    24.02.2017.
  */
-
 class AddScheduleItemAdapter(context: Context,
-                             data: List<String>,
-                             filterPredicate: BiPredicate<String, String>)
-    : FilterableBaseAdapter<String>(context, data.toMutableList(), filterPredicate) {
+                             data: List<ScheduleDisplayItem>,
+                             filterPredicate: (ScheduleDisplayItem, String) -> Boolean)
+    : FilterableBaseAdapter<AddScheduleItemAdapter.ScheduleDisplayItem>(context, data.toMutableList(), filterPredicate) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<String>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<ScheduleDisplayItem>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.listitem_add_exercise, parent, false))
     }
 
-    internal inner class ViewHolder(itemView: View) : BaseAdapter<String>.ViewHolder(itemView) {
+    internal inner class ViewHolder(itemView: View) : BaseAdapter<ScheduleDisplayItem>.ViewHolder(itemView) {
 
         private val btnTitle: Button by bindView(R.id.listitem_add_exercise_btn_title)
 
-        override fun bind(t: String) {
-            this.content = t
-            btnTitle.text = t
+        override fun bindToView(t: ScheduleDisplayItem) {
+            btnTitle.text = t.title
         }
     }
+
+    data class ScheduleDisplayItem(val title: String) : Sortable
 }

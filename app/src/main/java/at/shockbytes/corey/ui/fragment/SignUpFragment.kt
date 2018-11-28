@@ -44,12 +44,11 @@ class SignUpFragment : BaseFragment() {
                                         .setRequireName(true)
                                         .build()))
                         .setIsSmartLockEnabled(true)
-                        .setLogo(R.mipmap.ic_launcher)
                         .build(),
                 RC_SIGN_IN)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
         if (requestCode == RC_SIGN_IN) {

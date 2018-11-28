@@ -29,9 +29,7 @@ class WearWorkoutOverviewAdapter(cxt: Context, data: List<Workout>)
         private val txtName: TextView by bindView(R.id.item_wear_workout_overview_txt)
         private val imgView: ImageView by bindView(R.id.item_wear_workout_overview_img)
 
-        override fun bind(t: Workout) {
-            content = t
-
+        override fun bindToView(t: Workout) {
             txtName.text = t.displayableName
             imgView.setImageDrawable(AppUtils.createRoundedBitmapFromResource(context,
                     t.imageResForBodyRegion, t.colorResForIntensity))

@@ -4,12 +4,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -39,14 +39,18 @@ dependencies {
     api "com.android.support:percent:$supportVersion"
 
     api "net.danlew:android.joda:2.9.9.2"
-    api "com.google.code.gson:gson:2.8.2"
+    api "com.google.code.gson:gson:2.8.5"
 
     api "com.jakewharton:butterknife:$butterknifeVersion"
     kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
-    api "com.google.firebase:firebase-database:$firebaseVersion"
+    api "com.google.firebase:firebase-database:$firebaseVersionDatabase"
 
-    api "com.google.android.gms:play-services-location:$playServicesVersion"
-    api "com.google.android.gms:play-services-maps:$playServicesVersion"
+    api "com.google.android.gms:play-services-location:$playServicesVersionLocation"
+    api "com.google.android.gms:play-services-maps:$playServicesVersionMaps"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+}
+repositories {
+    mavenCentral()
 }

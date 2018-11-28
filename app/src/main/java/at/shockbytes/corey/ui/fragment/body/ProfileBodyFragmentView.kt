@@ -96,10 +96,11 @@ class ProfileBodyFragmentView(fragment: BaseFragment,
         animateContent()
     }
 
-    override fun onGenerated(palette: Palette) {
+    override fun onGenerated(palette: Palette?) {
         val defaultColor = ContextCompat.getColor(fragment.context!!, R.color.colorPrimary)
-        val headerColor = palette.getDarkMutedColor(defaultColor)
-        CoreyViewManager.backgroundColorTransition(headerLayout, defaultColor, headerColor)
+        palette?.getDarkMutedColor(defaultColor)?.let { headerColor ->
+            CoreyViewManager.backgroundColorTransition(headerLayout, defaultColor, headerColor)
+        }
     }
 
     override fun onSuccess() {

@@ -21,7 +21,6 @@ import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.workout.WorkoutManager
 import at.shockbytes.util.adapter.BaseAdapter
 import com.shawnlin.numberpicker.NumberPicker
-import io.reactivex.functions.BiPredicate
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -139,8 +138,7 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
         viewFlipper.setOutAnimation(context, R.anim.slide_out_left)
 
         rvAddExercises.layoutManager = GridLayoutManager(context, 3)
-        exerciseAdapter = AddExerciseAdapter(context!!, listOf(),
-                BiPredicate { item, query -> item.name.contains(query) })
+        exerciseAdapter = AddExerciseAdapter(context!!, listOf()) { item, query -> item.name.contains(query) }
         exerciseAdapter.onItemClickListener = this
         rvAddExercises.adapter = exerciseAdapter
 

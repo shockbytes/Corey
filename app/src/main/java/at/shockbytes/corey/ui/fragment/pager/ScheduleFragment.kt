@@ -121,7 +121,7 @@ class ScheduleFragment : BasePagerFragment(), LiveScheduleUpdateListener,
         if (item.isEmpty) {
             InsertScheduleDialogFragment.newInstance()
                     .setOnScheduleItemSelectedListener { i ->
-                        scheduleManager.insertScheduleItem(ScheduleItem(i, position))
+                        scheduleManager.insertScheduleItem(ScheduleItem(i.title, position))
                     }
                     .show(fragmentManager, "dialogfragment-insert-schedule")
         }

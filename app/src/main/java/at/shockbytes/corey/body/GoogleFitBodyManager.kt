@@ -60,6 +60,7 @@ class GoogleFitBodyManager(private val context: Context,
 
     override val weightUnit: String
         get() = preferences.getString(PREF_WEIGHT_UNIT, context.getString(R.string.default_weight_unit))
+                ?: context.getString(R.string.default_weight_unit)
 
     override val bodyGoals: Observable<List<Goal>>
         get() = Observable.just(_goals.toList())
@@ -120,7 +121,7 @@ class GoogleFitBodyManager(private val context: Context,
 
     override fun storeBodyGoal(g: Goal) {
         val ref = firebase.getReference("/body/goal").push()
-        g.id = ref.key
+        g.id = ref.key ?: ""
         ref.setValue(g)
     }
 
@@ -186,15 +187,14 @@ class GoogleFitBodyManager(private val context: Context,
                 }
             }
 
-            override fun onCancelled(databaseError: DatabaseError?) {
+            override fun onCancelled(databaseError: DatabaseError) {
             }
         })
 
         firebase.getReference("body/goal").addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
 
-                val g = dataSnapshot.getValue(Goal::class.java)
-                if (g != null) {
+                dataSnapshot.getValue(Goal::class.java)?.let { g ->
                     _goals.add(g)
                     bodyListener?.onBodyGoalAdded(g)
                 }
@@ -202,8 +202,7 @@ class GoogleFitBodyManager(private val context: Context,
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
 
-                val g = dataSnapshot.getValue(Goal::class.java)
-                if (g != null) {
+                dataSnapshot.getValue(Goal::class.java)?.let { g ->
                     _goals[_goals.indexOf(g)] = g
                     bodyListener?.onBodyGoalChanged(g)
                 }
@@ -211,18 +210,15 @@ class GoogleFitBodyManager(private val context: Context,
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
 
-                val g = dataSnapshot.getValue(Goal::class.java)
-                if (g != null) {
+                dataSnapshot.getValue(Goal::class.java)?.let { g ->
                     _goals.remove(g)
                     bodyListener?.onBodyGoalDeleted(g)
                 }
             }
 
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String) {
-            }
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) = Unit
 
-            override fun onCancelled(databaseError: DatabaseError?) {
-            }
+            override fun onCancelled(databaseError: DatabaseError) = Unit
         })
 
     }

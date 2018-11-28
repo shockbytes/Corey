@@ -52,7 +52,7 @@ class WorkoutAdapter(cxt: Context,
             setupPopupMenu()
         }
 
-        override fun bind(t: Workout) {
+        override fun bindToView(t: Workout) {
             content = t
 
             txtTitle.text = t.displayableName

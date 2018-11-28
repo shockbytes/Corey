@@ -121,17 +121,17 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         wearableManager.onPause()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (requestCode == AppParams.REQUEST_CODE_CREATE_WORKOUT && resultCode == Activity.RESULT_OK) {
 
-            val w = data.getParcelableExtra<Workout>(AppParams.INTENT_EXTRA_NEW_WORKOUT)
-            val isUpdated = data.getBooleanExtra(AppParams.INTENT_EXTRA_WORKOUT_UPDATED, false)
-
-            if (!isUpdated) {
-                workoutManager.storeWorkout(w)
-            } else {
-                workoutManager.updateWorkout(w)
+            val isUpdated = data?.getBooleanExtra(AppParams.INTENT_EXTRA_WORKOUT_UPDATED, false)
+            data?.getParcelableExtra<Workout>(AppParams.INTENT_EXTRA_NEW_WORKOUT)?.let { w ->
+                if (isUpdated == false) {
+                    workoutManager.storeWorkout(w)
+                } else {
+                    workoutManager.updateWorkout(w)
+                }
             }
         }
     }

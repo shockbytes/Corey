@@ -40,8 +40,7 @@ class GoalAdapter(cxt: Context, data: List<Goal>) : BaseAdapter<Goal>(cxt, data.
         private val txtGoal: TextView by bindView(R.id.item_goal_text)
         private val imgBtnDone: ImageButton by bindView(R.id.item_goal_btn_done)
 
-        override fun bind(t: Goal) {
-            content = t
+        override fun bindToView(t: Goal) {
 
             txtGoal.text = t.message
 
@@ -58,10 +57,10 @@ class GoalAdapter(cxt: Context, data: List<Goal>) : BaseAdapter<Goal>(cxt, data.
         }
 
         private fun onClickDone() {
-            if (content?.isDone == true) {
-                onGoalActionClickedListener?.onDeleteGoalClicked(content!!)
+            if (content.isDone) {
+                onGoalActionClickedListener?.onDeleteGoalClicked(content)
             } else {
-                onGoalActionClickedListener?.onFinishGoalClicked(content!!)
+                onGoalActionClickedListener?.onFinishGoalClicked(content)
             }
         }
 

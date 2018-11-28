@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import at.shockbytes.corey.common.core.R
+import at.shockbytes.corey.common.core.Sortable
 
 
 /**
@@ -12,7 +13,7 @@ import at.shockbytes.corey.common.core.R
  */
 
 open class Exercise(open var name: String = "", open var repetitions: Int = 0,
-                    open var equipment: Equipment = Equipment.BODYWEIGHT) : Parcelable {
+                    open var equipment: Equipment = Equipment.BODYWEIGHT) : Parcelable, Sortable {
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),

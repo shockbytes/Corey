@@ -1,8 +1,8 @@
 package at.shockbytes.corey.ui.fragment
 
 import android.os.Bundle
-import android.preference.Preference
-import android.preference.PreferenceFragment
+import android.support.v7.preference.Preference
+import android.support.v7.preference.PreferenceFragmentCompat
 
 import at.shockbytes.corey.R
 import at.shockbytes.corey.core.CoreyApp
@@ -13,14 +13,13 @@ import javax.inject.Inject
  * @author  Martin Macheiner
  * Date:    27.10.2015.
  */
-class SettingsFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
     @Inject
     protected lateinit var scheduleManager: ScheduleManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (activity.application as CoreyApp).appComponent.inject(this)
+    override fun onCreatePreferences(p0: Bundle?, p1: String?) {
+        (activity?.application as? CoreyApp)?.appComponent?.inject(this)
         addPreferencesFromResource(R.xml.settings)
 
         findPreference(getString(R.string.prefs_workout_day_notification_daytime_key))
