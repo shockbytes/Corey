@@ -3,14 +3,17 @@ package at.shockbytes.corey.ui.fragment.workoutpager
 
 import android.os.Bundle
 import android.widget.TextView
+import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.ui.fragment.BaseFragment
 import kotterknife.bindView
 
 
-class ExercisePagerFragment : BaseFragment() {
+class ExercisePagerFragment : BaseFragment<AppComponent>() {
+
+    override val snackBarBackgroundColorRes: Int = R.color.sb_background
+    override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     private var exercise: Exercise? = null
 
@@ -18,7 +21,7 @@ class ExercisePagerFragment : BaseFragment() {
 
     override val layoutId = R.layout.fragment_pageritem_exercise
 
-    override fun injectToGraph(appComponent: AppComponent) {
+    override fun injectToGraph(appComponent: AppComponent?) {
         // Do nothing
     }
 
@@ -29,6 +32,13 @@ class ExercisePagerFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         exercise = arguments?.getParcelable(ARG_EXERCISE)
+    }
+
+    override fun bindViewModel() {
+
+    }
+
+    override fun unbindViewModel() {
     }
 
     companion object {

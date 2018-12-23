@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/prefs_category_workout">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_workout">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="@string/prefs_vibrations_key"
             android:summary="@string/prefs_vibrations_summary"
@@ -17,17 +17,17 @@
             android:text="@string/prefs_time_countdown_unit"
             android:title="@string/prefs_time_countdown_title" />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/prefs_category_notifications">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_notifications">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="@string/prefs_workout_day_notification_key"
             android:summary="@string/prefs_workout_day_notification_summary"
             android:title="@string/prefs_workout_day_notification_title" />
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
             android:defaultValue="@string/prefs_workout_day_notification_daytime_defValue"
             android:dependency="@string/prefs_workout_day_notification_key"
             android:entries="@array/workoutDaytimeReminder"
@@ -35,13 +35,13 @@
             android:key="@string/prefs_workout_day_notification_daytime_key"
             android:title="@string/prefs_workout_day_notification_daytime_title" />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="@string/prefs_weigh_notification_key"
             android:summary="@string/prefs_weigh_notification_summary"
             android:title="@string/prefs_weigh_notification_title" />
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
             android:defaultValue="@string/prefs_weigh_notification_day_default_value"
             android:dependency="@string/prefs_weigh_notification_key"
             android:entries="@array/daysFull"
@@ -49,18 +49,18 @@
             android:key="@string/prefs_weigh_notification_day_key"
             android:title="@string/prefs_weigh_notification_day_title" />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/prefs_category_about">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_about">
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:summary="@string/prefs_developer_summary"
             android:title="@string/prefs_developer_title" />
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:summary="@string/app_version"
             android:title="@string/prefs_version_title" />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>

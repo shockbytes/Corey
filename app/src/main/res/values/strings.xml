@@ -199,5 +199,6 @@
     <string name="label_create_workout">Create Workout</string>
     <string name="label_settings">Settings</string>
     <string name="body_card_statistics_title">My statistics</string>
+    <string name="new_workout">New Workout</string>
 
 </resources>

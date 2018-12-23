@@ -1,8 +1,8 @@
 package at.shockbytes.corey.ui.activity
 
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.wear.widget.drawer.WearableNavigationDrawerView
-import android.support.wearable.activity.WearableActivity
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.CoreyNavigationAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
@@ -15,7 +15,7 @@ import java.util.Arrays
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class MainActivity : WearableActivity() {
+class MainActivity : FragmentActivity() {
 
     interface OnWorkoutsLoadedListener {
 
@@ -43,7 +43,6 @@ class MainActivity : WearableActivity() {
         setContentView(R.layout.activity_main)
         (application as WearCoreyApp).appComponent.inject(this)
 
-        setAmbientEnabled()
         setupNavigationDrawer()
 
         communicationManager.connectIfDeviceAvailable {
@@ -75,13 +74,13 @@ class MainActivity : WearableActivity() {
         val workoutOverviewFragment = WorkoutOverviewFragment
                 .newInstance(ArrayList(communicationManager.cachedWorkouts))
         workoutListener = workoutOverviewFragment
-        fragmentManager.beginTransaction()
+        supportFragmentManager.beginTransaction()
                 .replace(R.id.main_content, workoutOverviewFragment)
                 .commit()
     }
 
     private fun showRunningFragment() {
-        fragmentManager.beginTransaction()
+        supportFragmentManager.beginTransaction()
                 .replace(R.id.main_content, RunningFragment.newInstance())
                 .commit()
     }

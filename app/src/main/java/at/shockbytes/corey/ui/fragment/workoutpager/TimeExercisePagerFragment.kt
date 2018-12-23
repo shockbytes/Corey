@@ -4,26 +4,28 @@ package at.shockbytes.corey.ui.fragment.workoutpager
 import android.os.Bundle
 import android.os.Vibrator
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.ui.fragment.BaseFragment
 import at.shockbytes.corey.ui.fragment.dialog.TimeExerciseCountdownDialogFragment
-import butterknife.OnClick
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_pageritem_time_exercise.*
 import kotterknife.bindView
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-@Suppress("DEPRECATION")
-class TimeExercisePagerFragment : BaseFragment() {
+class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
+
+    override val snackBarBackgroundColorRes: Int = R.color.sb_background
+    override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     @Inject
     protected lateinit var vibrator: Vibrator
@@ -42,7 +44,7 @@ class TimeExercisePagerFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exercise = arguments!!.getParcelable(ARG_EXERCISE)
+        exercise = arguments?.getParcelable(ARG_EXERCISE)!!
         isVibrationEnabled = PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(getString(R.string.prefs_vibrations_key), false)
     }
@@ -54,13 +56,23 @@ class TimeExercisePagerFragment : BaseFragment() {
         progressBar.secondaryProgress = progressBar.max
         txtTime.text = calculateDisplayString(secondsUntilFinish)
         txtExercise.text = exercise.getDisplayName(context!!)
+
+        fragment_pageritem_time_exercise_btn_start.setOnClickListener {
+            onClickButtonStart(it)
+        }
     }
 
-    override fun injectToGraph(appComponent: AppComponent) {
-        appComponent.inject(this)
+    override fun injectToGraph(appComponent: AppComponent?) {
+        appComponent?.inject(this)
     }
 
-    @OnClick(R.id.fragment_pageritem_time_exercise_btn_start)
+    override fun bindViewModel() {
+
+    }
+
+    override fun unbindViewModel() {
+    }
+
     fun onClickButtonStart(v: View) {
         v.isEnabled = false
 
@@ -109,7 +121,9 @@ class TimeExercisePagerFragment : BaseFragment() {
                         timerDisposable?.dispose()
                     }
 
-                }, { throwable -> Log.wtf("Corey", throwable.toString()) })
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
     }
 
     private fun calculateDisplayString(seconds: Int): String {

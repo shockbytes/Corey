@@ -27,13 +27,14 @@ class WorkoutOverviewFragment : WearableBaseFragment(),
     override val layoutId = R.layout.fragment_workout_overview
 
     override fun setupViews() {
+        context?.let { ctx ->
+            val adapter = WearWorkoutOverviewAdapter(ctx, workouts.sortedWith(WorkoutNameComparator()))
 
-        val adapter = WearWorkoutOverviewAdapter(context, workouts.sortedWith(WorkoutNameComparator()))
-
-        recyclerView.isEdgeItemsCenteringEnabled = true
-        recyclerView.layoutManager = WearableLinearLayoutManager(context)
-        recyclerView.adapter = adapter
-        adapter.onItemClickListener = this
+            recyclerView.isEdgeItemsCenteringEnabled = true
+            recyclerView.layoutManager = WearableLinearLayoutManager(context)
+            recyclerView.adapter = adapter
+            adapter.onItemClickListener = this
+        }
     }
 
     override fun injectToGraph(appComponent: WearAppComponent) {
@@ -42,12 +43,14 @@ class WorkoutOverviewFragment : WearableBaseFragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        workouts = arguments.getParcelableArrayList(ARG_WORKOUTS)
+        workouts = arguments?.getParcelableArrayList(ARG_WORKOUTS)!!
     }
 
     override fun onItemClick(t: Workout, v: View) {
-        startActivity(WorkoutActivity.newIntent(context, t),
-                ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle())
+        activity?.let {
+            startActivity(WorkoutActivity.newIntent(it, t),
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+        }
     }
 
     override fun onWorkoutLoaded(workouts: List<Workout>) {

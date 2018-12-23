@@ -7,7 +7,7 @@ import android.widget.Toast
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
-import at.shockbytes.corey.workout.WorkoutManager
+import at.shockbytes.corey.workout.WorkoutRepository
 import com.google.android.gms.wearable.*
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.gson.Gson
@@ -19,7 +19,7 @@ import com.google.gson.Gson
  */
 
 class AndroidWearManager(private val context: Context,
-                         private val workoutManager: WorkoutManager,
+                         private val workoutManager: WorkoutRepository,
                          private val gson: Gson)
     : WearableManager, MessageClient.OnMessageReceivedListener, CapabilityClient.OnCapabilityChangedListener {
 

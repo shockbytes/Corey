@@ -1,125 +1,108 @@
 package at.shockbytes.corey.ui.activity
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.TabLayout
 import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.app.FragmentActivity
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
+import android.support.v4.view.PagerAdapter
+import at.shockbytes.core.image.GlideImageLoader
+import at.shockbytes.core.image.ImageLoader
+import at.shockbytes.core.model.ShockbytesUser
+import at.shockbytes.core.ui.activity.BottomNavigationBarActivity
+import at.shockbytes.core.ui.model.AdditionalToolbarAction
+import at.shockbytes.core.ui.model.BottomNavigationActivityOptions
+import at.shockbytes.core.ui.model.BottomNavigationTab
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.CoreyPagerAdapter
-import at.shockbytes.corey.body.BodyManager
-import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.schedule.ScheduleManager
-import at.shockbytes.corey.ui.activity.core.BaseActivity
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
-import at.shockbytes.corey.user.UserManager
+import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import at.shockbytes.corey.util.AppParams
-import at.shockbytes.corey.wearable.WearableManager
-import at.shockbytes.corey.workout.WorkoutManager
-import at.shockbytes.util.AppUtils
-import icepick.Icepick
-import icepick.State
-import kotterknife.bindView
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
-
-    @State
-    @JvmField
-    protected var tabPosition: Int = 0
+class MainActivity : BottomNavigationBarActivity<AppComponent>() {
 
     @Inject
-    protected lateinit var bodyManager: BodyManager
+    protected lateinit var vmFactory: ViewModelProvider.Factory
 
-    @Inject
-    protected lateinit var workoutManager: WorkoutManager
+    private lateinit var viewModel: MainViewModel
 
-    @Inject
-    protected lateinit var scheduleManager: ScheduleManager
+    override val imageLoader: ImageLoader = GlideImageLoader(R.drawable.ic_account)
 
-    @Inject
-    protected lateinit var wearableManager: WearableManager
-
-    @Inject
-    protected lateinit var userManager: UserManager
-
-    private lateinit var menuItemAccount: MenuItem
-    private lateinit var menuItemWatch: MenuItem
-
-    private val toolbar: Toolbar by bindView(R.id.toolbar)
-    private val viewpager: ViewPager by bindView(R.id.viewpager)
-    private val appBar: AppBarLayout by bindView(R.id.main_appbar)
-    private val tabLayout: TabLayout by bindView(R.id.main_tablayout)
-    private val fabNewWorkout: FloatingActionButton by bindView(R.id.main_fab_edit)
-
-    private var watchInfo: WatchInfo = WatchInfo(null, false) // default is not connected
-
-    private val nodeStateChangedListener: ((WatchInfo) -> Unit) = {
-        watchInfo = it
-        setupWatchMenuItem()
+    override val options: BottomNavigationActivityOptions by lazy {
+        BottomNavigationActivityOptions(
+                tabs = listOf(
+                        BottomNavigationTab(R.id.nav_item_workout, R.drawable.navigation_item, R.drawable.ic_tab_workout, getString(R.string.tab_workout)),
+                        BottomNavigationTab(R.id.nav_item_schedule, R.drawable.navigation_item, R.drawable.ic_tab_schedule, getString(R.string.tab_schedule)),
+                        BottomNavigationTab(R.id.nav_item_my_body, R.drawable.navigation_item, R.drawable.ic_tab_my_body, getString(R.string.tab_my_body))
+                ),
+                defaultTab = R.id.nav_item_schedule,
+                appName = getString(R.string.app_name),
+                viewPagerOffscreenLimit = 2,
+                appTheme = R.style.AppTheme_NoActionBar,
+                fabMenuId = R.menu.menu_fab,
+                fabMenuColorList = listOf(R.color.colorAccent),
+                fabVisiblePageIndices = listOf(0),
+                overflowIcon = R.drawable.ic_overflow_white,
+                additionalToolbarAction = AdditionalToolbarAction(R.drawable.ic_body_card_weight_history),
+                toolbarColor = R.color.colorPrimary,
+                toolbarItemColor = R.color.toolbar_item_color,
+                fabClosedIcon = R.drawable.ic_add,
+                fabOpenedIcon = R.drawable.ic_cancel,
+                navigationBarColor = R.color.navigation_bar_color,
+                navigationItemTextColor = R.color.navigation_bar_item_text,
+                navigationItemTintColor = R.color.navigation_bar_item_text
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setupIcepick(savedInstanceState)
-        setupManagers()
-        initializeViews()
-        initializeTabs()
+        viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
     }
 
-    override fun injectToGraph(appComponent: AppComponent) {
-        appComponent.inject(this)
+    override fun bindViewModel() {
+        viewModel.getUserEvent().observe(this, Observer {
+            it?.let { event ->
+                onUserEvent(event)
+            }
+        })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        menuItemAccount = menu.findItem(R.id.action_account)
-        menuItemWatch = menu.findItem(R.id.action_watch)
-
-        // Do this here, because here is the only place where
-        // the menu item is already initialized
-        setupPersonalMenuItem()
-        setupWatchMenuItem()
-
-        return true
+    override fun injectToGraph(appComponent: AppComponent?) {
+        appComponent?.inject(this)
     }
 
-    public override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Icepick.saveInstanceState(this, outState)
+    override fun onAdditionalToolbarActionClicked() {
+        askForDesiredWeight()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-            R.id.action_settings -> activityTransition(SettingsActivity.newIntent(applicationContext), -1)
-            R.id.action_logout -> signOut()
-            R.id.action_desired_weight -> askForDesiredWeight()
-            R.id.action_watch -> showToast(menuItemWatch.title.toString())
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onFabMenuItemClicked(id: Int): Boolean {
+        activityTransition(CreateWorkoutActivity.newIntent(applicationContext),
+                AppParams.REQUEST_CODE_CREATE_WORKOUT)
+        return false
     }
 
-    override fun onStart() {
-        super.onStart()
-        wearableManager.onStart(nodeStateChangedListener)
+    override fun setupDarkMode() = Unit
+
+    override fun setupPagerAdapter(tabs: List<BottomNavigationTab>): PagerAdapter {
+        return CoreyPagerAdapter(supportFragmentManager, tabs)
     }
 
-    override fun onPause() {
-        super.onPause()
-        wearableManager.onPause()
+    override fun showLoginScreen() = Unit
+
+    override fun showMenuFragment() {
+        // TODO
     }
+
+    override fun showWelcomeScreen(user: ShockbytesUser) = Unit
+
+    override fun unbindViewModel() = Unit
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -128,81 +111,12 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             val isUpdated = data?.getBooleanExtra(AppParams.INTENT_EXTRA_WORKOUT_UPDATED, false)
             data?.getParcelableExtra<Workout>(AppParams.INTENT_EXTRA_NEW_WORKOUT)?.let { w ->
                 if (isUpdated == false) {
-                    workoutManager.storeWorkout(w)
+                    viewModel.storeWorkout(w)
                 } else {
-                    workoutManager.updateWorkout(w)
+                    viewModel.updateWorkout(w)
                 }
             }
         }
-    }
-
-    override fun onPageSelected(position: Int) {
-
-        tabPosition = position
-        appBar.setExpanded(true, true)
-
-        if (position == 0) {
-            fabNewWorkout.show()
-        } else {
-            fabNewWorkout.hide()
-        }
-    }
-
-    override fun onPageScrollStateChanged(state: Int) {}
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-    // --------------------------------------------------------------------------------
-
-    private fun initializeViews() {
-
-        // Setup ActionBar
-        setSupportActionBar(toolbar)
-
-        // Setup Fab
-        fabNewWorkout.setOnClickListener {
-            activityTransition(CreateWorkoutActivity.newIntent(applicationContext),
-                    AppParams.REQUEST_CODE_CREATE_WORKOUT)
-        }
-    }
-
-    private fun initializeTabs() {
-
-        // Setup the ViewPager
-        val pagerAdapter = CoreyPagerAdapter(applicationContext, supportFragmentManager)
-        viewpager.adapter = pagerAdapter
-        viewpager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
-        viewpager.addOnPageChangeListener(this)
-        viewpager.offscreenPageLimit = 2
-        tabLayout.setupWithViewPager(viewpager, false)
-
-        // Select the tab
-        val initialTab = tabLayout.getTabAt(tabPosition)
-        initialTab?.select()
-
-        // Set the icons of the tabs
-        for (i in 0..tabLayout.tabCount) {
-            tabLayout.getTabAt(i)?.icon = ContextCompat.getDrawable(this, pagerAdapter.getPageIcon(i))
-        }
-    }
-
-    private fun setupPersonalMenuItem() {
-        userManager.loadAccountImage(this)
-                .subscribe({ bm ->
-                    menuItemAccount.icon = AppUtils.createRoundedBitmap(this, bm)
-                }, { throwable: Throwable ->
-                    throwable.printStackTrace()
-                })
-        menuItemAccount.title = userManager.user.name
-        menuItemAccount.isEnabled = true
-    }
-
-    private fun setupWatchMenuItem() {
-        menuItemWatch.isVisible = watchInfo.isConnected
-        menuItemWatch.title = getString(R.string.watch_connected, watchInfo.name) ?: getString(R.string.menu_main_watch)
-    }
-
-    private fun askForDesiredWeight() {
-        DesiredWeightDialogFragment.newInstance().show(supportFragmentManager, "frag-desired-weight")
     }
 
     private fun activityTransition(intent: Intent, reqCodeForResult: Int) {
@@ -214,31 +128,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
     }
 
-    private fun signOut() {
-        userManager.signOut()
-        supportFinishAfterTransition()
-    }
-
-    private fun setupIcepick(savedInstanceState: Bundle?) {
-        tabPosition = 1 // Initialize it with one, can be overwritten by statement below
-        Icepick.restoreInstanceState(this, savedInstanceState)
-    }
-
-    private fun setupManagers() {
-        bodyManager.poke(this)
-        workoutManager.poke()
-        scheduleManager.poke()
-
-        if (bodyManager.desiredWeight <= 0) { // Ask for desired weight when not set
-            askForDesiredWeight()
-        }
+    private fun askForDesiredWeight() {
+        DesiredWeightDialogFragment.newInstance().show(supportFragmentManager, "frag-desired-weight")
     }
 
 
     companion object {
 
-        fun newIntent(context: FragmentActivity?): Intent {
+        fun newIntent(context: Context): Intent {
             return Intent(context, MainActivity::class.java)
         }
+
     }
 }

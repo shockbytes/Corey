@@ -1,15 +1,9 @@
 package at.shockbytes.corey.ui.fragment
 
 
-import android.app.Fragment
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.WearAppComponent
-import butterknife.ButterKnife
-import butterknife.Unbinder
 
 class RunningFragment : WearableBaseFragment() {
 

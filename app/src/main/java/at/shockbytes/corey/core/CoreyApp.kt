@@ -1,37 +1,33 @@
 package at.shockbytes.corey.core
 
-import android.app.Application
+import at.shockbytes.core.ShockbytesApp
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.dagger.AppModule
 import at.shockbytes.corey.dagger.DaggerAppComponent
 import at.shockbytes.corey.dagger.WorkoutModule
-import com.crashlytics.android.Crashlytics
-import io.fabric.sdk.android.Fabric
 import net.danlew.android.joda.JodaTimeAndroid
 
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    21.02.2017
  */
-class CoreyApp : Application() {
+class CoreyApp : ShockbytesApp<AppComponent>() {
 
-    lateinit var appComponent: AppComponent
-        private set
+    override val useCrashlytics: Boolean = true
+    override val useStrictModeInDebug: Boolean = false
 
-    override fun onCreate() {
-        super.onCreate()
-
+    override fun initializeLibraries() {
         JodaTimeAndroid.init(this)
+    }
 
-        Fabric.with(Fabric.Builder(this)
-                .kits(Crashlytics())
-                .debuggable(true)
-                .build())
+    override fun setupCustomLogging() = Unit
 
-        appComponent = DaggerAppComponent.builder()
+    override fun setupInjectionAppComponent(): AppComponent {
+        return DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .workoutModule(WorkoutModule(this))
                 .build()
     }
+
 }

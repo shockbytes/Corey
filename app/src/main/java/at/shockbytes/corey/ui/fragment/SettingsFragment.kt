@@ -6,17 +6,17 @@ import android.support.v7.preference.PreferenceFragmentCompat
 
 import at.shockbytes.corey.R
 import at.shockbytes.corey.core.CoreyApp
-import at.shockbytes.corey.schedule.ScheduleManager
+import at.shockbytes.corey.schedule.ScheduleRepository
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    27.10.2015.
  */
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
     @Inject
-    protected lateinit var scheduleManager: ScheduleManager
+    protected lateinit var scheduleManager: ScheduleRepository
 
     override fun onCreatePreferences(p0: Bundle?, p1: String?) {
         (activity?.application as? CoreyApp)?.appComponent?.inject(this)

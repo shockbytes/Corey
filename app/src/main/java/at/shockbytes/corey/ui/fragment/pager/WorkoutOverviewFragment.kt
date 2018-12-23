@@ -7,30 +7,35 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
+import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.WorkoutAdapter
+import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.util.WorkoutNameComparator
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.activity.CreateWorkoutActivity
 import at.shockbytes.corey.ui.activity.WorkoutDetailActivity
 import at.shockbytes.corey.util.AppParams
-import at.shockbytes.corey.workout.LiveWorkoutUpdateListener
-import at.shockbytes.corey.workout.WorkoutManager
+import at.shockbytes.corey.workout.WorkoutRepository
 import at.shockbytes.util.adapter.BaseAdapter
+import at.shockbytes.corey.util.isPortrait
 import at.shockbytes.util.view.RecyclerViewWithEmptyView
 import kotterknife.bindView
 import javax.inject.Inject
 
 /**
- * @author Martin Macheiner
- * Date: 26.10.2015.
+ * Author:  Martin Macheiner
+ * Date:    26.10.2015
  */
-class WorkoutOverviewFragment : BasePagerFragment(), BaseAdapter.OnItemClickListener<Workout>,
-        WorkoutAdapter.OnWorkoutPopupItemSelectedListener, LiveWorkoutUpdateListener {
+class WorkoutOverviewFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemClickListener<Workout>,
+        WorkoutAdapter.OnWorkoutPopupItemSelectedListener {
+
+    override val snackBarBackgroundColorRes: Int = R.color.sb_background
+    override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     @Inject
-    protected lateinit var workoutManager: WorkoutManager
+    protected lateinit var workoutManager: WorkoutRepository
 
     private lateinit var adapter: WorkoutAdapter
 
@@ -45,17 +50,8 @@ class WorkoutOverviewFragment : BasePagerFragment(), BaseAdapter.OnItemClickList
 
     override val layoutId = R.layout.fragment_workout_overview
 
-
-    override fun registerForLiveEvents() {
-        workoutManager.registerLiveWorkoutUpdates(this)
-    }
-
-    override fun unregisterForLiveEvents() {
-        workoutManager.unregisterLiveWorkoutUpdates()
-    }
-
-    override fun injectToGraph(appComponent: AppComponent) {
-        appComponent.inject(this)
+    override fun injectToGraph(appComponent: AppComponent?) {
+        appComponent?.inject(this)
     }
 
     override fun onItemClick(t: Workout, v: View) {
@@ -104,19 +100,13 @@ class WorkoutOverviewFragment : BasePagerFragment(), BaseAdapter.OnItemClickList
         }) { throwable ->
             throwable.printStackTrace()
             showSnackbar(getString(R.string.snackbar_cannot_load_workouts))
-        }
+        }.addTo(compositeDisposable)
     }
 
-    override fun onWorkoutAdded(workout: Workout) {
-        adapter.addEntityAtLast(workout)
+    override fun bindViewModel() {
     }
 
-    override fun onWorkoutDeleted(workout: Workout) {
-        adapter.deleteEntity(workout)
-    }
-
-    override fun onWorkoutChanged(workout: Workout) {
-        adapter.updateEntity(workout)
+    override fun unbindViewModel() {
     }
 
     companion object {

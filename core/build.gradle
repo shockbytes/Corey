@@ -40,9 +40,10 @@ dependencies {
 
     api "net.danlew:android.joda:2.9.9.2"
     api "com.google.code.gson:gson:2.8.5"
-
-    api "com.jakewharton:butterknife:$butterknifeVersion"
-    kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+    api "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
+    api "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+    api 'com.jakewharton.timber:timber:4.7.1'
+    api 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
 
     api "com.google.firebase:firebase-database:$firebaseVersionDatabase"
 

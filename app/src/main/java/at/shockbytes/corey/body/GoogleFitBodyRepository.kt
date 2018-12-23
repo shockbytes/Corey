@@ -3,7 +3,6 @@ package at.shockbytes.corey.body
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.widget.Toast
 import at.shockbytes.corey.R
 import at.shockbytes.corey.body.goal.Goal
@@ -24,27 +23,36 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    04.08.2016
  */
-class GoogleFitBodyManager(private val context: Context,
-                           private val preferences: SharedPreferences,
-                           private val firebase: FirebaseDatabase) : BodyManager,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+class GoogleFitBodyRepository(
+        private val context: Context,
+        private val preferences: SharedPreferences,
+        private val firebase: FirebaseDatabase
+) : BodyRepository, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private val apiClient: GoogleApiClient
 
     init {
         setupFirebase()
+
+        apiClient = GoogleApiClient.Builder(context)
+                .addApi(Fitness.HISTORY_API)
+                .addApi(Fitness.RECORDING_API)
+                .addScope(Scope(Scopes.FITNESS_BODY_READ_WRITE))
+                .addScope(Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
+                .addConnectionCallbacks(this)
+                .build()
+
+        apiClient.connect()
     }
 
-    private var apiClient: GoogleApiClient? = null
     private var _bodyInfo: BodyInfo = BodyInfo()
 
     private var _desiredWeight: Int = -1
-    private var _goals: MutableList<Goal> = mutableListOf()
-
-    private var bodyListener: LiveBodyUpdateListener? = null
+    private var _goals = mutableListOf<Goal>()
 
     override var desiredWeight: Int
         get() {
@@ -76,19 +84,6 @@ class GoogleFitBodyManager(private val context: Context,
             }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
         }
 
-    override fun poke(activity: FragmentActivity?) {
-        if (apiClient == null && activity != null) {
-            apiClient = GoogleApiClient.Builder(context)
-                    .addApi(Fitness.HISTORY_API)
-                    .addApi(Fitness.RECORDING_API)
-                    .addScope(Scope(Scopes.FITNESS_BODY_READ_WRITE))
-                    .addScope(Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
-                    .addConnectionCallbacks(this)
-                    .enableAutoManage(activity, 0, this)
-                    .build()
-        }
-    }
-
     override fun onConnected(bundle: Bundle?) {
         loadFitnessData()
     }
@@ -101,14 +96,6 @@ class GoogleFitBodyManager(private val context: Context,
         Toast.makeText(context,
                 "Exception while connecting to Google Play Services: ${connectionResult.errorMessage}",
                 Toast.LENGTH_LONG).show()
-    }
-
-    override fun registerLiveBodyUpdates(listener: LiveBodyUpdateListener) {
-        this.bodyListener = listener
-    }
-
-    override fun unregisterLiveBodyUpdates() {
-        bodyListener = null
     }
 
     override fun updateBodyGoal(g: Goal) {
@@ -176,6 +163,7 @@ class GoogleFitBodyManager(private val context: Context,
 
     private fun setupFirebase() {
 
+        // TODO
         firebase.getReference("/body/desired").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val data = dataSnapshot.value
@@ -183,7 +171,6 @@ class GoogleFitBodyManager(private val context: Context,
                     _desiredWeight = Integer.parseInt(data.toString())
 
                     preferences.edit().putInt(PREF_DREAM_WEIGHT, _desiredWeight).apply()
-                    bodyListener?.onDesiredWeightChanged(_desiredWeight)
                 }
             }
 
@@ -196,7 +183,6 @@ class GoogleFitBodyManager(private val context: Context,
 
                 dataSnapshot.getValue(Goal::class.java)?.let { g ->
                     _goals.add(g)
-                    bodyListener?.onBodyGoalAdded(g)
                 }
             }
 
@@ -204,7 +190,6 @@ class GoogleFitBodyManager(private val context: Context,
 
                 dataSnapshot.getValue(Goal::class.java)?.let { g ->
                     _goals[_goals.indexOf(g)] = g
-                    bodyListener?.onBodyGoalChanged(g)
                 }
             }
 
@@ -212,7 +197,6 @@ class GoogleFitBodyManager(private val context: Context,
 
                 dataSnapshot.getValue(Goal::class.java)?.let { g ->
                     _goals.remove(g)
-                    bodyListener?.onBodyGoalDeleted(g)
                 }
             }
 

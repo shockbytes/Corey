@@ -8,7 +8,7 @@ import at.shockbytes.corey.R
 import preference.WearPreferenceActivity
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    23.03.2017.
  */
 

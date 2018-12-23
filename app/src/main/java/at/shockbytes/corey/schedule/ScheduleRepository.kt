@@ -4,11 +4,10 @@ import at.shockbytes.corey.common.core.util.Pokeable
 import io.reactivex.Observable
 
 /**
- * @author Martin Macheiner
- * Date: 21.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    21.02.2017
  */
-
-interface ScheduleManager : Pokeable {
+interface ScheduleRepository : Pokeable {
 
     val schedule: Observable<List<ScheduleItem>>
 
@@ -29,9 +28,5 @@ interface ScheduleManager : Pokeable {
     fun postWeighNotification()
 
     fun postWorkoutNotification()
-
-    fun registerLiveScheduleUpdates(listener: LiveScheduleUpdateListener)
-
-    fun unregisterLiveScheduleUpdates()
 
 }

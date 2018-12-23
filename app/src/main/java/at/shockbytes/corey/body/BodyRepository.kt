@@ -6,10 +6,10 @@ import at.shockbytes.corey.common.core.util.Pokeable
 import io.reactivex.Observable
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    04.08.2016
  */
-interface BodyManager: Pokeable {
+interface BodyRepository {
 
     val bodyInfo: Observable<BodyInfo>
 
@@ -24,9 +24,5 @@ interface BodyManager: Pokeable {
     fun removeBodyGoal(g: Goal)
 
     fun storeBodyGoal(g: Goal)
-
-    fun registerLiveBodyUpdates(listener: LiveBodyUpdateListener)
-
-    fun unregisterLiveBodyUpdates()
 
 }

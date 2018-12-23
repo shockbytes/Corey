@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.fragment.dialog
 
-import android.app.DialogFragment
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +15,7 @@ import kotterknife.bindView
 import java.util.concurrent.TimeUnit
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    21.03.2015.
  */
 class WearTimeExerciseCountdownDialogFragment : DialogFragment() {
@@ -31,12 +31,12 @@ class WearTimeExerciseCountdownDialogFragment : DialogFragment() {
         super.onCreate(savedInstanceState)
         isCancelable = false
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Material_Dialog_Presentation)
-        countdown = arguments.getInt(ARG_SECONDS)
+        countdown = arguments?.getInt(ARG_SECONDS) ?: 5
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        dialog.window.attributes.windowAnimations = R.style.DialogAnimation
+        dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
     }
 
     override fun onCreateView(inflater: LayoutInflater,

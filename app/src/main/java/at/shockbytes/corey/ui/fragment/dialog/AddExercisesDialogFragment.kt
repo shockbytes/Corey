@@ -18,7 +18,7 @@ import at.shockbytes.corey.adapter.AddExerciseAdapter
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.core.CoreyApp
-import at.shockbytes.corey.workout.WorkoutManager
+import at.shockbytes.corey.workout.WorkoutRepository
 import at.shockbytes.util.adapter.BaseAdapter
 import com.shawnlin.numberpicker.NumberPicker
 import kotterknife.bindView
@@ -32,7 +32,7 @@ import javax.inject.Inject
 class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, BaseAdapter.OnItemClickListener<Exercise> {
 
     @Inject
-    protected lateinit var workoutManager: WorkoutManager
+    protected lateinit var workoutManager: WorkoutRepository
 
     private lateinit var exerciseAdapter: AddExerciseAdapter
 

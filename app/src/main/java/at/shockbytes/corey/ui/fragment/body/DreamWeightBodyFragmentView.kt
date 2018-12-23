@@ -3,70 +3,46 @@ package at.shockbytes.corey.ui.fragment.body
 import android.support.v7.widget.CardView
 import android.widget.TextView
 import at.shockbytes.corey.R
-import at.shockbytes.corey.body.BodyManager
-import at.shockbytes.corey.body.goal.Goal
-import at.shockbytes.corey.body.info.BodyInfo
-import at.shockbytes.corey.ui.fragment.BaseFragment
+import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.util.AppUtils
-import butterknife.BindView
+import kotterknife.bindView
 import java.util.*
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    05.03.2018
  */
+class DreamWeightBodyFragmentView : BodySubFragment() {
 
-class DreamWeightBodyFragmentView(fragment: BaseFragment,
-                                  bodyInfo: BodyInfo,
-                                  bodyManager: BodyManager) : BodyFragmentView(fragment, bodyInfo, bodyManager) {
+    override fun bindViewModel() = Unit
+    override fun injectToGraph(appComponent: AppComponent?) = Unit
+    override fun unbindViewModel() = Unit
 
-    @BindView(R.id.fragment_body_card_dream_weight)
-    protected lateinit var cardView: CardView
-
-    @BindView(R.id.fragment_body_card_dream_weight_txt_headline)
-    protected lateinit var txtHeadline: TextView
-
-    @BindView(R.id.fragment_body_card_dream_weight_txt_content)
-    protected lateinit var txtContent: TextView
-
-    @BindView(R.id.fragment_body_card_dream_weight_txt_diff)
-    protected lateinit var txtDiff: TextView
-
+    private val cardView by bindView<CardView>(R.id.fragment_body_card_dream_weight)
+    private val txtHeadline by bindView<TextView>(R.id.fragment_body_card_dream_weight_txt_headline)
+    private val txtContent by bindView<TextView>(R.id.fragment_body_card_dream_weight_txt_content)
+    private val txtDiff by bindView<TextView>(R.id.fragment_body_card_dream_weight_txt_diff)
 
     override val layoutId = R.layout.fragment_body_view_dream_weight
 
-    override fun onDesiredWeightChanged(changed: Int) {
-        bodyInfo.dreamWeight = changed
-        setupView()
-    }
+    override fun setupViews() = Unit
 
-    override fun onBodyGoalAdded(g: Goal) {
-        // Not interesting...
-    }
+    fun setDreamWeightData(dreamWeight: Int, latestWeight: Double, weightUnit: String) {
 
-    override fun onBodyGoalDeleted(g: Goal) {
-        // Not interesting...
-    }
-
-    override fun onBodyGoalChanged(g: Goal) {
-        // Not interesting...
-    }
-
-    override fun setupView() {
-
-        val titles = fragment.resources.getStringArray(R.array.dreamweight_motivation)
+        val titles = resources.getStringArray(R.array.dreamweight_motivation)
         val title = titles[Random().nextInt(titles.size - 1)]
         txtHeadline.text = title
 
-        val diff = AppUtils.roundDouble(bodyInfo.latestWeightPoint.weight - bodyInfo.dreamWeight, 1)
+        val diff = AppUtils.roundDouble(latestWeight - dreamWeight, 1)
         txtDiff.text = "$diff $weightUnit"
 
-        txtContent.text = fragment.getString(R.string.dreamweight_card_text,
-                "${bodyInfo.dreamWeight} $weightUnit")
+        txtContent.text = getString(R.string.dreamweight_card_text,
+                "$dreamWeight $weightUnit")
+
+        animateCard(cardView, 0)
     }
 
     override fun animateView(startDelay: Long) {
-        animateCard(cardView, startDelay)
     }
 
 }

@@ -7,7 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import at.shockbytes.corey.R
-import at.shockbytes.corey.body.BodyManager
+import at.shockbytes.corey.body.BodyRepository
 import at.shockbytes.corey.core.CoreyApp
 import com.shawnlin.numberpicker.NumberPicker
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class DesiredWeightDialogFragment : DialogFragment() {
 
     @Inject
-    protected lateinit var bodyManager: BodyManager
+    protected lateinit var bodyManager: BodyRepository
 
     private lateinit var numberPickerWeight: NumberPicker
 
@@ -40,7 +40,7 @@ class DesiredWeightDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         return AlertDialog.Builder(context!!)
-                .setIcon(R.mipmap.ic_launcher)
+                .setIcon(R.drawable.ic_notification_weigh)
                 .setTitle(R.string.dialogfragment_enter_desiredweight_title)
                 .setView(dialogView)
                 .setCancelable(false)

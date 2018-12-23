@@ -16,22 +16,26 @@ import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
+import at.shockbytes.core.ui.activity.base.TintableBackNavigableActivity
+import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.ExerciseAdapter
 import at.shockbytes.corey.adapter.WorkoutCraftingSpinnerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment
 import at.shockbytes.corey.util.CoreyAppUtils
 import at.shockbytes.corey.util.AppParams
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.ViewManager
-import butterknife.OnClick
+import kotlinx.android.synthetic.main.fragment_create_workout.*
 import kotterknife.bindView
 import java.util.*
 
-class CreateWorkoutFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
+class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSelectedListener {
+
+    override val snackBarBackgroundColorRes: Int = R.color.sb_background
+    override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     private enum class CardState {
         EXPANDED, COLLAPSED
@@ -41,7 +45,6 @@ class CreateWorkoutFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     private var isUpdateMode: Boolean = false
     private var cardState: CardState = CardState.EXPANDED
 
-    private var listener: TintableBackNavigableActivity.OnTintSystemBarListener? = null
 
     private val allColors = arrayOf(
             intArrayOf(R.color.workout_intensity_easy, R.color.workout_intensity_easy_dark),
@@ -72,8 +75,14 @@ class CreateWorkoutFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         }
     }
 
-    override fun injectToGraph(appComponent: AppComponent) {
+    override fun injectToGraph(appComponent: AppComponent?) {
         // Do nothing
+    }
+
+    override fun bindViewModel() {
+    }
+
+    override fun unbindViewModel() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -88,15 +97,10 @@ class CreateWorkoutFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = context as? TintableBackNavigableActivity.OnTintSystemBarListener
-    }
-
     override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
         if (i > 0) {
             val newColors = allColors[i - 1].clone()
-            listener?.tint(newColors[0], newColors[1])
+            //listener?.tint(newColors[0], newColors[1])
         }
     }
 
@@ -122,10 +126,17 @@ class CreateWorkoutFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         if (isUpdateMode) {
             fillFields()
         }
+
+        fragment_create_workout_btn_add_exercise.setOnClickListener {
+            onClickAddExercise()
+        }
+
+        fragment_create_workout_btn_exp_col_general.setOnClickListener {
+            onClickExpandCollapse()
+        }
     }
 
-    @OnClick(R.id.fragment_create_workout_btn_exp_col_general)
-    fun onClickExpandCollapse() {
+    private fun onClickExpandCollapse() {
 
         if (cardState == CardState.EXPANDED) {
             ViewManager.collapse(generalCollapseContainer)
@@ -138,8 +149,7 @@ class CreateWorkoutFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         }
     }
 
-    @OnClick(R.id.fragment_create_workout_btn_add_exercise)
-    fun onClickAddExercise() {
+    private fun onClickAddExercise() {
 
         if (cardState == CardState.EXPANDED) {
             onClickExpandCollapse()
@@ -157,14 +167,14 @@ class CreateWorkoutFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         // Name -- Not empty
         val name = editName.text.toString()
         if (name.isEmpty()) {
-            showSnackbar(R.string.validation_empty_name)
+            showSnackbar(getString(R.string.validation_empty_name))
             return
         }
 
         // Duration -- Not empty
         val strDuration = editDuration.text.toString()
         if (strDuration.isEmpty()) {
-            showSnackbar(R.string.validation_empty_duration)
+            showSnackbar(getString(R.string.validation_empty_duration))
             return
         }
         val duration = Integer.parseInt(strDuration)
@@ -172,21 +182,21 @@ class CreateWorkoutFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         // Body Region -- Not first selected
         val brIdx = spinnerBodyRegion.selectedItemPosition
         if (brIdx <= 0) {
-            showSnackbar(R.string.validation_empty_body_region)
+            showSnackbar(getString(R.string.validation_empty_body_region))
             return
         }
 
         // Intensity -- Not first selected
         val inIdx = spinnerIntensity.selectedItemPosition
         if (brIdx <= 0) {
-            showSnackbar(R.string.validation_empty_intensity)
+            showSnackbar(getString(R.string.validation_empty_intensity))
             return
         }
 
         // Workout items -- Not empty
         val exercises = exerciseAdapter.data
         if (exercises.size == 0) {
-            showSnackbar(R.string.validation_empty_exercises)
+            showSnackbar(getString(R.string.validation_empty_exercises))
             return
         }
 

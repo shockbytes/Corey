@@ -15,14 +15,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    22.02.2017.
  */
-
-class FirebaseWorkoutManager(private val context: Context,
-                             private val gson: Gson,
-                             private val remoteConfig: FirebaseRemoteConfig,
-                             private val firebase: FirebaseDatabase) : WorkoutManager {
+class FirebaseWorkoutRepository(
+    private val context: Context,
+    private val gson: Gson,
+    private val remoteConfig: FirebaseRemoteConfig,
+    private val firebase: FirebaseDatabase
+) : WorkoutRepository {
 
     init {
         setupFirebase()
@@ -30,7 +31,6 @@ class FirebaseWorkoutManager(private val context: Context,
 
     private val timeExerciseGson = Gson()
 
-    private var workoutListener: LiveWorkoutUpdateListener? = null
     private var _workouts: MutableList<Workout> = mutableListOf()
 
     override val exercises: Observable<List<Exercise>>
@@ -57,14 +57,14 @@ class FirebaseWorkoutManager(private val context: Context,
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
 
-    override fun poke(activity: FragmentActivity?) {
+    override fun poke() {
         remoteConfig.fetch()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Once the config is successfully fetched
                         // it must be activated before newly fetched values are returned.
                         remoteConfig.activateFetched()
-                        Log.d ("Corey", "RemoteConfig fetch successful!")
+                        Log.d("Corey", "RemoteConfig fetch successful!")
                     } else {
                         Log.d("Corey", "RemoteConfig fetch failed!")
                     }
@@ -98,14 +98,6 @@ class FirebaseWorkoutManager(private val context: Context,
         incrementIntegerWorkoutInformation("/body/workoutinfo/timeStamp", workoutTime)
     }
 
-    override fun registerLiveWorkoutUpdates(listener: LiveWorkoutUpdateListener) {
-        this.workoutListener = listener
-    }
-
-    override fun unregisterLiveWorkoutUpdates() {
-        workoutListener = null
-    }
-
     private fun incrementIntegerWorkoutInformation(path: String, increment: Int) {
 
         firebase.getReference(path).runTransaction(object : Transaction.Handler {
@@ -125,26 +117,24 @@ class FirebaseWorkoutManager(private val context: Context,
 
     private fun setupFirebase() {
 
+        // TODO
         firebase.getReference("/workout").addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val w = gson.fromJson(dataSnapshot.value.toString(), Workout::class.java)
 
                 _workouts.add(w)
-                workoutListener?.onWorkoutAdded(w)
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
                 val changed = gson.fromJson(dataSnapshot.value.toString(), Workout::class.java)
 
                 _workouts[_workouts.indexOf(changed)] = changed
-                workoutListener?.onWorkoutChanged(changed)
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
                 val removed = gson.fromJson(dataSnapshot.value.toString(), Workout::class.java)
 
                 _workouts.remove(removed)
-                workoutListener?.onWorkoutDeleted(removed)
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) = Unit

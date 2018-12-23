@@ -3,12 +3,12 @@ package at.shockbytes.corey.body.info
 import at.shockbytes.util.AppUtils
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    03.08.2016.
  */
 data class BodyInfo(var weightPoints: List<WeightPoint> = listOf(),
-                    var height: Double = 0.toDouble(),
-                    var dreamWeight: Int = 0) {
+                    var height: Double = (-1).toDouble(),
+                    var dreamWeight: Int = -1) {
 
     val isNotEmpty: Boolean
         get() = weightPoints.isNotEmpty()

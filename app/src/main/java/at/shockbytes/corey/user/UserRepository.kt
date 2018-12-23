@@ -1,0 +1,15 @@
+package at.shockbytes.corey.user
+
+import at.shockbytes.core.model.ShockbytesUser
+
+/**
+ * Author:  Martin Macheiner
+ * Date:    04.03.2018
+ */
+interface UserRepository {
+
+    val user: ShockbytesUser
+
+    fun signOut()
+
+}

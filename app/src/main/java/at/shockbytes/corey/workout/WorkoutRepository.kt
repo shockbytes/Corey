@@ -6,11 +6,10 @@ import at.shockbytes.corey.common.core.workout.model.Workout
 import io.reactivex.Observable
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    21.02.2017
  */
-
-interface WorkoutManager : Pokeable {
+interface WorkoutRepository : Pokeable {
 
     val workouts: Observable<List<Workout>>
 
@@ -25,9 +24,5 @@ interface WorkoutManager : Pokeable {
     fun updatePhoneWorkoutInformation(workouts: Int, workoutTime: Int)
 
     fun updateWearWorkoutInformation(avgPulse: Int, workoutsWithPulse: Int, workoutTime: Int)
-
-    fun registerLiveWorkoutUpdates(listener: LiveWorkoutUpdateListener)
-
-    fun unregisterLiveWorkoutUpdates()
 
 }

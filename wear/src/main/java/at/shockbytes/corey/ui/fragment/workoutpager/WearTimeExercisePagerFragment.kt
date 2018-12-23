@@ -51,7 +51,9 @@ class WearTimeExercisePagerFragment : WearableBaseFragment() {
         secondsUntilFinish = exercise.workoutDurationInSeconds
 
         btnTime.text = calculateDisplayString(secondsUntilFinish)
-        txtExercise.text = exercise.getDisplayName(context)
+        context?.let {
+            txtExercise.text = exercise.getDisplayName(it)
+        }
         txtExercise.isSelected = true
 
         timerObservable = Observable.interval(1, TimeUnit.SECONDS)
@@ -66,14 +68,14 @@ class WearTimeExercisePagerFragment : WearableBaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        exercise = arguments.getParcelable(ARG_EXERCISE)
+        exercise = arguments?.getParcelable(ARG_EXERCISE) ?: return
         isVibrationEnabled = preferences.getBoolean(getString(R.string.wear_pref_vibration_key), true)
     }
 
     private fun onClickButtonStart() {
 
         val countdown = preferences.getString(getString(R.string.wear_pref_countdown_key),
-                getString(R.string.wear_pref_countdown_default_value)).toInt()
+                getString(R.string.wear_pref_countdown_default_value)).toIntOrNull() ?: 0
 
         WearTimeExerciseCountdownDialogFragment.newInstance(countdown)
                 .setCountdownCompleteListener {

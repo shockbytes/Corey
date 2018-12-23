@@ -2,7 +2,6 @@ package at.shockbytes.corey.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -11,20 +10,43 @@ import android.transition.Fade
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import at.shockbytes.core.ui.activity.base.TintableBackNavigableActivity
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.ExerciseAdapter
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.util.AppUtils
 import kotterknife.bindView
 
 /**
- * @author  Martin Macheiner
- * Date:    01.11.2015.
+ * Author:  Martin Macheiner
+ * Date:    01.11.2015
  */
-class WorkoutDetailActivity : TintableBackNavigableActivity() {
+class WorkoutDetailActivity : TintableBackNavigableActivity<AppComponent>() {
+
+    override val abDefColor: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val abTextDefColor: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val colorPrimary: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val colorPrimaryDark: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val colorPrimaryText: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val sbDefColor: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val upIndicator: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
+    override fun bindViewModel() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun unbindViewModel() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private val imgViewExtToolbar: ImageView by bindView(R.id.activity_training_detail_imgview_ext_toolbar)
     private val imgViewMuscles: ImageView by bindView(R.id.activity_training_detail_imgview_body_region)
@@ -41,17 +63,14 @@ class WorkoutDetailActivity : TintableBackNavigableActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.exitTransition = Fade(Fade.OUT)
-        }
+        window.exitTransition = Fade(Fade.OUT)
+
         setContentView(R.layout.activity_workout_detail)
 
         workout = intent.getParcelableExtra(ARG_WORKOUT)
-        tintSystemBarsWithText(workout.colorResForIntensity, workout.darkColorResForIntensity, newTitle = "")
-        setupViews()
     }
 
-    override fun injectToGraph(appComponent: AppComponent) {
+    override fun injectToGraph(appComponent: AppComponent?) {
         // Do nothing
     }
 

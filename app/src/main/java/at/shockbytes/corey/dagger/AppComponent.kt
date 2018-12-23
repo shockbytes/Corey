@@ -1,10 +1,12 @@
 package at.shockbytes.corey.dagger
 
+import at.shockbytes.core.ShockbytesInjector
 import at.shockbytes.corey.core.receiver.NotificationReceiver
 import at.shockbytes.corey.core.receiver.OnBootReceiver
 import at.shockbytes.corey.ui.activity.MainActivity
 import at.shockbytes.corey.ui.fragment.SettingsFragment
 import at.shockbytes.corey.ui.fragment.WorkoutFragment
+import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
 import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
@@ -20,8 +22,13 @@ import javax.inject.Singleton
  * Date: 21.02.2017.
  */
 @Singleton
-@Component(modules = [AppModule::class, WorkoutModule::class, FirebaseModule::class])
-interface AppComponent {
+@Component(modules = [
+    AppModule::class,
+    WorkoutModule::class,
+    FirebaseModule::class,
+    ViewModelModule::class
+])
+interface AppComponent: ShockbytesInjector {
 
     fun inject(activity: MainActivity)
 
@@ -47,4 +54,5 @@ interface AppComponent {
 
     fun inject(broadcastReceiver: OnBootReceiver)
 
+    fun inject(fragment: ProfileBodyFragmentView)
 }

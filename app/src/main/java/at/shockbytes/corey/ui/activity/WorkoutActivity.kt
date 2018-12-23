@@ -3,18 +3,17 @@ package at.shockbytes.corey.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.MenuItem
+import at.shockbytes.core.ui.activity.base.BaseActivity
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.ui.activity.core.BaseActivity
 import at.shockbytes.corey.ui.fragment.WorkoutFragment
 import at.shockbytes.corey.ui.fragment.dialog.WorkoutMessageDialogFragment
 
-class WorkoutActivity : BaseActivity() {
+class WorkoutActivity : BaseActivity<AppComponent>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,15 +21,19 @@ class WorkoutActivity : BaseActivity() {
 
         val w = intent.getParcelableExtra<Workout>(ARG_WORKOUT)
 
-        lockOrientation()
         setupActionBar(w.displayableName, w.colorResForIntensity, w.darkColorResForIntensity)
         supportFragmentManager.beginTransaction()
                 .replace(android.R.id.content, WorkoutFragment.newInstance(w))
                 .commit()
     }
 
-    override fun injectToGraph(appComponent: AppComponent) {
-        // Do nothing
+    override fun bindViewModel() {
+    }
+
+    override fun injectToGraph(appComponent: AppComponent?) {
+    }
+
+    override fun unbindViewModel() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -42,13 +45,12 @@ class WorkoutActivity : BaseActivity() {
     }
 
     private fun setupActionBar(workoutName: String, actionbarColor: Int, statusColor: Int) {
-        val ab = supportActionBar
-        ab?.title = workoutName
-        ab?.setHomeButtonEnabled(true)
-        ab?.setDisplayHomeAsUpEnabled(true)
-        ab?.setHomeAsUpIndicator(R.drawable.ic_cancel)
-        ab?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, actionbarColor)))
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        supportActionBar?.let { ab ->
+            ab.title = workoutName
+            ab.setHomeButtonEnabled(true)
+            ab.setDisplayHomeAsUpEnabled(true)
+            ab.setHomeAsUpIndicator(R.drawable.ic_cancel)
+            ab.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, actionbarColor)))
             window.statusBarColor = ContextCompat.getColor(this, statusColor)
         }
     }

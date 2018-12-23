@@ -4,18 +4,40 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import at.shockbytes.core.ui.activity.base.TintableBackNavigableActivity
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.corey.ui.fragment.CreateWorkoutFragment
 
 /**
- * @author Martin Macheiner
- * Date: 27.10.2015.
+ * Author:  Martin Macheiner
+ * Date:    27.10.2015.
  */
-class CreateWorkoutActivity : TintableBackNavigableActivity(),
-        TintableBackNavigableActivity.OnTintSystemBarListener {
+class CreateWorkoutActivity : TintableBackNavigableActivity<AppComponent>() {
+
+    override val abDefColor: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val abTextDefColor: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val colorPrimary: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val colorPrimaryDark: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val colorPrimaryText: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val sbDefColor: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val upIndicator: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
+    override fun bindViewModel() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun unbindViewModel() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +53,8 @@ class CreateWorkoutActivity : TintableBackNavigableActivity(),
                 .commit()
     }
 
-    override fun injectToGraph(appComponent: AppComponent) {
+    override fun injectToGraph(appComponent: AppComponent?) {
         // Do nothing
-    }
-
-    override fun tint(to: Int, toDark: Int) {
-        tintSystemBarsWithText(to, toDark, animated = true)
     }
 
     companion object {

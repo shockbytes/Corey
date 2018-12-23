@@ -28,7 +28,6 @@ import at.shockbytes.util.view.NonSwipeableViewPager
 import kotterknife.bindView
 import javax.inject.Inject
 
-@Suppress("DEPRECATION")
 class WorkoutFragment : WearableBaseFragment(),
         SensorEventListener, WorkoutActivity.OnWorkoutNavigationListener {
 
@@ -51,7 +50,7 @@ class WorkoutFragment : WearableBaseFragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        workout = arguments.getParcelable(ARG_WORKOUT)
+        workout = arguments?.getParcelable(ARG_WORKOUT)!!
     }
 
     override val layoutId = R.layout.fragment_workout
@@ -61,8 +60,10 @@ class WorkoutFragment : WearableBaseFragment(),
     }
 
     override fun setupViews() {
-        progressBar.progressTintList = ColorStateList
-                .valueOf(ContextCompat.getColor(context, workout.colorResForIntensity))
+        context?.let {
+            progressBar.progressTintList = ColorStateList
+                    .valueOf(ContextCompat.getColor(it, workout.colorResForIntensity))
+        }
     }
 
 
@@ -135,9 +136,11 @@ class WorkoutFragment : WearableBaseFragment(),
 
         initializeHeartRate()
 
-        viewPager.adapter = WearExercisePagerAdapter(fragmentManager, workout)
-        viewPager.pageMargin = 32
-        viewPager.makeFancyPageTransformation()
+        fragmentManager?.let {
+            viewPager.adapter = WearExercisePagerAdapter(it, workout)
+            viewPager.pageMargin = 32
+            viewPager.makeFancyPageTransformation()
+        }
 
         chronometer.base = SystemClock.elapsedRealtime()
         chronometer.start()
@@ -156,20 +159,22 @@ class WorkoutFragment : WearableBaseFragment(),
         communicationManager
                 .syncWorkoutInformation(avgPulse, Math.ceil((elapsedSeconds / 60).toDouble()).toInt())
 
-        activity.finishAfterTransition()
+        activity?.finishAfterTransition()
     }
 
     private fun initializeHeartRate() {
 
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED) {
-            sensorManager = context.getSystemService(SENSOR_SERVICE) as SensorManager
-            sensor = sensorManager?.getDefaultSensor(Sensor.TYPE_HEART_RATE)
-            if (sensor != null) {
-                val interval = 1000000
-                sensorManager?.registerListener(this, sensor, interval)
+        activity?.let {
+            if (ActivityCompat.checkSelfPermission(it, Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED) {
+                sensorManager = context?.getSystemService(SENSOR_SERVICE) as SensorManager
+                sensor = sensorManager?.getDefaultSensor(Sensor.TYPE_HEART_RATE)
+                if (sensor != null) {
+                    val interval = 1000000
+                    sensorManager?.registerListener(this, sensor, interval)
+                }
+            } else {
+                requestPermissions(arrayOf(Manifest.permission.BODY_SENSORS), SENSOR_REQUEST_CODE)
             }
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.BODY_SENSORS), SENSOR_REQUEST_CODE)
         }
     }
 

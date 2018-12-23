@@ -1,86 +1,63 @@
 package at.shockbytes.corey.ui.fragment.body
 
-import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.GoalAdapter
-import at.shockbytes.corey.body.BodyManager
 import at.shockbytes.corey.body.goal.Goal
-import at.shockbytes.corey.body.info.BodyInfo
-import at.shockbytes.corey.ui.fragment.BaseFragment
+import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
-import butterknife.BindView
-import butterknife.OnClick
+import kotlinx.android.synthetic.main.fragment_body_view_goals.*
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    05.03.2018
  */
-class GoalBodyFragmentView(fragment: BaseFragment,
-                           bodyInfo: BodyInfo,
-                           bodyManager: BodyManager)
-    : BodyFragmentView(fragment, bodyInfo, bodyManager), GoalAdapter.OnGoalActionClickedListener {
+class GoalBodyFragmentView : BodySubFragment(), GoalAdapter.OnGoalActionClickedListener {
+    override fun bindViewModel() {
+        // TODO        bodyManager.bodyGoals.subscribe { goals -> goals.forEach { onBodyGoalAdded(it) } }
+        //                //.addTo(compositeDisposable)
+    }
+
+    override fun injectToGraph(appComponent: AppComponent?) {
+        // TODO
+    }
+
+    override fun unbindViewModel() {
+        // TODO
+    }
 
     private lateinit var goalAdapter: GoalAdapter
 
-    @BindView(R.id.fragment_body_card_goals)
-    protected lateinit var cardView: CardView
-
-    @BindView(R.id.fragment_body_card_goals_rv)
-    protected lateinit var recyclerViewGoals: RecyclerView
-
     override val layoutId = R.layout.fragment_body_view_goals
 
-    override fun onDesiredWeightChanged(changed: Int) {
-        // Not interesting...
-    }
-
-    override fun onBodyGoalAdded(g: Goal) {
-        if (!g.isDone) {
-            goalAdapter.addEntityAtFirst(g)
-        } else {
-            goalAdapter.addEntityAtLast(g)
-        }
-    }
-
-    override fun onBodyGoalDeleted(g: Goal) {
-        goalAdapter.deleteEntity(g)
-    }
-
-    override fun onBodyGoalChanged(g: Goal) {
-        goalAdapter.updateEntity(g)
-    }
-
     override fun onDeleteGoalClicked(g: Goal) {
-        bodyManager.removeBodyGoal(g)
     }
 
     override fun onFinishGoalClicked(g: Goal) {
-        g.isDone = true
-        bodyManager.updateBodyGoal(g)
     }
 
-    override fun setupView() {
+    override fun setupViews() {
 
-        recyclerViewGoals.layoutManager = LinearLayoutManager(fragment.context)
-        goalAdapter = GoalAdapter(fragment.context!!, listOf())
+        fragment_body_card_goals_rv.layoutManager = LinearLayoutManager(context!!)
+        goalAdapter = GoalAdapter(context!!, listOf())
         goalAdapter.setOnGoalActionClickedListener(this)
-        recyclerViewGoals.adapter = goalAdapter
+        fragment_body_card_goals_rv.adapter = goalAdapter
 
-        bodyManager.bodyGoals.subscribe { goals -> goals.forEach { onBodyGoalAdded(it) } }
+        fragment_body_card_goals_btn_add.setOnClickListener {
+            onClickAddGoal()
+        }
+
+        animateCard(fragment_body_card_goals, 0)
     }
 
     override fun animateView(startDelay: Long) {
-        animateCard(cardView, startDelay)
     }
 
-    @OnClick(R.id.fragment_body_card_goals_btn_add)
-    fun onClickAddGoal() {
+    private fun onClickAddGoal() {
         AddGoalDialogFragment.newInstance()
                 .setOnGoalMessageAddedListener { msg ->
-                    bodyManager.storeBodyGoal(Goal(msg, false, ""))
-                }.show(fragment.fragmentManager, "dialog-fragment-add-goal")
+                    // bodyManager.storeBodyGoal(Goal(msg, false, ""))
+                }.show(fragmentManager, "dialog-fragment-add-goal")
     }
 
 

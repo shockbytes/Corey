@@ -1,23 +1,21 @@
 package at.shockbytes.corey.adapter
 
-import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import at.shockbytes.corey.R
+import at.shockbytes.core.ui.model.BottomNavigationTab
 import at.shockbytes.corey.ui.fragment.pager.BodyFragment
 import at.shockbytes.corey.ui.fragment.pager.ScheduleFragment
 import at.shockbytes.corey.ui.fragment.pager.WorkoutOverviewFragment
 
 
 /**
- * @author Martin Macheiner
- * Date: 30.08.2016.
+ * Author:  Martin Macheiner
+ * Date:    30.08.2016
  */
-class CoreyPagerAdapter(private val context: Context,
-                        fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class CoreyPagerAdapter(fm: FragmentManager,
+                        private val tabs: List<BottomNavigationTab>) : FragmentStatePagerAdapter(fm) {
 
-    override fun getCount() = 3
 
     override fun getItem(position: Int): Fragment? {
         return when (position) {
@@ -28,27 +26,9 @@ class CoreyPagerAdapter(private val context: Context,
         }
     }
 
-    override fun getPageTitle(position: Int): CharSequence {
+    override fun getCount(): Int = tabs.size
 
-        return when (position) {
-
-            0 -> context.getString(R.string.tab_workout)
-            1 -> context.getString(R.string.tab_schedule)
-            2 -> context.getString(R.string.tab_my_body)
-            else -> "" // Never the case
-        }
+    override fun getPageTitle(position: Int): CharSequence? {
+        return tabs[position].title
     }
-
-    fun getPageIcon(position: Int): Int {
-
-        return when (position) {
-
-            0 -> R.drawable.ic_tab_workout
-            1 -> R.drawable.ic_tab_schedule
-            2 -> R.drawable.ic_tab_my_body
-            else -> 0 // Never the case
-        }
-    }
-
-
 }

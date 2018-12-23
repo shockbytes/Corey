@@ -14,21 +14,20 @@ import android.widget.EditText
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.AddScheduleItemAdapter
 import at.shockbytes.corey.core.CoreyApp
-import at.shockbytes.corey.schedule.ScheduleManager
+import at.shockbytes.corey.schedule.ScheduleRepository
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
-import java.util.*
 import javax.inject.Inject
 
 /**
- * @author Martin Macheiner
- * Date: 24.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    24.02.2017
  */
 class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
         BaseAdapter.OnItemClickListener<AddScheduleItemAdapter.ScheduleDisplayItem> {
 
     @Inject
-    protected lateinit var scheduleManager: ScheduleManager
+    protected lateinit var scheduleManager: ScheduleRepository
 
     private val editTextFilter: EditText by bindView(R.id.fragment_create_workout_bottom_sheet_edit_filter)
     private val recyclerView: RecyclerView by bindView(R.id.fragment_create_workout_bottom_sheet_recyclerview)
@@ -86,7 +85,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
     private fun setupViews() {
 
         recyclerView.layoutManager = GridLayoutManager(context, 3)
-        addScheduleItemAdapter = AddScheduleItemAdapter(context!!, ArrayList()) { item, query -> item.title.contains(query) }
+        addScheduleItemAdapter = AddScheduleItemAdapter(context!!, listOf()) { item, query -> item.title.contains(query) }
         addScheduleItemAdapter?.onItemClickListener = this
         recyclerView.adapter = addScheduleItemAdapter
 

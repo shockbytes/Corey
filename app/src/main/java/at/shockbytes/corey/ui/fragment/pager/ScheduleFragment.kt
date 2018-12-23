@@ -7,13 +7,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.widget.Toast
+import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.adapter.DaysScheduleAdapter
 import at.shockbytes.corey.adapter.ScheduleAdapter
+import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.schedule.LiveScheduleUpdateListener
 import at.shockbytes.corey.schedule.ScheduleItem
-import at.shockbytes.corey.schedule.ScheduleManager
+import at.shockbytes.corey.schedule.ScheduleRepository
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
@@ -23,14 +24,16 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
- * Date:    26.10.2015.
+ * Author:  Martin Macheiner
+ * Date:    26.10.2015
  */
-class ScheduleFragment : BasePagerFragment(), LiveScheduleUpdateListener,
-        BaseAdapter.OnItemMoveListener<ScheduleItem> {
+class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveListener<ScheduleItem> {
+
+    override val snackBarBackgroundColorRes: Int = R.color.sb_background
+    override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     @Inject
-    protected lateinit var scheduleManager: ScheduleManager
+    protected lateinit var scheduleManager: ScheduleRepository
 
     private lateinit var touchHelper: ItemTouchHelper
     private lateinit var adapter: ScheduleAdapter
@@ -47,27 +50,6 @@ class ScheduleFragment : BasePagerFragment(), LiveScheduleUpdateListener,
 
     override val layoutId = R.layout.fragment_schedule
 
-
-    override fun registerForLiveEvents() {
-        scheduleManager.registerLiveScheduleUpdates(this)
-    }
-
-    override fun unregisterForLiveEvents() {
-        scheduleManager.unregisterLiveScheduleUpdates()
-    }
-
-    override fun onScheduleItemAdded(item: ScheduleItem) {
-        adapter.insertScheduleItem(item)
-    }
-
-    override fun onScheduleItemDeleted(item: ScheduleItem) {
-        adapter.resetEntity(item)
-    }
-
-    override fun onScheduleItemChanged(item: ScheduleItem) {
-        adapter.updateScheduleItem(item)
-    }
-
     override fun onItemMove(t: ScheduleItem, from: Int, to: Int) {
     }
 
@@ -79,6 +61,12 @@ class ScheduleFragment : BasePagerFragment(), LiveScheduleUpdateListener,
         if (!t.isEmpty) {
             scheduleManager.deleteScheduleItem(t)
         }
+    }
+
+    override fun bindViewModel() {
+    }
+
+    override fun unbindViewModel() {
     }
 
     override fun setupViews() {
@@ -109,12 +97,12 @@ class ScheduleFragment : BasePagerFragment(), LiveScheduleUpdateListener,
         }, { throwable ->
             throwable.printStackTrace()
             Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()
-        })
+        }).addTo(compositeDisposable)
 
     }
 
-    override fun injectToGraph(appComponent: AppComponent) {
-        appComponent.inject(this)
+    override fun injectToGraph(appComponent: AppComponent?) {
+        appComponent?.inject(this)
     }
 
     private fun onScheduleItemClicked(item: ScheduleItem, position: Int) {

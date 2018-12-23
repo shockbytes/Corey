@@ -20,11 +20,13 @@ class WearExercisePagerFragment : WearableBaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exercise = arguments.getParcelable(ARG_EXERCISE)
+        exercise = arguments?.getParcelable(ARG_EXERCISE) ?: return
     }
 
     override fun setupViews() {
-        text.text = exercise.getDisplayName(context)
+        context?.let { ctx ->
+            text.text = exercise.getDisplayName(ctx)
+        }
     }
 
     override fun injectToGraph(appComponent: WearAppComponent) {

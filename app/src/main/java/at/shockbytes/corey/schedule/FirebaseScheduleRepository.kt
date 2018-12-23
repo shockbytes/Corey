@@ -13,7 +13,7 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.receiver.NotificationReceiver
 import at.shockbytes.corey.util.CoreyAppUtils
-import at.shockbytes.corey.workout.WorkoutManager
+import at.shockbytes.corey.workout.WorkoutRepository
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -24,27 +24,28 @@ import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    22.02.2017
  */
-
-class FirebaseScheduleManager(private val context: Context,
-                              private val preferences: SharedPreferences,
-                              private val gson: Gson,
-                              private val workoutManager: WorkoutManager,
-                              private val remoteConfig: FirebaseRemoteConfig,
-                              private val firebase: FirebaseDatabase) : ScheduleManager {
+class FirebaseScheduleRepository(
+        private val context: Context,
+        private val preferences: SharedPreferences,
+        private val gson: Gson,
+        private val workoutManager: WorkoutRepository,
+        private val remoteConfig: FirebaseRemoteConfig,
+        private val firebase: FirebaseDatabase
+) : ScheduleRepository {
 
     init {
         setupFirebase()
     }
 
     private val scheduleItems: MutableList<ScheduleItem> = mutableListOf()
-    private var scheduleListener: LiveScheduleUpdateListener? = null
 
     override val schedule: Observable<List<ScheduleItem>>
         get() = Observable.just(scheduleItems.toList())
@@ -74,7 +75,7 @@ class FirebaseScheduleManager(private val context: Context,
         get() = preferences.getString(context.getString(R.string.prefs_weigh_notification_day_key),
                 context.getString(R.string.prefs_weigh_notification_day_default_value)).toInt()
 
-    override fun poke(activity: FragmentActivity?) {
+    override fun poke() {
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, NotificationReceiver::class.java)
@@ -132,14 +133,6 @@ class FirebaseScheduleManager(private val context: Context,
         })
     }
 
-    override fun registerLiveScheduleUpdates(listener: LiveScheduleUpdateListener) {
-        this.scheduleListener = listener
-    }
-
-    override fun unregisterLiveScheduleUpdates() {
-        scheduleListener = null
-    }
-
     private fun readNotificationTimeFromPreferences(): List<Int> {
         val str = preferences.getString(context.getString(R.string.prefs_workout_day_notification_daytime_key),
                 context.getString(R.string.prefs_workout_day_notification_daytime_defValue)) ?: ""
@@ -153,33 +146,28 @@ class FirebaseScheduleManager(private val context: Context,
     }
 
     private fun setupFirebase() {
+
         firebase.getReference("/schedule").addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-
                 dataSnapshot.getValue(ScheduleItem::class.java)?.let { item ->
                     scheduleItems.add(item)
-                    scheduleListener?.onScheduleItemAdded(item)
                 }
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-
                 dataSnapshot.getValue(ScheduleItem::class.java)?.let { changed ->
                     scheduleItems[scheduleItems.indexOf(changed)] = changed
-                    scheduleListener?.onScheduleItemChanged(changed)
                 }
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-
                 dataSnapshot.getValue(ScheduleItem::class.java)?.let { removed ->
                     scheduleItems.remove(removed)
-                    scheduleListener?.onScheduleItemDeleted(removed)
                 }
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
-                Log.wtf("Corey", "ScheduleItem moved: " + dataSnapshot.toString() + " / " + s)
+                Timber.d( "ScheduleItem moved: $dataSnapshot / $s")
             }
 
             override fun onCancelled(databaseError: DatabaseError) = Unit
