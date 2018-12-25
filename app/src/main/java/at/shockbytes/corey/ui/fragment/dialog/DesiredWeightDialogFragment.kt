@@ -7,7 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import at.shockbytes.corey.R
-import at.shockbytes.corey.body.BodyRepository
+import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.core.CoreyApp
 import com.shawnlin.numberpicker.NumberPicker
 import javax.inject.Inject

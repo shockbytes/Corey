@@ -1,5 +1,8 @@
 package at.shockbytes.corey.ui.fragment.pager
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
@@ -9,18 +12,21 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.WorkoutAdapter
+import at.shockbytes.corey.ui.adapter.WorkoutAdapter
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.util.WorkoutNameComparator
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.dagger.ViewModelFactory
 import at.shockbytes.corey.ui.activity.CreateWorkoutActivity
 import at.shockbytes.corey.ui.activity.WorkoutDetailActivity
 import at.shockbytes.corey.util.AppParams
-import at.shockbytes.corey.workout.WorkoutRepository
+import at.shockbytes.corey.data.workout.WorkoutRepository
+import at.shockbytes.corey.ui.viewmodel.WorkoutOverviewViewModel
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.corey.util.isPortrait
 import at.shockbytes.util.view.RecyclerViewWithEmptyView
+import kotlinx.android.synthetic.main.fragment_workout_overview.*
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -28,18 +34,18 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    26.10.2015
  */
-class WorkoutOverviewFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemClickListener<Workout>,
+class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
+        BaseAdapter.OnItemClickListener<Workout>,
         WorkoutAdapter.OnWorkoutPopupItemSelectedListener {
 
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
-    @Inject
-    protected lateinit var workoutManager: WorkoutRepository
-
     private lateinit var adapter: WorkoutAdapter
+    private lateinit var viewModel: WorkoutOverviewViewModel
 
-    private val recyclerView: RecyclerViewWithEmptyView by bindView(R.id.fragment_training_rv)
+    @Inject
+    protected lateinit var vmFactory: ViewModelProvider.Factory
 
     private val layoutManagerForOrientation: RecyclerView.LayoutManager
         get() = if (isPortrait()) {
@@ -49,6 +55,11 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItem
         }
 
     override val layoutId = R.layout.fragment_workout_overview
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, vmFactory)[WorkoutOverviewViewModel::class.java]
+    }
 
     override fun injectToGraph(appComponent: AppComponent?) {
         appComponent?.inject(this)
@@ -76,8 +87,8 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItem
 
     override fun onDelete(w: Workout?) {
         if (w != null) {
-            adapter.deleteEntity(w)
-            workoutManager.deleteWorkout(w)
+            // adapter.deleteEntity(w)
+            viewModel.deleteWorkout(w)
         }
     }
 
@@ -89,24 +100,31 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItem
 
     override fun setupViews() {
 
-        recyclerView.layoutManager = layoutManagerForOrientation
+        fragment_training_rv.layoutManager = layoutManagerForOrientation
         adapter = WorkoutAdapter(activity!!, listOf(), this)
         adapter.onItemClickListener = this
         // recyclerView.setEmptyView(emptyView);
-        recyclerView.adapter = adapter
-
-        workoutManager.workouts.subscribe({ workouts ->
-            adapter.data = workouts.sortedWith(WorkoutNameComparator()).toMutableList()
-        }) { throwable ->
-            throwable.printStackTrace()
-            showSnackbar(getString(R.string.snackbar_cannot_load_workouts))
-        }.addTo(compositeDisposable)
+        fragment_training_rv.adapter = adapter
     }
 
     override fun bindViewModel() {
+
+        viewModel.getWorkouts().observe(this, Observer { state ->
+
+            when (state) {
+
+                is WorkoutOverviewViewModel.RetrieveWorkoutState.Success -> {
+                    adapter.data = state.workouts.toMutableList()
+                }
+                is WorkoutOverviewViewModel.RetrieveWorkoutState.Error -> {
+                    showSnackbar(getString(R.string.snackbar_cannot_load_workouts))
+                }
+            }
+        })
     }
 
     override fun unbindViewModel() {
+        viewModel.getWorkouts().removeObservers(this)
     }
 
     companion object {

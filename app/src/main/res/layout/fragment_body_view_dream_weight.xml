@@ -9,7 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
     <LinearLayout
@@ -24,7 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:drawableLeft="@drawable/ic_body_card_dream_weight"
             android:drawablePadding="16dp"
             android:drawableStart="@drawable/ic_body_card_dream_weight"
             android:gravity="center_vertical"
@@ -41,7 +40,6 @@
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:gravity="center"
-            android:fontFamily="sans-serif"
             android:textStyle="bold" />
 
         <TextView
@@ -50,7 +48,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-light"
             android:textSize="30sp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp" />
@@ -59,7 +56,6 @@
             android:id="@+id/fragment_body_card_dream_weight_txt_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
             android:lineSpacingExtra="4sp"
             android:layout_marginBottom="8dp"
             android:gravity="center"

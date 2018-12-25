@@ -150,6 +150,10 @@
     <string name="label_create_workout">Workout erstellen</string>
     <string name="label_settings">Einstellungen</string>
     <string name="body_card_statistics_title">Meine Statistiken</string>
+    <string name="tab_goals">Ziele</string>
+    <string name="new_workout">Neues Workout</string>
+    <string name="settings">Einstellungen</string>
+    <string name="new_goal">Neues Ziel</string>
 
 
 </resources>

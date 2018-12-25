@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_training_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,7 +9,7 @@
     android:layout_margin="8dp"
     android:minHeight="126dp"
     android:transitionName="@string/transition_workout_card"
-    app:cardCornerRadius="2dp">
+    app:cardCornerRadius="12dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,7 +21,6 @@
             android:layout_height="24dp"
             android:layout_alignBottom="@+id/item_training_imgview_body_region"
             android:layout_alignEnd="@+id/item_training_imgview_body_region"
-            android:layout_alignRight="@+id/item_training_imgview_body_region"
             android:transitionName="@string/transition_workout_equipment"
             app:cardBackgroundColor="@color/equipmentColor"
             app:cardCornerRadius="12dp"
@@ -38,11 +38,10 @@
             android:id="@+id/item_training_imgview_body_region"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_margin="16dp"
             android:padding="4dp"
-            android:src="@mipmap/ic_launcher"
+            tools:src="@mipmap/ic_launcher"
             android:transitionName="@string/transition_workout_body_region" />
 
         <TextView
@@ -52,8 +51,6 @@
             android:layout_alignTop="@+id/item_training_imgview_body_region"
             android:layout_margin="8dp"
             android:layout_toEndOf="@+id/item_training_imgview_body_region"
-            android:layout_toLeftOf="@+id/item_training_imgbtn_overflow"
-            android:layout_toRightOf="@+id/item_training_imgview_body_region"
             android:layout_toStartOf="@+id/item_training_imgbtn_overflow"
             android:gravity="center_vertical"
             android:padding="2dp"
@@ -91,7 +88,6 @@
                     android:id="@+id/item_training_txt_duration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -118,7 +114,6 @@
                     android:id="@+id/item_training_txt_workouts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </LinearLayout>
@@ -132,7 +127,6 @@
             android:layout_width="36dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:scaleType="center"
             app:srcCompat="@drawable/ic_overflow" />
 

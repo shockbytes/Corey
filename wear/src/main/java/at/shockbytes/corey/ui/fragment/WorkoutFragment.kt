@@ -18,12 +18,12 @@ import android.widget.Chronometer
 import android.widget.ProgressBar
 import android.widget.TextView
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.WearExercisePagerAdapter
+import at.shockbytes.corey.ui.adapter.WearExercisePagerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.core.CommunicationManager
 import at.shockbytes.corey.dagger.WearAppComponent
 import at.shockbytes.corey.ui.activity.WorkoutActivity
-import at.shockbytes.corey.workout.PulseLogger
+import at.shockbytes.corey.data.workout.PulseLogger
 import at.shockbytes.util.view.NonSwipeableViewPager
 import kotterknife.bindView
 import javax.inject.Inject

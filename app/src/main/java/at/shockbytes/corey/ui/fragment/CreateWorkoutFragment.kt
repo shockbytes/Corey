@@ -2,7 +2,6 @@ package at.shockbytes.corey.ui.fragment
 
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -16,11 +15,10 @@ import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
-import at.shockbytes.core.ui.activity.base.TintableBackNavigableActivity
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.ExerciseAdapter
-import at.shockbytes.corey.adapter.WorkoutCraftingSpinnerAdapter
+import at.shockbytes.corey.ui.adapter.ExerciseAdapter
+import at.shockbytes.corey.ui.adapter.WorkoutCraftingSpinnerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment

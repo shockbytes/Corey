@@ -17,9 +17,12 @@ import at.shockbytes.core.ui.model.AdditionalToolbarAction
 import at.shockbytes.core.ui.model.BottomNavigationActivityOptions
 import at.shockbytes.core.ui.model.BottomNavigationTab
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.CoreyPagerAdapter
+import at.shockbytes.corey.ui.adapter.CoreyPagerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.data.goal.Goal
+import at.shockbytes.corey.ui.fragment.MenuFragment
+import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import at.shockbytes.corey.util.AppParams
@@ -39,15 +42,16 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
                 tabs = listOf(
                         BottomNavigationTab(R.id.nav_item_workout, R.drawable.navigation_item, R.drawable.ic_tab_workout, getString(R.string.tab_workout)),
                         BottomNavigationTab(R.id.nav_item_schedule, R.drawable.navigation_item, R.drawable.ic_tab_schedule, getString(R.string.tab_schedule)),
-                        BottomNavigationTab(R.id.nav_item_my_body, R.drawable.navigation_item, R.drawable.ic_tab_my_body, getString(R.string.tab_my_body))
+                        BottomNavigationTab(R.id.nav_item_my_body, R.drawable.navigation_item, R.drawable.ic_tab_my_body, getString(R.string.tab_my_body)),
+                        BottomNavigationTab(R.id.nav_item_goals, R.drawable.navigation_item, R.drawable.ic_tab_goals, getString(R.string.tab_goals))
                 ),
                 defaultTab = R.id.nav_item_schedule,
                 appName = getString(R.string.app_name),
-                viewPagerOffscreenLimit = 2,
+                viewPagerOffscreenLimit = 3,
                 appTheme = R.style.AppTheme_NoActionBar,
                 fabMenuId = R.menu.menu_fab,
-                fabMenuColorList = listOf(R.color.colorAccent),
-                fabVisiblePageIndices = listOf(0),
+                fabMenuColorList = listOf(R.color.colorAccent, R.color.material_red),
+                fabVisiblePageIndices = listOf(0, 3),
                 overflowIcon = R.drawable.ic_overflow_white,
                 additionalToolbarAction = AdditionalToolbarAction(R.drawable.ic_body_card_weight_history),
                 toolbarColor = R.color.colorPrimary,
@@ -82,9 +86,24 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     }
 
     override fun onFabMenuItemClicked(id: Int): Boolean {
-        activityTransition(CreateWorkoutActivity.newIntent(applicationContext),
-                AppParams.REQUEST_CODE_CREATE_WORKOUT)
-        return false
+
+        return when (id) {
+
+            R.id.menu_fab_create_workout -> {
+                activityTransition(CreateWorkoutActivity.newIntent(applicationContext),
+                        AppParams.REQUEST_CODE_CREATE_WORKOUT)
+                false
+            }
+            R.id.menu_fab_new_goal -> {
+                AddGoalDialogFragment.newInstance()
+                        .setOnGoalMessageAddedListener { msg ->
+                            viewModel.storeBodyGoal(Goal(msg, false, ""))
+                        }
+                        .show(supportFragmentManager, "dialog-fragment-add-goal")
+                false
+            }
+            else -> false
+        }
     }
 
     override fun setupDarkMode() = Unit
@@ -96,13 +115,12 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     override fun showLoginScreen() = Unit
 
     override fun showMenuFragment() {
-        // TODO
+        MenuFragment.newInstance().show(supportFragmentManager, "menu-fragment")
     }
 
     override fun showWelcomeScreen(user: ShockbytesUser) = Unit
 
     override fun unbindViewModel() = Unit
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 

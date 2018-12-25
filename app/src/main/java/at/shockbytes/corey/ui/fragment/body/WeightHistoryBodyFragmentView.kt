@@ -2,7 +2,7 @@ package at.shockbytes.corey.ui.fragment.body
 
 import android.graphics.Color
 import at.shockbytes.corey.R
-import at.shockbytes.corey.body.info.BodyInfo
+import at.shockbytes.corey.data.body.info.BodyInfo
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.dagger.AppComponent
 import com.github.mikephil.charting.data.Entry

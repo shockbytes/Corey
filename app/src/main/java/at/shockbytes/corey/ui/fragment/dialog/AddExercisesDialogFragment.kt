@@ -14,11 +14,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ViewFlipper
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.AddExerciseAdapter
+import at.shockbytes.corey.ui.adapter.AddExerciseAdapter
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.core.CoreyApp
-import at.shockbytes.corey.workout.WorkoutRepository
+import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.util.adapter.BaseAdapter
 import com.shawnlin.numberpicker.NumberPicker
 import kotterknife.bindView

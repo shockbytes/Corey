@@ -25,14 +25,12 @@ class BodyFragment : BaseFragment<AppComponent>() {
     private val profileBodyFragment = ProfileBodyFragmentView()
     private val dreamWeightBodyFragmentView = DreamWeightBodyFragmentView()
     private val weightHistoryBodyFragmentView = WeightHistoryBodyFragmentView()
-    private val goalBodyFragmentView = GoalBodyFragmentView()
 
     private val fragmentViews: List<BodySubFragment> by lazy {
         listOf(
                 profileBodyFragment,
                 dreamWeightBodyFragmentView,
-                weightHistoryBodyFragmentView,
-                goalBodyFragmentView
+                weightHistoryBodyFragmentView
         )
     }
 

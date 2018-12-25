@@ -3,4 +3,5 @@
     <item type="id" name="nav_item_workout" />
     <item type="id" name="nav_item_schedule" />
     <item type="id" name="nav_item_my_body" />
+    <item type="id" name="nav_item_goals" />
 </resources>

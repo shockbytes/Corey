@@ -7,18 +7,20 @@ import android.os.Vibrator
 import android.preference.PreferenceManager
 import at.shockbytes.core.image.GlideImageLoader
 import at.shockbytes.core.image.ImageLoader
+import at.shockbytes.core.scheduler.AppSchedulerFacade
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.running.location.GooglePlayLocationManager
 import at.shockbytes.corey.common.core.running.location.LocationManager
 import at.shockbytes.corey.common.core.util.ExerciseDeserializer
 import at.shockbytes.corey.common.core.workout.model.Exercise
-import at.shockbytes.corey.schedule.FirebaseScheduleRepository
-import at.shockbytes.corey.schedule.ScheduleRepository
-import at.shockbytes.corey.user.FirebaseUserRepository
-import at.shockbytes.corey.user.UserRepository
+import at.shockbytes.corey.data.schedule.FirebaseScheduleRepository
+import at.shockbytes.corey.data.schedule.ScheduleRepository
+import at.shockbytes.corey.data.user.FirebaseUserRepository
+import at.shockbytes.corey.data.user.UserRepository
 import at.shockbytes.corey.wearable.AndroidWearManager
 import at.shockbytes.corey.wearable.WearableManager
-import at.shockbytes.corey.workout.WorkoutRepository
+import at.shockbytes.corey.data.workout.WorkoutRepository
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
@@ -44,6 +46,12 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideUserManager(): UserRepository {
         return FirebaseUserRepository(app.applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSchedulerFacade(): SchedulerFacade {
+        return AppSchedulerFacade()
     }
 
     @Provides

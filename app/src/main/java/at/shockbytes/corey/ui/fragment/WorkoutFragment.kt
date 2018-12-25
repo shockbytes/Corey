@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.os.SystemClock
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.ExercisePagerAdapter
+import at.shockbytes.corey.ui.adapter.ExercisePagerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.fragment.dialog.WorkoutMessageDialogFragment
-import at.shockbytes.corey.workout.WorkoutRepository import kotlinx.android.synthetic.main.fragment_workout.*
+import at.shockbytes.corey.data.workout.WorkoutRepository import kotlinx.android.synthetic.main.fragment_workout.*
 import javax.inject.Inject
 
 class WorkoutFragment : BaseFragment<AppComponent>() {

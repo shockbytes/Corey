@@ -12,7 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.core.ui.activity.base.TintableBackNavigableActivity
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.ExerciseAdapter
+import at.shockbytes.corey.ui.adapter.ExerciseAdapter
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent

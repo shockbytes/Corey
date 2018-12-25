@@ -12,9 +12,9 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.AddScheduleItemAdapter
+import at.shockbytes.corey.ui.adapter.AddScheduleItemAdapter
 import at.shockbytes.corey.core.CoreyApp
-import at.shockbytes.corey.schedule.ScheduleRepository
+import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 import javax.inject.Inject

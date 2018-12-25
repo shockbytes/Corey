@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.wear.widget.drawer.WearableNavigationDrawerView
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.CoreyNavigationAdapter
+import at.shockbytes.corey.ui.adapter.CoreyNavigationAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.core.CommunicationManager
 import at.shockbytes.corey.core.WearCoreyApp

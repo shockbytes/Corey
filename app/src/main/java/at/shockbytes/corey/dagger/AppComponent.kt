@@ -4,6 +4,7 @@ import at.shockbytes.core.ShockbytesInjector
 import at.shockbytes.corey.core.receiver.NotificationReceiver
 import at.shockbytes.corey.core.receiver.OnBootReceiver
 import at.shockbytes.corey.ui.activity.MainActivity
+import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.SettingsFragment
 import at.shockbytes.corey.ui.fragment.WorkoutFragment
 import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
@@ -11,6 +12,7 @@ import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
 import at.shockbytes.corey.ui.fragment.pager.BodyFragment
+import at.shockbytes.corey.ui.fragment.pager.GoalsFragment
 import at.shockbytes.corey.ui.fragment.pager.ScheduleFragment
 import at.shockbytes.corey.ui.fragment.pager.WorkoutOverviewFragment
 import at.shockbytes.corey.ui.fragment.workoutpager.TimeExercisePagerFragment
@@ -55,4 +57,8 @@ interface AppComponent: ShockbytesInjector {
     fun inject(broadcastReceiver: OnBootReceiver)
 
     fun inject(fragment: ProfileBodyFragmentView)
+
+    fun inject(fragment: GoalsFragment)
+
+    fun inject(fragment: MenuFragment)
 }

@@ -7,7 +7,7 @@ import android.widget.Toast
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
-import at.shockbytes.corey.workout.WorkoutRepository
+import at.shockbytes.corey.data.workout.WorkoutRepository
 import com.google.android.gms.wearable.*
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.gson.Gson

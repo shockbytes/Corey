@@ -9,12 +9,12 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.widget.Toast
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.DaysScheduleAdapter
-import at.shockbytes.corey.adapter.ScheduleAdapter
+import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
+import at.shockbytes.corey.ui.adapter.ScheduleAdapter
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.schedule.ScheduleItem
-import at.shockbytes.corey.schedule.ScheduleRepository
+import at.shockbytes.corey.data.schedule.ScheduleItem
+import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter

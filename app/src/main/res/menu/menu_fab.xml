@@ -5,4 +5,8 @@
         android:title="@string/new_workout"
         android:icon="@drawable/ic_new_workout"/>
 
+    <item android:id="@+id/menu_fab_new_goal"
+        android:title="@string/new_goal"
+        android:icon="@drawable/ic_tab_goals_white"/>
+
 </menu>

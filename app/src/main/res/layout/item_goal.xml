@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="4dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/item_goal_text"
-        android:layout_width="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:textSize="18sp"
-        android:textColor="#fff"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignBottom="@+id/item_goal_btn_done"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/item_goal_btn_done"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_toStartOf="@+id/item_goal_btn_done"
-        android:gravity="center_vertical" />
+        android:gravity="center_vertical"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_goal_btn_done"
+        app:layout_constraintEnd_toStartOf="@+id/item_goal_btn_done"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="My super hard to reach goal" />
 
     <ImageButton
         android:id="@+id/item_goal_btn_done"
@@ -25,8 +30,72 @@
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:tint="@color/controls_light"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:tint="@color/controls"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_done" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/item_goal_iv_category"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_below="@+id/item_goal_text"
+        android:layout_alignStart="@+id/item_goal_text"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/item_goal_text"
+        app:layout_constraintTop_toBottomOf="@+id/item_goal_text"
+        app:srcCompat="@drawable/ic_equipment_bodyweight" />
+
+    <TextView
+        android:id="@+id/item_goal_txt_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="Category"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/item_goal_text"
+        app:layout_constraintTop_toBottomOf="@+id/item_goal_iv_category" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ImageView
+        android:id="@+id/item_goal_iv_due_date"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/item_goal_text"
+        app:srcCompat="@drawable/ic_date" />
+
+    <TextView
+        android:id="@+id/item_goal_txt_due_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="July 2018"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/item_goal_iv_due_date" />
+
+</android.support.constraint.ConstraintLayout>

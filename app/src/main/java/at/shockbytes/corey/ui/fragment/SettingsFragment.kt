@@ -6,7 +6,7 @@ import android.support.v7.preference.PreferenceFragmentCompat
 
 import at.shockbytes.corey.R
 import at.shockbytes.corey.core.CoreyApp
-import at.shockbytes.corey.schedule.ScheduleRepository
+import at.shockbytes.corey.data.schedule.ScheduleRepository
 import javax.inject.Inject
 
 /**

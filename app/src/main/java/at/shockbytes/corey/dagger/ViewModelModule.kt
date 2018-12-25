@@ -3,8 +3,10 @@ package at.shockbytes.corey.dagger
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import at.shockbytes.corey.ui.viewmodel.BodyViewModel
+import at.shockbytes.corey.ui.viewmodel.GoalsViewModel
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import at.shockbytes.corey.ui.viewmodel.SignupViewModel
+import at.shockbytes.corey.ui.viewmodel.WorkoutOverviewViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -51,5 +53,14 @@ abstract class ViewModelModule {
     @ViewModelKey(BodyViewModel::class)
     internal abstract fun bodyViewModel(viewModel: BodyViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(GoalsViewModel::class)
+    internal abstract fun goalsViewModel(viewModel: GoalsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(WorkoutOverviewViewModel::class)
+    internal abstract fun workoutOverviewViewModel(viewModel: WorkoutOverviewViewModel): ViewModel
 
 }

@@ -7,7 +7,7 @@ import android.support.wear.widget.WearableLinearLayoutManager
 import android.support.wear.widget.WearableRecyclerView
 import android.view.View
 import at.shockbytes.corey.R
-import at.shockbytes.corey.adapter.WearWorkoutOverviewAdapter
+import at.shockbytes.corey.ui.adapter.WearWorkoutOverviewAdapter
 import at.shockbytes.corey.common.core.util.WorkoutNameComparator
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.WearAppComponent

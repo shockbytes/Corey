@@ -13,7 +13,7 @@ import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.image.ImageLoadingCallback
 import at.shockbytes.core.model.ShockbytesUser
 import at.shockbytes.corey.R
-import at.shockbytes.corey.body.info.BodyInfo
+import at.shockbytes.corey.data.body.info.BodyInfo
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.common.core.util.view.CoreyViewManager
 import at.shockbytes.corey.dagger.AppComponent

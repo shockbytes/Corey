@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="12dp"
     android:padding="0dp">
 
     <android.support.constraint.ConstraintLayout
@@ -14,7 +15,6 @@
             android:id="@+id/item_schedule_txt_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:maxLines="1"
             android:padding="12dp"

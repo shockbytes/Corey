@@ -4,10 +4,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import at.shockbytes.core.model.ShockbytesUser
 import at.shockbytes.core.viewmodel.BaseViewModel
-import at.shockbytes.corey.body.BodyRepository
-import at.shockbytes.corey.body.info.BodyInfo
+import at.shockbytes.corey.data.body.BodyRepository
+import at.shockbytes.corey.data.body.info.BodyInfo
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.user.UserRepository
+import at.shockbytes.corey.data.user.UserRepository
 import timber.log.Timber
 import javax.inject.Inject
 

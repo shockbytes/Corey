@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/montserrat</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -17,6 +18,11 @@
     <style name="AppTheme.Launcher">
         <item name="colorPrimaryDark">@android:color/transparent</item>
         <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
+    <style name="AppTheme.RoundedButton.Outlined" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_button_outlined</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
 </resources>
