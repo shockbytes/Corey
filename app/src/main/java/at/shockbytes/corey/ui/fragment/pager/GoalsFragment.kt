@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
-import at.shockbytes.corey.ui.adapter.GoalAdapter
-import at.shockbytes.corey.data.goal.Goal
-import at.shockbytes.corey.dagger.DaggerAppComponent
+import at.shockbytes.corey.ui.adapter.GoalAdapter import at.shockbytes.corey.dagger.DaggerAppComponent
+import at.shockbytes.corey.ui.model.GoalItem
 import at.shockbytes.corey.ui.viewmodel.GoalsViewModel
 import kotlinx.android.synthetic.main.fragment_goals.*
 import javax.inject.Inject
+import android.support.v7.widget.DividerItemDecoration
+
+
 
 class GoalsFragment: BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActionClickedListener {
 
@@ -49,6 +51,7 @@ class GoalsFragment: BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActio
     override fun setupViews() {
         context?.let { ctx ->
             fragment_body_card_goals_rv.layoutManager = LinearLayoutManager(ctx)
+            fragment_body_card_goals_rv.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
             val goalAdapter = GoalAdapter(ctx, listOf())
             goalAdapter.setOnGoalActionClickedListener(this)
             fragment_body_card_goals_rv.adapter = goalAdapter
@@ -59,11 +62,11 @@ class GoalsFragment: BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActio
         viewModel.getBodyGoals().removeObservers(this)
     }
 
-    override fun onDeleteGoalClicked(g: Goal) {
+    override fun onDeleteGoalClicked(g: GoalItem) {
         viewModel.deleteGoal(g)
     }
 
-    override fun onFinishGoalClicked(g: Goal) {
+    override fun onFinishGoalClicked(g: GoalItem) {
         viewModel.setGoalFinished(g)
         fragment_body_card_goals_rv.invalidate()
     }

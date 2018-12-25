@@ -203,5 +203,9 @@
     <string name="new_workout">New Workout</string>
     <string name="settings">Settings</string>
     <string name="new_goal">New goal</string>
+    <string name="goals_body_fat">Body fat</string>
+    <string name="goals_weight">Weight</string>
+    <string name="goals_exercise">Exercise</string>
+    <string name="goals_other">Other</string>
 
 </resources>

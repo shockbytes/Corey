@@ -7,6 +7,8 @@ import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.data.goal.Goal
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.data.goal.GoalsRepository
+import at.shockbytes.corey.ui.model.GoalItem
+import at.shockbytes.corey.ui.model.mapper.GoalMapper
 import javax.inject.Inject
 
 class GoalsViewModel @Inject constructor(
@@ -14,24 +16,26 @@ class GoalsViewModel @Inject constructor(
         private val schedulerFacade: SchedulerFacade
 ) : BaseViewModel() {
 
-    private val bodyGoals = MutableLiveData<List<Goal>>()
+    private val goalMapper = GoalMapper()
+
+    private val bodyGoals = MutableLiveData<List<GoalItem>>()
 
     fun requestGoals() {
         goalsRepository.bodyGoals
                 .observeOn(schedulerFacade.ui)
                 .subscribe { goals ->
-                    bodyGoals.postValue(goals)
+                    bodyGoals.postValue(goalMapper.mapTo(goals))
                 }.addTo(compositeDisposable)
     }
 
-    fun getBodyGoals(): LiveData<List<Goal>> = bodyGoals
+    fun getBodyGoals(): LiveData<List<GoalItem>> = bodyGoals
 
-    fun deleteGoal(goal: Goal) {
-        goalsRepository.removeBodyGoal(goal)
+    fun deleteGoal(goal: GoalItem) {
+        goalsRepository.removeBodyGoal(goalMapper.mapFrom(goal))
     }
 
-    fun setGoalFinished(goal: Goal) {
-        goalsRepository.updateBodyGoal(goal.copy(done = true))
+    fun setGoalFinished(goal: GoalItem) {
+        goalsRepository.updateBodyGoal(goalMapper.mapFrom(goal).copy(done = true))
     }
 
 }
