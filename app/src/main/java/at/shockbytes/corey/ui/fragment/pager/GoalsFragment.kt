@@ -40,7 +40,13 @@ class GoalsFragment: BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActio
             it?.let { goals ->
                 (fragment_body_card_goals_rv.adapter as GoalAdapter).data = goals.toMutableList()
                 fragment_body_card_goals_rv.invalidate()
+                fragment_body_card_goals_rv.scrollToPosition(0)
             }
+        })
+
+        viewModel.selectHideFinishedGoals().observe(this, Observer {
+            fragment_goals_cb_hide_finished.isChecked = (it == true)
+            fragment_goals_cb_hide_finished.invalidate()
         })
     }
 
@@ -55,6 +61,10 @@ class GoalsFragment: BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActio
             val goalAdapter = GoalAdapter(ctx, listOf())
             goalAdapter.setOnGoalActionClickedListener(this)
             fragment_body_card_goals_rv.adapter = goalAdapter
+        }
+
+        fragment_goals_cb_hide_finished.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.showFinishedGoals(isChecked)
         }
     }
 

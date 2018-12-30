@@ -21,6 +21,8 @@ import at.shockbytes.corey.data.user.UserRepository
 import at.shockbytes.corey.wearable.AndroidWearManager
 import at.shockbytes.corey.wearable.WearableManager
 import at.shockbytes.corey.data.workout.WorkoutRepository
+import at.shockbytes.corey.storage.KeyValueStorage
+import at.shockbytes.corey.storage.SharedPreferencesKeyValueStorage
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
@@ -40,6 +42,12 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideSharedPreferences(): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(app)
+    }
+
+    @Provides
+    @Singleton
+    fun provideKeyValueStorage(prefs: SharedPreferences): KeyValueStorage {
+        return SharedPreferencesKeyValueStorage(prefs)
     }
 
     @Provides
