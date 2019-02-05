@@ -16,7 +16,7 @@ data class GoalItem(
 ) {
 
     enum class Category {
-        BODY_FAT, WEIGHT, EXERCISE, OTHER
+        BODY_FAT, WEIGHT, EXERCISE, RUNNING, OTHER
     }
 
     companion object {
@@ -26,6 +26,7 @@ data class GoalItem(
                 "body_fat" -> Category.BODY_FAT
                 "weight" -> Category.WEIGHT
                 "exercise" -> Category.EXERCISE
+                "running" -> Category.RUNNING
                 else -> Category.OTHER
             }
         }
@@ -35,6 +36,7 @@ data class GoalItem(
                 Category.BODY_FAT -> "body_fat"
                 Category.WEIGHT -> "weight"
                 Category.EXERCISE -> "exercise"
+                Category.RUNNING -> "running"
                 Category.OTHER -> "other"
             }
         }

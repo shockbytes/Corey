@@ -154,6 +154,11 @@
     <string name="new_workout">Neues Workout</string>
     <string name="settings">Einstellungen</string>
     <string name="new_goal">Neues Ziel</string>
+    <string name="goals_body_fat">Körperfett</string>
+    <string name="goals_weight">Gewicht</string>
+    <string name="goals_exercise">Übung</string>
+    <string name="goals_other">Andere</string>
+    <string name="goals_running">Laufen</string>
 
 
 </resources>
