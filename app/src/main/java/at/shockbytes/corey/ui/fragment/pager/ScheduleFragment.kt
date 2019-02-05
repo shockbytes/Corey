@@ -33,10 +33,16 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     @Inject
-    protected lateinit var scheduleManager: ScheduleRepository
+    lateinit var scheduleManager: ScheduleRepository
 
     private lateinit var touchHelper: ItemTouchHelper
-    private lateinit var adapter: ScheduleAdapter
+    private val adapter: ScheduleAdapter by lazy {
+        ScheduleAdapter(
+            context!!,
+            { item, _, position -> onScheduleItemClicked(item, position) },
+            { item, position -> onItemDismissed(item, position) }
+        )
+    }
 
     private val recyclerView: RecyclerView by bindView(R.id.fragment_schedule_rv)
     private val recyclerViewDays: RecyclerView by bindView(R.id.fragment_schedule_rv_days)
@@ -64,6 +70,15 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
     }
 
     override fun bindViewModel() {
+
+        scheduleManager.schedule
+                .subscribe({ scheduleItems ->
+                    adapter.data = scheduleItems.toMutableList()
+                }, { throwable ->
+                    throwable.printStackTrace()
+                    Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()
+                })
+                .addTo(compositeDisposable)
     }
 
     override fun unbindViewModel() {
@@ -71,33 +86,22 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
 
     override fun setupViews() {
 
-        recyclerViewDays.layoutManager = recyclerViewLayoutManager
-        recyclerViewDays.adapter = DaysScheduleAdapter(context!!, resources.getStringArray(R.array.days).toList())
-        recyclerViewDays.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, context!!)))
+        context?.let { ctx ->
 
-        recyclerView.layoutManager = recyclerViewLayoutManager
-        adapter = ScheduleAdapter(context!!, listOf())
-        recyclerView.adapter = adapter
-        recyclerView.isNestedScrollingEnabled = false
-        recyclerView.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, context!!)))
-        val callback = BaseItemTouchHelper(adapter, false, BaseItemTouchHelper.DragAccess.ALL)
-        adapter.onItemMoveListener = this
-        adapter.setOnScheduleItemSelectedListener { item, _, position ->
-            onScheduleItemClicked(item, position)
+            recyclerViewDays.layoutManager = recyclerViewLayoutManager
+            recyclerViewDays.adapter = DaysScheduleAdapter(ctx, resources.getStringArray(R.array.days).toList())
+            recyclerViewDays.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, ctx)))
+
+            recyclerView.layoutManager = recyclerViewLayoutManager
+            recyclerView.isNestedScrollingEnabled = false
+            recyclerView.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, context!!)))
+            val callback = BaseItemTouchHelper(adapter, false, BaseItemTouchHelper.DragAccess.ALL)
+            adapter.onItemMoveListener = this
+
+            touchHelper = ItemTouchHelper(callback)
+            touchHelper.attachToRecyclerView(recyclerView)
+            recyclerView.adapter = adapter
         }
-        adapter.setOnScheduleItemDismissedListener { item, position ->
-            onItemDismissed(item, position)
-        }
-
-        touchHelper = ItemTouchHelper(callback)
-        touchHelper.attachToRecyclerView(recyclerView)
-
-        scheduleManager.schedule.subscribe({ scheduleItems ->
-            adapter.data = scheduleItems.toMutableList()
-        }, { throwable ->
-            throwable.printStackTrace()
-            Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()
-        }).addTo(compositeDisposable)
     }
 
     override fun injectToGraph(appComponent: AppComponent?) {

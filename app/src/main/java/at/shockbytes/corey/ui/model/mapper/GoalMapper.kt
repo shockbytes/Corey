@@ -51,7 +51,7 @@ class GoalMapper : SortedMapper<Goal, GoalItem>() {
             GoalItem.Category.BODY_FAT -> R.drawable.ic_goal_body_fat
             GoalItem.Category.WEIGHT -> R.drawable.ic_goal_weight
             GoalItem.Category.EXERCISE -> R.drawable.ic_goal_exercise
-            GoalItem.Category.RUNNING -> R.drawable.ic_tab_running
+            GoalItem.Category.RUNNING -> R.drawable.ic_goal_running
             GoalItem.Category.OTHER -> R.drawable.ic_goal_exercise
         }
     }

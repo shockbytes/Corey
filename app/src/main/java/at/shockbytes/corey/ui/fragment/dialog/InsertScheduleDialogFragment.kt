@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -12,10 +13,12 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.ui.adapter.AddScheduleItemAdapter
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.util.adapter.BaseAdapter
+import io.reactivex.disposables.CompositeDisposable
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -27,7 +30,9 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
         BaseAdapter.OnItemClickListener<AddScheduleItemAdapter.ScheduleDisplayItem> {
 
     @Inject
-    protected lateinit var scheduleManager: ScheduleRepository
+    lateinit var scheduleManager: ScheduleRepository
+
+    private val compositeDisposable = CompositeDisposable()
 
     private val editTextFilter: EditText by bindView(R.id.fragment_create_workout_bottom_sheet_edit_filter)
     private val recyclerView: RecyclerView by bindView(R.id.fragment_create_workout_bottom_sheet_recyclerview)
@@ -51,10 +56,17 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
         (activity?.application as CoreyApp).appComponent.inject(this)
     }
 
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.dispose()
+    }
+
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
         val contentView = View.inflate(context, R.layout.dialogfragment_add_exercises, null)
         dialog.setContentView(contentView)
+        (contentView.parent as View)
+                .setBackgroundColor(ContextCompat.getColor(context!!, android.R.color.transparent))
         val layoutParams = (contentView.parent as View).layoutParams as CoordinatorLayout.LayoutParams
         val behavior = layoutParams.behavior
         if (behavior != null && behavior is BottomSheetBehavior<*>) {
@@ -88,9 +100,11 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
         addScheduleItemAdapter?.onItemClickListener = this
         recyclerView.adapter = addScheduleItemAdapter
 
-        scheduleManager.itemsForScheduling.subscribe { data ->
-            addScheduleItemAdapter?.setData(data.map { AddScheduleItemAdapter.ScheduleDisplayItem(it) }, false)
-        }
+        scheduleManager.schedulableItems
+                .subscribe { data ->
+                    addScheduleItemAdapter?.setData(data.map { AddScheduleItemAdapter.ScheduleDisplayItem(it) }, false)
+                }
+                .addTo(compositeDisposable)
 
         editTextFilter.addTextChangedListener(this)
     }

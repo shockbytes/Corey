@@ -4,7 +4,8 @@
     style="?attr/borderlessButtonStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fontFamily="sans-serif-light"
-    android:padding="0dp"
-    android:textColor="@android:color/secondary_text_light"
+    android:padding="4dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:text="Upper Body"
+    android:textColor="@android:color/tertiary_text_light"
     android:textSize="14sp" />

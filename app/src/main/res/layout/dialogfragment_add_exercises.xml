@@ -1,187 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragment_create_workout_bottom_sheet_viewflipper"
     android:layout_width="match_parent"
-    android:layout_height="450dp"
-    android:layout_gravity="bottom"
-    android:background="@color/primaryBackground"
-    android:clipToPadding="false"
-    android:orientation="vertical"
-    app:behavior_peekHeight="450dp"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="-16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="24dp">
 
-        <EditText
-            android:id="@+id/fragment_create_workout_bottom_sheet_edit_filter"
+        <ViewFlipper
+            android:id="@+id/fragment_create_workout_bottom_sheet_viewflipper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:drawableLeft="@drawable/ic_search"
-            android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_search"
-            android:fontFamily="sans-serif-light"
-            android:hint="@string/hint_search"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:padding="16dp"
-            android:textColor="@android:color/secondary_text_light"
-            android:textSize="16sp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_create_workout_bottom_sheet_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="250dp" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="@string/repetitions"
-            android:textColor="@android:color/secondary_text_light"
-            android:textSize="20sp"
-            android:textStyle="normal" />
-
-        <com.shawnlin.numberpicker.NumberPicker
-            android:id="@+id/fragment_create_workout_bottom_sheet_numberpicker_reps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="16dp"
-            app:np_dividerColor="@color/colorAccent"
-            app:np_dividerThickness="1dp"
-            app:np_max="@integer/repetitions_max"
-            app:np_min="@integer/repetitions_min"
-            app:np_orientation="horizontal"
-            app:np_textSize="20sp"
-            app:np_typeface="sans-serif-light"
-            app:np_value="@integer/repetitions_default" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/fragment_create_workout_bottom_sheet_btn_reps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="4dp"
-            android:padding="16dp"
-            android:textColor="@android:color/white"
-            android:textSize="17sp"
-            android:textStyle="normal"
-            app:backgroundTint="@color/colorAccent" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="24dp"
+            app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:orientation="vertical"
-                android:padding="4dp">
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/fragment_create_workout_bottom_sheet_edit_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="8dp"
+                    android:hint="@string/hint_search"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/fragment_create_workout_bottom_sheet_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif-light"
+                    android:layout_margin="16dp"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="@string/workout_time"
+                    android:text="@string/repetitions"
                     android:textColor="@android:color/secondary_text_light"
                     android:textSize="20sp"
                     android:textStyle="normal" />
 
                 <com.shawnlin.numberpicker.NumberPicker
-                    android:id="@+id/fragment_create_workout_bottom_sheet_numberpicker_workduration"
+                    android:id="@+id/fragment_create_workout_bottom_sheet_numberpicker_reps"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_centerInParent="true"
+                    android:padding="16dp"
                     app:np_dividerColor="@color/colorAccent"
                     app:np_dividerThickness="1dp"
-                    app:np_max="@integer/duration_max"
-                    app:np_min="@integer/duration_min"
-                    app:np_orientation="vertical"
+                    app:np_max="@integer/repetitions_max"
+                    app:np_min="@integer/repetitions_min"
+                    app:np_orientation="horizontal"
                     app:np_textSize="20sp"
                     app:np_typeface="sans-serif-light"
-                    app:np_value="@integer/duration_default" />
-            </LinearLayout>
+                    app:np_value="@integer/repetitions_default" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/fragment_create_workout_bottom_sheet_btn_reps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="4dp"
+                    android:padding="16dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp"
+                    android:textStyle="normal"
+                    app:backgroundTint="@color/colorAccent" />
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:orientation="vertical"
-                android:padding="4dp">
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif-light"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/rest_time"
-                    android:textColor="@android:color/secondary_text_light"
-                    android:textSize="20sp"
-                    android:textStyle="normal" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                <com.shawnlin.numberpicker.NumberPicker
-                    android:id="@+id/fragment_create_workout_bottom_sheet_numberpicker_restduration"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:np_dividerColor="@color/colorAccent"
-                    app:np_dividerThickness="1dp"
-                    app:np_max="@integer/duration_max"
-                    app:np_min="@integer/duration_min"
-                    app:np_orientation="vertical"
-                    app:np_textSize="20sp"
-                    app:np_typeface="sans-serif-light"
-                    app:np_value="@integer/duration_default" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical"
+                        android:padding="4dp">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="@string/workout_time"
+                            android:textColor="@android:color/secondary_text_light"
+                            android:textSize="20sp"
+                            android:textStyle="normal" />
+
+                        <com.shawnlin.numberpicker.NumberPicker
+                            android:id="@+id/fragment_create_workout_bottom_sheet_numberpicker_workduration"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            app:np_dividerColor="@color/colorAccent"
+                            app:np_dividerThickness="1dp"
+                            app:np_max="@integer/duration_max"
+                            app:np_min="@integer/duration_min"
+                            app:np_orientation="vertical"
+                            app:np_textSize="20sp"
+                            app:np_typeface="sans-serif-light"
+                            app:np_value="@integer/duration_default" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="@string/rest_time"
+                            android:textColor="@android:color/secondary_text_light"
+                            android:textSize="20sp"
+                            android:textStyle="normal" />
+
+                        <com.shawnlin.numberpicker.NumberPicker
+                            android:id="@+id/fragment_create_workout_bottom_sheet_numberpicker_restduration"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            app:np_dividerColor="@color/colorAccent"
+                            app:np_dividerThickness="1dp"
+                            app:np_max="@integer/duration_max"
+                            app:np_min="@integer/duration_min"
+                            app:np_orientation="vertical"
+                            app:np_textSize="20sp"
+                            app:np_typeface="sans-serif-light"
+                            app:np_value="@integer/duration_default" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/fragment_create_workout_bottom_sheet_btn_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right|end"
+                    android:layout_margin="4dp"
+                    android:padding="16dp"
+                    android:text="@string/add"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp"
+                    app:backgroundTint="@color/colorAccent" />
             </LinearLayout>
 
-        </LinearLayout>
+        </ViewFlipper>
+    </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/fragment_create_workout_bottom_sheet_btn_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right|end"
-            android:layout_margin="4dp"
-            android:padding="16dp"
-            android:text="@string/add"
-            android:textColor="@android:color/white"
-            android:textSize="17sp"
-            app:backgroundTint="@color/colorAccent" />
-    </LinearLayout>
-
-</ViewFlipper>
+</FrameLayout>

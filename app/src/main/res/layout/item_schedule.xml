@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="12dp"
-    android:padding="0dp">
+    android:padding="0dp"
+    app:cardCornerRadius="12dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,10 +16,12 @@
             android:id="@+id/item_schedule_txt_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:maxLines="1"
+            tools:text="Freeletics"
             android:padding="12dp"
-            android:textColor="@android:color/secondary_text_light"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_schedule_btn_clear"
@@ -30,7 +33,7 @@
             style="?attr/borderlessButtonStyle"
             android:layout_width="32dp"
             android:layout_height="0dp"
-            android:tint="@android:color/darker_gray"
+            android:tint="@color/colorPrimaryText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

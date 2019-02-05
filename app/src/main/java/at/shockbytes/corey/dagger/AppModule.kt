@@ -69,10 +69,11 @@ class AppModule(private val app: Application) {
         gson: Gson,
         workoutManager: WorkoutRepository,
         remoteConfig: FirebaseRemoteConfig,
-        firebase: FirebaseDatabase
+        firebase: FirebaseDatabase,
+        schedulerFacade: SchedulerFacade
     ): ScheduleRepository {
         return FirebaseScheduleRepository(app.applicationContext, preferences, gson,
-                workoutManager, remoteConfig, firebase)
+                workoutManager, remoteConfig, firebase, schedulerFacade)
     }
 
     @Provides

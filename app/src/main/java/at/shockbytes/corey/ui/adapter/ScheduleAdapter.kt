@@ -1,10 +1,12 @@
 package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
+import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import at.shockbytes.corey.R
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.util.adapter.BaseAdapter
@@ -18,11 +20,9 @@ import java.util.Collections
  */
 class ScheduleAdapter(
     context: Context,
-    data: List<ScheduleItem>
-) : BaseAdapter<ScheduleItem>(context, data.toMutableList()), ItemTouchHelperAdapter {
-
-    private var onScheduleItemSelectedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit)? = null
-    private var onScheduleItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit)? = null
+    private val onItemClickedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit)? = null,
+    private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit)? = null
+) : BaseAdapter<ScheduleItem>(context, mutableListOf()), ItemTouchHelperAdapter {
 
     override var data: MutableList<ScheduleItem>
         get() = super.data
@@ -68,14 +68,6 @@ class ScheduleAdapter(
         }
         notifyItemRemoved(position)
         addEntity(position, ScheduleItem("", position))
-    }
-
-    fun setOnScheduleItemSelectedListener(listener: (item: ScheduleItem, v: View, position: Int) -> Unit) {
-        onScheduleItemSelectedListener = listener
-    }
-
-    fun setOnScheduleItemDismissedListener(listener: (item: ScheduleItem, position: Int) -> Unit) {
-        onScheduleItemDismissedListener = listener
     }
 
     // -----------------------------Data Section-----------------------------
@@ -130,7 +122,7 @@ class ScheduleAdapter(
         return array.mapTo(mutableListOf()) { it!! }
     }
 
-    internal inner class ViewHolder(itemView: View) : BaseAdapter<ScheduleItem>.ViewHolder(itemView) {
+    private inner class ViewHolder(itemView: View) : BaseAdapter<ScheduleItem>.ViewHolder(itemView) {
 
         private lateinit var item: ScheduleItem
         private var itemPosition: Int = 0
@@ -139,16 +131,15 @@ class ScheduleAdapter(
         private val btnClear: ImageButton by bindView(R.id.item_schedule_btn_clear)
 
         init {
-            itemView.setOnClickListener {
-                onScheduleItemSelectedListener?.invoke(item, itemView, itemPosition)
+            txtName.setOnClickListener {
+                onItemClickedListener?.invoke(item, itemView, itemPosition)
             }
             btnClear.setOnClickListener {
-                onScheduleItemDismissedListener?.invoke(item, itemPosition)
+                onItemDismissedListener?.invoke(item, itemPosition)
             }
         }
 
-        override fun bindToView(t: ScheduleItem) { // Not needed in this case
-        }
+        override fun bindToView(t: ScheduleItem)  = Unit
 
         fun bind(item: ScheduleItem, position: Int) {
             this.item = item

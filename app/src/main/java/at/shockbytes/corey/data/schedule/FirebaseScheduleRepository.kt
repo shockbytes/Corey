@@ -8,6 +8,7 @@ import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.receiver.NotificationReceiver
@@ -21,8 +22,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -37,7 +38,8 @@ class FirebaseScheduleRepository(
     private val gson: Gson,
     private val workoutManager: WorkoutRepository,
     private val remoteConfig: FirebaseRemoteConfig,
-    private val firebase: FirebaseDatabase
+    private val firebase: FirebaseDatabase,
+    private val schedulerFacade: SchedulerFacade
 ) : ScheduleRepository {
 
     init {
@@ -46,23 +48,25 @@ class FirebaseScheduleRepository(
 
     private val scheduleItems: MutableList<ScheduleItem> = mutableListOf()
 
-    override val schedule: Observable<List<ScheduleItem>>
-        get() = Observable.just(scheduleItems.toList())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+    private val scheduleItemSubject = PublishSubject.create<List<ScheduleItem>>()
 
-    override val itemsForScheduling: Observable<List<String>>
-        get() = Observable.fromCallable {
-            val items = mutableListOf<String>()
-            workoutManager.workouts.blockingFirst().mapTo(items) { it.displayableName }
+    override val schedule: Observable<List<ScheduleItem>> = scheduleItemSubject
 
-            val schedulingItemsAsJson = remoteConfig
-                    .getString(context.getString(R.string.remote_config_scheduling_items))
-            val remoteConfigItems = gson.fromJson(schedulingItemsAsJson, Array<String>::class.java)
-            items.addAll(remoteConfigItems)
+    override val schedulableItems: Single<List<String>>
+        get() = Single
+                .fromCallable {
+                    val items = mutableListOf<String>()
+                    workoutManager.workouts.blockingFirst().mapTo(items) { it.displayableName }
 
-            items.toList()
-        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                    val schedulingItemsAsJson = remoteConfig
+                            .getString(context.getString(R.string.remote_config_scheduling_items))
+                    val remoteConfigItems = gson.fromJson(schedulingItemsAsJson, Array<String>::class.java)
+                    items.addAll(remoteConfigItems)
+
+                    items.toList()
+                }
+                .subscribeOn(schedulerFacade.io)
+                .observeOn(schedulerFacade.ui)
 
     override val isWorkoutNotificationDeliveryEnabled: Boolean
         get() = preferences.getBoolean(context.getString(R.string.prefs_workout_day_notification_key), false)
@@ -71,8 +75,10 @@ class FirebaseScheduleRepository(
         get() = preferences.getBoolean(context.getString(R.string.prefs_weigh_notification_key), false)
 
     override val dayOfWeighNotificationDelivery: Int
-        get() = preferences.getString(context.getString(R.string.prefs_weigh_notification_day_key),
-                context.getString(R.string.prefs_weigh_notification_day_default_value)).toIntOrNull() ?: 0
+        get() {
+            return (preferences.getString(context.getString(R.string.prefs_weigh_notification_day_key),
+                    context.getString(R.string.prefs_weigh_notification_day_default_value)) ?: "0").toInt()
+        }
 
     override fun poke() {
 
@@ -150,18 +156,21 @@ class FirebaseScheduleRepository(
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 dataSnapshot.getValue(ScheduleItem::class.java)?.let { item ->
                     scheduleItems.add(item)
+                    scheduleItemSubject.onNext(scheduleItems)
                 }
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
                 dataSnapshot.getValue(ScheduleItem::class.java)?.let { changed ->
                     scheduleItems[scheduleItems.indexOf(changed)] = changed
+                    scheduleItemSubject.onNext(scheduleItems)
                 }
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
                 dataSnapshot.getValue(ScheduleItem::class.java)?.let { removed ->
                     scheduleItems.remove(removed)
+                    scheduleItemSubject.onNext(scheduleItems)
                 }
             }
 
