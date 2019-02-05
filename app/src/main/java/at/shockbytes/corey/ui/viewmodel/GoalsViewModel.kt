@@ -13,9 +13,9 @@ import at.shockbytes.corey.ui.model.mapper.GoalMapper
 import javax.inject.Inject
 
 class GoalsViewModel @Inject constructor(
-        private val goalsRepository: GoalsRepository,
-        private val schedulerFacade: SchedulerFacade,
-        private val localStorage: KeyValueStorage
+    private val goalsRepository: GoalsRepository,
+    private val schedulerFacade: SchedulerFacade,
+    private val localStorage: KeyValueStorage
 ) : BaseViewModel() {
 
     private val goalMapper = GoalMapper()
@@ -62,8 +62,7 @@ class GoalsViewModel @Inject constructor(
     }
 
     private fun postGoals() {
-        val postGoals = if (hideFinished) { goals.filter { !it.isCompleted }} else goals
+        val postGoals = if (hideFinished) { goals.filter { !it.isCompleted } } else goals
         bodyGoals.postValue(postGoals)
     }
-
 }

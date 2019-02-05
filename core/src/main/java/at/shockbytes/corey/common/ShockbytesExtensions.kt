@@ -9,7 +9,6 @@ import io.reactivex.disposables.Disposable
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-
 fun Activity.hideKeyboard() {
     val view = this.currentFocus
     view?.let { v ->

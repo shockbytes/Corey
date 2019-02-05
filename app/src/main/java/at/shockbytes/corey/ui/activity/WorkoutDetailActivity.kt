@@ -26,26 +26,26 @@ import kotterknife.bindView
 class WorkoutDetailActivity : TintableBackNavigableActivity<AppComponent>() {
 
     override val abDefColor: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
     override val abTextDefColor: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
     override val colorPrimary: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
     override val colorPrimaryDark: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
     override val colorPrimaryText: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
     override val sbDefColor: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
     override val upIndicator: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
 
     override fun bindViewModel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun unbindViewModel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     private val imgViewExtToolbar: ImageView by bindView(R.id.activity_training_detail_imgview_ext_toolbar)
@@ -119,5 +119,4 @@ class WorkoutDetailActivity : TintableBackNavigableActivity<AppComponent>() {
                     .putExtra(ARG_WORKOUT, workout)
         }
     }
-
 }

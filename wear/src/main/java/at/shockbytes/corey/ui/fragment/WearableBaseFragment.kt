@@ -22,8 +22,11 @@ abstract class WearableBaseFragment : Fragment() {
         injectToGraph((activity?.application as WearCoreyApp).appComponent)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(layoutId, container, false)
     }
 
@@ -44,5 +47,4 @@ abstract class WearableBaseFragment : Fragment() {
     protected fun showToast(text: Int, showLong: Boolean = true) {
         showToast(getString(text), showLong)
     }
-
 }

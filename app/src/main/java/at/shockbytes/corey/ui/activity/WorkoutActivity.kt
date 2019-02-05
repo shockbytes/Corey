@@ -71,5 +71,4 @@ class WorkoutActivity : BaseActivity<AppComponent>() {
                     .putExtra(ARG_WORKOUT, workout)
         }
     }
-
 }

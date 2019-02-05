@@ -7,7 +7,6 @@ import at.shockbytes.corey.dagger.DaggerAppComponent
 import at.shockbytes.corey.dagger.WorkoutModule
 import net.danlew.android.joda.JodaTimeAndroid
 
-
 /**
  * Author:  Martin Macheiner
  * Date:    21.02.2017
@@ -29,5 +28,4 @@ class CoreyApp : ShockbytesApp<AppComponent>() {
                 .workoutModule(WorkoutModule(this))
                 .build()
     }
-
 }

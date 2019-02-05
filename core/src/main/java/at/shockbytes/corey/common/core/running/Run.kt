@@ -5,21 +5,20 @@ import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.parcel.Parcelize
 
-
 /**
- * @author Martin Macheiner
- * Date: 05.09.2017.
+ * Author:  Martin Macheiner
+ * Date:    05.09.2017
  */
-
 @Parcelize
-class Run(private var locations: MutableList<Location> = mutableListOf(),
-          var id: Long = 0,
-          private var startTime: Long = System.currentTimeMillis(),
-          var distance: Double = 0.0,
-          var time: Long = 0, // in ms
-          var calories: Int = 0,
-          var averagePace: String = "/") : Parcelable {
-
+class Run(
+    private var locations: MutableList<Location> = mutableListOf(),
+    var id: Long = 0,
+    private var startTime: Long = System.currentTimeMillis(),
+    var distance: Double = 0.0,
+    var time: Long = 0, // in ms
+    var calories: Int = 0,
+    var averagePace: String = "/"
+) : Parcelable {
 
     internal val currentPaceDistance: Double
         get() = if (locations.size < LOCATIONS_FOR_CURRENT_PACE) {
@@ -51,5 +50,4 @@ class Run(private var locations: MutableList<Location> = mutableListOf(),
 
         private const val LOCATIONS_FOR_CURRENT_PACE = 10
     }
-
 }

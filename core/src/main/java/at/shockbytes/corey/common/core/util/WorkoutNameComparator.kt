@@ -1,13 +1,12 @@
 package at.shockbytes.corey.common.core.util
 
 import at.shockbytes.corey.common.core.workout.model.Workout
-import java.util.*
+import java.util.Comparator
 
 /**
- * @author Martin Macheiner
- * Date: 29.03.2017.
+ * Author:  Martin Macheiner
+ * Date:    29.03.2017
  */
-
 class WorkoutNameComparator : Comparator<Workout> {
 
     override fun compare(workout: Workout, t1: Workout): Int {

@@ -16,13 +16,12 @@ class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         (context.applicationContext as CoreyApp).appComponent.inject(this)
 
-        if (manager.isWeighNotificationDeliveryEnabled
-                && CoreyUtils.getDayOfWeek() == manager.dayOfWeighNotificationDelivery) {
+        if (manager.isWeighNotificationDeliveryEnabled &&
+                CoreyUtils.getDayOfWeek() == manager.dayOfWeighNotificationDelivery) {
             manager.postWeighNotification()
         }
         if (manager.isWorkoutNotificationDeliveryEnabled) {
             manager.postWorkoutNotification()
         }
     }
-
 }

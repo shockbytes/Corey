@@ -5,18 +5,19 @@ import at.shockbytes.corey.common.core.R
 import com.google.firebase.database.Exclude
 import kotlinx.android.parcel.Parcelize
 
-
 /**
- * @author Martin Macheiner
- * Date: 27.10.2015.
+ * Author:  Martin Macheiner
+ * Date:    27.10.2015
  */
 @Parcelize
-data class Workout(var id: String = "",
-                   private var name: String = "", // private necessary for custom setter
-                   var duration: Int = 0, // in minutes
-                   var exercises: MutableList<Exercise> = mutableListOf(),
-                   var intensity: Intensity = Intensity.MEDIUM,
-                   var bodyRegion: BodyRegion = BodyRegion.CORE) : Comparable<Workout>, Parcelable {
+data class Workout(
+    var id: String = "",
+    private var name: String = "", // private necessary for custom setter
+    var duration: Int = 0, // in minutes
+    var exercises: MutableList<Exercise> = mutableListOf(),
+    var intensity: Intensity = Intensity.MEDIUM,
+    var bodyRegion: BodyRegion = BodyRegion.CORE
+) : Comparable<Workout>, Parcelable {
 
     enum class Intensity {
         EASY, MEDIUM, HARD, BEAST
@@ -85,5 +86,4 @@ data class Workout(var id: String = "",
     override fun compareTo(other: Workout): Int {
         return id.compareTo(other.id)
     }
-
 }

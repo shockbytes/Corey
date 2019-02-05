@@ -121,7 +121,7 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
         val textStartDelay = 150
         for (i in animatedTextViews.indices) {
 
-            //Animate weight txtExercise
+            // Animate weight txtExercise
             val txtAnimAlpha = ObjectAnimator.ofFloat(animatedTextViews[i], "alpha", 0.3f, 1f)
             val txtAnimScaleX = ObjectAnimator.ofFloat(animatedTextViews[i], "scaleX", 0.3f, 1f)
             val txtAnimScaleY = ObjectAnimator.ofFloat(animatedTextViews[i], "scaleY", 0.3f, 1f)
@@ -132,6 +132,5 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
             txtSet.interpolator = DecelerateInterpolator()
             txtSet.start()
         }
-
     }
 }

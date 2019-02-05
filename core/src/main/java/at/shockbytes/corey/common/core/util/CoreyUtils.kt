@@ -1,23 +1,26 @@
 package at.shockbytes.corey.common.core.util
 
+import android.annotation.SuppressLint
 import android.support.v7.view.menu.MenuPopupHelper
 import android.support.v7.widget.PopupMenu
-import android.util.Log
 import at.shockbytes.corey.common.core.R
 import at.shockbytes.corey.common.core.workout.model.Equipment
 import org.joda.time.LocalDate
+import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 /**
- * @author Martin Macheiner
- * Date: 27.10.2015.
+ * Author:  Martin Macheiner
+ * Date:    27.10.2015
  */
 object CoreyUtils {
 
+    @SuppressLint("ConstantLocale")
     private val SDF_DATE = SimpleDateFormat("dd.MM.", Locale.getDefault())
+    @SuppressLint("ConstantLocale")
     private val SDF_DATE_W_YEAR = SimpleDateFormat("MMM yy", Locale.getDefault())
-
 
     fun getDayOfWeek(): Int {
         return LocalDate.now().dayOfWeek - 1
@@ -44,13 +47,15 @@ object CoreyUtils {
             val popup = fieldPopup.get(menu) as MenuPopupHelper
             popup.setForceShowIcon(true)
         } catch (e: Exception) {
-            Log.d(logTag, "Cannot force to show icons in popupmenu")
+            Timber.d("Cannot force to show icons in popupmenu")
         }
     }
 
-    fun calculateDreamWeightProgress(startWeight: Double,
-                                     weight: Double,
-                                     dreamWeight: Double): Int {
+    fun calculateDreamWeightProgress(
+        startWeight: Double,
+        weight: Double,
+        dreamWeight: Double
+    ): Int {
 
         if (weight <= dreamWeight) {
             return 100
@@ -61,5 +66,3 @@ object CoreyUtils {
         return 100 - Math.round(100 / diff * weightAligned).toInt()
     }
 }
-
-

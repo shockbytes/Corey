@@ -6,9 +6,11 @@ import at.shockbytes.util.AppUtils
  * Author:  Martin Macheiner
  * Date:    03.08.2016.
  */
-data class BodyInfo(var weightPoints: List<WeightPoint> = listOf(),
-                    var height: Double = (-1).toDouble(),
-                    var dreamWeight: Int = -1) {
+data class BodyInfo(
+    val weightPoints: List<WeightPoint> = listOf(),
+    val height: Double = (-1).toDouble(),
+    val dreamWeight: Int = -1
+) {
 
     val isNotEmpty: Boolean
         get() = weightPoints.isNotEmpty()
@@ -36,5 +38,4 @@ data class BodyInfo(var weightPoints: List<WeightPoint> = listOf(),
         get() = if (weightPoints.isNotEmpty()) {
             weightPoints[weightPoints.size - 1]
         } else WeightPoint(0, 0.0)
-
 }

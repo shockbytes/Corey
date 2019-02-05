@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment.workoutpager
 
-
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Vibrator
@@ -138,7 +137,7 @@ class WearTimeExercisePagerFragment : WearableBaseFragment() {
 
     private fun displayTime(secondsToGo: Long) {
 
-        //Calculate displayable string
+        // Calculate displayable string
         var seconds = secondsToGo
         var minutes: Long = 0
         while (seconds >= 60) {
@@ -162,5 +161,4 @@ class WearTimeExercisePagerFragment : WearableBaseFragment() {
             return fragment
         }
     }
-
 }

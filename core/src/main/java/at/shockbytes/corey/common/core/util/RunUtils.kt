@@ -4,12 +4,10 @@ import org.joda.time.Period
 import org.joda.time.PeriodType
 import org.joda.time.format.PeriodFormatterBuilder
 
-
 /**
- * @author Martin Macheiner
- * Date: 10.09.2017.
+ * Author:  Martin Macheiner
+ * Date:    10.09.2017
  */
-
 object RunUtils {
 
     fun calculatePace(timeInMs: Long, distance: Double): String {
@@ -42,5 +40,4 @@ object RunUtils {
         val kmPeriod = Period(kmMillis, minutesSeconds)
         return formatter.print(kmPeriod)
     }
-
 }

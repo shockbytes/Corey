@@ -1,8 +1,8 @@
 package at.shockbytes.corey.util
 
 /**
- * @author Martin Macheiner
- * Date: 09.12.2015.
+ * Author:  Martin Macheiner
+ * Date:    09.12.2015
  */
 object AppParams {
 
@@ -13,5 +13,4 @@ object AppParams {
     const val INTENT_EXTRA_WORKOUT_UPDATED = "workout_updated"
 
     const val HELP_SHOW_DELAY = 2000
-
 }

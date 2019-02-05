@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
  * Date:    04.03.2018
  */
 class FirebaseUserRepository(
-        private val context: Context
+    private val context: Context
 ) : UserRepository {
 
     override val user: ShockbytesUser
@@ -28,5 +28,4 @@ class FirebaseUserRepository(
     override fun signOut() {
         FirebaseAuth.getInstance().signOut()
     }
-
 }

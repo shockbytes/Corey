@@ -24,5 +24,4 @@ interface WorkoutRepository : Pokeable {
     fun updatePhoneWorkoutInformation(workouts: Int, workoutTime: Int)
 
     fun updateWearWorkoutInformation(avgPulse: Int, workoutsWithPulse: Int, workoutTime: Int)
-
 }

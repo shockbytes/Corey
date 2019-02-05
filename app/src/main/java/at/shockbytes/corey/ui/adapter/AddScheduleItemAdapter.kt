@@ -5,20 +5,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 
-
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.Sortable
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 
 /**
- * @author  Martin Macheiner
- * Date:    24.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    24.02.2017
  */
-class AddScheduleItemAdapter(context: Context,
-                             data: List<ScheduleDisplayItem>,
-                             filterPredicate: (ScheduleDisplayItem, String) -> Boolean)
-    : FilterableBaseAdapter<AddScheduleItemAdapter.ScheduleDisplayItem>(context, data.toMutableList(), filterPredicate) {
+class AddScheduleItemAdapter(
+    context: Context,
+    data: List<ScheduleDisplayItem>,
+    filterPredicate: (ScheduleDisplayItem, String) -> Boolean
+) : FilterableBaseAdapter<AddScheduleItemAdapter.ScheduleDisplayItem>(context, data.toMutableList(), filterPredicate) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<ScheduleDisplayItem>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.listitem_add_exercise, parent, false))

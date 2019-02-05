@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment.workoutpager
 
-
 import android.os.Bundle
 import android.widget.TextView
 import at.shockbytes.corey.R
@@ -8,7 +7,6 @@ import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.dagger.WearAppComponent
 import at.shockbytes.corey.ui.fragment.WearableBaseFragment
 import kotterknife.bindView
-
 
 class WearExercisePagerFragment : WearableBaseFragment() {
 

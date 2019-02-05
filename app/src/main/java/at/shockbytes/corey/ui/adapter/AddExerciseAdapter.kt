@@ -10,13 +10,14 @@ import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.util.adapter.BaseAdapter import kotterknife.bindView
 
 /**
- * @author  Martin Macheiner
- * Date:    24.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    24.02.2017
  */
-class AddExerciseAdapter(context: Context,
-                         data: List<Exercise>,
-                         filterPredicate: (Exercise, String) -> Boolean)
-    : FilterableBaseAdapter<Exercise>(context, data.toMutableList(), filterPredicate) {
+class AddExerciseAdapter(
+    context: Context,
+    data: List<Exercise>,
+    filterPredicate: (Exercise, String) -> Boolean
+) : FilterableBaseAdapter<Exercise>(context, data.toMutableList(), filterPredicate) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<Exercise>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.listitem_add_exercise, parent, false))

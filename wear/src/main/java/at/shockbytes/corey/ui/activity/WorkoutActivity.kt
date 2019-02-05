@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.wearable.activity.WearableActivity
 import android.view.KeyEvent
 
 import at.shockbytes.corey.R
@@ -57,5 +56,4 @@ class WorkoutActivity : AppCompatActivity() {
             return Intent(context, WorkoutActivity::class.java).putExtra(ARG_WORKOUT, w)
         }
     }
-
 }

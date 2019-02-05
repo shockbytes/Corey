@@ -14,12 +14,10 @@ import kotlinx.android.synthetic.main.fragment_goals.*
 import javax.inject.Inject
 import android.support.v7.widget.DividerItemDecoration
 
-
-
-class GoalsFragment: BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActionClickedListener {
+class GoalsFragment : BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActionClickedListener {
 
     @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
+    lateinit var vmFactory: ViewModelProvider.Factory
 
     override val layoutId: Int = R.layout.fragment_goals
 

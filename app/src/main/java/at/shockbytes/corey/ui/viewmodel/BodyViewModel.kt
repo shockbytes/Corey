@@ -12,8 +12,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class BodyViewModel @Inject constructor(
-        private val bodyRepository: BodyRepository,
-        private val userManager: UserRepository
+    private val bodyRepository: BodyRepository,
+    private val userManager: UserRepository
 ) : BaseViewModel() {
 
     sealed class BodyInfoState {
@@ -33,5 +33,4 @@ class BodyViewModel @Inject constructor(
     }
 
     fun getBodyInfo(): LiveData<BodyInfoState> = bodyInfo
-
 }

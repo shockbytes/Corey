@@ -21,7 +21,6 @@ import at.shockbytes.corey.ui.activity.SettingsActivity
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import javax.inject.Inject
 
-
 /**
  * Author:  Martin Macheiner
  * Date:    06.06.2018
@@ -105,10 +104,7 @@ class MenuFragment : BottomSheetDialogFragment() {
                 }
             }
         })
-
-
     }
-
 
     companion object {
         fun newInstance(): MenuFragment {

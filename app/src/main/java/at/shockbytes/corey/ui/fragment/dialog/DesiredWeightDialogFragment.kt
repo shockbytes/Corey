@@ -62,5 +62,4 @@ class DesiredWeightDialogFragment : DialogFragment() {
             return fragment
         }
     }
-
 }

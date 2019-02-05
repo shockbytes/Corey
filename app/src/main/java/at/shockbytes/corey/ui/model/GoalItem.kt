@@ -5,14 +5,14 @@ import android.support.annotation.StringRes
 import org.joda.time.DateTime
 
 data class GoalItem(
-        val message: String,
-        val isCompleted: Boolean,
-        val id: String,
-        val dueDate: DateTime,
-        val dueDateFormatted: String,
-        val category: Category,
-        @StringRes val categoryString: Int,
-        @DrawableRes val categoryIcon: Int
+    val message: String,
+    val isCompleted: Boolean,
+    val id: String,
+    val dueDate: DateTime,
+    val dueDateFormatted: String,
+    val category: Category,
+    @StringRes val categoryString: Int,
+    @DrawableRes val categoryIcon: Int
 ) {
 
     enum class Category {
@@ -41,5 +41,4 @@ data class GoalItem(
             }
         }
     }
-
 }

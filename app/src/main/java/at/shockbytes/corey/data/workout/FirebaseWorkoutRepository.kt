@@ -1,12 +1,16 @@
 package at.shockbytes.corey.data.workout
 
 import android.content.Context
-import android.util.Log
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.common.core.workout.model.Workout
-import com.google.firebase.database.*
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import io.reactivex.Observable
@@ -45,12 +49,11 @@ class FirebaseWorkoutRepository(
             val timeExercisesAsArray = timeExerciseGson.fromJson(timeExercisesAsJson, Array<TimeExercise>::class.java)
 
             // Concatenate both arrays to one list
-            //exercisesAsArray.plus(timeExercisesAsArray).toList()
+            // exercisesAsArray.plus(timeExercisesAsArray).toList()
             val exercises = mutableListOf<Exercise>()
             exercisesAsArray.mapTo(exercises) { it }
             timeExercisesAsArray.mapTo(exercises) { it }
             exercises.toList()
-
         }.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
 
@@ -108,8 +111,11 @@ class FirebaseWorkoutRepository(
                 return Transaction.success(mutableData)
             }
 
-            override fun onComplete(databaseError: DatabaseError?, b: Boolean,
-                                    dataSnapshot: DataSnapshot?) = Unit
+            override fun onComplete(
+                databaseError: DatabaseError?,
+                b: Boolean,
+                dataSnapshot: DataSnapshot?
+            ) = Unit
         })
     }
 

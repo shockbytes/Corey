@@ -20,5 +20,4 @@ interface RunningManager {
     fun stopRunRecord(timeInMs: Long)
 
     fun updateCurrentRun(location: Location): Run
-
 }

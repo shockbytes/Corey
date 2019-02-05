@@ -14,10 +14,9 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-
 /**
- * @author  Martin Macheiner
- * Date:    21.03.2015.
+ * Author:  Martin Macheiner
+ * Date:    21.03.2015
  */
 class TimeExerciseCountdownDialogFragment : DialogFragment() {
 
@@ -40,8 +39,11 @@ class TimeExerciseCountdownDialogFragment : DialogFragment() {
         dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val v = inflater.inflate(R.layout.dialogfragment_countdown, container, false)
         txtTimer = v.findViewById(R.id.dialogfragment_countdown_txt_timer)
         return v

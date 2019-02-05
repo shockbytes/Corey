@@ -13,7 +13,6 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_signup.*
 
-
 class SignUpFragment : BaseFragment<AppComponent>() {
 
     override val snackBarBackgroundColorRes: Int = R.color.sb_background

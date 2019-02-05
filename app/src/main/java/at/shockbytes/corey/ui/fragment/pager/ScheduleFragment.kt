@@ -98,7 +98,6 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
             throwable.printStackTrace()
             Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()
         }).addTo(compositeDisposable)
-
     }
 
     override fun injectToGraph(appComponent: AppComponent?) {
@@ -124,5 +123,4 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
             return fragment
         }
     }
-
 }

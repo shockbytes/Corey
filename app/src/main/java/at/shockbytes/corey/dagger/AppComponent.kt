@@ -30,7 +30,7 @@ import javax.inject.Singleton
     FirebaseModule::class,
     ViewModelModule::class
 ])
-interface AppComponent: ShockbytesInjector {
+interface AppComponent : ShockbytesInjector {
 
     fun inject(activity: MainActivity)
 

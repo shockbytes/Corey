@@ -11,5 +11,4 @@ interface UserRepository {
     val user: ShockbytesUser
 
     fun signOut()
-
 }

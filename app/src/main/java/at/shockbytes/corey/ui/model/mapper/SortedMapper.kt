@@ -1,6 +1,6 @@
 package at.shockbytes.corey.ui.model.mapper
 
-abstract class SortedMapper<In, Out>: Mapper<In, Out>() {
+abstract class SortedMapper<In, Out> : Mapper<In, Out>() {
 
     abstract val mapToSortFunction: Comparator<Out>
     abstract val mapFromSortFunction: Comparator<In>
@@ -12,5 +12,4 @@ abstract class SortedMapper<In, Out>: Mapper<In, Out>() {
     override fun mapFrom(data: List<Out>): List<In> {
         return super.mapFrom(data).sortedWith(mapFromSortFunction)
     }
-
 }

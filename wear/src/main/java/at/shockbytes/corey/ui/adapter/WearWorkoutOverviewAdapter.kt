@@ -13,12 +13,13 @@ import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 
 /**
- * @author Martin Macheiner
- * Date: 14.03.2017.
+ * Author:  Martin Macheiner
+ * Date:    14.03.2017
  */
-
-class WearWorkoutOverviewAdapter(cxt: Context, data: List<Workout>)
-    : BaseAdapter<Workout>(cxt, data.toMutableList()) {
+class WearWorkoutOverviewAdapter(
+    cxt: Context,
+    data: List<Workout>
+) : BaseAdapter<Workout>(cxt, data.toMutableList()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<Workout>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_wear_workout_overview, parent, false))
@@ -35,5 +36,4 @@ class WearWorkoutOverviewAdapter(cxt: Context, data: List<Workout>)
                     t.imageResForBodyRegion, t.colorResForIntensity))
         }
     }
-
 }

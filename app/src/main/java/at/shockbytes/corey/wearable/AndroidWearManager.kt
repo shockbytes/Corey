@@ -2,26 +2,28 @@ package at.shockbytes.corey.wearable
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.data.workout.WorkoutRepository
-import com.google.android.gms.wearable.*
 import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.CapabilityInfo
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.MessageEvent
+import com.google.android.gms.wearable.PutDataRequest
+import com.google.android.gms.wearable.Wearable
 import com.google.gson.Gson
 
-
 /**
- * @author Martin Macheiner
- * Date: 18.03.2017.
+ * Author:  Martin Macheiner
+ * Date:    18.03.2017
  */
-
-class AndroidWearManager(private val context: Context,
-                         private val workoutManager: WorkoutRepository,
-                         private val gson: Gson)
-    : WearableManager, MessageClient.OnMessageReceivedListener, CapabilityClient.OnCapabilityChangedListener {
+class AndroidWearManager(
+    private val context: Context,
+    private val workoutManager: WorkoutRepository,
+    private val gson: Gson
+) : WearableManager, MessageClient.OnMessageReceivedListener, CapabilityClient.OnCapabilityChangedListener {
 
     private var nodeListener: ((WatchInfo) -> Unit)? = null
 
@@ -52,7 +54,6 @@ class AndroidWearManager(private val context: Context,
 
     override fun onMessageReceived(messageEvent: MessageEvent) {
 
-        Log.wtf("Corey", "information received! + " + messageEvent.toString())
         if (messageEvent.path == "/wear_information") {
             Toast.makeText(context, String(messageEvent.data), Toast.LENGTH_SHORT).show()
             grabDataFromMessage(messageEvent)
@@ -84,5 +85,4 @@ class AndroidWearManager(private val context: Context,
     private fun synchronize() {
         workoutManager.workouts.subscribe { workouts -> synchronizeWorkouts(workouts) }
     }
-
 }

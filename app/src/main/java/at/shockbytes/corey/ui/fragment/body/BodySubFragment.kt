@@ -12,7 +12,7 @@ import at.shockbytes.corey.dagger.AppComponent
  * Author:  Martin Macheiner
  * Date:    05.03.2018
  */
-abstract class BodySubFragment: BaseFragment<AppComponent>() {
+abstract class BodySubFragment : BaseFragment<AppComponent>() {
 
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
@@ -30,5 +30,4 @@ abstract class BodySubFragment: BaseFragment<AppComponent>() {
         cardSet.interpolator = AnticipateOvershootInterpolator(1f, 1.2f)
         cardSet.start()
     }
-
 }

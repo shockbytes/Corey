@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import at.shockbytes.corey.R
-import at.shockbytes.corey.data.goal.Goal
 import at.shockbytes.corey.data.body.info.BodyInfo
 import at.shockbytes.corey.data.body.info.WeightPoint
 import at.shockbytes.util.AppUtils
@@ -17,7 +16,10 @@ import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.data.DataSet
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.request.DataReadRequest
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -28,9 +30,9 @@ import java.util.concurrent.TimeUnit
  * Date:    04.08.2016
  */
 class GoogleFitBodyRepository(
-        private val context: Context,
-        private val preferences: SharedPreferences,
-        private val firebase: FirebaseDatabase
+    private val context: Context,
+    private val preferences: SharedPreferences,
+    private val firebase: FirebaseDatabase
 ) : BodyRepository, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private val apiClient: GoogleApiClient
@@ -122,7 +124,7 @@ class GoogleFitBodyRepository(
                 .setTimeRange(startMillis, endMillis, TimeUnit.MILLISECONDS)
                 .read(DataType.TYPE_WEIGHT)
                 .read(DataType.TYPE_HEIGHT)
-                //.read(DataType.TYPE_BODY_FAT_PERCENTAGE)
+                .read(DataType.TYPE_BODY_FAT_PERCENTAGE)
                 .build()
     }
 
@@ -156,12 +158,9 @@ class GoogleFitBodyRepository(
         })
     }
 
-
     companion object {
 
         private const val PREF_DREAM_WEIGHT = "dreamweight"
         private const val PREF_WEIGHT_UNIT = "weight_unit"
-
     }
-
 }

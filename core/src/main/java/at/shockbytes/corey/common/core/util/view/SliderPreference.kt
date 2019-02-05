@@ -18,7 +18,7 @@ import at.shockbytes.corey.common.core.R
  * to choose between an interval from 0 - x seconds. This interval is the
  * location update interval in the TrackingService class.
  *
- * @author Martin Macheiner
+ * Author:  Martin Macheiner
  */
 class SliderPreference : DialogPreference, OnSeekBarChangeListener, OnClickListener {
 
@@ -35,14 +35,17 @@ class SliderPreference : DialogPreference, OnSeekBarChangeListener, OnClickListe
         initialize(attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet,
-                defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr) {
         initialize(attrs)
     }
 
     private fun initialize(attrs: AttributeSet) {
 
-        //Get string value for suffix
+        // Get string value for suffix
         val unitId = attrs.getAttributeResourceValue(androidns, "text", 0)
         unit = if (unitId == 0)
             attrs.getAttributeValue(androidns, "text")
@@ -76,8 +79,10 @@ class SliderPreference : DialogPreference, OnSeekBarChangeListener, OnClickListe
         seekbar?.progress = value
     }
 
-    override fun onSetInitialValue(restorePersistedValue: Boolean,
-                                   defaultValue: Any?) {
+    override fun onSetInitialValue(
+        restorePersistedValue: Boolean,
+        defaultValue: Any?
+    ) {
         super.onSetInitialValue(restorePersistedValue, defaultValue)
 
         value = if (restorePersistedValue) {
@@ -105,7 +110,7 @@ class SliderPreference : DialogPreference, OnSeekBarChangeListener, OnClickListe
         }
     }
 
-    //--------------------------- OnSeekBarChangedListener ---------------------------
+    // --------------------------- OnSeekBarChangedListener ---------------------------
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
         val t = progress.toString()
         valueText?.text = t.plus(" ").plus(unit)
@@ -119,6 +124,5 @@ class SliderPreference : DialogPreference, OnSeekBarChangeListener, OnClickListe
 
         private val androidns = "http://schemas.android.com/apk/res/android"
     }
-    //--------------------------------------------------------------------------------
-
+    // --------------------------------------------------------------------------------
 }

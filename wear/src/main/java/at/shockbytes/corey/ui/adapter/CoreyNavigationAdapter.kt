@@ -7,15 +7,14 @@ import android.support.annotation.StringRes
 import android.support.v4.content.ContextCompat
 import android.support.wear.widget.drawer.WearableNavigationDrawerView
 
-
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    23.03.2017
  */
-
-class CoreyNavigationAdapter(private val context: Context,
-                             private val items: List<NavigationItem>)
-    : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
+class CoreyNavigationAdapter(
+    private val context: Context,
+    private val items: List<NavigationItem>
+) : WearableNavigationDrawerView.WearableNavigationDrawerAdapter() {
 
     override fun getItemText(i: Int): String {
         return context.getString(items[i].text)

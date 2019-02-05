@@ -95,5 +95,4 @@ class MainActivity : FragmentActivity() {
         navigationDrawer.controller.peekDrawer()
         navigationDrawer.setCurrentItem(0, true)
     }
-
 }

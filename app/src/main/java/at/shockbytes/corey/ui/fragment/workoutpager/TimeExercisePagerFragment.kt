@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment.workoutpager
 
-
 import android.os.Bundle
 import android.os.Vibrator
 import android.preference.PreferenceManager
@@ -67,7 +66,6 @@ class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
     }
 
     override fun bindViewModel() {
-
     }
 
     override fun unbindViewModel() {
@@ -93,7 +91,7 @@ class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (timerDisposable!= null && !isVisibleToUser) {
+        if (timerDisposable != null && !isVisibleToUser) {
             timerDisposable?.dispose()
         }
     }
@@ -120,7 +118,6 @@ class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
                     if (toGo < 0) {
                         timerDisposable?.dispose()
                     }
-
                 }, { throwable ->
                     Timber.e(throwable)
                 })
@@ -130,7 +127,7 @@ class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
         var secs = seconds
 
         var mins = 0
-        while (secs>= 60) {
+        while (secs >= 60) {
             mins++
             secs -= 60
         }
@@ -155,7 +152,7 @@ class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
 
     private fun displayTime(secondsToGo: Long) {
 
-        //Calculate displayable string
+        // Calculate displayable string
         var seconds = secondsToGo
         var minutes: Long = 0
         while (seconds >= 60) {
@@ -183,5 +180,4 @@ class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
             return fragment
         }
     }
-
 }

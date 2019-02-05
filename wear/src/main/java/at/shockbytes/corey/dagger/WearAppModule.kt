@@ -30,8 +30,10 @@ class WearAppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideCommunicationManager(preferences: SharedPreferences,
-                                    gson: Gson): CommunicationManager {
+    fun provideCommunicationManager(
+        preferences: SharedPreferences,
+        gson: Gson
+    ): CommunicationManager {
         return CommunicationManager(app.applicationContext, preferences, gson)
     }
 

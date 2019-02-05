@@ -12,7 +12,6 @@ enum class Equipment {
             } else {
                 Equipment.values()[index]
             }
-
         }
     }
 }

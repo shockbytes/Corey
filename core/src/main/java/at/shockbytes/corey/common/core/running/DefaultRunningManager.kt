@@ -3,12 +3,10 @@ package at.shockbytes.corey.common.core.running
 import android.location.Location
 import at.shockbytes.corey.common.core.util.RunUtils
 
-
 /**
- * @author Martin Macheiner
- * Date: 05.09.2017.
+ * Author:  Martin Macheiner
+ * Date:    05.09.2017
  */
-
 class DefaultRunningManager : RunningManager {
 
     override var isRecording: Boolean = false

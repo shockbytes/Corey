@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment
 
-
 import android.os.Bundle
 import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.WearAppComponent
@@ -26,4 +25,4 @@ class RunningFragment : WearableBaseFragment() {
             return fragment
         }
     }
-}// Required empty public constructor
+} // Required empty public constructor

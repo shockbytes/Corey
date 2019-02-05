@@ -68,5 +68,4 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
 
     override fun animateView(startDelay: Long) {
     }
-
 }

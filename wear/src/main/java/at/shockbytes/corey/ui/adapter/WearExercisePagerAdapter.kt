@@ -8,13 +8,14 @@ import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.ui.fragment.workoutpager.WearExercisePagerFragment
 import at.shockbytes.corey.ui.fragment.workoutpager.WearTimeExercisePagerFragment
 
-
 /**
  * Author:  Martin Macheiner
  * Date:    03.12.2015
  */
-class WearExercisePagerAdapter(fm: FragmentManager,
-                               private val workout: Workout) : FragmentStatePagerAdapter(fm) {
+class WearExercisePagerAdapter(
+    fm: FragmentManager,
+    private val workout: Workout
+) : FragmentStatePagerAdapter(fm) {
 
     override fun getCount(): Int {
         return workout.exercises.size
@@ -29,5 +30,4 @@ class WearExercisePagerAdapter(fm: FragmentManager,
             WearExercisePagerFragment.newInstance(exercise)
         }
     }
-
 }

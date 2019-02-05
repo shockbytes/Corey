@@ -8,8 +8,8 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
 class FirebaseGoalsRepository(
-        private val firebase: FirebaseDatabase
-): GoalsRepository {
+    private val firebase: FirebaseDatabase
+) : GoalsRepository {
 
     init {
         setupFirebase()
@@ -65,5 +65,4 @@ class FirebaseGoalsRepository(
             override fun onCancelled(databaseError: DatabaseError) = Unit
         })
     }
-
 }

@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment
 
-
 import android.Manifest
 import android.content.Context.SENSOR_SERVICE
 import android.content.pm.PackageManager
@@ -66,7 +65,6 @@ class WorkoutFragment : WearableBaseFragment(),
         }
     }
 
-
     override fun onStart() {
         super.onStart()
         startWorkout()
@@ -77,11 +75,15 @@ class WorkoutFragment : WearableBaseFragment(),
         sensorManager?.unregisterListener(this)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == SENSOR_REQUEST_CODE && permissions[0] == Manifest.permission.BODY_SENSORS
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == SENSOR_REQUEST_CODE &&
+                permissions[0] == Manifest.permission.BODY_SENSORS &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             initializeHeartRate()
         }
     }
@@ -191,5 +193,4 @@ class WorkoutFragment : WearableBaseFragment(),
             return fragment
         }
     }
-
 }

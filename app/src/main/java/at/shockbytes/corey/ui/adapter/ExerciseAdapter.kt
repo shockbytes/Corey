@@ -10,7 +10,7 @@ import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotterknife.bindView
-import java.util.*
+import java.util.Collections
 
 /**
  * @author Martin Macheiner
@@ -86,5 +86,4 @@ class ExerciseAdapter(context: Context, data: List<Exercise>)
             imgViewMove.visibility = if (isItemMovable) View.VISIBLE else View.GONE
         }
     }
-
 }

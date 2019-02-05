@@ -25,10 +25,9 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
- * Date:    24.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    24.02.2017
  */
-
 class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, BaseAdapter.OnItemClickListener<Exercise> {
 
     @Inject
@@ -54,7 +53,7 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
 
     private val editTextFilter: EditText by bindView(R.id.fragment_create_workout_bottom_sheet_edit_filter)
     private val rvAddExercises: RecyclerView by bindView(R.id.fragment_create_workout_bottom_sheet_recyclerview)
-    private val viewFlipper: ViewFlipper by bindView (R.id.fragment_create_workout_bottom_sheet_viewflipper)
+    private val viewFlipper: ViewFlipper by bindView(R.id.fragment_create_workout_bottom_sheet_viewflipper)
     private val numberPickerRepetitions: NumberPicker by bindView(R.id.fragment_create_workout_bottom_sheet_numberpicker_reps)
     private val numberPickerWorkDuration: NumberPicker by bindView(R.id.fragment_create_workout_bottom_sheet_numberpicker_workduration)
     private val numberPickerRestDuration: NumberPicker by bindView(R.id.fragment_create_workout_bottom_sheet_numberpicker_restduration)
@@ -165,5 +164,4 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
             return fragment
         }
     }
-
 }

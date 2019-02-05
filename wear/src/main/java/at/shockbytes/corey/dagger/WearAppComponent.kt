@@ -8,8 +8,8 @@ import dagger.Component
 import javax.inject.Singleton
 
 /**
- * @author  Martin Macheiner
- * Date:    21.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    21.02.2017
  */
 @Singleton
 @Component(modules = [(WearAppModule::class)])
@@ -22,5 +22,4 @@ interface WearAppComponent {
     fun inject(fragment: RunningFragment)
 
     fun inject(fragment: WearTimeExercisePagerFragment)
-
 }

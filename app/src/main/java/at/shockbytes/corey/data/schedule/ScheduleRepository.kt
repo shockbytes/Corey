@@ -28,5 +28,4 @@ interface ScheduleRepository : Pokeable {
     fun postWeighNotification()
 
     fun postWorkoutNotification()
-
 }

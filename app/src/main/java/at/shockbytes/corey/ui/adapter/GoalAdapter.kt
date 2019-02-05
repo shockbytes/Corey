@@ -56,7 +56,7 @@ class GoalAdapter(cxt: Context, data: List<GoalItem>) : BaseAdapter<GoalItem>(cx
                 txtGoal.paintFlags = txtGoal.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
 
-            imgBtnDone.setOnClickListener{
+            imgBtnDone.setOnClickListener {
                 onClickDone()
             }
 
@@ -72,7 +72,5 @@ class GoalAdapter(cxt: Context, data: List<GoalItem>) : BaseAdapter<GoalItem>(cx
                 onGoalActionClickedListener?.onFinishGoalClicked(content)
             }
         }
-
     }
-
 }

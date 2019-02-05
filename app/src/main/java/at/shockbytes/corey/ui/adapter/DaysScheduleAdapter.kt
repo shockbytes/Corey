@@ -11,11 +11,13 @@ import kotterknife.bindView
 import org.joda.time.LocalDate
 
 /**
- * @author Martin Macheiner
- * Date: 02.12.2015.
+ * Author:  Martin Macheiner
+ * Date:    02.12.2015
  */
-class DaysScheduleAdapter(context: Context,
-                          data: List<String>) : BaseAdapter<String>(context, data.toMutableList()) {
+class DaysScheduleAdapter(
+    context: Context,
+    data: List<String>
+) : BaseAdapter<String>(context, data.toMutableList()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<String>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_schedule_days, parent, false))
@@ -50,5 +52,4 @@ class DaysScheduleAdapter(context: Context,
             txtName.setTextColor(txtColor)
         }
     }
-
 }

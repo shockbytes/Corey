@@ -13,21 +13,15 @@ import android.view.View
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.WorkoutAdapter
-import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.common.core.util.WorkoutNameComparator
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.dagger.ViewModelFactory
 import at.shockbytes.corey.ui.activity.CreateWorkoutActivity
 import at.shockbytes.corey.ui.activity.WorkoutDetailActivity
 import at.shockbytes.corey.util.AppParams
-import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.ui.viewmodel.WorkoutOverviewViewModel
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.corey.util.isPortrait
-import at.shockbytes.util.view.RecyclerViewWithEmptyView
 import kotlinx.android.synthetic.main.fragment_workout_overview.*
-import kotterknife.bindView
 import javax.inject.Inject
 
 /**

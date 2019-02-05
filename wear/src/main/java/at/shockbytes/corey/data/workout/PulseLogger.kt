@@ -1,10 +1,9 @@
 package at.shockbytes.corey.data.workout
 
 /**
- * @author Martin Macheiner
- * Date: 15.03.2017.
+ * Author:  Martin Macheiner
+ * Date:    15.03.2017
  */
-
 class PulseLogger {
 
     private val list: MutableList<Int> = mutableListOf()
@@ -27,5 +26,4 @@ class PulseLogger {
     private fun reset() {
         list.clear()
     }
-
 }

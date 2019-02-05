@@ -2,23 +2,28 @@ package at.shockbytes.corey.core
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import android.widget.Toast
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Workout
-import com.google.android.gms.wearable.*
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.CapabilityInfo
+import com.google.android.gms.wearable.DataClient
+import com.google.android.gms.wearable.DataEvent
+import com.google.android.gms.wearable.DataEventBuffer
+import com.google.android.gms.wearable.Node
+import com.google.android.gms.wearable.Wearable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 /**
- * @author Martin Macheiner
- * Date: 18.03.2017.
+ * Author:  Martin Macheiner
+ * Date:    18.03.2017
  */
-
-class CommunicationManager(private val context: Context,
-                           private val preferences: SharedPreferences,
-                           private val gson: Gson) : DataClient.OnDataChangedListener,
-        CapabilityClient.OnCapabilityChangedListener {
+class CommunicationManager(
+    private val context: Context,
+    private val preferences: SharedPreferences,
+    private val gson: Gson
+) : DataClient.OnDataChangedListener, CapabilityClient.OnCapabilityChangedListener {
 
     private var workoutListener: ((List<Workout>) -> Unit)? = null
 
@@ -105,8 +110,6 @@ class CommunicationManager(private val context: Context,
     private fun synchronizeData() {
 
         val data = parcelSyncData()
-        Log.wtf("Corey", String(data))
-        Log.wtf("Corey", connectedNode?.toString())
         if (connectedNode != null) {
             Wearable.getMessageClient(context)
                     .sendMessage(connectedNode?.id!!, "/wear_information", data)
@@ -140,5 +143,4 @@ class CommunicationManager(private val context: Context,
                 .putInt("workout_time", 0)
                 .apply()
     }
-
 }

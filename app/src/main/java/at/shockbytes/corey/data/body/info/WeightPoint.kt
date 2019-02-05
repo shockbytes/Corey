@@ -1,9 +1,9 @@
 package at.shockbytes.corey.data.body.info
 
 data class WeightPoint(
-        val timeStamp: Long = 0,
-        val weight: Double = 0.0
-): Comparable<WeightPoint> {
+    val timeStamp: Long = 0,
+    val weight: Double = 0.0
+) : Comparable<WeightPoint> {
 
     override fun compareTo(other: WeightPoint): Int {
         return (timeStamp - other.timeStamp).toInt()

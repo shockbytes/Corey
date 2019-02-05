@@ -4,13 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.SettingsClient
 
 /**
- * @author Martin Macheiner
- * Date: 05.09.2017.
+ * Author:  Martin Macheiner
+ * Date:    05.09.2017
  */
-
 class GooglePlayLocationManager(context: Context) : LocationManager {
 
     override var isLocationUpdateRequested: Boolean = false
@@ -63,7 +68,6 @@ class GooglePlayLocationManager(context: Context) : LocationManager {
                 .addLocationRequest(locationRequest).build()
     }
 
-
     @SuppressLint("MissingPermission")
     override fun start(listener: LocationManager.OnLocationUpdateListener) {
         this.listener = listener
@@ -91,5 +95,4 @@ class GooglePlayLocationManager(context: Context) : LocationManager {
                     listener = null
                 }
     }
-
 }

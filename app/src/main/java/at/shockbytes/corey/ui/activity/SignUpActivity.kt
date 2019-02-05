@@ -19,5 +19,4 @@ class SignUpActivity : ContainerBackNavigableActivity<AppComponent>() {
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
     }
-
 }

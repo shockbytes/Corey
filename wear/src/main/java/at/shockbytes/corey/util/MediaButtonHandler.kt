@@ -50,5 +50,4 @@ class MediaButtonHandler(private val context: Context) {
                 KeyEvent(eventTime, eventTime, KeyEvent.ACTION_UP, keycode, 0))
         context.sendOrderedBroadcast(up, null)
     }
-
 }

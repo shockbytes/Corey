@@ -4,11 +4,13 @@ package at.shockbytes.corey.data.goal
  * Author:  Martin Macheiner
  * Date:    05.03.2017
  */
-data class Goal(val message: String = "",
-                val done: Boolean = false,
-                var id: String = "",
-                val category: String = "",
-                val dueDate: String = "") {
+data class Goal(
+    val message: String = "",
+    val done: Boolean = false,
+    var id: String = "",
+    val category: String = "",
+    val dueDate: String = ""
+) {
 
     override fun equals(other: Any?): Boolean {
         return ((other as? Goal)?.id == id)

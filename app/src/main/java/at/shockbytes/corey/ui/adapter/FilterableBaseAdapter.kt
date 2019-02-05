@@ -5,12 +5,14 @@ import at.shockbytes.corey.common.core.Sortable
 import at.shockbytes.util.adapter.BaseAdapter
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    06.03.2018
  */
-abstract class FilterableBaseAdapter<T: Sortable>(context: Context, data: List<T>,
-                                                  private val filterPredicate: (T, String) -> Boolean)
-    : BaseAdapter<T>(context, data.toMutableList()) {
+abstract class FilterableBaseAdapter<T : Sortable>(
+    context: Context,
+    data: List<T>,
+    private val filterPredicate: (T, String) -> Boolean
+) : BaseAdapter<T>(context, data.toMutableList()) {
 
     private var originalData = ArrayList(data)
 
@@ -39,20 +41,19 @@ abstract class FilterableBaseAdapter<T: Sortable>(context: Context, data: List<T
 
     fun setData(data: List<T>, filtering: Boolean) {
 
-
         if (!filtering) {
             originalData = ArrayList(data)
         }
 
-        //Remove all deleted items
+        // Remove all deleted items
         for (i in this.data.indices.reversed()) {
-            //Remove all deleted items
+            // Remove all deleted items
             if (getLocation(this.data[i]) < 0) {
                 deleteEntity(i)
             }
         }
 
-        //Add and move items
+        // Add and move items
         for (i in data.indices) {
             val entity = data[i]
             val location = getLocation(entity)
@@ -63,6 +64,4 @@ abstract class FilterableBaseAdapter<T: Sortable>(context: Context, data: List<T
             }
         }
     }
-
-
 }

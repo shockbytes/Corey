@@ -6,14 +6,15 @@ import android.os.Parcelable
 import at.shockbytes.corey.common.core.R
 import at.shockbytes.corey.common.core.Sortable
 
-
 /**
- * @author Martin Macheiner
- * Date: 20.03.2015.
+ * Author:  Martin Macheiner
+ * Date:    20.03.2015
  */
-
-open class Exercise(open var name: String = "", open var repetitions: Int = 0,
-                    open var equipment: Equipment = Equipment.BODYWEIGHT) : Parcelable, Sortable {
+open class Exercise(
+    open var name: String = "",
+    open var repetitions: Int = 0,
+    open var equipment: Equipment = Equipment.BODYWEIGHT
+) : Parcelable, Sortable {
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
@@ -45,5 +46,4 @@ open class Exercise(open var name: String = "", open var repetitions: Int = 0,
             return ArrayList<Exercise>(size).toTypedArray()
         }
     }
-
 }

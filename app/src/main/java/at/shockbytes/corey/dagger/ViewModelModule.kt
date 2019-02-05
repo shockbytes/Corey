@@ -62,5 +62,4 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(WorkoutOverviewViewModel::class)
     internal abstract fun workoutOverviewViewModel(viewModel: WorkoutOverviewViewModel): ViewModel
-
 }

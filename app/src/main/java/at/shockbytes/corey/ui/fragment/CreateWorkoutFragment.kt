@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment
 
-
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -28,7 +27,6 @@ import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.ViewManager
 import kotlinx.android.synthetic.main.fragment_create_workout.*
 import kotterknife.bindView
-import java.util.*
 
 class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSelectedListener {
 
@@ -42,7 +40,6 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
     private var workout: Workout = Workout() // Default initialize it to avoid nullability
     private var isUpdateMode: Boolean = false
     private var cardState: CardState = CardState.EXPANDED
-
 
     private val allColors = arrayOf(
             intArrayOf(R.color.workout_intensity_easy, R.color.workout_intensity_easy_dark),
@@ -98,7 +95,7 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
     override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
         if (i > 0) {
             val newColors = allColors[i - 1].clone()
-            //listener?.tint(newColors[0], newColors[1])
+            // listener?.tint(newColors[0], newColors[1])
         }
     }
 
@@ -115,7 +112,7 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
         recyclerViewExercises.layoutManager = LinearLayoutManager(context)
         exerciseAdapter = ExerciseAdapter(context!!, ArrayList())
         exerciseAdapter.setItemsMovable(true)
-        //exerciseAdapter.setOnItemMoveListener(this);
+        // exerciseAdapter.setOnItemMoveListener(this);
         val callback = BaseItemTouchHelper(exerciseAdapter, true, BaseItemTouchHelper.DragAccess.VERTICAL)
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(recyclerViewExercises)
@@ -207,7 +204,6 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
         back2Main()
     }
 
-
     private fun fillFields() {
 
         editName.setText(workout.displayableName)
@@ -239,6 +235,4 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
             return fragment
         }
     }
-
-
-}// Required empty public constructor
+}

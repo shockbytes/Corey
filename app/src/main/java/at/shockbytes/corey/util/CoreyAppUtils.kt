@@ -8,13 +8,11 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.view.model.SpinnerData
-import java.util.*
 
 /**
- * @author Martin Macheiner
- * Date: 14.03.2017.
+ * Author:  Martin Macheiner
+ * Date:    14.03.2017
  */
-
 object CoreyAppUtils {
 
     private const val channelId: String = "corey_notifications"
@@ -70,5 +68,4 @@ object CoreyAppUtils {
         }
         return data
     }
-
 }

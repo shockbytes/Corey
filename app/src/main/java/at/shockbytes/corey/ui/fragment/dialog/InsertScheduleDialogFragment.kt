@@ -46,7 +46,6 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
     private var addScheduleItemAdapter: AddScheduleItemAdapter? = null
     private var onScheduleItemSelectedListener: ((item: AddScheduleItemAdapter.ScheduleDisplayItem) -> Unit)? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as CoreyApp).appComponent.inject(this)
@@ -105,5 +104,4 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
             return fragment
         }
     }
-
 }

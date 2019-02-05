@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment
 
-
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.wear.widget.WearableLinearLayoutManager
@@ -15,7 +14,6 @@ import at.shockbytes.corey.ui.activity.MainActivity
 import at.shockbytes.corey.ui.activity.WorkoutActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
-import java.util.*
 
 class WorkoutOverviewFragment : WearableBaseFragment(),
         BaseAdapter.OnItemClickListener<Workout>, MainActivity.OnWorkoutsLoadedListener {

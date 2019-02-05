@@ -23,5 +23,4 @@ class SettingsActivity : ContainerBackNavigableActivity<AppComponent>() {
             return Intent(context, SettingsActivity::class.java)
         }
     }
-
 }

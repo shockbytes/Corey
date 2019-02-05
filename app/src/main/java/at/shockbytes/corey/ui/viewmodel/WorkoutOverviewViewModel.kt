@@ -14,12 +14,11 @@ import javax.inject.Inject
 class WorkoutOverviewViewModel @Inject constructor(
     private val workoutRepository: WorkoutRepository,
     private val schedulerFacade: SchedulerFacade
-): BaseViewModel() {
-
+) : BaseViewModel() {
 
     sealed class RetrieveWorkoutState {
-        data class Success(val workouts: List<Workout>): RetrieveWorkoutState()
-        data class Error(val throwable: Throwable): RetrieveWorkoutState()
+        data class Success(val workouts: List<Workout>) : RetrieveWorkoutState()
+        data class Error(val throwable: Throwable) : RetrieveWorkoutState()
     }
 
     private val workoutState = MutableLiveData<RetrieveWorkoutState>()
@@ -34,7 +33,7 @@ class WorkoutOverviewViewModel @Inject constructor(
         workoutRepository.workouts
                 .observeOn(schedulerFacade.io)
                 .observeOn(schedulerFacade.ui)
-                .subscribe ({ w ->
+                .subscribe({ w ->
                     val data = w.sortedWith(WorkoutNameComparator()).toMutableList()
                     workoutState.postValue(RetrieveWorkoutState.Success(data))
                 }, { throwable ->
@@ -47,5 +46,4 @@ class WorkoutOverviewViewModel @Inject constructor(
     fun deleteWorkout(w: Workout) {
         workoutRepository.deleteWorkout(w)
     }
-
 }

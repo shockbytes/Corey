@@ -34,5 +34,4 @@ class FirebaseModule {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         return FirebaseDatabase.getInstance().reference.database
     }
-
 }

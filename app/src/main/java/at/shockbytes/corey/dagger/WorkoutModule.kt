@@ -18,7 +18,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    04.03.2018
  */
 @Module
@@ -26,16 +26,20 @@ class WorkoutModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideWorkoutManager(gson: Gson,
-                              remoteConfig: FirebaseRemoteConfig,
-                              firebase: FirebaseDatabase): WorkoutRepository {
+    fun provideWorkoutManager(
+        gson: Gson,
+        remoteConfig: FirebaseRemoteConfig,
+        firebase: FirebaseDatabase
+    ): WorkoutRepository {
         return FirebaseWorkoutRepository(app.applicationContext, gson, remoteConfig, firebase)
     }
 
     @Provides
     @Singleton
-    fun provideBodyManager(preferences: SharedPreferences,
-                           firebase: FirebaseDatabase): BodyRepository {
+    fun provideBodyManager(
+        preferences: SharedPreferences,
+        firebase: FirebaseDatabase
+    ): BodyRepository {
         return GoogleFitBodyRepository(app.applicationContext, preferences, firebase)
     }
 
@@ -50,6 +54,4 @@ class WorkoutModule(private val app: Application) {
     fun provideRunningManager(): RunningManager {
         return DefaultRunningManager()
     }
-
-
 }

@@ -45,7 +45,6 @@ class WorkoutMessageDialogFragment : DialogFragment() {
         else
             R.string.workout_message_neg_done
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         msgType = arguments!!.getSerializable(ARG_MSG_TYPE) as MessageType
@@ -66,7 +65,7 @@ class WorkoutMessageDialogFragment : DialogFragment() {
                 .create()
     }
 
-    fun setOnMessageAgreeClickedListener(listener: ()-> Unit): WorkoutMessageDialogFragment {
+    fun setOnMessageAgreeClickedListener(listener: () -> Unit): WorkoutMessageDialogFragment {
         this.listener = listener
         return this
     }
@@ -83,5 +82,4 @@ class WorkoutMessageDialogFragment : DialogFragment() {
             return fragment
         }
     }
-
 }

@@ -150,12 +150,10 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         DesiredWeightDialogFragment.newInstance().show(supportFragmentManager, "frag-desired-weight")
     }
 
-
     companion object {
 
         fun newIntent(context: Context): Intent {
             return Intent(context, MainActivity::class.java)
         }
-
     }
 }

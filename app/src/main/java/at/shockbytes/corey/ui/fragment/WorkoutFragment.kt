@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment
 
-
 import android.os.Bundle
 import android.os.SystemClock
 import at.shockbytes.core.ui.fragment.BaseFragment
@@ -99,5 +98,4 @@ class WorkoutFragment : BaseFragment<AppComponent>() {
             return fragment
         }
     }
-
 }

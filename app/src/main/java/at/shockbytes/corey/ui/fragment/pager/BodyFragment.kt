@@ -10,7 +10,10 @@ import android.widget.TextView
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.ui.fragment.body.*
+import at.shockbytes.corey.ui.fragment.body.BodySubFragment
+import at.shockbytes.corey.ui.fragment.body.DreamWeightBodyFragmentView
+import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
+import at.shockbytes.corey.ui.fragment.body.WeightHistoryBodyFragmentView
 import at.shockbytes.corey.ui.viewmodel.BodyViewModel
 import kotterknife.bindView
 import javax.inject.Inject
@@ -80,7 +83,6 @@ class BodyFragment : BaseFragment<AppComponent>() {
                             state.bodyInfo,
                             state.weightUnit
                     )
-
                 }
                 is BodyViewModel.BodyInfoState.ErrorState -> {
                     showErrorView(state.throwable.localizedMessage)

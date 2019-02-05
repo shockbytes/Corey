@@ -13,7 +13,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val goalsRepository: GoalsRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
     private val userEvent = MutableLiveData<LoginUserEvent>()
 
@@ -38,6 +38,4 @@ class MainViewModel @Inject constructor(
     fun storeBodyGoal(goal: Goal) {
         goalsRepository.storeBodyGoal(goal)
     }
-
-
 }

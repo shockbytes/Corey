@@ -10,16 +10,16 @@ import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotterknife.bindView
-import java.util.*
-
+import java.util.Collections
 
 /**
- * @author  Martin Macheiner
- * Date:    02.12.2015.
+ * Author:  Martin Macheiner
+ * Date:    02.12.2015
  */
-class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
-    : BaseAdapter<ScheduleItem>(context, data.toMutableList()), ItemTouchHelperAdapter {
-
+class ScheduleAdapter(
+    context: Context,
+    data: List<ScheduleItem>
+) : BaseAdapter<ScheduleItem>(context, data.toMutableList()), ItemTouchHelperAdapter {
 
     private var onScheduleItemSelectedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit)? = null
     private var onScheduleItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit)? = null
@@ -33,9 +33,11 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
             fillUpScheduleList(value).forEach { addEntityAtLast(it) }
         }
 
-    //----------------------------------------------------------------------
-    override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): BaseAdapter<ScheduleItem>.ViewHolder {
+    // ----------------------------------------------------------------------
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseAdapter<ScheduleItem>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_schedule, parent, false))
     }
 
@@ -76,7 +78,7 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
         onScheduleItemDismissedListener = listener
     }
 
-    //-----------------------------Data Section-----------------------------
+    // -----------------------------Data Section-----------------------------
     fun insertScheduleItem(item: ScheduleItem) {
         val location = item.day
         if (location >= 0) {
@@ -153,11 +155,9 @@ class ScheduleAdapter(context: Context, data: List<ScheduleItem>)
             itemPosition = position
             txtName.text = item.name
         }
-
     }
 
     companion object {
         const val MAX_SCHEDULES = 7
     }
-
 }

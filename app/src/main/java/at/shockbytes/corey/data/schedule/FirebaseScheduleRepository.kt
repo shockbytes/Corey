@@ -24,7 +24,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.util.*
+import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 /**
@@ -32,12 +32,12 @@ import java.util.concurrent.TimeUnit
  * Date:    22.02.2017
  */
 class FirebaseScheduleRepository(
-        private val context: Context,
-        private val preferences: SharedPreferences,
-        private val gson: Gson,
-        private val workoutManager: WorkoutRepository,
-        private val remoteConfig: FirebaseRemoteConfig,
-        private val firebase: FirebaseDatabase
+    private val context: Context,
+    private val preferences: SharedPreferences,
+    private val gson: Gson,
+    private val workoutManager: WorkoutRepository,
+    private val remoteConfig: FirebaseRemoteConfig,
+    private val firebase: FirebaseDatabase
 ) : ScheduleRepository {
 
     init {
@@ -72,7 +72,7 @@ class FirebaseScheduleRepository(
 
     override val dayOfWeighNotificationDelivery: Int
         get() = preferences.getString(context.getString(R.string.prefs_weigh_notification_day_key),
-                context.getString(R.string.prefs_weigh_notification_day_default_value)).toInt()
+                context.getString(R.string.prefs_weigh_notification_day_default_value)).toIntOrNull() ?: 0
 
     override fun poke() {
 
@@ -86,7 +86,7 @@ class FirebaseScheduleRepository(
         cal.set(Calendar.MINUTE, minute)
         cal.set(Calendar.SECOND, 0)
 
-        //Add a day if alarm is set for before current timeStamp, so the alarm is triggered the next day
+        // Add a day if alarm is set for before current timeStamp, so the alarm is triggered the next day
         if (cal.before(Calendar.getInstance())) {
             cal.add(Calendar.DAY_OF_MONTH, 1)
         }
@@ -166,11 +166,10 @@ class FirebaseScheduleRepository(
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
-                Timber.d( "ScheduleItem moved: $dataSnapshot / $s")
+                Timber.d("ScheduleItem moved: $dataSnapshot / $s")
             }
 
             override fun onCancelled(databaseError: DatabaseError) = Unit
         })
     }
-
 }

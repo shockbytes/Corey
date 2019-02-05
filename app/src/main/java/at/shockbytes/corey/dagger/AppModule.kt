@@ -32,7 +32,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    21.02.2017
  */
 @Module
@@ -64,11 +64,13 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideScheduleManager(preferences: SharedPreferences,
-                               gson: Gson,
-                               workoutManager: WorkoutRepository,
-                               remoteConfig: FirebaseRemoteConfig,
-                               firebase: FirebaseDatabase): ScheduleRepository {
+    fun provideScheduleManager(
+        preferences: SharedPreferences,
+        gson: Gson,
+        workoutManager: WorkoutRepository,
+        remoteConfig: FirebaseRemoteConfig,
+        firebase: FirebaseDatabase
+    ): ScheduleRepository {
         return FirebaseScheduleRepository(app.applicationContext, preferences, gson,
                 workoutManager, remoteConfig, firebase)
     }
@@ -104,5 +106,4 @@ class AppModule(private val app: Application) {
     fun provideImageLoader(): ImageLoader {
         return GlideImageLoader(R.drawable.ic_placeholder)
     }
-
 }

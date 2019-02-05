@@ -16,13 +16,14 @@ import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    27.10.2015
  */
-class WorkoutAdapter(cxt: Context,
-                     data: List<Workout>,
-                     private val onWorkoutPopupItemSelectedListener: OnWorkoutPopupItemSelectedListener?)
-    : BaseAdapter<Workout>(cxt, data.toMutableList()) {
+class WorkoutAdapter(
+    cxt: Context,
+    data: List<Workout>,
+    private val onWorkoutPopupItemSelectedListener: OnWorkoutPopupItemSelectedListener?
+) : BaseAdapter<Workout>(cxt, data.toMutableList()) {
 
     interface OnWorkoutPopupItemSelectedListener {
 
@@ -84,5 +85,4 @@ class WorkoutAdapter(cxt: Context,
             CoreyUtils.tryShowIconsInPopupMenu(popupMenu)
         }
     }
-
 }

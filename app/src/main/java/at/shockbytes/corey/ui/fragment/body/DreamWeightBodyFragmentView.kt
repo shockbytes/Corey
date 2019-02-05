@@ -6,7 +6,7 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.util.AppUtils
 import kotterknife.bindView
-import java.util.*
+import java.util.Random
 
 /**
  * Author:  Martin Macheiner
@@ -42,7 +42,5 @@ class DreamWeightBodyFragmentView : BodySubFragment() {
         animateCard(cardView, 0)
     }
 
-    override fun animateView(startDelay: Long) {
-    }
-
+    override fun animateView(startDelay: Long) = Unit
 }

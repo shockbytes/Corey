@@ -3,7 +3,7 @@ package at.shockbytes.corey.storage
 import android.content.SharedPreferences
 
 class SharedPreferencesKeyValueStorage(
-        private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences
 ) : KeyValueStorage {
 
     override fun getBoolean(key: String): Boolean {
