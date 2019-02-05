@@ -1,12 +1,10 @@
 package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
-import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import at.shockbytes.corey.R
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.util.adapter.BaseAdapter
@@ -139,7 +137,7 @@ class ScheduleAdapter(
             }
         }
 
-        override fun bindToView(t: ScheduleItem)  = Unit
+        override fun bindToView(t: ScheduleItem) = Unit
 
         fun bind(item: ScheduleItem, position: Int) {
             this.item = item

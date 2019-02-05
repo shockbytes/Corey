@@ -74,6 +74,14 @@
         <item>I See progress</item>
     </string-array>
 
+    <string-array name="goal_category_names">
+        <item>Body fat</item>
+        <item>Weight</item>
+        <item>Exercise</item>
+        <item>Running</item>
+        <item>Other</item>
+    </string-array>
+
     <string name="fragment_create_workout_done">DONE</string>
     <string name="fragment_create_workout_general">GENERAL</string>
     <string name="fragment_create_workout_exercises">EXERCISES</string>
@@ -208,5 +216,8 @@
     <string name="goals_exercise">Exercise</string>
     <string name="goals_running">Running</string>
     <string name="goals_other">Other</string>
+    <string name="goal">Goal</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
 
 </resources>

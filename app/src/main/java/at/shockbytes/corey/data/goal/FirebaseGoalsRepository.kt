@@ -31,8 +31,8 @@ class FirebaseGoalsRepository(
 
     override fun storeBodyGoal(g: Goal) {
         val ref = firebase.getReference("/body/goal").push()
-        g.id = ref.key ?: ""
-        ref.setValue(g)
+        val id = ref.key ?: ""
+        ref.setValue(g.copy(id = id))
     }
 
     private fun setupFirebase() {

@@ -20,7 +20,6 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.CoreyPagerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.data.goal.Goal
 import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
@@ -31,7 +30,7 @@ import javax.inject.Inject
 class MainActivity : BottomNavigationBarActivity<AppComponent>() {
 
     @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
+    lateinit var vmFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: MainViewModel
 
@@ -50,7 +49,7 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
                 viewPagerOffscreenLimit = 3,
                 appTheme = R.style.AppTheme_NoActionBar,
                 fabMenuId = R.menu.menu_fab,
-                fabMenuColorList = listOf(R.color.colorAccent, R.color.material_red),
+                fabMenuColorList = listOf(R.color.colorPrimary, R.color.material_red),
                 fabVisiblePageIndices = listOf(0, 3),
                 overflowIcon = R.drawable.ic_overflow_white,
                 additionalToolbarAction = AdditionalToolbarAction(R.drawable.ic_body_card_weight_history),
@@ -95,9 +94,10 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
                 false
             }
             R.id.menu_fab_new_goal -> {
+
                 AddGoalDialogFragment.newInstance()
-                        .setOnGoalMessageAddedListener { msg ->
-                            viewModel.storeBodyGoal(Goal(msg, false, ""))
+                        .setOnGoalCreatedListener { goal ->
+                            viewModel.storeBodyGoal(goal)
                         }
                         .show(supportFragmentManager, "dialog-fragment-add-goal")
                 false

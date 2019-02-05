@@ -7,7 +7,7 @@ package at.shockbytes.corey.data.goal
 data class Goal(
     val message: String = "",
     val done: Boolean = false,
-    var id: String = "",
+    val id: String = "",
     val category: String = "",
     val dueDate: String = ""
 ) {

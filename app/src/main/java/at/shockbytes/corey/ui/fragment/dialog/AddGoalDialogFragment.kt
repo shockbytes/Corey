@@ -6,19 +6,29 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import at.shockbytes.corey.R
+import at.shockbytes.corey.data.goal.Goal
+import at.shockbytes.corey.ui.model.GoalItem
 
 /**
- * @author Martin Macheiner
- * Date: 08.03.2017.
+ * Author:  Martin Macheiner
+ * Date:    08.03.2017
  */
-
 class AddGoalDialogFragment : DialogFragment() {
 
-    private lateinit var editGoal: EditText
+    private lateinit var etGoal: EditText
+    private lateinit var etMonth: EditText
+    private lateinit var etYear: EditText
+    private lateinit var spinnerCategory: Spinner
 
-    private var listener: ((String) -> Unit)? = null
+    private val spinnerCategories: Array<String> by lazy {
+        resources.getStringArray(R.array.goal_category_names)
+    }
+
+    private var listener: ((Goal) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -26,24 +36,50 @@ class AddGoalDialogFragment : DialogFragment() {
                 .setTitle(R.string.set_goal)
                 .setIcon(R.mipmap.ic_launcher)
                 .setView(createView())
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    if (editGoal.text.toString().isNotEmpty()) {
-                        listener?.invoke(editGoal.text.toString())
+                .setPositiveButton(R.string.add) { _, _ ->
+                    if (validateInput()) {
+                        listener?.invoke(craftGoal())
                         dismiss()
                     }
                 }
                 .create()
     }
 
-    fun setOnGoalMessageAddedListener(listener: (String) -> Unit): AddGoalDialogFragment {
+    fun setOnGoalCreatedListener(listener: (Goal) -> Unit): AddGoalDialogFragment {
         this.listener = listener
         return this
     }
 
     private fun createView(): View? {
-        editGoal = LayoutInflater.from(context)
-                .inflate(R.layout.dialogfragment_add_goal, null, false) as EditText
-        return editGoal
+        val layout = LayoutInflater.from(context)
+                .inflate(R.layout.dialogfragment_add_goal, null, false)
+
+        etGoal = layout.findViewById(R.id.tv_add_goal)
+        etYear = layout.findViewById(R.id.tv_add_goal_year)
+        etMonth = layout.findViewById(R.id.tv_add_goal_month)
+        spinnerCategory = layout.findViewById(R.id.spinner_add_goal)
+
+        spinnerCategory.adapter = ArrayAdapter<String>(layout.context, R.layout.item_spinner_add_goal, spinnerCategories)
+
+        return layout
+    }
+
+    private fun validateInput(): Boolean {
+        return etGoal.text.toString().isNotEmpty() &&
+                etMonth.text.toString().toIntOrNull() != null &&
+                etYear.text.toString().toIntOrNull() != null
+    }
+
+    private fun craftGoal(): Goal {
+        val msg = etGoal.text.toString()
+        val year = etYear.text.toString().toInt()
+        val month = etMonth.text.toString().toInt()
+
+        val dueDate = "$year.$month"
+        val category = GoalItem.Category.values()[spinnerCategory.selectedItemPosition]
+        val categoryString = GoalItem.categoryToString(category)
+
+        return Goal(message = msg, dueDate = dueDate, category = categoryString)
     }
 
     companion object {
