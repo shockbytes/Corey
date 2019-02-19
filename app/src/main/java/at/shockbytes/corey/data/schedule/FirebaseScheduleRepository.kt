@@ -23,6 +23,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import java.util.Calendar
@@ -48,8 +49,7 @@ class FirebaseScheduleRepository(
 
     private val scheduleItems: MutableList<ScheduleItem> = mutableListOf()
 
-    private val scheduleItemSubject = PublishSubject.create<List<ScheduleItem>>()
-
+    private val scheduleItemSubject = BehaviorSubject.create<List<ScheduleItem>>()
     override val schedule: Observable<List<ScheduleItem>> = scheduleItemSubject
 
     override val schedulableItems: Single<List<String>>
