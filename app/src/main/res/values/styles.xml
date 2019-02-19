@@ -18,11 +18,19 @@
     <style name="AppTheme.Launcher">
         <item name="colorPrimaryDark">@android:color/transparent</item>
         <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="AppTheme.RoundedButton.Outlined" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@drawable/rounded_button_outlined</item>
         <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Signup">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/primaryBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 </resources>

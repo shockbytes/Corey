@@ -16,7 +16,7 @@ class SignUpActivity : ContainerBackNavigableActivity<AppComponent>() {
         get() = SignUpFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_NoActionBar)
+        setTheme(R.style.AppTheme_Signup)
         super.onCreate(savedInstanceState)
     }
 }
