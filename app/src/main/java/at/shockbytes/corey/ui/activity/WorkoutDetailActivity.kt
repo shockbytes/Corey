@@ -7,11 +7,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.transition.Fade
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import at.shockbytes.core.ui.activity.base.TintableBackNavigableActivity
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.ExerciseAdapter
@@ -20,7 +16,6 @@ import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.util.AppUtils
 import kotlinx.android.synthetic.main.activity_workout_detail.*
-import kotterknife.bindView
 
 /**
  * Author:  Martin Macheiner
@@ -74,7 +69,6 @@ class WorkoutDetailActivity : TintableBackNavigableActivity<AppComponent>() {
                 actionBarTextColor = Color.WHITE,
                 useSameColorsForBoth = false
         )
-
 
         activity_training_detail_imgview_ext_toolbar.setBackgroundResource(workout.colorResForIntensity)
         activity_training_detail_imgview_body_region.setImageDrawable(AppUtils.createRoundedBitmapFromResource(this,

@@ -1,11 +1,8 @@
 package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
-import android.support.v7.widget.ScrollingTabContainerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.setVisible
@@ -13,7 +10,6 @@ import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_exercises.*
-import kotterknife.bindView
 import java.util.Collections
 
 /**
