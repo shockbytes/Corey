@@ -81,7 +81,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
         addScheduleItemAdapter?.filter(charSequence.toString())
     }
 
-    override fun afterTextChanged(editable: Editable) {}
+    override fun afterTextChanged(editable: Editable) = Unit
 
     override fun onItemClick(t: AddScheduleItemAdapter.ScheduleDisplayItem, v: View) {
         onScheduleItemSelectedListener?.invoke(t)

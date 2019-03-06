@@ -1,12 +1,14 @@
 package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
+import android.support.v7.util.DiffUtil
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.data.schedule.ScheduleItem
+import at.shockbytes.corey.util.ScheduleItemDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotterknife.bindView
@@ -18,8 +20,8 @@ import java.util.Collections
  */
 class ScheduleAdapter(
     context: Context,
-    private val onItemClickedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit)? = null,
-    private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit)? = null
+    private val onItemClickedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit),
+    private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit)
 ) : BaseAdapter<ScheduleItem>(context, mutableListOf()), ItemTouchHelperAdapter {
 
     override var data: MutableList<ScheduleItem>
@@ -69,6 +71,18 @@ class ScheduleAdapter(
     }
 
     // -----------------------------Data Section-----------------------------
+
+    fun updateData(items: List<ScheduleItem>) {
+
+        val filledItems = fillUpScheduleList2(items)
+        val diffResult = DiffUtil.calculateDiff(ScheduleItemDiffUtilCallback(data, filledItems))
+
+        data.clear()
+        data.addAll(filledItems)
+
+        diffResult.dispatchUpdatesTo(this)
+    }
+
     fun insertScheduleItem(item: ScheduleItem) {
         val location = item.day
         if (location >= 0) {
@@ -105,7 +119,7 @@ class ScheduleAdapter(
         return data.filter { !it.isEmpty }
     }
 
-    private fun fillUpScheduleList(items: MutableList<ScheduleItem>): MutableList<ScheduleItem> {
+    private fun fillUpScheduleList(items: List<ScheduleItem>): List<ScheduleItem> {
 
         val array = arrayOfNulls<ScheduleItem>(MAX_SCHEDULES)
         // Populate array with all given items
@@ -114,6 +128,34 @@ class ScheduleAdapter(
         (0 until MAX_SCHEDULES).forEach { idx ->
             if (array[idx] == null) {
                 array[idx] = ScheduleItem("", idx)
+            }
+        }
+        // Safe to do so, because all nulls are already replaced
+        return array.mapTo(mutableListOf()) { it!! }
+    }
+
+    private fun fillUpScheduleList2(items: List<ScheduleItem>): List<ScheduleItem> {
+        val def = Array(MAX_SCHEDULES) { ScheduleItem("", it) }.toMutableList()
+        items.forEach { item ->
+            def[item.day] = item
+        }
+        return def
+    }
+
+    private fun fillUpScheduleList3(items: List<ScheduleItem>): List<ScheduleItem> {
+
+        val array = arrayOfNulls<ScheduleItem>(MAX_SCHEDULES)
+        // Populate array with all given items
+        items.forEach { array[it.day] = it }
+        // Now add placeholder objects for empty spots
+        (0 until MAX_SCHEDULES).forEach { idx ->
+            if (array[idx] == null) {
+
+                if (data[idx].isEmpty) {
+                    array[idx] = data[idx].copy(day = idx)
+                } else {
+                    array[idx] = ScheduleItem("", idx)
+                }
             }
         }
         // Safe to do so, because all nulls are already replaced
@@ -130,10 +172,10 @@ class ScheduleAdapter(
 
         init {
             txtName.setOnClickListener {
-                onItemClickedListener?.invoke(item, itemView, itemPosition)
+                onItemClickedListener.invoke(item, itemView, itemPosition)
             }
             btnClear.setOnClickListener {
-                onItemDismissedListener?.invoke(item, itemPosition)
+                onItemDismissedListener.invoke(item, itemPosition)
             }
         }
 

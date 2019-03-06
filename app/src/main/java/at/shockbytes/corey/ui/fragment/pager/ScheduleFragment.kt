@@ -73,7 +73,7 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
 
         scheduleManager.schedule
                 .subscribe({ scheduleItems ->
-                    adapter.data = scheduleItems.toMutableList()
+                    adapter.updateData(scheduleItems)
                 }, { throwable ->
                     throwable.printStackTrace()
                     Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()
