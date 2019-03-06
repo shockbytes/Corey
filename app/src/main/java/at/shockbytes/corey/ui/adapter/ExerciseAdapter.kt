@@ -1,23 +1,29 @@
 package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
+import android.support.v7.widget.ScrollingTabContainerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Exercise
+import at.shockbytes.corey.common.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_exercises.*
 import kotterknife.bindView
 import java.util.Collections
 
 /**
  * @author Martin Macheiner
- * Date: 02.12.2015.
+ * Date: 02.12.2015
  */
-class ExerciseAdapter(context: Context, data: List<Exercise>)
-    : BaseAdapter<Exercise>(context, data.toMutableList()), ItemTouchHelperAdapter {
+class ExerciseAdapter(
+    context: Context,
+    data: List<Exercise>
+) : BaseAdapter<Exercise>(context, data.toMutableList()), ItemTouchHelperAdapter {
 
     private var isItemMovable: Boolean = false
 
@@ -42,8 +48,7 @@ class ExerciseAdapter(context: Context, data: List<Exercise>)
         return true
     }
 
-    override fun onItemMoveFinished() {
-    }
+    override fun onItemMoveFinished() = Unit
 
     override fun onItemDismiss(position: Int) {
         val entry = data.removeAt(position)
@@ -74,16 +79,15 @@ class ExerciseAdapter(context: Context, data: List<Exercise>)
         return filteredModelList
     }
 
-    internal inner class ViewHolder(itemView: View) : BaseAdapter<Exercise>.ViewHolder(itemView) {
-
-        private val txtName: TextView by bindView(R.id.item_exercise_txt_name)
-        private val imgViewMove: ImageView by bindView(R.id.item_exercise_imgview_move)
+    inner class ViewHolder(
+        override val containerView: View
+    ) : BaseAdapter<Exercise>.ViewHolder(containerView), LayoutContainer {
 
         override fun bindToView(t: Exercise) {
             content = t
 
-            txtName.text = t.getDisplayName(context)
-            imgViewMove.visibility = if (isItemMovable) View.VISIBLE else View.GONE
+            item_exercise_txt_name.text = t.getDisplayName(context)
+            item_exercise_imgview_move.setVisible(isItemMovable)
         }
     }
 }

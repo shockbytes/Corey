@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:orientation="horizontal"
-    android:padding="4dp">
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/item_exercise_imgview_move"
@@ -19,9 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="2dp"
         android:background="?attr/selectableItemBackground"
-        android:layout_margin="2dp"
-        android:fontFamily="sans-serif-light"
         android:gravity="center_vertical"
         android:padding="4dp"
         android:textSize="20sp" />

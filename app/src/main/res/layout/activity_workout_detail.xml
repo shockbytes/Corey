@@ -9,7 +9,6 @@
         android:id="@+id/activity_training_detail_imgview_ext_toolbar"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 
@@ -17,13 +16,13 @@
         android:id="@+id/activity_training_detail_cardview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="4dp"
+        android:layout_above="@+id/activity_training_btn_start"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:elevation="8dp"
+        android:layout_marginBottom="4dp"
         android:transitionName="@string/transition_workout_card"
-        android:layout_above="@+id/activity_training_btn_start"
-        app:cardCornerRadius="2dp">
+        app:cardCornerRadius="12dp"
+        app:elevation="8dp">
 
         <!--Card Content -->
         <RelativeLayout
@@ -41,14 +40,14 @@
                     android:id="@+id/activity_training_detail_txt_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="8dp"
                     android:padding="2dp"
-                    android:layout_centerHorizontal="true"
-                    android:transitionName="@string/transition_workout_name"
                     android:textAllCaps="true"
                     android:textColor="@android:color/secondary_text_light"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:transitionName="@string/transition_workout_name" />
 
                 <ImageView
                     android:id="@+id/activity_training_detail_imgview_body_region"
@@ -56,17 +55,16 @@
                     android:layout_height="96dp"
                     android:layout_below="@+id/activity_training_detail_txt_title"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:padding="4dp"
                     android:transitionName="@string/transition_workout_body_region" />
 
                 <android.support.v7.widget.CardView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_alignBottom="@+id/activity_training_detail_imgview_body_region"
                     android:layout_alignStart="@+id/activity_training_detail_imgview_body_region"
-                    android:layout_alignLeft="@+id/activity_training_detail_imgview_body_region"
+                    android:layout_alignBottom="@+id/activity_training_detail_imgview_body_region"
                     android:transitionName="@string/transition_workout_equipment"
                     app:cardBackgroundColor="@color/equipmentColor"
                     app:cardCornerRadius="16dp"
@@ -81,59 +79,55 @@
                 </android.support.v7.widget.CardView>
 
                 <LinearLayout
-                    android:transitionName="@string/transition_workout_duration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/activity_training_detail_imgview_body_region"
-                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_marginBottom="16dp"
-                    android:layout_toLeftOf="@+id/activity_training_detail_imgview_body_region"
                     android:layout_toStartOf="@+id/activity_training_detail_imgview_body_region"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:transitionName="@string/transition_workout_duration">
 
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
                         android:layout_marginBottom="2dp"
-                        app:srcCompat="@drawable/ic_clock"
-                        android:tint="@android:color/darker_gray" />
+                        android:tint="@android:color/darker_gray"
+                        app:srcCompat="@drawable/ic_clock" />
 
                     <TextView
                         android:id="@+id/activity_training_detail_txt_duration"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
                         android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:transitionName="@string/transition_workout_exercise_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/activity_training_detail_imgview_body_region"
                     android:layout_marginBottom="16dp"
-
                     android:layout_toEndOf="@+id/activity_training_detail_imgview_body_region"
+
                     android:layout_toRightOf="@+id/activity_training_detail_imgview_body_region"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:transitionName="@string/transition_workout_exercise_count">
 
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
                         android:layout_marginBottom="2dp"
-                        app:srcCompat="@drawable/ic_exercise_count"
-                        android:tint="@android:color/darker_gray" />
+                        android:tint="@android:color/darker_gray"
+                        app:srcCompat="@drawable/ic_exercise_count" />
 
                     <TextView
                         android:id="@+id/activity_training_detail_txt_exercise_count"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
                         android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                 </LinearLayout>
@@ -151,6 +145,7 @@
             <!-- End header layout -->
 
             <android.support.v7.widget.RecyclerView
+                android:overScrollMode="never"
                 android:id="@+id/activity_training_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -164,9 +159,8 @@
         android:id="@+id/activity_training_btn_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:padding="16dp"
         android:textColor="@android:color/white"
         android:textSize="17sp"
