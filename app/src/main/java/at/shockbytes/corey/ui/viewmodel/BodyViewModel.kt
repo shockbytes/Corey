@@ -24,12 +24,14 @@ class BodyViewModel @Inject constructor(
     private val bodyInfo = MutableLiveData<BodyInfoState>()
 
     fun requestBodyInfo() {
-        bodyRepository.bodyInfo.subscribe({ info ->
-            bodyInfo.postValue(BodyInfoState.SuccessState(info, userManager.user, bodyRepository.weightUnit))
-        }) { throwable ->
-            Timber.e(throwable)
-            bodyInfo.postValue(BodyInfoState.ErrorState(throwable))
-        }.addTo(compositeDisposable)
+        bodyRepository.bodyInfo
+                .subscribe({ info ->
+                    bodyInfo.postValue(BodyInfoState.SuccessState(info, userManager.user, bodyRepository.weightUnit))
+                }) { throwable ->
+                    Timber.e(throwable)
+                    bodyInfo.postValue(BodyInfoState.ErrorState(throwable))
+                }
+                .addTo(compositeDisposable)
     }
 
     fun getBodyInfo(): LiveData<BodyInfoState> = bodyInfo

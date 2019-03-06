@@ -19,9 +19,7 @@ class ExercisePagerFragment : BaseFragment<AppComponent>() {
 
     override val layoutId = R.layout.fragment_pageritem_exercise
 
-    override fun injectToGraph(appComponent: AppComponent?) {
-        // Do nothing
-    }
+    override fun injectToGraph(appComponent: AppComponent?) = Unit
 
     override fun setupViews() {
         text.text = exercise?.getDisplayName(context!!)
@@ -32,11 +30,9 @@ class ExercisePagerFragment : BaseFragment<AppComponent>() {
         exercise = arguments?.getParcelable(ARG_EXERCISE)
     }
 
-    override fun bindViewModel() {
-    }
+    override fun bindViewModel() = Unit
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
     companion object {
 

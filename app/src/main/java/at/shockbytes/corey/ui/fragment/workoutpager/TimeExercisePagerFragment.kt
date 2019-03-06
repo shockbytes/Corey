@@ -27,7 +27,7 @@ class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     @Inject
-    protected lateinit var vibrator: Vibrator
+    lateinit var vibrator: Vibrator
 
     private lateinit var exercise: TimeExercise
 
@@ -65,19 +65,18 @@ class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
         appComponent?.inject(this)
     }
 
-    override fun bindViewModel() {
-    }
+    override fun bindViewModel() = Unit
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
-    fun onClickButtonStart(v: View) {
+    private fun onClickButtonStart(v: View) {
         v.isEnabled = false
 
         val countdown = PreferenceManager.getDefaultSharedPreferences(context)
                 .getInt(getString(R.string.prefs_time_countdown_key), 5)
 
-        TimeExerciseCountdownDialogFragment.newInstance(countdown)
+        TimeExerciseCountdownDialogFragment
+                .newInstance(countdown)
                 .setCountdownCompleteListener {
                     startTimer()
                 }

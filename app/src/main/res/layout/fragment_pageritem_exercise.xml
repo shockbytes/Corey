@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,10 +15,9 @@
             android:id="@+id/fragment_pageritem_exercise_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:textColor="@android:color/primary_text_light"
-            android:textSize="25sp" />
+            android:textSize="28sp" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

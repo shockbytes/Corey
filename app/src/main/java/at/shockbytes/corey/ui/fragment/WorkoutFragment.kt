@@ -8,15 +8,17 @@ import at.shockbytes.corey.ui.adapter.ExercisePagerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.fragment.dialog.WorkoutMessageDialogFragment
-import at.shockbytes.corey.data.workout.WorkoutRepository import kotlinx.android.synthetic.main.fragment_workout.*
+import at.shockbytes.corey.data.workout.WorkoutRepository
+import kotlinx.android.synthetic.main.fragment_workout.*
 import javax.inject.Inject
 
 class WorkoutFragment : BaseFragment<AppComponent>() {
+
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_background
 
     @Inject
-    protected lateinit var workoutManager: WorkoutRepository
+    lateinit var workoutManager: WorkoutRepository
 
     private lateinit var workout: Workout
 
@@ -65,11 +67,9 @@ class WorkoutFragment : BaseFragment<AppComponent>() {
         }
     }
 
-    override fun bindViewModel() {
-    }
+    override fun bindViewModel() = Unit
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
     private fun finish() {
 
@@ -79,7 +79,8 @@ class WorkoutFragment : BaseFragment<AppComponent>() {
         val time = Math.ceil((elapsedSeconds / 60).toDouble()).toInt()
         workoutManager.updatePhoneWorkoutInformation(1, time)
 
-        WorkoutMessageDialogFragment.newInstance(WorkoutMessageDialogFragment.MessageType.DONE)
+        WorkoutMessageDialogFragment
+                .newInstance(WorkoutMessageDialogFragment.MessageType.DONE)
                 .setOnMessageAgreeClickedListener {
                     activity?.supportFinishAfterTransition()
                 }

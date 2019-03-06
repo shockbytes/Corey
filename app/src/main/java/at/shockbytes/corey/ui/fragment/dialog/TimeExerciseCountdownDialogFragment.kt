@@ -72,7 +72,6 @@ class TimeExerciseCountdownDialogFragment : DialogFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribe {
-                    Log.wtf("Corey", "$countdown")
                     countdown--
                     if (countdown == 0) {
                         listener?.invoke()

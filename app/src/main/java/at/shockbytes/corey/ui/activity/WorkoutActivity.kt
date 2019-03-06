@@ -27,14 +27,11 @@ class WorkoutActivity : BaseActivity<AppComponent>() {
                 .commit()
     }
 
-    override fun bindViewModel() {
-    }
+    override fun injectToGraph(appComponent: AppComponent?) = Unit
 
-    override fun injectToGraph(appComponent: AppComponent?) {
-    }
+    override fun bindViewModel() = Unit
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
@@ -46,7 +43,7 @@ class WorkoutActivity : BaseActivity<AppComponent>() {
 
     private fun setupActionBar(workoutName: String, actionbarColor: Int, statusColor: Int) {
         supportActionBar?.let { ab ->
-            ab.title = workoutName
+            ab.title = workoutName.toUpperCase()
             ab.setHomeButtonEnabled(true)
             ab.setDisplayHomeAsUpEnabled(true)
             ab.setHomeAsUpIndicator(R.drawable.ic_cancel)

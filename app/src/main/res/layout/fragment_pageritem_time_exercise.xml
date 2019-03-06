@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="2dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
 
@@ -34,7 +33,6 @@
             android:layout_alignBottom="@+id/fragment_pageritem_time_exercise_progressbar"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="130dp"
-            android:fontFamily="sans-serif"
             android:textColor="@android:color/tertiary_text_light"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -44,17 +42,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:maxLines="1"
-            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_marginStart="16dp"
             android:layout_alignTop="@+id/fragment_pageritem_time_exercise_btn_start"
-            android:layout_toLeftOf="@+id/fragment_pageritem_time_exercise_btn_start"
             android:layout_toStartOf="@+id/fragment_pageritem_time_exercise_btn_start"
-            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:textColor="@android:color/primary_text_light"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/fragment_pageritem_time_exercise_btn_start"
@@ -63,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             app:srcCompat="@drawable/ic_play" />
 
     </RelativeLayout>
