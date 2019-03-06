@@ -2,7 +2,9 @@ package at.shockbytes.corey.ui.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -14,6 +16,7 @@ import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
+import at.shockbytes.core.ui.activity.base.TintableBackNavigableActivity
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.ExerciseAdapter
@@ -70,15 +73,11 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
         }
     }
 
-    override fun injectToGraph(appComponent: AppComponent?) {
-        // Do nothing
-    }
+    override fun injectToGraph(appComponent: AppComponent?) = Unit
 
-    override fun bindViewModel() {
-    }
+    override fun bindViewModel() = Unit
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_create_workout, menu)
@@ -95,7 +94,16 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
     override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
         if (i > 0) {
             val newColors = allColors[i - 1].clone()
-            // listener?.tint(newColors[0], newColors[1])
+
+            (activity as? TintableBackNavigableActivity<*>)
+                    ?.tintSystemBarsWithText(
+                            actionBarTextColor = Color.WHITE,
+                            actionBarColor = ContextCompat.getColor(context!!, newColors[0]),
+                            statusBarColor = ContextCompat.getColor(context!!, newColors[1]),
+                            title = null,
+                            animated = true,
+                            useSameColorsForBoth = false
+                    )
         }
     }
 

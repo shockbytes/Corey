@@ -12,32 +12,17 @@ import at.shockbytes.corey.ui.fragment.CreateWorkoutFragment
 
 /**
  * Author:  Martin Macheiner
- * Date:    27.10.2015.
+ * Date:    27.10.2015
  */
 class CreateWorkoutActivity : TintableBackNavigableActivity<AppComponent>() {
 
-    override val abDefColor: Int
-        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
-    override val abTextDefColor: Int
-        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
-    override val colorPrimary: Int
-        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
-    override val colorPrimaryDark: Int
-        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
-    override val colorPrimaryText: Int
-        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
-    override val sbDefColor: Int
-        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
-    override val upIndicator: Int
-        get() = TODO("not implemented") // To change initializer of created properties use File | Settings | File Templates.
-
-    override fun bindViewModel() {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun unbindViewModel() {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
-    }
+    override val abDefColor: Int = R.color.colorPrimary
+    override val abTextDefColor: Int = R.color.white
+    override val colorPrimary: Int = R.color.colorPrimary
+    override val colorPrimaryDark: Int = R.color.colorPrimaryDark
+    override val colorPrimaryText: Int = R.color.colorPrimaryText
+    override val sbDefColor: Int = colorPrimaryDark
+    override val upIndicator: Int = R.drawable.ic_back_arrow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,17 +30,20 @@ class CreateWorkoutActivity : TintableBackNavigableActivity<AppComponent>() {
         setResult(Activity.RESULT_CANCELED, Intent())
 
         val newWorkout = intent.getBooleanExtra(ARG_NEW_WORKOUT, true)
-        val workout = if (!newWorkout) {
+        val workout: Workout? = if (!newWorkout) {
             intent.getParcelableExtra(ARG_EDIT)
-        } else { null }
+        } else null
+
         supportFragmentManager.beginTransaction()
                 .replace(R.id.activity_create_workout, CreateWorkoutFragment.newInstance(workout))
                 .commit()
     }
 
-    override fun injectToGraph(appComponent: AppComponent?) {
-        // Do nothing
-    }
+    override fun injectToGraph(appComponent: AppComponent?) = Unit
+
+    override fun bindViewModel() = Unit
+
+    override fun unbindViewModel() = Unit
 
     companion object {
 

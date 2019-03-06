@@ -19,13 +19,14 @@
             android:id="@+id/fragment_create_workout_card_general"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:foreground="?android:attr/selectableItemBackground">
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,10 +40,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_toLeftOf="@+id/fragment_create_workout_btn_exp_col_general"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
                         android:layout_toStartOf="@+id/fragment_create_workout_btn_exp_col_general"
-                        android:fontFamily="sans-serif-light"
                         android:text="@string/fragment_create_workout_general"
                         android:textSize="17sp" />
 
@@ -51,8 +51,8 @@
                         style="?attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         app:srcCompat="@drawable/ic_expand_collapse" />
                 </RelativeLayout>
 
@@ -61,10 +61,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
                     android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingStart="8dp">
+                    android:paddingEnd="8dp"
+                    android:paddingRight="8dp">
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -74,11 +74,10 @@
                             android:id="@+id/fragment_create_workout_edit_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-light"
-                            android:maxLines="1"
-                            android:inputType="text"
                             android:hint="@string/hint_name"
-                            android:imeOptions="actionNext" />
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -89,7 +88,6 @@
                             android:id="@+id/fragment_create_workout_edit_duration"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-light"
                             android:hint="@string/hint_duration"
                             android:imeOptions="actionDone"
                             android:inputType="number" />
@@ -116,12 +114,9 @@
             android:id="@+id/fragment_create_workout_card_exercises"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginStart="16dp"
-            android:foreground="?android:attr/selectableItemBackground">
+            android:layout_margin="16dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="12dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -132,8 +127,8 @@
                     android:id="@+id/fragment_create_workout_txt_exercise_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:fontFamily="sans-serif-light"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/fragment_create_workout_exercises"
                     android:textSize="17sp" />
 
@@ -142,16 +137,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/fragment_create_workout_btn_add_exercise"
-                    android:layout_below="@+id/fragment_create_workout_txt_exercise_header" />
+                    android:layout_below="@+id/fragment_create_workout_txt_exercise_header"
+                    android:overScrollMode="never" />
 
                 <android.support.v7.widget.AppCompatButton
-                    style="?attr/borderlessButtonStyle"
                     android:id="@+id/fragment_create_workout_btn_add_exercise"
+                    style="?attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
                     android:padding="8dp"
                     android:stateListAnimator="@null"
                     android:text="@string/fragment_create_workout_add_exercise"

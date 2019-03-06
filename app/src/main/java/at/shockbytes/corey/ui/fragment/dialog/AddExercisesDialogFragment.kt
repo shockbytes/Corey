@@ -31,7 +31,7 @@ import javax.inject.Inject
 class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, BaseAdapter.OnItemClickListener<Exercise> {
 
     @Inject
-    protected lateinit var workoutManager: WorkoutRepository
+    lateinit var workoutManager: WorkoutRepository
 
     private lateinit var exerciseAdapter: AddExerciseAdapter
 
@@ -101,7 +101,7 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
         exerciseAdapter.filter(charSequence.toString())
     }
 
-    override fun afterTextChanged(editable: Editable) { }
+    override fun afterTextChanged(editable: Editable) {}
 
     fun setOnExerciseCreatedListener(listener: (Exercise) -> Unit): AddExercisesDialogFragment {
         this.exerciseCreatedListener = listener
@@ -141,9 +141,10 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
         exerciseAdapter.onItemClickListener = this
         rvAddExercises.adapter = exerciseAdapter
 
-        workoutManager.exercises.subscribe { exercises ->
-            exerciseAdapter.setData(exercises, false)
-        }
+        workoutManager.exercises
+                .subscribe { exercises ->
+                    exerciseAdapter.setData(exercises, false)
+                }
 
         btnReps.setOnClickListener { onClickBtnReps() }
         btnTime.setOnClickListener { onClickBtnTime() }
