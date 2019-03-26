@@ -8,17 +8,20 @@ import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.data.goal.Goal
 import at.shockbytes.corey.data.goal.GoalsRepository
 import at.shockbytes.corey.data.user.UserRepository
+import at.shockbytes.corey.data.workout.WorkoutRepository
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val goalsRepository: GoalsRepository
+    private val goalsRepository: GoalsRepository,
+    workoutRepository: WorkoutRepository
 ) : BaseViewModel() {
 
     private val userEvent = MutableLiveData<LoginUserEvent>()
 
     init {
         userEvent.postValue(LoginUserEvent.SuccessEvent(userRepository.user, false))
+        workoutRepository.poke()
     }
 
     fun getUserEvent(): LiveData<LoginUserEvent> = userEvent

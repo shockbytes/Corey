@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.view.PagerAdapter
+import android.widget.TextView
 import at.shockbytes.core.image.GlideImageLoader
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.model.ShockbytesUser
@@ -51,10 +52,10 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
                 fabMenuId = R.menu.menu_fab,
                 fabMenuColorList = listOf(R.color.colorPrimary, R.color.material_red),
                 fabVisiblePageIndices = listOf(0, 3),
-                overflowIcon = R.drawable.ic_overflow_white,
-                additionalToolbarAction = AdditionalToolbarAction(R.drawable.ic_body_card_weight_history),
-                toolbarColor = R.color.colorPrimary,
-                toolbarItemColor = R.color.toolbar_item_color,
+                overflowIcon = R.drawable.ic_overflow,
+                additionalToolbarAction = AdditionalToolbarAction(R.drawable.ic_body_card_weight_history_colored),
+                toolbarColor = R.color.white,
+                toolbarItemColor = R.color.controls,
                 fabClosedIcon = R.drawable.ic_add,
                 fabOpenedIcon = R.drawable.ic_cancel,
                 navigationBarColor = R.color.navigation_bar_color,
@@ -66,6 +67,10 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+
+        // TODO: Put title coloring inside BottomNavigationBarActivity
+        findViewById<TextView>(R.id.activity_bottom_navigation_txtMainToolbarTitle)
+                .setTextColor(getColor(R.color.colorPrimary))
     }
 
     override fun bindViewModel() {
