@@ -102,7 +102,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
         recyclerView.adapter = addScheduleItemAdapter
 
         scheduleManager.schedulableItems
-                .map { data -> data.map { AddScheduleItemAdapter.ScheduleDisplayItem(it)  } }
+                .map { data -> data.map { AddScheduleItemAdapter.ScheduleDisplayItem(it) } }
                 .subscribe { data ->
                     Timber.d("Schedulable items size: ${data.size}")
                     addScheduleItemAdapter?.setData(data, false)

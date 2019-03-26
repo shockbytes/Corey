@@ -8,7 +8,6 @@ import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
-import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.receiver.NotificationReceiver
@@ -22,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 import java.util.Calendar
@@ -58,13 +56,12 @@ class FirebaseScheduleRepository(
                         val schedulingItemsAsJson = remoteConfig
                                 .getString(context.getString(R.string.remote_config_scheduling_items))
                         val remoteConfigItems = gson.fromJson(schedulingItemsAsJson, Array<SchedulableItem>::class.java)
-                        val items  = workoutItems.apply {
+                        val items = workoutItems.apply {
                             this.addAll(remoteConfigItems)
                         }.toList()
 
                         items
                     }
-
 
     override val isWorkoutNotificationDeliveryEnabled: Boolean
         get() = preferences.getBoolean(context.getString(R.string.prefs_workout_day_notification_key), false)

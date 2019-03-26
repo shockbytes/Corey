@@ -9,7 +9,8 @@ import java.util.UUID
 data class ScheduleItem(
     val name: String = "",
     val day: Int = -1,
-    val id: String = UUID.randomUUID().toString()
+    val id: String = UUID.randomUUID().toString(),
+    val locationType: LocationType = LocationType.NONE
 ) {
 
     val isEmpty: Boolean
