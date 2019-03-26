@@ -1,7 +1,7 @@
 package at.shockbytes.weather.owm
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.Date
 
 /**
  * Author:  Martin Macheiner
@@ -48,5 +48,4 @@ class OwmWeatherRecord {
             return "Temp: $temp / Humidity: $humidity"
         }
     }
-
 }

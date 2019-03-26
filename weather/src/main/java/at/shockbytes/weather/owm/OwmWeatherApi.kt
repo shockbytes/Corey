@@ -26,12 +26,10 @@ interface OwmWeatherApi {
         @Query("units") units: String
     ): Single<OwmCurrentWeather>
 
-
     companion object {
 
         const val SERVICE_ENDPOINT = "https://api.openweathermap.org/data/2.5/"
 
         const val API_KEY = "f1a5564dfc20059ace98a12dafc792d8"
     }
-
 }

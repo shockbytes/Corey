@@ -11,5 +11,4 @@ interface WeatherStorage {
     fun cacheWeatherForecast(forecast: WeatherForecast)
 
     fun loadCachedWeatherForecast(): Single<WeatherForecast>?
-
 }

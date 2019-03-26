@@ -17,5 +17,4 @@ class OwmCurrentWeather {
     data class Weather(val icon: String?)
 
     data class Main(val temp: Double, val humidity: Double)
-
 }

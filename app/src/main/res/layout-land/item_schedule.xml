@@ -36,14 +36,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_remove" />
 
-        <TextView
+        <at.shockbytes.weather.view.CondensedWeatherView
             android:id="@+id/item_schedule_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="6°C"
+            tools:text="6°C"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

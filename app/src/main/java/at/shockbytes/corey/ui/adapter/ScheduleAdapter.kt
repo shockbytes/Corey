@@ -11,6 +11,7 @@ import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.util.ScheduleItemDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
+import at.shockbytes.weather.CurrentWeather
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_schedule.*
 import java.util.Collections
@@ -190,6 +191,14 @@ class ScheduleAdapter(
             item_schedule_txt_name.text = item.name
 
             item_schedule_weather.setVisible(item.locationType == LocationType.OUTDOOR)
+
+            // TODO Load from weather api later
+            item_schedule_weather.setWeatherInfo(CurrentWeather(
+                    validUntil = System.currentTimeMillis(),
+                    locality = "Vienna",
+                    temperature = 10,
+                    iconRes = R.drawable.weather_few_clouds
+            ), unit = "°C", animate = true)
         }
     }
 

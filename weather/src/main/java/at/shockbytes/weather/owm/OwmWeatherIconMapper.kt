@@ -5,7 +5,7 @@ import at.shockbytes.weather.R
 object OwmWeatherIconMapper {
 
     fun mapOwmIconToDrawable(icon: String?): Int {
-        return when(icon) {
+        return when (icon) {
             "01d" -> R.drawable.weather_clear
             "01n" -> R.drawable.weather_clear_night
             "02d" -> R.drawable.weather_few_clouds
