@@ -4,8 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 
-def icePickVersion = "3.2.0"
-def crashlyticsVersion = "2.9.7"
+def crashlyticsVersion = "2.9.9"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -41,6 +40,7 @@ dependencies {
     implementation (project(':core')) {
         exclude group: 'com.google.android.gms'
     }
+    implementation (project(':weather'))
 
     implementation "com.android.support:support-v4:$rootProject.ext.supportVersion"
     implementation "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
