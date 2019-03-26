@@ -38,8 +38,7 @@ class FirebaseScheduleRepository(
     private val gson: Gson,
     private val workoutManager: WorkoutRepository,
     private val remoteConfig: FirebaseRemoteConfig,
-    private val firebase: FirebaseDatabase,
-    private val schedulerFacade: SchedulerFacade
+    private val firebase: FirebaseDatabase
 ) : ScheduleRepository {
 
     init {
@@ -51,21 +50,21 @@ class FirebaseScheduleRepository(
     private val scheduleItemSubject = BehaviorSubject.create<List<ScheduleItem>>()
     override val schedule: Observable<List<ScheduleItem>> = scheduleItemSubject
 
-    override val schedulableItems: Single<List<String>>
-        get() = Single
-                .fromCallable {
-                    val items = mutableListOf<String>()
-                    workoutManager.workouts.blockingFirst().mapTo(items) { it.displayableName }
+    override val schedulableItems: Observable<List<SchedulableItem>>
+        get() = workoutManager.workouts
+                    .map { workouts ->
+                        val workoutItems = workouts.map { SchedulableItem(it.displayableName, LocationType.INDOOR) }.toMutableList()
 
-                    val schedulingItemsAsJson = remoteConfig
-                            .getString(context.getString(R.string.remote_config_scheduling_items))
-                    val remoteConfigItems = gson.fromJson(schedulingItemsAsJson, Array<String>::class.java)
-                    items.addAll(remoteConfigItems)
+                        val schedulingItemsAsJson = remoteConfig
+                                .getString(context.getString(R.string.remote_config_scheduling_items))
+                        val remoteConfigItems = gson.fromJson(schedulingItemsAsJson, Array<SchedulableItem>::class.java)
+                        val items  = workoutItems.apply {
+                            this.addAll(remoteConfigItems)
+                        }.toList()
 
-                    items.toList()
-                }
-                .subscribeOn(schedulerFacade.io)
-                .observeOn(schedulerFacade.ui)
+                        items
+                    }
+
 
     override val isWorkoutNotificationDeliveryEnabled: Boolean
         get() = preferences.getBoolean(context.getString(R.string.prefs_workout_day_notification_key), false)
@@ -76,7 +75,8 @@ class FirebaseScheduleRepository(
     override val dayOfWeighNotificationDelivery: Int
         get() {
             return (preferences.getString(context.getString(R.string.prefs_weigh_notification_day_key),
-                    context.getString(R.string.prefs_weigh_notification_day_default_value)) ?: "0").toInt()
+                    context.getString(R.string.prefs_weigh_notification_day_default_value))
+                    ?: "0").toInt()
         }
 
     override fun poke() {
@@ -106,9 +106,9 @@ class FirebaseScheduleRepository(
 
     override fun insertScheduleItem(item: ScheduleItem): ScheduleItem {
         val ref = firebase.getReference("/schedule").push()
-        item.id = ref.key ?: ""
-        ref.setValue(item)
-        return item
+        val updated = item.copy(id = ref.key ?: "")
+        ref.setValue(updated)
+        return updated
     }
 
     override fun updateScheduleItem(item: ScheduleItem) {

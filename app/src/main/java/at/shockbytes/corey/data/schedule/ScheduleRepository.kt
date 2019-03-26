@@ -12,7 +12,7 @@ interface ScheduleRepository : Pokeable {
 
     val schedule: Observable<List<ScheduleItem>>
 
-    val schedulableItems: Single<List<String>>
+    val schedulableItems: Observable<List<SchedulableItem>>
 
     val isWorkoutNotificationDeliveryEnabled: Boolean
 

@@ -114,7 +114,7 @@ class ScheduleAdapter(
 
     fun reorderAfterMove(): List<ScheduleItem> {
         // Assign the right day indices to the objects
-        data.forEachIndexed { index, _ -> data[index].day = index }
+        data.forEachIndexed { index, _ -> data[index].copy(day = index) }
         // Only return the filled ones for syncing
         return data.filter { !it.isEmpty }
     }

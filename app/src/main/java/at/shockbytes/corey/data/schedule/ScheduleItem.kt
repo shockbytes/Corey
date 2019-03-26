@@ -7,9 +7,9 @@ import java.util.UUID
  * Date:    28.02.2017
  */
 data class ScheduleItem(
-    var name: String = "",
-    var day: Int = -1,
-    var id: String = UUID.randomUUID().toString()
+    val name: String = "",
+    val day: Int = -1,
+    val id: String = UUID.randomUUID().toString()
 ) {
 
     val isEmpty: Boolean

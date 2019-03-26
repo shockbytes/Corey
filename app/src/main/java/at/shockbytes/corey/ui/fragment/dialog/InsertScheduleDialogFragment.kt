@@ -20,6 +20,7 @@ import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.util.adapter.BaseAdapter
 import io.reactivex.disposables.CompositeDisposable
 import kotterknife.bindView
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -96,13 +97,15 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
     private fun setupViews() {
 
         recyclerView.layoutManager = GridLayoutManager(context, 3)
-        addScheduleItemAdapter = AddScheduleItemAdapter(context!!, listOf()) { item, query -> item.title.contains(query) }
+        addScheduleItemAdapter = AddScheduleItemAdapter(context!!, listOf()) { item, query -> item.item.title.contains(query) }
         addScheduleItemAdapter?.onItemClickListener = this
         recyclerView.adapter = addScheduleItemAdapter
 
         scheduleManager.schedulableItems
+                .map { data -> data.map { AddScheduleItemAdapter.ScheduleDisplayItem(it)  } }
                 .subscribe { data ->
-                    addScheduleItemAdapter?.setData(data.map { AddScheduleItemAdapter.ScheduleDisplayItem(it) }, false)
+                    Timber.d("Schedulable items size: ${data.size}")
+                    addScheduleItemAdapter?.setData(data, false)
                 }
                 .addTo(compositeDisposable)
 

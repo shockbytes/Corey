@@ -81,8 +81,7 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
                 .addTo(compositeDisposable)
     }
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
     override fun setupViews() {
 
@@ -112,7 +111,7 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
         if (item.isEmpty) {
             InsertScheduleDialogFragment.newInstance()
                     .setOnScheduleItemSelectedListener { i ->
-                        scheduleManager.insertScheduleItem(ScheduleItem(i.title, position))
+                        scheduleManager.insertScheduleItem(ScheduleItem(i.item.title, position))
                     }
                     .show(fragmentManager, "dialogfragment-insert-schedule")
         }

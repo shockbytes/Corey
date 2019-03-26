@@ -7,6 +7,7 @@ import android.widget.Button
 
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.Sortable
+import at.shockbytes.corey.data.schedule.SchedulableItem
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 
@@ -29,9 +30,9 @@ class AddScheduleItemAdapter(
         private val btnTitle: Button by bindView(R.id.listitem_add_exercise_btn_title)
 
         override fun bindToView(t: ScheduleDisplayItem) {
-            btnTitle.text = t.title
+            btnTitle.text = t.item.title
         }
     }
 
-    data class ScheduleDisplayItem(val title: String) : Sortable
+    data class ScheduleDisplayItem(val item: SchedulableItem) : Sortable
 }
