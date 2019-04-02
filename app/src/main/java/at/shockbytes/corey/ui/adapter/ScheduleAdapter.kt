@@ -2,18 +2,23 @@ package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
 import android.support.v7.util.DiffUtil
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.workout.model.LocationType
 import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.data.schedule.ScheduleItem
+import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.util.ScheduleItemDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
-import at.shockbytes.weather.CurrentWeather
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_schedule.*
+import timber.log.Timber
 import java.util.Collections
 
 /**
@@ -23,8 +28,12 @@ import java.util.Collections
 class ScheduleAdapter(
     context: Context,
     private val onItemClickedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit),
-    private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit)
+    private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit),
+    private val weatherResolver: ScheduleWeatherResolver,
+    private val schedulers: SchedulerFacade
 ) : BaseAdapter<ScheduleItem>(context, mutableListOf()), ItemTouchHelperAdapter {
+
+    private val compositeDisposable = CompositeDisposable()
 
     override var data: MutableList<ScheduleItem>
         get() = super.data
@@ -47,6 +56,11 @@ class ScheduleAdapter(
     override fun onBindViewHolder(holder: BaseAdapter<ScheduleItem>.ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         (holder as? ViewHolder)?.bind(data[position], position)
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        compositeDisposable.dispose()
     }
 
     override fun onItemMove(from: Int, to: Int): Boolean {
@@ -192,15 +206,23 @@ class ScheduleAdapter(
             itemPosition = position
             item_schedule_txt_name.text = item.name
 
-            item_schedule_weather.setVisible(item.locationType == LocationType.OUTDOOR)
+            if (item.locationType == LocationType.OUTDOOR) {
+                loadWeather(position)
+            }
+        }
 
-            // TODO Load from weather api later
-            item_schedule_weather.setWeatherInfo(CurrentWeather(
-                    validUntil = System.currentTimeMillis(),
-                    locality = "Vienna",
-                    temperature = 10,
-                    iconRes = R.drawable.weather_few_clouds
-            ), unit = "°C", animate = true)
+        private fun loadWeather(index: Int) {
+            weatherResolver.resolveWeatherForScheduleIndex(index)
+                    .subscribeOn(schedulers.io)
+                    .observeOn(schedulers.ui)
+                    .subscribe({ weatherInfo ->
+                        item_schedule_weather.setVisible(true)
+                        item_schedule_weather.setWeatherInfo(weatherInfo, unit = "°C", animate = true)
+                    }, { throwable ->
+                        Timber.e(throwable)
+                        item_schedule_weather.setVisible(false)
+                    })
+                    .addTo(compositeDisposable)
         }
     }
 

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.HapticFeedbackConstants
 import android.widget.Toast
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
@@ -17,6 +18,7 @@ import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.data.schedule.ScheduleRepository
+import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
@@ -41,12 +43,20 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
     @Inject
     lateinit var scheduleRepository: ScheduleRepository
 
+    @Inject
+    lateinit var schedulers: SchedulerFacade
+
+    @Inject
+    lateinit var weatherResolver: ScheduleWeatherResolver
+
     private lateinit var touchHelper: ItemTouchHelper
     private val adapter: ScheduleAdapter by lazy {
         ScheduleAdapter(
                 context!!,
                 { item, _, position -> onScheduleItemClicked(item, position) },
-                { item, position -> onItemDismissed(item, position) }
+                { item, position -> onItemDismissed(item, position) },
+                weatherResolver,
+                schedulers
         )
     }
 

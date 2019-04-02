@@ -20,15 +20,16 @@ import dagger.Component
 import javax.inject.Singleton
 
 /**
- * @author Martin Macheiner
- * Date: 21.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    21.02.2017
  */
 @Singleton
 @Component(modules = [
     AppModule::class,
     WorkoutModule::class,
     FirebaseModule::class,
-    ViewModelModule::class
+    ViewModelModule::class,
+    WeatherModule::class
 ])
 interface AppComponent : ShockbytesInjector {
 
