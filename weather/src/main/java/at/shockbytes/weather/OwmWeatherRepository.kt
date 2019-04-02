@@ -1,6 +1,7 @@
 package at.shockbytes.weather
 
 import at.shockbytes.weather.owm.OwmCurrentWeather
+import at.shockbytes.weather.owm.OwmDailyWeatherForecast
 import at.shockbytes.weather.owm.OwmWeatherForecast
 import at.shockbytes.weather.owm.OwmWeatherApi
 import at.shockbytes.weather.owm.OwmWeatherIconMapper
@@ -23,13 +24,6 @@ class OwmWeatherRepository(
             } ?: loadForecastFromApi(place)
     }
 
-    private fun loadForecastFromApi(place: String): Single<WeatherForecast> {
-        return weatherApi
-            .getWeatherForecast(place, OwmWeatherApi.API_KEY, "metric")
-            .map { owmWeather -> mapToWeatherForecast(owmWeather) }
-            .doOnSuccess { forecast -> weatherStorage.cacheWeatherForecast(forecast) }
-    }
-
     override fun getCurrentWeather(lat: Double, lng: Double): Single<CurrentWeather> {
         return weatherStorage.loadCachedCurrentWeather()
             ?.flatMap {
@@ -39,6 +33,33 @@ class OwmWeatherRepository(
                     Single.just(it)
                 }
             } ?: loadCurrentWeatherFromApi(lat, lng)
+    }
+
+    override fun getDailyWeatherForecast(place: String, days: Int): Single<DailyWeatherForecast> {
+        return weatherStorage.loadCachedDailyWeatherForecast()
+                ?.flatMap {
+                    if (it.validUntil < System.currentTimeMillis()) {
+                        loadDailyForecastFromApi(place, days)
+                    } else {
+                        Single.just(it)
+                    }
+                } ?: loadDailyForecastFromApi(place, days)
+    }
+
+    // ------------------------------------------------------------------------------
+
+    private fun loadForecastFromApi(place: String): Single<WeatherForecast> {
+        return weatherApi
+                .getWeatherForecast(place, OwmWeatherApi.API_KEY, "metric")
+                .map { owmWeather -> mapToWeatherForecast(owmWeather) }
+                .doOnSuccess { forecast -> weatherStorage.cacheWeatherForecast(forecast) }
+    }
+
+    private fun loadDailyForecastFromApi(place: String, days: Int): Single<DailyWeatherForecast> {
+        return weatherApi
+                .getDailyWeatherForecast(place, OwmWeatherApi.API_KEY, "metric", days)
+                .map { owmWeather -> mapToDailyWeatherForecast(owmWeather) }
+                .doOnSuccess { forecast -> weatherStorage.cacheDailyWeatherForecast(forecast) }
     }
 
     private fun loadCurrentWeatherFromApi(lat: Double, lng: Double): Single<CurrentWeather> {
@@ -74,5 +95,11 @@ class OwmWeatherRepository(
                 )
             }
         )
+    }
+
+    private fun mapToDailyWeatherForecast(owmWeather: OwmDailyWeatherForecast): DailyWeatherForecast {
+        // TODO
+        val validityDate = validityOptions.getForecastValidityDate()
+        return DailyWeatherForecast(validityDate)
     }
 }

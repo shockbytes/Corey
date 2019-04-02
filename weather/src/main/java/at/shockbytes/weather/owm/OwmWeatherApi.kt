@@ -18,6 +18,14 @@ interface OwmWeatherApi {
         @Query("units") units: String
     ): Single<OwmWeatherForecast>
 
+    @GET("forecast/daily")
+    fun getDailyWeatherForecast(
+        @Query("q") place: String,
+        @Query("appid") apiKey: String,
+        @Query("units") units: String,
+        @Query("cnt") days: Int
+    ): Single<OwmDailyWeatherForecast>
+
     @GET("weather")
     fun getCurrentWeather(
         @Query("lat") lat: Double,
