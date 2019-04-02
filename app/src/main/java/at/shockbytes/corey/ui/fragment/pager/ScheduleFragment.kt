@@ -22,6 +22,8 @@ import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotterknife.bindView
 import timber.log.Timber
@@ -78,6 +80,8 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
     override fun bindViewModel() {
 
         scheduleRepository.schedule
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ scheduleItems ->
                     adapter.updateData(scheduleItems)
                 }, { throwable ->

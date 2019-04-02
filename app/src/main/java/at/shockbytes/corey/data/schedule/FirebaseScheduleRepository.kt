@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.receiver.NotificationReceiver
@@ -35,7 +36,8 @@ class FirebaseScheduleRepository(
     private val gson: Gson,
     private val workoutManager: WorkoutRepository,
     private val remoteConfig: FirebaseRemoteConfig,
-    private val firebase: FirebaseDatabase
+    private val firebase: FirebaseDatabase,
+    private val schedulers: SchedulerFacade
 ) : ScheduleRepository {
 
     init {
@@ -65,6 +67,7 @@ class FirebaseScheduleRepository(
                             }
                             .toList()
                 }
+                .subscribeOn(schedulers.io)
 
     override val isWorkoutNotificationDeliveryEnabled: Boolean
         get() = preferences.getBoolean(context.getString(R.string.prefs_workout_day_notification_key), false)
@@ -127,11 +130,13 @@ class FirebaseScheduleRepository(
     }
 
     override fun deleteAll(): Completable {
-        return Completable.create { emitter ->
-            firebase.getReference("/schedule").removeValue()
-                    .addOnCompleteListener { emitter.onComplete() }
-                    .addOnFailureListener { throwable -> emitter.onError(throwable) }
-        }
+        return Completable
+                .create { emitter ->
+                    firebase.getReference("/schedule").removeValue()
+                            .addOnCompleteListener { emitter.onComplete() }
+                            .addOnFailureListener { throwable -> emitter.onError(throwable) }
+                }
+                .subscribeOn(schedulers.io)
     }
 
     override fun postWorkoutNotification(): Completable {
@@ -141,6 +146,7 @@ class FirebaseScheduleRepository(
                             .firstOrNull { it.day == CoreyUtils.getDayOfWeek() && !it.isEmpty }
                             ?.let { item -> postWorkoutNotificationForToday(item) }
                 }
+                .subscribeOn(schedulers.io)
         )
     }
 

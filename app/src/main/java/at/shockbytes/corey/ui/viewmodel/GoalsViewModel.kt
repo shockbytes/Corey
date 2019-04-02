@@ -32,6 +32,7 @@ class GoalsViewModel @Inject constructor(
         hideFinishedGoals.postValue(hideFinished)
 
         goalsRepository.bodyGoals
+                .subscribeOn(schedulerFacade.io)
                 .observeOn(schedulerFacade.ui)
                 .subscribe { g ->
 

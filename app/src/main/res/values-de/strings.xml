@@ -174,5 +174,6 @@
     <string name="cancel">Abbrechen</string>
     <string name="delete_schedule">Wochenplan löschen</string>
     <string name="delete_schedule_message">Bist du dir sicher, dass du alle deine Termine löschen willst?</string>
+    <string name="hide_already_finished_goals">Zeige nur offene Ziele</string>
 
 </resources>
