@@ -2,10 +2,10 @@
 
 ### Version 3.0
 - [ ] Improve basically the whole code base (use ViewModels)
-- [ ] Bring back workout mode
-- [ ] Bring back workout creation
 - [ ] Fix workout notification
 - [ ] Clean up data layer (Do not subscribe there observables, rather in the ViewModel)
+- [x] Bring back workout mode
+- [x] Bring back workout creation
 
 ## Version 2.2
 - [x] Fix notification icons + delivery

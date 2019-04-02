@@ -93,7 +93,7 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
 
             recyclerView.layoutManager = recyclerViewLayoutManager
             recyclerView.isNestedScrollingEnabled = false
-            recyclerView.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, context!!)))
+            recyclerView.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, ctx)))
             val callback = BaseItemTouchHelper(adapter, false, BaseItemTouchHelper.DragAccess.ALL)
             adapter.onItemMoveListener = this
 

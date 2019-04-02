@@ -1,6 +1,6 @@
 package at.shockbytes.corey.ui.fragment.body
 
-import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import at.shockbytes.corey.R
 import at.shockbytes.corey.data.body.info.BodyInfo
 import at.shockbytes.corey.common.core.util.CoreyUtils
@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_body_view_weight_history.*
 
 /**
  * Author:  Martin Macheiner
- * Date:    05.03.2018.
+ * Date:    05.03.2018
  */
 class WeightHistoryBodyFragmentView : BodySubFragment() {
 
@@ -35,8 +35,11 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
         fragment_body_card_weight_graph_linechart.axisLeft.setDrawGridLines(false)
         fragment_body_card_weight_graph_linechart.xAxis.setDrawGridLines(false)
         fragment_body_card_weight_graph_linechart.xAxis.setDrawAxisLine(false)
-        fragment_body_card_weight_graph_linechart.axisLeft.textColor = Color.WHITE
-        fragment_body_card_weight_graph_linechart.xAxis.textColor = Color.WHITE
+
+        context?.let { ctx ->
+            fragment_body_card_weight_graph_linechart.axisLeft.textColor = ContextCompat.getColor(ctx, R.color.body_card_weight_history)
+            fragment_body_card_weight_graph_linechart.xAxis.textColor = ContextCompat.getColor(ctx, R.color.body_card_weight_history)
+        }
     }
 
     fun setWeightData(bodyInfo: BodyInfo, weightUnit: String) {
@@ -52,10 +55,12 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
 
         val dataSet = LineDataSet(entries, getString(R.string.weight))
         dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        dataSet.color = Color.WHITE
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(false)
         dataSet.isHighlightEnabled = false
+        context?.let { ctx ->
+            dataSet.color = ContextCompat.getColor(ctx, R.color.body_card_weight_history)
+        }
 
         fragment_body_card_weight_graph_linechart.xAxis.valueFormatter = IAxisValueFormatter { value, _ -> labels[value.toInt()] }
         fragment_body_card_weight_graph_linechart.axisLeft.valueFormatter = IAxisValueFormatter { value, _ -> "${value.toInt()} $weightUnit" }

@@ -16,7 +16,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="@color/body_card_weight_history"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -25,12 +24,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:drawableLeft="@drawable/ic_body_card_weight_history"
             android:drawablePadding="16dp"
             android:text="@string/weight_history"
             android:drawableStart="@drawable/ic_body_card_weight_history"
             android:gravity="center_vertical"
-            android:textColor="@android:color/white"
+            android:textColor="@color/body_card_weight_history"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <com.github.mikephil.charting.charts.LineChart

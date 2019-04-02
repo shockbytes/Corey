@@ -8,7 +8,7 @@
             android:useLevel="true">
 
             <solid
-                android:color="#FFF"
+                android:color="#DADADA"
                 />
         </shape>
     </item>
