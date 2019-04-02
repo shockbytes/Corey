@@ -5,8 +5,8 @@ import android.support.v7.util.DiffUtil
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.workout.model.LocationType
 import at.shockbytes.corey.common.setVisible
-import at.shockbytes.corey.data.schedule.LocationType
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.util.ScheduleItemDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
@@ -117,7 +117,9 @@ class ScheduleAdapter(
 
     fun reorderAfterMove(): List<ScheduleItem> {
         // Assign the right day indices to the objects
-        data.forEachIndexed { index, _ -> data[index].copy(day = index) }
+        data.forEachIndexed { index, _ ->
+            data[index].day = index
+        }
         // Only return the filled ones for syncing
         return data.filter { !it.isEmpty }
     }

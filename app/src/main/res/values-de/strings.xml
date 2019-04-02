@@ -170,5 +170,9 @@
     <string name="goal">Ziel</string>
     <string name="month">Monat</string>
     <string name="year">Jahr</string>
+    <string name="clear_all">Zurücksetzen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="delete_schedule">Wochenplan löschen</string>
+    <string name="delete_schedule_message">Bist du dir sicher, dass du alle deine Termine löschen willst?</string>
 
 </resources>

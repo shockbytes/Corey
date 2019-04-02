@@ -219,5 +219,9 @@
     <string name="goal">Goal</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
+    <string name="clear_all">Clear all</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_schedule">Delete schedule</string>
+    <string name="delete_schedule_message">Are you sure that you want to delete your whole schedule?</string>
 
 </resources>

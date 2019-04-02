@@ -7,19 +7,18 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
-import android.util.Log
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.receiver.NotificationReceiver
 import at.shockbytes.corey.util.CoreyAppUtils
 import at.shockbytes.corey.data.workout.WorkoutRepository
-import com.crashlytics.android.Crashlytics
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
@@ -50,18 +49,22 @@ class FirebaseScheduleRepository(
 
     override val schedulableItems: Observable<List<SchedulableItem>>
         get() = workoutManager.workouts
-                    .map { workouts ->
-                        val workoutItems = workouts.map { SchedulableItem(it.displayableName, LocationType.INDOOR) }.toMutableList()
+                .map { workouts ->
+                    val workoutItems = workouts
+                            .map { workout ->
+                                SchedulableItem(workout.displayableName, workout.locationType)
+                            }
+                            .toMutableList()
 
-                        val schedulingItemsAsJson = remoteConfig
-                                .getString(context.getString(R.string.remote_config_scheduling_items))
-                        val remoteConfigItems = gson.fromJson(schedulingItemsAsJson, Array<SchedulableItem>::class.java)
-                        val items = workoutItems.apply {
-                            this.addAll(remoteConfigItems)
-                        }.toList()
-
-                        items
-                    }
+                    val schedulingItemsAsJson = remoteConfig
+                            .getString(context.getString(R.string.remote_config_scheduling_items))
+                    val remoteConfigItems = gson.fromJson(schedulingItemsAsJson, Array<SchedulableItem>::class.java)
+                    workoutItems
+                            .apply {
+                                addAll(remoteConfigItems)
+                            }
+                            .toList()
+                }
 
     override val isWorkoutNotificationDeliveryEnabled: Boolean
         get() = preferences.getBoolean(context.getString(R.string.prefs_workout_day_notification_key), false)
@@ -116,22 +119,29 @@ class FirebaseScheduleRepository(
         firebase.getReference("/schedule").child(item.id).removeValue()
     }
 
-    override fun postWeighNotification() {
-        val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        nm.notify(0x90, CoreyAppUtils.getWeighNotification(context))
+    override fun postWeighNotification(): Completable {
+        return Completable.fromCallable {
+            val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            nm.notify(0x90, CoreyAppUtils.getWeighNotification(context))
+        }
     }
 
-    override fun postWorkoutNotification() {
-        schedule.subscribe({ scheduleItems ->
-            scheduleItems
-                    .firstOrNull { it.day == CoreyUtils.getDayOfWeek() && !it.isEmpty }
-                    ?.let { item -> postWorkoutNotificationForToday(item) }
-        }, { throwable ->
-            Log.wtf("Corey", "Cannot retrieve workouts: ${throwable.localizedMessage}")
-            Crashlytics.logException(throwable)
-            Crashlytics.log(10, "Corey",
-                    "Cannot retrieve workouts in postWorkoutNotification(): ${throwable.localizedMessage}")
-        })
+    override fun deleteAll(): Completable {
+        return Completable.create { emitter ->
+            firebase.getReference("/schedule").removeValue()
+                    .addOnCompleteListener { emitter.onComplete() }
+                    .addOnFailureListener { throwable -> emitter.onError(throwable) }
+        }
+    }
+
+    override fun postWorkoutNotification(): Completable {
+        return Completable.fromObservable(schedule
+                .map { scheduleItems ->
+                    scheduleItems
+                            .firstOrNull { it.day == CoreyUtils.getDayOfWeek() && !it.isEmpty }
+                            ?.let { item -> postWorkoutNotificationForToday(item) }
+                }
+        )
     }
 
     private fun readNotificationTimeFromPreferences(): List<Int> {

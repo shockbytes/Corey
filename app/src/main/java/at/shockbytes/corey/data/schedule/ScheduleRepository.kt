@@ -1,6 +1,7 @@
 package at.shockbytes.corey.data.schedule
 
 import at.shockbytes.corey.common.core.util.Pokeable
+import io.reactivex.Completable
 import io.reactivex.Observable
 
 /**
@@ -25,7 +26,9 @@ interface ScheduleRepository : Pokeable {
 
     fun deleteScheduleItem(item: ScheduleItem)
 
-    fun postWeighNotification()
+    fun deleteAll(): Completable
 
-    fun postWorkoutNotification()
+    fun postWeighNotification(): Completable
+
+    fun postWorkoutNotification(): Completable
 }

@@ -16,7 +16,8 @@ data class Workout(
     var duration: Int = 0, // in minutes
     var exercises: MutableList<Exercise> = mutableListOf(),
     var intensity: Intensity = Intensity.MEDIUM,
-    var bodyRegion: BodyRegion = BodyRegion.CORE
+    var bodyRegion: BodyRegion = BodyRegion.CORE,
+    var locationType: LocationType = LocationType.INDOOR
 ) : Comparable<Workout>, Parcelable {
 
     enum class Intensity {

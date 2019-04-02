@@ -18,10 +18,10 @@ class NotificationReceiver : BroadcastReceiver() {
 
         if (manager.isWeighNotificationDeliveryEnabled &&
                 CoreyUtils.getDayOfWeek() == manager.dayOfWeighNotificationDelivery) {
-            manager.postWeighNotification()
+            manager.postWeighNotification().subscribe()
         }
         if (manager.isWorkoutNotificationDeliveryEnabled) {
-            manager.postWorkoutNotification()
+            manager.postWorkoutNotification().subscribe()
         }
     }
 }

@@ -2,10 +2,12 @@ package at.shockbytes.corey.ui.fragment.pager
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.view.HapticFeedbackConstants
 import android.widget.Toast
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
@@ -20,7 +22,9 @@ import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
+import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotterknife.bindView
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -33,14 +37,14 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     @Inject
-    lateinit var scheduleManager: ScheduleRepository
+    lateinit var scheduleRepository: ScheduleRepository
 
     private lateinit var touchHelper: ItemTouchHelper
     private val adapter: ScheduleAdapter by lazy {
         ScheduleAdapter(
-            context!!,
-            { item, _, position -> onScheduleItemClicked(item, position) },
-            { item, position -> onItemDismissed(item, position) }
+                context!!,
+                { item, _, position -> onScheduleItemClicked(item, position) },
+                { item, position -> onItemDismissed(item, position) }
         )
     }
 
@@ -56,22 +60,24 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
 
     override val layoutId = R.layout.fragment_schedule
 
-    override fun onItemMove(t: ScheduleItem, from: Int, to: Int) {
-    }
+    override fun onItemMove(t: ScheduleItem, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() {
-        adapter.reorderAfterMove().forEach { scheduleManager.updateScheduleItem(it) }
+        adapter.reorderAfterMove()
+                .forEach { item ->
+                    scheduleRepository.updateScheduleItem(item)
+                }
     }
 
     override fun onItemDismissed(t: ScheduleItem, position: Int) {
         if (!t.isEmpty) {
-            scheduleManager.deleteScheduleItem(t)
+            scheduleRepository.deleteScheduleItem(t)
         }
     }
 
     override fun bindViewModel() {
 
-        scheduleManager.schedule
+        scheduleRepository.schedule
                 .subscribe({ scheduleItems ->
                     adapter.updateData(scheduleItems)
                 }, { throwable ->
@@ -101,6 +107,32 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
             touchHelper.attachToRecyclerView(recyclerView)
             recyclerView.adapter = adapter
         }
+
+        fragment_schedule_card_clear_all?.setOnClickListener { view ->
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            showRemoveApprovalDialog()
+        }
+    }
+
+    private fun showRemoveApprovalDialog() {
+        context?.let { ctx ->
+            AlertDialog.Builder(ctx)
+                    .setTitle(R.string.delete_schedule)
+                    .setMessage(R.string.delete_schedule_message)
+                    .setIcon(R.drawable.ic_cancel_red)
+                    .setNegativeButton(R.string.cancel) { _, _ -> Unit }
+                    .setPositiveButton(R.string.delete) { _, _ ->
+                        scheduleRepository.deleteAll()
+                                .subscribe({
+                                    Timber.d("All items deleted")
+                                }, { throwable ->
+                                    showToast("Could not delete all items: ${throwable.message}")
+                                })
+                                .addTo(compositeDisposable)
+                    }
+                    .create()
+                    .show()
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent?) {
@@ -111,7 +143,7 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
         if (item.isEmpty) {
             InsertScheduleDialogFragment.newInstance()
                     .setOnScheduleItemSelectedListener { i ->
-                        scheduleManager.insertScheduleItem(ScheduleItem(i.item.title, position, locationType = i.item.locationType))
+                        scheduleRepository.insertScheduleItem(ScheduleItem(i.item.title, position, locationType = i.item.locationType))
                     }
                     .show(fragmentManager, "dialogfragment-insert-schedule")
         }
