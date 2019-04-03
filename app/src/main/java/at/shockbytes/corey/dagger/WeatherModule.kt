@@ -1,5 +1,8 @@
 package at.shockbytes.corey.dagger
 
+import at.shockbytes.core.scheduler.SchedulerFacade
+import at.shockbytes.corey.common.core.location.LocationRepository
+import at.shockbytes.corey.data.schedule.weather.DefaultScheduleWeatherResolver
 import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.data.schedule.weather.TestScheduleWeatherResolver
 import at.shockbytes.corey.data.weather.InMemoryWeatherStorage
@@ -34,6 +37,16 @@ class WeatherModule {
 
     @Provides
     @Reusable
+    fun provideScheduleWeatherResolver(
+        weatherRepository: WeatherRepository,
+        schedulers: SchedulerFacade,
+        locationRepository: LocationRepository
+    ): ScheduleWeatherResolver {
+        return DefaultScheduleWeatherResolver(weatherRepository, schedulers, locationRepository)
+    }
+
+    @Provides
+    @Reusable
     fun provideWeatherStorage(): WeatherStorage {
         return InMemoryWeatherStorage()
     }
@@ -53,11 +66,5 @@ class WeatherModule {
         validityOptions: WeatherValidityOptions
     ): WeatherRepository {
         return OwmWeatherRepository(owmWeatherApi, weatherStorage, validityOptions)
-    }
-
-    @Provides
-    @Reusable
-    fun provideScheduleWeatherResolver(): ScheduleWeatherResolver {
-        return TestScheduleWeatherResolver()
     }
 }

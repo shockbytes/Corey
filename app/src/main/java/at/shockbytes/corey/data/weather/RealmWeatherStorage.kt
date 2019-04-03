@@ -1,7 +1,6 @@
 package at.shockbytes.corey.data.weather
 
 import at.shockbytes.weather.CurrentWeather
-import at.shockbytes.weather.DailyWeatherForecast
 import at.shockbytes.weather.WeatherForecast
 import at.shockbytes.weather.WeatherStorage
 import io.reactivex.Single
@@ -21,14 +20,6 @@ class RealmWeatherStorage : WeatherStorage {
     }
 
     override fun loadCachedWeatherForecast(): Single<WeatherForecast> {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun cacheDailyWeatherForecast(dailyForecast: DailyWeatherForecast) {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun loadCachedDailyWeatherForecast(): Single<DailyWeatherForecast>? {
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 }

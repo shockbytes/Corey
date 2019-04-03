@@ -29,7 +29,8 @@ import javax.inject.Singleton
     WorkoutModule::class,
     FirebaseModule::class,
     ViewModelModule::class,
-    WeatherModule::class
+    WeatherModule::class,
+    NetModule::class
 ])
 interface AppComponent : ShockbytesInjector {
 
