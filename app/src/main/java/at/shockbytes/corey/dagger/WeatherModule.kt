@@ -4,7 +4,6 @@ import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.data.schedule.weather.DefaultScheduleWeatherResolver
 import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
-import at.shockbytes.corey.data.schedule.weather.TestScheduleWeatherResolver
 import at.shockbytes.corey.data.weather.InMemoryWeatherStorage
 import at.shockbytes.weather.OwmWeatherRepository
 import at.shockbytes.weather.WeatherRepository

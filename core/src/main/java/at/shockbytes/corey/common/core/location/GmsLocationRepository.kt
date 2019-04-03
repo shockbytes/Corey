@@ -29,11 +29,11 @@ class GmsLocationRepository(private val context: Context) : LocationRepository {
     }
 
     override fun requestLocationUpdates(): Observable<Location> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun stopLocationUpdates() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun resolveLocation(loc: Location): Single<String> {
@@ -59,7 +59,6 @@ class GmsLocationRepository(private val context: Context) : LocationRepository {
     private fun distanceBetween(start: Location, end: Location): Float {
         val res = FloatArray(1)
         android.location.Location.distanceBetween(start.lat, start.lng, end.lat, end.lng, res)
-        return res[0]//.div(1000f)
+        return res[0] // .div(1000f)
     }
-
 }

@@ -1,6 +1,5 @@
 package at.shockbytes.corey.data.schedule.weather
 
-
 object WeatherResolverHelper {
 
     private const val DAYS_PER_WEEK = 7
@@ -13,5 +12,4 @@ object WeatherResolverHelper {
             index + DAYS_PER_WEEK - currentDayOfWeek
         }
     }
-
 }

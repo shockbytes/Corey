@@ -29,11 +29,8 @@ class WeatherResolverHelperTest {
                 IndexDataPoint(WeekDay.SUNDAY.index, WeekDay.MONDAY.index, 6),
                 IndexDataPoint(WeekDay.SUNDAY.index, WeekDay.TUESDAY.index, 5),
                 IndexDataPoint(WeekDay.TUESDAY.index, WeekDay.FRIDAY.index, 4)
-
-
         )
     }
-
 
     enum class WeekDay(val index: Int) {
         MONDAY(0),

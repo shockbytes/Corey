@@ -17,5 +17,4 @@ interface LocationRepository {
      * @return Distance in meter
      */
     fun calculateDistanceToLastKnownLocation(location: Location): Single<Int>
-
 }
