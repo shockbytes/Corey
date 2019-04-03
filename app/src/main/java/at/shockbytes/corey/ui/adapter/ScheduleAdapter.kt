@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
+import at.shockbytes.corey.common.core.util.CoreySettings
 import at.shockbytes.corey.common.core.workout.model.LocationType
 import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.data.schedule.ScheduleItem
@@ -30,7 +31,8 @@ class ScheduleAdapter(
     private val onItemClickedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit),
     private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit),
     private val weatherResolver: ScheduleWeatherResolver,
-    private val schedulers: SchedulerFacade
+    private val schedulers: SchedulerFacade,
+    private val coreySettings: CoreySettings
 ) : BaseAdapter<ScheduleItem>(context, mutableListOf()), ItemTouchHelperAdapter {
 
     private val compositeDisposable = CompositeDisposable()
@@ -206,9 +208,13 @@ class ScheduleAdapter(
             itemPosition = position
             item_schedule_txt_name.text = item.name
 
-            if (item.locationType == LocationType.OUTDOOR) {
+            if (shouldLoadWeather(item)) {
                 loadWeather(position)
             }
+        }
+
+        private fun shouldLoadWeather(item: ScheduleItem): Boolean {
+            return (item.locationType == LocationType.OUTDOOR) && coreySettings.isWeatherForecastEnabled
         }
 
         private fun loadWeather(index: Int) {

@@ -224,5 +224,7 @@
     <string name="delete_schedule">Delete schedule</string>
     <string name="delete_schedule_message">Are you sure that you want to delete your whole schedule?</string>
     <string name="hide_already_finished_goals">Hide already finished goals</string>
+    <string name="show_weather_forecast">Weather forecast</string>
+    <string name="prefs_schedule_weather_forecast_key">prefs_schedule_weather_forecast_key</string>
 
 </resources>

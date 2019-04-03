@@ -15,6 +15,7 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
 import at.shockbytes.corey.ui.adapter.ScheduleAdapter
 import at.shockbytes.corey.common.addTo
+import at.shockbytes.corey.common.core.util.CoreySettings
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.data.schedule.ScheduleRepository
@@ -47,6 +48,9 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
     lateinit var schedulers: SchedulerFacade
 
     @Inject
+    lateinit var coreySettings: CoreySettings
+
+    @Inject
     lateinit var weatherResolver: ScheduleWeatherResolver
 
     private lateinit var touchHelper: ItemTouchHelper
@@ -56,7 +60,8 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
                 { item, _, position -> onScheduleItemClicked(item, position) },
                 { item, position -> onItemDismissed(item, position) },
                 weatherResolver,
-                schedulers
+                schedulers,
+                coreySettings
         )
     }
 

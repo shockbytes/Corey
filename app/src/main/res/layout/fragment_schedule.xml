@@ -22,30 +22,20 @@
         android:layout_toEndOf="@+id/fragment_schedule_rv_days"
         android:overScrollMode="never" />
 
-    <android.support.v7.widget.CardView
+    <TextView
         android:id="@+id/fragment_schedule_card_clear_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fragment_schedule_rv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableStart="@drawable/ic_cancel"
-            android:drawablePadding="16dp"
-            android:drawableTint="@color/material_red"
-            android:padding="16dp"
-            android:text="@string/clear_all"
-            android:textAllCaps="true"
-            android:textColor="@color/material_red" />
-
-    </android.support.v7.widget.CardView>
+        android:drawableStart="@drawable/ic_cancel"
+        android:drawablePadding="16dp"
+        android:drawableTint="@color/material_red"
+        android:padding="16dp"
+        android:text="@string/clear_all"
+        android:textAllCaps="true"
+        android:textColor="@color/material_red"
+        style="@style/Widget.AppCompat.Button.Borderless" />
 
 </RelativeLayout>

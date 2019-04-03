@@ -36,9 +36,9 @@
                 android:id="@+id/txtMenuUserName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="0dp"
+                android:layout_marginEnd="4dp"
                 android:text="@string/anonymous_user"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="15sp"
@@ -51,8 +51,8 @@
                 android:id="@+id/txtMenuUserMail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginEnd="4dp"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toStartOf="@+id/btnMenuLogin"
@@ -68,6 +68,26 @@
                 android:background="@color/colorAccent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewMenuUser" />
 
+            <Switch
+                android:id="@+id/switchMenuDisableWeatherForecast"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:drawableStart="@drawable/ic_weather"
+                android:foreground="?attr/selectableItemBackground"
+                android:drawablePadding="24dp"
+                android:gravity="start|center_vertical"
+                android:padding="8dp"
+                android:text="@string/show_weather_forecast"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewMenuSeparator" />
+
             <Button
                 android:id="@+id/btnMenuSettings"
                 style="?android:attr/borderlessButtonStyle"
@@ -81,18 +101,20 @@
                 android:padding="8dp"
                 android:text="@string/settings"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewMenuSeparator" />
+                app:layout_constraintTop_toBottomOf="@+id/switchMenuDisableWeatherForecast" />
 
             <Button
-                style="@style/AppTheme.RoundedButton.Outlined"
                 android:id="@+id/btnMenuLogin"
+                style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/login"
                 app:layout_constraintBottom_toTopOf="@+id/viewMenuSeparator"
                 app:layout_constraintEnd_toEndOf="parent"

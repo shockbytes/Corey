@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.model.LoginUserEvent
@@ -81,6 +82,14 @@ class MenuFragment : BottomSheetDialogFragment() {
             }
             dismiss()
         }
+
+        view.findViewById<Switch>(R.id.switchMenuDisableWeatherForecast).setOnCheckedChangeListener { _, isChecked ->
+            viewModel.enableWeatherForecast(isChecked)
+        }
+
+        viewModel.isWeatherForecastEnabled().observe(this, Observer { isEnabled ->
+            view.findViewById<Switch>(R.id.switchMenuDisableWeatherForecast).isChecked = (isEnabled == true)
+        })
 
         viewModel.getUserEvent().observe(this, Observer { event ->
 
