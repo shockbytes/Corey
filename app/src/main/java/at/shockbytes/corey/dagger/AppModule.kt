@@ -10,6 +10,8 @@ import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.scheduler.AppSchedulerFacade
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.location.GmsLocationRepository
+import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.common.core.running.location.GooglePlayLocationManager
 import at.shockbytes.corey.common.core.running.location.LocationManager
 import at.shockbytes.corey.common.core.util.ExerciseDeserializer
@@ -100,6 +102,12 @@ class AppModule(private val app: Application) {
         return GsonBuilder()
                 .registerTypeHierarchyAdapter(Exercise::class.java, ExerciseDeserializer())
                 .create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationRepository(): LocationRepository {
+        return GmsLocationRepository(app.applicationContext)
     }
 
     @Provides

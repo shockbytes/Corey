@@ -8,12 +8,13 @@
 
     <Switch
         android:id="@+id/fragment_goals_cb_hide_finished"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:gravity="center"
+        android:switchPadding="16dp"
         android:text="@string/hide_already_finished_goals"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
