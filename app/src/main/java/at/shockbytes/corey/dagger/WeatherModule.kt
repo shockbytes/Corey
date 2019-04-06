@@ -10,6 +10,8 @@ import at.shockbytes.weather.WeatherRepository
 import at.shockbytes.weather.WeatherStorage
 import at.shockbytes.weather.WeatherValidityOptions
 import at.shockbytes.weather.owm.OwmWeatherApi
+import at.shockbytes.weather.owm.matcher.AfternoonBestOwmForecastItemMatcher
+import at.shockbytes.weather.owm.matcher.BestOwmForecastItemMatcher
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -59,11 +61,23 @@ class WeatherModule {
 
     @Provides
     @Reusable
+    fun provideOwmForecastItemMatcher(): BestOwmForecastItemMatcher {
+        return AfternoonBestOwmForecastItemMatcher()
+    }
+
+    @Provides
+    @Reusable
     fun provideWeatherRepository(
         owmWeatherApi: OwmWeatherApi,
         weatherStorage: WeatherStorage,
-        validityOptions: WeatherValidityOptions
+        validityOptions: WeatherValidityOptions,
+        bestOwmForecastItemMatcher: BestOwmForecastItemMatcher
     ): WeatherRepository {
-        return OwmWeatherRepository(owmWeatherApi, weatherStorage, validityOptions)
+        return OwmWeatherRepository(
+            owmWeatherApi,
+            weatherStorage,
+            validityOptions,
+            bestOwmForecastItemMatcher
+        )
     }
 }

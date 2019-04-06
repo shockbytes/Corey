@@ -1,4 +1,10 @@
 package at.shockbytes.weather.owm
+
+import at.shockbytes.corey.common.util.JodaDateTimeUtils
+import at.shockbytes.weather.WeatherForecast
+import at.shockbytes.weather.owm.matcher.BestOwmForecastItemMatcher
+import at.shockbytes.weather.util.WeatherResolverHelper
+
 /**
  * Author:  Martin Macheiner
  * Date:    21.09.2017.
@@ -10,23 +16,27 @@ class OwmWeatherForecast {
     val forecastCount: Int
         get() = list.size
 
-    fun prepare(): List<OwmWeatherRecord> {
-        if (list.size > 5) {
-            val compressed = mutableListOf<OwmWeatherRecord>()
-            var i = 0
-            while (i < list.size) {
-                compressed.add(list[i])
-                i += list.size / 5
-            }
-            list.clear()
-            list.addAll(compressed)
-        }
-        return list
-    }
+    fun toForecastItems(matcher: BestOwmForecastItemMatcher): List<WeatherForecast.ForecastItem> {
 
-    fun getForecastFor(day: Int): OwmWeatherRecord {
-        val idx = day.coerceIn(day until forecastCount)
-        return list[idx]
+        return list
+                .groupBy { record ->
+                    JodaDateTimeUtils.getDayOfMonthFromTimestamp(record.timestamp)
+                }
+                .entries
+                .mapNotNull { (dayOfMonth, owmRecords) ->
+
+                    // Can be null, because sometimes there is no forecast item for the right date
+                    with(WeatherResolverHelper.findBestWeatherRecordForTimestamps(owmRecords, matcher)) {
+                        this?.let {
+                            WeatherForecast.ForecastItem(
+                                    timestamp = timestamp,
+                                    dayOfMonth = dayOfMonth,
+                                    temperature = temperatureAsInt,
+                                    icon = OwmWeatherIconMapper.mapOwmIconToDrawable(weatherIconUrl)
+                            )
+                        }
+                    }
+                }
     }
 
     override fun toString(): String {

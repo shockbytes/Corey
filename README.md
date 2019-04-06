@@ -1,9 +1,9 @@
 # Corey - Personal Training Mate
 
-### Version 3.0
+### Version 4.0
 - [ ] Improve basically the whole code base (use ViewModels)
 - [ ] Fix workout notification
-- [ ] Clean up data layer (Do not subscribe there observables, rather in the ViewModel)
+- [x] Clean up data layer (Do not subscribe there observables, rather in the ViewModel)
 - [x] Bring back workout mode
 - [x] Bring back workout creation
 

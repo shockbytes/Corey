@@ -1,9 +1,9 @@
 package at.shockbytes.corey.ui.model.mapper
 
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.util.JodaDateTimeUtils
 import at.shockbytes.corey.data.goal.Goal
 import at.shockbytes.corey.ui.model.GoalItem
-import at.shockbytes.corey.util.JodaDateTimeUtils
 
 class GoalMapper : SortedMapper<Goal, GoalItem>() {
 

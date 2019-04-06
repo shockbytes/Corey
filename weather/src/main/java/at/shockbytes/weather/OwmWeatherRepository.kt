@@ -4,12 +4,14 @@ import at.shockbytes.weather.owm.OwmCurrentWeather
 import at.shockbytes.weather.owm.OwmWeatherForecast
 import at.shockbytes.weather.owm.OwmWeatherApi
 import at.shockbytes.weather.owm.OwmWeatherIconMapper
+import at.shockbytes.weather.owm.matcher.BestOwmForecastItemMatcher
 import io.reactivex.Single
 
 class OwmWeatherRepository(
     private val weatherApi: OwmWeatherApi,
     private val weatherStorage: WeatherStorage,
-    private val validityOptions: WeatherValidityOptions
+    private val validityOptions: WeatherValidityOptions,
+    private val bestOwmForecastItemMatcher: BestOwmForecastItemMatcher
 ) : WeatherRepository {
 
     override val forecastDays: Int = 5
@@ -71,12 +73,7 @@ class OwmWeatherRepository(
         val validityDate = validityOptions.getForecastValidityDate()
         return WeatherForecast(
             validityDate,
-            owmWeather.prepare().map { r ->
-                WeatherForecast.ForecastItem(
-                    r.temperatureAsInt,
-                    OwmWeatherIconMapper.mapOwmIconToDrawable(r.weatherIconUrl)
-                )
-            },
+            owmWeather.toForecastItems(bestOwmForecastItemMatcher),
             place = place
         )
     }

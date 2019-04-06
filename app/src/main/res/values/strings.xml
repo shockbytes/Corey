@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">Corey</string>
-    <string name="app_version" translatable="false">3.0</string>
+    <string name="app_version" translatable="false">3.1</string>
     <string name="action_settings">Settings</string>
 
     <string name="tab_workout">Workouts</string>
@@ -225,6 +225,6 @@
     <string name="delete_schedule_message">Are you sure that you want to delete your whole schedule?</string>
     <string name="hide_already_finished_goals">Hide already finished goals</string>
     <string name="show_weather_forecast">Weather forecast</string>
-    <string name="prefs_schedule_weather_forecast_key">prefs_schedule_weather_forecast_key</string>
+    <string name="prefs_schedule_weather_forecast_key" translatable="false">prefs_schedule_weather_forecast_key</string>
 
 </resources>

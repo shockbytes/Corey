@@ -9,6 +9,8 @@ data class WeatherForecast(
     operator fun get(idx: Int): ForecastItem = forecastItems[idx]
 
     data class ForecastItem(
+        val timestamp: Long,
+        val dayOfMonth: Int,
         val temperature: Int,
         val icon: Int
     )
