@@ -1,5 +1,6 @@
 package at.shockbytes.corey.ui.fragment.body
 
+import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import at.shockbytes.corey.R
 import at.shockbytes.corey.data.body.info.BodyInfo
@@ -10,6 +11,8 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import kotlinx.android.synthetic.main.fragment_body_view_weight_history.*
+import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
+import com.github.mikephil.charting.components.LimitLine
 
 /**
  * Author:  Martin Macheiner
@@ -60,6 +63,14 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
         dataSet.isHighlightEnabled = false
         context?.let { ctx ->
             dataSet.color = ContextCompat.getColor(ctx, R.color.body_card_weight_history)
+
+            // Add dream weight line
+            val dreamWeightLine = getDreamWeightLine(
+                bodyInfo.dreamWeight.toFloat(),
+                getString(R.string.dreamweight),
+                ContextCompat.getColor(ctx, R.color.body_card_weight_history)
+            )
+            fragment_body_card_weight_graph_linechart.axisLeft.addLimitLine(dreamWeightLine)
         }
 
         fragment_body_card_weight_graph_linechart.xAxis.valueFormatter = IAxisValueFormatter { value, _ -> labels[value.toInt()] }
@@ -71,6 +82,45 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
         animateCard(fragment_body_card_weight_graph, 0)
     }
 
-    override fun animateView(startDelay: Long) {
+    override fun animateView(startDelay: Long) = Unit
+
+    private fun getDreamWeightLine(
+        dreamWeight: Float,
+        title: String,
+        @ColorInt dreamWeightLineColor: Int
+    ): LimitLine {
+
+        return LimitLine(dreamWeight, title).apply {
+            lineWidth = 2f
+            lineColor = dreamWeightLineColor
+            enableDashedLine(10f, 10f, 0f)
+            labelPosition = LimitLabelPosition.RIGHT_TOP
+            textSize = 10f
+        }
     }
+
+    /*
+    private fun requestCustomFont() {
+
+        val request = FontRequest(
+                "com.google.android.gms.fonts",
+                "com.google.android.gms",
+                "Montserrat",
+                R.array.com_google_android_gms_fonts_certs)
+
+        val callback = object : FontsContract.FontRequestCallback() {
+
+            override fun onTypefaceRetrieved(typeface: Typeface) {
+                // Your code to use the font goes here
+                ...
+            }
+
+            override fun onTypefaceRequestFailed(reason: Int) {
+                // Your code to deal with the failure goes here
+                ...
+            }
+        }
+        FontsContract.requestFonts(context, request, handler, null, callback)
+    }
+    */
 }

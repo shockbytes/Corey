@@ -182,5 +182,6 @@
     <string name="add_goal">Neues Ziel</string>
     <string name="schedule_deletion_successful">Wochenplan zurückgesetzt</string>
     <string name="schedule_deletion_error">Fehler beim zurücksetzen des Wochenplans</string>
+    <string name="dreamweight">Zielgewicht</string>
 
 </resources>
