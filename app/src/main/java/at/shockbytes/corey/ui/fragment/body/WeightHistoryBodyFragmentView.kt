@@ -56,11 +56,13 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
             entries.add(Entry(idx.toFloat(), p.weight.toFloat()))
         }
 
-        val dataSet = LineDataSet(entries, getString(R.string.weight))
-        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        dataSet.setDrawCircles(false)
-        dataSet.setDrawValues(false)
-        dataSet.isHighlightEnabled = false
+        val dataSet = LineDataSet(entries, getString(R.string.weight)).apply {
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            setDrawCircles(false)
+            setDrawValues(false)
+            isHighlightEnabled = false
+        }
+
         context?.let { ctx ->
             dataSet.color = ContextCompat.getColor(ctx, R.color.body_card_weight_history)
 
@@ -75,8 +77,8 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
 
         fragment_body_card_weight_graph_linechart.xAxis.valueFormatter = IAxisValueFormatter { value, _ -> labels[value.toInt()] }
         fragment_body_card_weight_graph_linechart.axisLeft.valueFormatter = IAxisValueFormatter { value, _ -> "${value.toInt()} $weightUnit" }
-        val lineData = LineData(dataSet)
-        fragment_body_card_weight_graph_linechart.data = lineData
+
+        fragment_body_card_weight_graph_linechart.data = LineData(dataSet)
         fragment_body_card_weight_graph_linechart.invalidate()
 
         animateCard(fragment_body_card_weight_graph, 0)
@@ -91,11 +93,12 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
     ): LimitLine {
 
         return LimitLine(dreamWeight, title).apply {
-            lineWidth = 2f
+            lineWidth = 1f
             lineColor = dreamWeightLineColor
-            enableDashedLine(10f, 10f, 0f)
-            labelPosition = LimitLabelPosition.RIGHT_TOP
+            enableDashedLine(7f, 7f, 0f)
+            labelPosition = LimitLabelPosition.LEFT_BOTTOM
             textSize = 10f
+            textColor = dreamWeightLineColor
         }
     }
 
