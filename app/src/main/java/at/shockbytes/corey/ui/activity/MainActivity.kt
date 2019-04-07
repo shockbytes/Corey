@@ -9,7 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.view.PagerAdapter
-import android.widget.TextView
+import android.support.v7.app.AlertDialog
 import at.shockbytes.core.image.GlideImageLoader
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.model.ShockbytesUser
@@ -18,6 +18,7 @@ import at.shockbytes.core.ui.model.AdditionalToolbarAction
 import at.shockbytes.core.ui.model.BottomNavigationActivityOptions
 import at.shockbytes.core.ui.model.BottomNavigationTab
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.ui.adapter.CoreyPagerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
@@ -26,6 +27,8 @@ import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import at.shockbytes.corey.util.AppParams
+import io.reactivex.android.schedulers.AndroidSchedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : BottomNavigationBarActivity<AppComponent>() {
@@ -36,6 +39,35 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     private lateinit var viewModel: MainViewModel
 
     override val imageLoader: ImageLoader = GlideImageLoader(R.drawable.ic_account)
+
+    /*
+    private val fabMenuOptions = FabMenuOptions(
+            menuId = R.menu.menu_fab,
+            menuColorList = listOf(R.color.colorPrimary, R.color.material_red),
+            visiblePageIndices = listOf(0, 3),
+            iconClosed = R.drawable.ic_add,
+            iconOpened = R.drawable.ic_cancel
+    )
+    */
+
+    private val additionalToolbarActionItems = listOf(
+            AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.create_workout, true) {
+                activityTransition(CreateWorkoutActivity.newIntent(applicationContext), AppParams.REQUEST_CODE_CREATE_WORKOUT)
+            },
+            AdditionalToolbarAction(R.drawable.ic_cancel_red, R.string.reset_schedule, true) {
+                showScheduleDeletionApprovalDialog()
+            },
+            AdditionalToolbarAction(R.drawable.ic_body_card_weight_history_colored, R.string.change_dreamweight, true) {
+                askForDesiredWeight()
+            },
+            AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.add_goal, true) {
+                AddGoalDialogFragment.newInstance()
+                        .setOnGoalCreatedListener { goal ->
+                            viewModel.storeBodyGoal(goal)
+                        }
+                        .show(supportFragmentManager, "dialog-fragment-add-goal")
+            }
+    )
 
     override val options: BottomNavigationActivityOptions by lazy {
         BottomNavigationActivityOptions(
@@ -49,15 +81,12 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
                 appName = getString(R.string.app_name),
                 viewPagerOffscreenLimit = 3,
                 appTheme = R.style.AppTheme_NoActionBar,
-                fabMenuId = R.menu.menu_fab,
-                fabMenuColorList = listOf(R.color.colorPrimary, R.color.material_red),
-                fabVisiblePageIndices = listOf(0, 3),
+                fabMenuOptions = null,
                 overflowIcon = R.drawable.ic_overflow,
-                additionalToolbarAction = AdditionalToolbarAction(R.drawable.ic_body_card_weight_history_colored),
+                initialAdditionalToolbarAction = additionalToolbarActionItems[1],
                 toolbarColor = R.color.white,
                 toolbarItemColor = R.color.controls,
-                fabClosedIcon = R.drawable.ic_add,
-                fabOpenedIcon = R.drawable.ic_cancel,
+                titleColor = R.color.colorPrimary,
                 navigationBarColor = R.color.navigation_bar_color,
                 navigationItemTextColor = R.color.navigation_bar_item_text,
                 navigationItemTintColor = R.color.navigation_bar_item_text
@@ -67,10 +96,6 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
-
-        // TODO: Put title coloring inside BottomNavigationBarActivity
-        findViewById<TextView>(R.id.activity_bottom_navigation_txtMainToolbarTitle)
-                .setTextColor(getColor(R.color.colorPrimary))
     }
 
     override fun bindViewModel() {
@@ -79,14 +104,23 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
                 onUserEvent(event)
             }
         })
+
+        viewModel.getToastMessages()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ message ->
+                    showToast(message)
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
+                .addTo(compositeDisposable)
     }
 
     override fun injectToGraph(appComponent: AppComponent?) {
         appComponent?.inject(this)
     }
 
-    override fun onAdditionalToolbarActionClicked() {
-        askForDesiredWeight()
+    override fun onBottomBarPageChanged(newPageIndex: Int) {
+        additionalToolbarActionItem = additionalToolbarActionItems[newPageIndex]
     }
 
     override fun onFabMenuItemClicked(id: Int): Boolean {
@@ -140,6 +174,19 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
                 }
             }
         }
+    }
+
+    private fun showScheduleDeletionApprovalDialog() {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.delete_schedule)
+                .setMessage(R.string.delete_schedule_message)
+                .setIcon(R.drawable.ic_cancel_red)
+                .setNegativeButton(R.string.cancel) { _, _ -> Unit }
+                .setPositiveButton(R.string.delete) { _, _ ->
+                    viewModel.resetSchedule()
+                }
+                .create()
+                .show()
     }
 
     private fun activityTransition(intent: Intent, reqCodeForResult: Int) {

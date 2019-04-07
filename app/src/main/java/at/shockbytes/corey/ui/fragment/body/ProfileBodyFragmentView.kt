@@ -53,9 +53,10 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
                         uri,
                         fragment_body_img_avatar,
                         R.drawable.ic_user_default,
-                        true,
-                        this,
-                        Pair(false, true)
+                        withCrossFade = true,
+                        circular = true,
+                        callback = this,
+                        callbackHandleValues = Pair(false, true)
                 )
             }
         }

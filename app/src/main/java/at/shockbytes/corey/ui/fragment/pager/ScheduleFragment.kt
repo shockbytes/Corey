@@ -2,12 +2,10 @@ package at.shockbytes.corey.ui.fragment.pager
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.view.HapticFeedbackConstants
 import android.widget.Toast
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.ui.fragment.BaseFragment
@@ -27,9 +25,7 @@ import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotterknife.bindView
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -125,32 +121,6 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
             touchHelper = ItemTouchHelper(callback)
             touchHelper.attachToRecyclerView(recyclerView)
             recyclerView.adapter = adapter
-        }
-
-        fragment_schedule_card_clear_all?.setOnClickListener { view ->
-            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showRemoveApprovalDialog()
-        }
-    }
-
-    private fun showRemoveApprovalDialog() {
-        context?.let { ctx ->
-            AlertDialog.Builder(ctx)
-                    .setTitle(R.string.delete_schedule)
-                    .setMessage(R.string.delete_schedule_message)
-                    .setIcon(R.drawable.ic_cancel_red)
-                    .setNegativeButton(R.string.cancel) { _, _ -> Unit }
-                    .setPositiveButton(R.string.delete) { _, _ ->
-                        scheduleRepository.deleteAll()
-                                .subscribe({
-                                    Timber.d("All items deleted")
-                                }, { throwable ->
-                                    showToast("Could not delete all items: ${throwable.message}")
-                                })
-                                .addTo(compositeDisposable)
-                    }
-                    .create()
-                    .show()
         }
     }
 

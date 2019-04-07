@@ -42,8 +42,10 @@ ext {
     daggerVersion = "2.17"
     supportVersion = "28.0.0"
     rxJavaVersion = "2.1.6"
-    rxAndroidVersion = "2.0.2"
+    rxAndroidVersion = "2.1.0"
+
     shockUtilVersion = "4.0"
+    shockbytesCoreVersion = "0.2.1"
 
     firebaseVersionDatabase = "16.0.5"
     firebaseVersionConfig = "16.1.0"
@@ -58,6 +60,7 @@ ext {
     playServicesVersionWearable = "16.0.1"
     playServicesVersionFitness = "16.0.1"
     archVersion = "1.1.1"
+    crashlyticsVersion = "2.9.9"
 
     glideVersion = "4.8.0"
     retrofitVersion = "2.5.0"

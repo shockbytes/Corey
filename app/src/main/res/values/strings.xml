@@ -226,5 +226,11 @@
     <string name="hide_already_finished_goals">Hide already finished goals</string>
     <string name="show_weather_forecast">Weather forecast</string>
     <string name="prefs_schedule_weather_forecast_key" translatable="false">prefs_schedule_weather_forecast_key</string>
+    <string name="create_workout">Create workout</string>
+    <string name="reset_schedule">Reset schedule</string>
+    <string name="change_dreamweight">Change dreamweight</string>
+    <string name="add_goal">Add goal</string>
+    <string name="schedule_deletion_successful">Schedule reset</string>
+    <string name="schedule_deletion_error">Error while resetting schedule</string>
 
 </resources>
