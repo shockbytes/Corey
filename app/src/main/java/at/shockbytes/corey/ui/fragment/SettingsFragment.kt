@@ -21,9 +21,6 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onCreatePreferences(p0: Bundle?, p1: String?) {
         (activity?.application as? CoreyApp)?.appComponent?.inject(this)
         addPreferencesFromResource(R.xml.settings)
-
-        findPreference(getString(R.string.prefs_workout_day_notification_daytime_key))
-                .onPreferenceChangeListener = this
     }
 
     override fun onPreferenceChange(p0: Preference?, p1: Any?): Boolean {
