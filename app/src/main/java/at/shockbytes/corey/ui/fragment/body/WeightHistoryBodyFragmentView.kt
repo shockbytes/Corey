@@ -90,9 +90,9 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
     override fun animateView(startDelay: Long) = Unit
 
     private fun getDreamWeightLine(
-            dreamWeight: Float,
-            title: String,
-            @ColorInt dreamWeightLineColor: Int
+        dreamWeight: Float,
+        title: String,
+        @ColorInt dreamWeightLineColor: Int
     ): LimitLine {
 
         return LimitLine(dreamWeight, title).apply {

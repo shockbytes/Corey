@@ -35,7 +35,7 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
-    private lateinit var adapter: WorkoutAdapter
+    private lateinit var workoutOverviewAdapter: WorkoutAdapter
     private lateinit var viewModel: WorkoutOverviewViewModel
 
     @Inject
@@ -81,7 +81,7 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
 
     override fun onDelete(w: Workout?) {
         if (w != null) {
-            // adapter.deleteEntity(w)
+            // workoutOverviewAdapter.deleteEntity(w)
             viewModel.deleteWorkout(w)
         }
     }
@@ -94,11 +94,15 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
 
     override fun setupViews() {
 
-        fragment_training_rv.layoutManager = layoutManagerForOrientation
-        adapter = WorkoutAdapter(activity!!, listOf(), this)
-        adapter.onItemClickListener = this
-        // recyclerView.setEmptyView(emptyView);
-        fragment_training_rv.adapter = adapter
+        context?.let { ctx ->
+            workoutOverviewAdapter = WorkoutAdapter(ctx, this).apply {
+                onItemClickListener = this@WorkoutOverviewFragment
+            }
+            fragment_training_rv.apply {
+                layoutManager = layoutManagerForOrientation
+                adapter = workoutOverviewAdapter
+            }
+        }
     }
 
     override fun bindViewModel() {
@@ -108,7 +112,7 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
             when (state) {
 
                 is WorkoutOverviewViewModel.RetrieveWorkoutState.Success -> {
-                    adapter.data = state.workouts.toMutableList()
+                    workoutOverviewAdapter.data = state.workouts.toMutableList()
                 }
                 is WorkoutOverviewViewModel.RetrieveWorkoutState.Error -> {
                     showSnackbar(getString(R.string.snackbar_cannot_load_workouts))

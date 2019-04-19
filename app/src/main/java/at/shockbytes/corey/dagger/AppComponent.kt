@@ -5,6 +5,7 @@ import at.shockbytes.corey.core.receiver.NotificationReceiver
 import at.shockbytes.corey.core.receiver.OnBootReceiver
 import at.shockbytes.corey.ui.activity.MainActivity
 import at.shockbytes.corey.ui.fragment.MenuFragment
+import at.shockbytes.corey.ui.fragment.NotificationSettingsFragment
 import at.shockbytes.corey.ui.fragment.SettingsFragment
 import at.shockbytes.corey.ui.fragment.WorkoutFragment
 import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
@@ -63,4 +64,6 @@ interface AppComponent : ShockbytesInjector {
     fun inject(fragment: GoalsFragment)
 
     fun inject(fragment: MenuFragment)
+
+    fun inject(fragment: NotificationSettingsFragment)
 }

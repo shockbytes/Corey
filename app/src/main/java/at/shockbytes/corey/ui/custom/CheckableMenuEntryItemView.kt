@@ -48,5 +48,4 @@ class CheckableMenuEntryItemView(context: Context, attrs: AttributeSet) : FrameL
             recycle()
         }
     }
-
 }

@@ -16,7 +16,7 @@ import kotterknife.bindView
  * Author:  Martin Macheiner
  * Date:    08.03.2017
  */
-class GoalAdapter(cxt: Context, data: List<GoalItem>) : BaseAdapter<GoalItem>(cxt, data.toMutableList()) {
+class GoalAdapter(cxt: Context) : BaseAdapter<GoalItem>(cxt) {
 
     private var onGoalActionClickedListener: OnGoalActionClickedListener? = null
 

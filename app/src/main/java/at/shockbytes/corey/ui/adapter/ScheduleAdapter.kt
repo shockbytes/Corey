@@ -33,7 +33,7 @@ class ScheduleAdapter(
     private val weatherResolver: ScheduleWeatherResolver,
     private val schedulers: SchedulerFacade,
     private val coreySettings: CoreySettings
-) : BaseAdapter<ScheduleItem>(context, mutableListOf()), ItemTouchHelperAdapter {
+) : BaseAdapter<ScheduleItem>(context), ItemTouchHelperAdapter {
 
     private val compositeDisposable = CompositeDisposable()
 

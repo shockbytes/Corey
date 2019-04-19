@@ -21,9 +21,8 @@ import kotterknife.bindView
  */
 class WorkoutAdapter(
     cxt: Context,
-    data: List<Workout>,
     private val onWorkoutPopupItemSelectedListener: OnWorkoutPopupItemSelectedListener?
-) : BaseAdapter<Workout>(cxt, data.toMutableList()) {
+) : BaseAdapter<Workout>(cxt) {
 
     interface OnWorkoutPopupItemSelectedListener {
 
@@ -36,8 +35,9 @@ class WorkoutAdapter(
         return ViewHolder(inflater.inflate(R.layout.item_workout, parent, false))
     }
 
-    internal inner class ViewHolder(itemView: View)
-        : BaseAdapter<Workout>.ViewHolder(itemView), PopupMenu.OnMenuItemClickListener {
+    inner class ViewHolder(
+        itemView: View
+    ) : BaseAdapter<Workout>.ViewHolder(itemView), PopupMenu.OnMenuItemClickListener {
 
         private val popupMenu: PopupMenu
 

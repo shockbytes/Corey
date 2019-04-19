@@ -6,8 +6,7 @@ import android.widget.FrameLayout
 import at.shockbytes.corey.R
 import kotlinx.android.synthetic.main.menu_entry_item_view.view.*
 
-
-class MenuEntryItemView(context: Context, attrs: AttributeSet): FrameLayout(context, attrs) {
+class MenuEntryItemView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
     init {
         inflate(context, R.layout.menu_entry_item_view, this)
@@ -28,6 +27,5 @@ class MenuEntryItemView(context: Context, attrs: AttributeSet): FrameLayout(cont
 
             recycle()
         }
-
     }
 }

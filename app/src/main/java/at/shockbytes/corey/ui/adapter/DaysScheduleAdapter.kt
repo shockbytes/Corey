@@ -17,7 +17,11 @@ import org.joda.time.LocalDate
 class DaysScheduleAdapter(
     context: Context,
     data: List<String>
-) : BaseAdapter<String>(context, data.toMutableList()) {
+) : BaseAdapter<String>(context) {
+
+    init {
+        this.data = data.toMutableList()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<String>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_schedule_days, parent, false))

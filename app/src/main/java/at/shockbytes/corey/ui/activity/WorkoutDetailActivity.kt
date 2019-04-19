@@ -85,7 +85,9 @@ class WorkoutDetailActivity : TintableBackNavigableActivity<AppComponent>() {
 
         activity_training_recyclerview.apply {
             layoutManager = LinearLayoutManager(this@WorkoutDetailActivity)
-            adapter = ExerciseAdapter(this@WorkoutDetailActivity, workout.exercises)
+            adapter = ExerciseAdapter(this@WorkoutDetailActivity).apply {
+                data = workout.exercises
+            }
         }
 
         activity_training_btn_start.setOnClickListener {

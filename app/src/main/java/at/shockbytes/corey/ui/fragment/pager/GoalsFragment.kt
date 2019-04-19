@@ -56,7 +56,7 @@ class GoalsFragment : BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActi
         context?.let { ctx ->
             fragment_body_card_goals_rv.layoutManager = LinearLayoutManager(ctx)
             fragment_body_card_goals_rv.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-            val goalAdapter = GoalAdapter(ctx, listOf())
+            val goalAdapter = GoalAdapter(ctx)
             goalAdapter.setOnGoalActionClickedListener(this)
             fragment_body_card_goals_rv.adapter = goalAdapter
         }

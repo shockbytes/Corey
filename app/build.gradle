@@ -73,6 +73,8 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'pub.devrel:easypermissions:1.0.0'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+    implementation 'com.github.florent37:viewanimator:1.1.0'
+
 
     implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
     kapt "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"

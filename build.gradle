@@ -44,19 +44,19 @@ ext {
     rxJavaVersion = "2.1.6"
     rxAndroidVersion = "2.1.0"
 
-    shockUtilVersion = "4.0"
+    shockUtilVersion = "4.0.2"
     shockbytesCoreVersion = "0.2.1"
 
-    firebaseVersionDatabase = "16.0.5"
-    firebaseVersionConfig = "16.1.0"
-    firebaseVersionCore = "16.0.5"
-    firebaseVersionAuth = "16.0.5"
+    firebaseVersionDatabase = "16.1.0"
+    firebaseVersionConfig = "16.5.0"
+    firebaseVersionCore = "16.0.8"
+    firebaseVersionAuth = "16.2.1"
 
     firebaseUIVersion = "4.2.1"
 
     playServicesVersionAuth = "16.0.1"
     playServicesVersionLocation = "16.0.0"
-    playServicesVersionMaps = "16.0.0"
+    playServicesVersionMaps = "16.1.0"
     playServicesVersionWearable = "16.0.1"
     playServicesVersionFitness = "16.0.1"
     archVersion = "1.1.1"

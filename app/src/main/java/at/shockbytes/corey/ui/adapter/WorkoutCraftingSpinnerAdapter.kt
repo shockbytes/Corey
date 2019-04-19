@@ -13,12 +13,13 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.view.model.SpinnerData
 
 /**
- * @author Martin Macheiner
- * Date: 24.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    24.02.2017
  */
-
-class WorkoutCraftingSpinnerAdapter(context: Context, objects: List<SpinnerData>)
-    : ArrayAdapter<SpinnerData>(context, 0, objects) {
+class WorkoutCraftingSpinnerAdapter(
+    context: Context,
+    objects: List<SpinnerData>
+) : ArrayAdapter<SpinnerData>(context, 0, objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return getDropDownView(position, convertView, parent)

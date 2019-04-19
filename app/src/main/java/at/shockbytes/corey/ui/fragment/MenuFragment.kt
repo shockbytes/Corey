@@ -1,5 +1,6 @@
 package at.shockbytes.corey.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
@@ -13,7 +14,6 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.model.LoginUserEvent
 import at.shockbytes.corey.R
@@ -77,15 +77,12 @@ class MenuFragment : BottomSheetDialogFragment() {
         }
 
         view.findViewById<View>(R.id.menu_item_settings)?.setOnClickListener {
-            activity?.let { act ->
-                startActivity(SettingsActivity.newIntent(act),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
-            }
+            startSettingsActivity()
             dismiss()
         }
 
         view.findViewById<View>(R.id.menu_item_notifications)?.setOnClickListener {
-            Toast.makeText(context!!, "Notifications coming soon...", Toast.LENGTH_SHORT).show()
+            openNotificationSettingsFragment()
             dismiss()
         }
 
@@ -119,6 +116,32 @@ class MenuFragment : BottomSheetDialogFragment() {
                 }
             }
         })
+    }
+
+    @SuppressLint("PrivateResource")
+    private fun openNotificationSettingsFragment() {
+        fragmentManager?.run {
+
+            val fragment = NotificationSettingsFragment()
+
+            beginTransaction()
+                .setCustomAnimations(
+                    R.anim.abc_fade_in,
+                    R.anim.abc_fade_out,
+                    R.anim.abc_fade_in,
+                    R.anim.abc_fade_out
+                )
+                .addToBackStack(fragment.javaClass.name)
+                .add(android.R.id.content, fragment)
+                .commit()
+        }
+    }
+
+    private fun startSettingsActivity() {
+        activity?.let { act ->
+            startActivity(SettingsActivity.newIntent(act),
+                ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
+        }
     }
 
     companion object {
