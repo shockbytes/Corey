@@ -233,5 +233,6 @@
     <string name="schedule_deletion_successful">Schedule reset</string>
     <string name="schedule_deletion_error">Error while resetting schedule</string>
     <string name="dreamweight">Dream weight</string>
+    <string name="notifications">Notifications</string>
 
 </resources>

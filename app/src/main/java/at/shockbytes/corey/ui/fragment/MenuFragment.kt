@@ -12,13 +12,14 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.Button
-import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.model.LoginUserEvent
 import at.shockbytes.corey.R
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.ui.activity.SettingsActivity
+import at.shockbytes.corey.ui.custom.CheckableMenuEntryItemView
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import javax.inject.Inject
 
@@ -75,7 +76,7 @@ class MenuFragment : BottomSheetDialogFragment() {
             viewModel.logout()
         }
 
-        view.findViewById<View>(R.id.btnMenuSettings)?.setOnClickListener {
+        view.findViewById<View>(R.id.menu_item_settings)?.setOnClickListener {
             activity?.let { act ->
                 startActivity(SettingsActivity.newIntent(act),
                         ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
@@ -83,12 +84,17 @@ class MenuFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        view.findViewById<Switch>(R.id.switchMenuDisableWeatherForecast).setOnCheckedChangeListener { _, isChecked ->
+        view.findViewById<View>(R.id.menu_item_notifications)?.setOnClickListener {
+            Toast.makeText(context!!, "Notifications coming soon...", Toast.LENGTH_SHORT).show()
+            dismiss()
+        }
+
+        view.findViewById<CheckableMenuEntryItemView>(R.id.checkable_menu_item_forecast).setOnCheckedChangeListener { isChecked ->
             viewModel.enableWeatherForecast(isChecked)
         }
 
         viewModel.isWeatherForecastEnabled().observe(this, Observer { isEnabled ->
-            view.findViewById<Switch>(R.id.switchMenuDisableWeatherForecast).isChecked = (isEnabled == true)
+            view.findViewById<CheckableMenuEntryItemView>(R.id.checkable_menu_item_forecast).isChecked = (isEnabled == true)
         })
 
         viewModel.getUserEvent().observe(this, Observer { event ->
