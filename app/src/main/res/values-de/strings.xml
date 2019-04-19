@@ -170,5 +170,19 @@
     <string name="goal">Ziel</string>
     <string name="month">Monat</string>
     <string name="year">Jahr</string>
+    <string name="clear_all">Zurücksetzen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="delete_schedule">Wochenplan löschen</string>
+    <string name="delete_schedule_message">Bist du dir sicher, dass du alle deine Termine löschen willst?</string>
+    <string name="hide_already_finished_goals">Zeige nur offene Ziele</string>
+    <string name="show_weather_forecast">Wettervorschau</string>
+    <string name="create_workout">Neues Workout</string>
+    <string name="reset_schedule">Wochenplan zurücksetzen</string>
+    <string name="change_dreamweight">Wunschgewicht ändern</string>
+    <string name="add_goal">Neues Ziel</string>
+    <string name="schedule_deletion_successful">Wochenplan zurückgesetzt</string>
+    <string name="schedule_deletion_error">Fehler beim zurücksetzen des Wochenplans</string>
+    <string name="dreamweight">Zielgewicht</string>
+    <string name="notifications">Benachrichtigungen</string>
 
 </resources>

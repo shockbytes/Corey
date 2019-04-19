@@ -1,5 +1,6 @@
 package at.shockbytes.corey.data.schedule
 
+import at.shockbytes.corey.common.core.workout.model.LocationType
 import java.util.UUID
 
 /**
@@ -7,9 +8,10 @@ import java.util.UUID
  * Date:    28.02.2017
  */
 data class ScheduleItem(
-    var name: String = "",
+    val name: String = "",
     var day: Int = -1,
-    var id: String = UUID.randomUUID().toString()
+    val id: String = UUID.randomUUID().toString(),
+    val locationType: LocationType = LocationType.NONE
 ) {
 
     val isEmpty: Boolean

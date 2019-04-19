@@ -39,7 +39,7 @@ object CoreyUtils {
         }
     }
 
-    fun tryShowIconsInPopupMenu(menu: PopupMenu, logTag: String = "Corey") {
+    fun tryShowIconsInPopupMenu(menu: PopupMenu) {
 
         try {
             val fieldPopup = menu.javaClass.getDeclaredField("mPopup")

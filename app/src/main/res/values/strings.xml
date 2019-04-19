@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">Corey</string>
-    <string name="app_version" translatable="false">3.0</string>
+    <string name="app_version" translatable="false">3.3</string>
     <string name="action_settings">Settings</string>
 
     <string name="tab_workout">Workouts</string>
@@ -219,5 +219,20 @@
     <string name="goal">Goal</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
+    <string name="clear_all">Clear all</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_schedule">Delete schedule</string>
+    <string name="delete_schedule_message">Are you sure that you want to delete your whole schedule?</string>
+    <string name="hide_already_finished_goals">Hide already finished goals</string>
+    <string name="show_weather_forecast">Weather forecast</string>
+    <string name="prefs_schedule_weather_forecast_key" translatable="false">prefs_schedule_weather_forecast_key</string>
+    <string name="create_workout">Create workout</string>
+    <string name="reset_schedule">Reset schedule</string>
+    <string name="change_dreamweight">Change dreamweight</string>
+    <string name="add_goal">Add goal</string>
+    <string name="schedule_deletion_successful">Schedule reset</string>
+    <string name="schedule_deletion_error">Error while resetting schedule</string>
+    <string name="dreamweight">Dream weight</string>
+    <string name="notifications">Notifications</string>
 
 </resources>

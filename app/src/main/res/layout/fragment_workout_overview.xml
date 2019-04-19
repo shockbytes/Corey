@@ -6,6 +6,7 @@
 
     <at.shockbytes.util.view.RecyclerViewWithEmptyView
         android:id="@+id/fragment_training_rv"
+        android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

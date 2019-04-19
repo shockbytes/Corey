@@ -16,10 +16,10 @@
         android:id="@+id/activity_training_detail_cardview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/activity_training_btn_start"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:transitionName="@string/transition_workout_card"
         app:cardCornerRadius="12dp"
         app:elevation="8dp">
@@ -152,19 +152,19 @@
                 android:layout_below="@+id/activity_training_detail_header_layout"
                 android:layout_marginTop="4dp" />
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/activity_training_btn_start"
+                android:layout_width="wrap_content"
+                app:srcCompat="@drawable/ic_back_arrow"
+                android:rotation="180"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"
+                app:elevation="4dp"
+                android:layout_height="wrap_content" />
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/activity_training_btn_start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:padding="16dp"
-        android:textColor="@android:color/white"
-        android:textSize="17sp"
-        app:backgroundTint="@color/colorAccent" />
 
 </RelativeLayout>
 

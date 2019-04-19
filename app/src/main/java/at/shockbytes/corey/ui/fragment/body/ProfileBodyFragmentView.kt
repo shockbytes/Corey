@@ -4,7 +4,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
 import android.support.v7.graphics.Palette
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnticipateOvershootInterpolator
@@ -15,7 +14,6 @@ import at.shockbytes.core.model.ShockbytesUser
 import at.shockbytes.corey.R
 import at.shockbytes.corey.data.body.info.BodyInfo
 import at.shockbytes.corey.common.core.util.CoreyUtils
-import at.shockbytes.corey.common.core.util.view.CoreyViewManager
 import at.shockbytes.corey.dagger.AppComponent
 import kotlinx.android.synthetic.main.fragment_body_view_profile.*
 import javax.inject.Inject
@@ -50,7 +48,16 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
 
         user.photoUrl?.let { uri ->
             context?.let { context ->
-                imageLoader.loadImageUri(context, uri, fragment_body_img_avatar, R.drawable.ic_user_default, true, this, Pair(false, true))
+                imageLoader.loadImageUri(
+                        context,
+                        uri,
+                        fragment_body_img_avatar,
+                        R.drawable.ic_user_default,
+                        withCrossFade = true,
+                        circular = true,
+                        callback = this,
+                        callbackHandleValues = Pair(false, true)
+                )
             }
         }
 
@@ -60,12 +67,7 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
     override fun animateView(startDelay: Long) {
     }
 
-    override fun onGenerated(palette: Palette?) {
-        val defaultColor = ContextCompat.getColor(context!!, R.color.colorPrimary)
-        palette?.getDarkMutedColor(defaultColor)?.let { headerColor ->
-            CoreyViewManager.backgroundColorTransition(fragment_body_header, defaultColor, headerColor)
-        }
-    }
+    override fun onGenerated(palette: Palette?) = Unit
 
     override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let { bitmap ->
@@ -82,7 +84,8 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
         val weightProgress = CoreyUtils.calculateDreamWeightProgress(
                 bodyInfo.highestWeight,
                 bodyInfo.latestWeightPoint.weight,
-                bodyInfo.dreamWeight.toDouble())
+                bodyInfo.dreamWeight.toDouble()
+        )
 
         // Animate image
         val imgAnimAlpha = ObjectAnimator.ofFloat(fragment_body_img_avatar, "alpha", 0f, 1f)

@@ -111,20 +111,23 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
 
     override fun setupViews() {
 
-        spinnerBodyRegion.adapter = WorkoutCraftingSpinnerAdapter(context!!,
-                CoreyAppUtils.getBodyRegionSpinnerData(context!!))
-        spinnerIntensity.adapter = WorkoutCraftingSpinnerAdapter(context!!,
-                CoreyAppUtils.getIntensitySpinnerData(context!!))
-        spinnerIntensity.onItemSelectedListener = this
+        context?.let { ctx ->
 
-        recyclerViewExercises.layoutManager = LinearLayoutManager(context)
-        exerciseAdapter = ExerciseAdapter(context!!, ArrayList())
-        exerciseAdapter.setItemsMovable(true)
-        // exerciseAdapter.setOnItemMoveListener(this);
-        val callback = BaseItemTouchHelper(exerciseAdapter, true, BaseItemTouchHelper.DragAccess.VERTICAL)
-        val touchHelper = ItemTouchHelper(callback)
-        touchHelper.attachToRecyclerView(recyclerViewExercises)
-        recyclerViewExercises.adapter = exerciseAdapter
+            spinnerBodyRegion.adapter = WorkoutCraftingSpinnerAdapter(ctx,
+                CoreyAppUtils.getBodyRegionSpinnerData(ctx))
+            spinnerIntensity.adapter = WorkoutCraftingSpinnerAdapter(ctx,
+                CoreyAppUtils.getIntensitySpinnerData(ctx))
+            spinnerIntensity.onItemSelectedListener = this
+
+            recyclerViewExercises.layoutManager = LinearLayoutManager(ctx)
+            exerciseAdapter = ExerciseAdapter(ctx)
+            exerciseAdapter.setItemsMovable(true)
+            // exerciseAdapter.setOnItemMoveListener(this);
+            val callback = BaseItemTouchHelper(exerciseAdapter, true, BaseItemTouchHelper.DragAccess.VERTICAL)
+            val touchHelper = ItemTouchHelper(callback)
+            touchHelper.attachToRecyclerView(recyclerViewExercises)
+            recyclerViewExercises.adapter = exerciseAdapter
+        }
 
         if (isUpdateMode) {
             fillFields()

@@ -13,13 +13,12 @@ import kotlinx.android.synthetic.main.item_exercises.*
 import java.util.Collections
 
 /**
- * @author Martin Macheiner
- * Date: 02.12.2015
+ * Author:  Martin Macheiner
+ * Date:    02.12.2015
  */
 class ExerciseAdapter(
-    context: Context,
-    data: List<Exercise>
-) : BaseAdapter<Exercise>(context, data.toMutableList()), ItemTouchHelperAdapter {
+    context: Context
+) : BaseAdapter<Exercise>(context), ItemTouchHelperAdapter {
 
     private var isItemMovable: Boolean = false
 

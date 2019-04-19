@@ -1,8 +1,8 @@
 package at.shockbytes.corey.data.schedule
 
 import at.shockbytes.corey.common.core.util.Pokeable
+import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Single
 
 /**
  * Author:  Martin Macheiner
@@ -12,7 +12,7 @@ interface ScheduleRepository : Pokeable {
 
     val schedule: Observable<List<ScheduleItem>>
 
-    val schedulableItems: Single<List<String>>
+    val schedulableItems: Observable<List<SchedulableItem>>
 
     val isWorkoutNotificationDeliveryEnabled: Boolean
 
@@ -26,7 +26,9 @@ interface ScheduleRepository : Pokeable {
 
     fun deleteScheduleItem(item: ScheduleItem)
 
-    fun postWeighNotification()
+    fun deleteAll(): Completable
 
-    fun postWorkoutNotification()
+    fun postWeighNotification(): Completable
+
+    fun postWorkoutNotification(): Completable
 }

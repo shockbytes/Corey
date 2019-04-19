@@ -7,19 +7,24 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.widget.Toast
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
 import at.shockbytes.corey.ui.adapter.ScheduleAdapter
 import at.shockbytes.corey.common.addTo
+import at.shockbytes.corey.common.core.util.CoreySettings
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.data.schedule.ScheduleRepository
+import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -33,14 +38,26 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     @Inject
-    lateinit var scheduleManager: ScheduleRepository
+    lateinit var scheduleRepository: ScheduleRepository
+
+    @Inject
+    lateinit var schedulers: SchedulerFacade
+
+    @Inject
+    lateinit var coreySettings: CoreySettings
+
+    @Inject
+    lateinit var weatherResolver: ScheduleWeatherResolver
 
     private lateinit var touchHelper: ItemTouchHelper
     private val adapter: ScheduleAdapter by lazy {
         ScheduleAdapter(
-            context!!,
-            { item, _, position -> onScheduleItemClicked(item, position) },
-            { item, position -> onItemDismissed(item, position) }
+                context!!,
+                { item, _, position -> onScheduleItemClicked(item, position) },
+                { item, position -> onItemDismissed(item, position) },
+                weatherResolver,
+                schedulers,
+                coreySettings
         )
     }
 
@@ -56,22 +73,26 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
 
     override val layoutId = R.layout.fragment_schedule
 
-    override fun onItemMove(t: ScheduleItem, from: Int, to: Int) {
-    }
+    override fun onItemMove(t: ScheduleItem, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() {
-        adapter.reorderAfterMove().forEach { scheduleManager.updateScheduleItem(it) }
+        adapter.reorderAfterMove()
+                .forEach { item ->
+                    scheduleRepository.updateScheduleItem(item)
+                }
     }
 
     override fun onItemDismissed(t: ScheduleItem, position: Int) {
         if (!t.isEmpty) {
-            scheduleManager.deleteScheduleItem(t)
+            scheduleRepository.deleteScheduleItem(t)
         }
     }
 
     override fun bindViewModel() {
 
-        scheduleManager.schedule
+        scheduleRepository.schedule
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ scheduleItems ->
                     adapter.updateData(scheduleItems)
                 }, { throwable ->
@@ -81,8 +102,7 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
                 .addTo(compositeDisposable)
     }
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
     override fun setupViews() {
 
@@ -94,7 +114,7 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
 
             recyclerView.layoutManager = recyclerViewLayoutManager
             recyclerView.isNestedScrollingEnabled = false
-            recyclerView.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, context!!)))
+            recyclerView.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, ctx)))
             val callback = BaseItemTouchHelper(adapter, false, BaseItemTouchHelper.DragAccess.ALL)
             adapter.onItemMoveListener = this
 
@@ -112,7 +132,7 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
         if (item.isEmpty) {
             InsertScheduleDialogFragment.newInstance()
                     .setOnScheduleItemSelectedListener { i ->
-                        scheduleManager.insertScheduleItem(ScheduleItem(i.title, position))
+                        scheduleRepository.insertScheduleItem(ScheduleItem(i.item.title, position, locationType = i.item.locationType))
                     }
                     .show(fragmentManager, "dialogfragment-insert-schedule")
         }

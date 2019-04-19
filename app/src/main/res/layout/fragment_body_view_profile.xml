@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_body_card_body_info"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="16dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
@@ -15,7 +19,6 @@
         android:id="@+id/fragment_body_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:paddingBottom="8dp">
 
         <ImageView
@@ -24,21 +27,25 @@
             android:layout_height="104dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18dp"
+            tools:alpha="1"
+            tools:srcCompat="@color/colorPrimary"
             android:alpha="0" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/fragment_body_txt_dream_weight"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignBottom="@+id/fragment_body_img_avatar"
             android:layout_alignStart="@+id/fragment_body_img_avatar"
+            android:layout_alignBottom="@+id/fragment_body_img_avatar"
             android:alpha="0"
+            tools:alpha="1"
+            tools:text="75kg"
             android:background="@drawable/roundshape_dark_background"
             android:elevation="4dp"
-            android:textSize="13sp"
             android:gravity="center"
             android:padding="4dp"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
 
         <ProgressBar
             android:id="@+id/fragment_body_pb_weight"
@@ -48,6 +55,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-8dp"
             android:indeterminate="false"
+            tools:progress="70"
             android:progressDrawable="@drawable/progress_body_weight_drawable"
             android:rotation="90"
             android:rotationX="180"
@@ -58,12 +66,14 @@
             android:id="@+id/fragment_body_txt_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/fragment_body_img_avatar"
-            android:layout_marginTop="8dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
             android:alpha="0"
+            tools:alpha="1"
+            tools:text="Martin Macheiner"
             android:gravity="center"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -72,35 +82,41 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/fragment_body_txt_name"
-            android:layout_margin="16dp"
-            android:background="@android:color/white" />
+            android:layout_margin="24dp"
+            android:background="@color/colorPrimaryText" />
 
         <TextView
             android:id="@+id/fragment_body_txt_bmi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_below="@+id/fragment_body_view_separator"
+            android:layout_alignParentEnd="true"
             android:layout_marginEnd="12dp"
             android:alpha="0"
+            tools:alpha="1"
+            tools:text="24.0"
             android:drawableEnd="@drawable/ic_body_bmi"
             android:drawablePadding="8dp"
+            android:drawableTint="@color/colorPrimaryText"
             android:gravity="center_vertical"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="17sp" />
 
         <TextView
             android:id="@+id/fragment_body_txt_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/fragment_body_view_separator"
+            android:layout_alignParentStart="true"
             android:layout_marginStart="12dp"
             android:alpha="0"
+            tools:alpha="1"
+            tools:text="80 kg"
             android:drawableStart="@drawable/ic_body_scale"
             android:drawablePadding="8dp"
+            android:drawableTint="@color/colorPrimaryText"
             android:gravity="center_vertical"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="17sp" />
 
     </RelativeLayout>

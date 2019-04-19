@@ -15,7 +15,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/body_card_dream_weight"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -27,7 +26,7 @@
             android:drawablePadding="16dp"
             android:drawableStart="@drawable/ic_body_card_dream_weight"
             android:gravity="center_vertical"
-            android:textColor="@android:color/white"
+            android:textColor="@color/body_card_dream_weight"
             android:text="@string/body_card_dream_weight_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -37,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
             android:textAllCaps="true"
-            android:textColor="@android:color/white"
+            android:textColor="@color/body_card_dream_weight"
             android:textSize="20sp"
             android:gravity="center"
             android:textStyle="bold" />
@@ -47,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@android:color/white"
+            android:textColor="@color/body_card_dream_weight"
             android:textSize="30sp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp" />
@@ -59,7 +58,7 @@
             android:lineSpacingExtra="4sp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:textColor="@android:color/white"
+            android:textColor="@color/body_card_dream_weight"
             android:textSize="17sp" />
 
     </LinearLayout>

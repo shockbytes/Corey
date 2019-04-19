@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MenuEntryItemView">
+        <attr name="item_title" format="reference" />
+        <attr name="item_icon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CheckableMenuEntryItemView">
+        <attr name="checkable_item_title" format="reference" />
+        <attr name="checkable_item_icon" format="reference" />
+        <attr name="checkable_item_checked" format="boolean" />
+    </declare-styleable>
+
+</resources>

@@ -1,5 +1,6 @@
 package at.shockbytes.corey.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
@@ -18,6 +19,7 @@ import at.shockbytes.core.model.LoginUserEvent
 import at.shockbytes.corey.R
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.ui.activity.SettingsActivity
+import at.shockbytes.corey.ui.custom.CheckableMenuEntryItemView
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import javax.inject.Inject
 
@@ -74,13 +76,23 @@ class MenuFragment : BottomSheetDialogFragment() {
             viewModel.logout()
         }
 
-        view.findViewById<View>(R.id.btnMenuSettings)?.setOnClickListener {
-            activity?.let { act ->
-                startActivity(SettingsActivity.newIntent(act),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
-            }
+        view.findViewById<View>(R.id.menu_item_settings)?.setOnClickListener {
+            startSettingsActivity()
             dismiss()
         }
+
+        view.findViewById<View>(R.id.menu_item_notifications)?.setOnClickListener {
+            openNotificationSettingsFragment()
+            dismiss()
+        }
+
+        view.findViewById<CheckableMenuEntryItemView>(R.id.checkable_menu_item_forecast).setOnCheckedChangeListener { isChecked ->
+            viewModel.enableWeatherForecast(isChecked)
+        }
+
+        viewModel.isWeatherForecastEnabled().observe(this, Observer { isEnabled ->
+            view.findViewById<CheckableMenuEntryItemView>(R.id.checkable_menu_item_forecast).isChecked = (isEnabled == true)
+        })
 
         viewModel.getUserEvent().observe(this, Observer { event ->
 
@@ -104,6 +116,32 @@ class MenuFragment : BottomSheetDialogFragment() {
                 }
             }
         })
+    }
+
+    @SuppressLint("PrivateResource")
+    private fun openNotificationSettingsFragment() {
+        fragmentManager?.run {
+
+            val fragment = NotificationSettingsFragment()
+
+            beginTransaction()
+                .setCustomAnimations(
+                    R.anim.abc_fade_in,
+                    R.anim.abc_fade_out,
+                    R.anim.abc_fade_in,
+                    R.anim.abc_fade_out
+                )
+                .addToBackStack(fragment.javaClass.name)
+                .add(android.R.id.content, fragment)
+                .commit()
+        }
+    }
+
+    private fun startSettingsActivity() {
+        activity?.let { act ->
+            startActivity(SettingsActivity.newIntent(act),
+                ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
+        }
     }
 
     companion object {

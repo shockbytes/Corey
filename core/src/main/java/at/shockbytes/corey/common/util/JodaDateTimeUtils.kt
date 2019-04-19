@@ -1,4 +1,4 @@
-package at.shockbytes.corey.util
+package at.shockbytes.corey.common.util
 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -18,5 +18,13 @@ object JodaDateTimeUtils {
 
     fun toMonthAndYearFormattedString(dateTime: DateTime): String {
         return monthAndYearFormatter.print(dateTime)
+    }
+
+    fun getDayOfMonthFromTimestamp(timestamp: Long): Int {
+        return DateTime(timestamp).dayOfMonth
+    }
+
+    fun getHourFromTimestamp(timestamp: Long): Int {
+        return DateTime(timestamp).hourOfDay
     }
 }

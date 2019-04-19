@@ -9,8 +9,8 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.27.0'
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'io.fabric.tools:gradle:1.28.0'
+        classpath 'com.android.tools.build:gradle:3.4.0'
 		classpath 'com.google.gms:google-services:4.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -42,24 +42,28 @@ ext {
     daggerVersion = "2.17"
     supportVersion = "28.0.0"
     rxJavaVersion = "2.1.6"
-    rxAndroidVersion = "2.0.2"
-    shockUtilVersion = "4.0"
+    rxAndroidVersion = "2.1.0"
 
-    firebaseVersionDatabase = "16.0.5"
-    firebaseVersionConfig = "16.1.0"
-    firebaseVersionCore = "16.0.5"
-    firebaseVersionAuth = "16.0.5"
+    shockUtilVersion = "4.0.2"
+    shockbytesCoreVersion = "0.2.1"
+
+    firebaseVersionDatabase = "16.1.0"
+    firebaseVersionConfig = "16.5.0"
+    firebaseVersionCore = "16.0.8"
+    firebaseVersionAuth = "16.2.1"
 
     firebaseUIVersion = "4.2.1"
 
     playServicesVersionAuth = "16.0.1"
     playServicesVersionLocation = "16.0.0"
-    playServicesVersionMaps = "16.0.0"
+    playServicesVersionMaps = "16.1.0"
     playServicesVersionWearable = "16.0.1"
     playServicesVersionFitness = "16.0.1"
     archVersion = "1.1.1"
+    crashlyticsVersion = "2.9.9"
 
     glideVersion = "4.8.0"
+    retrofitVersion = "2.5.0"
 
     wearableVersion = "2.4.0"
 }
@@ -71,7 +75,7 @@ configurations {
 }
 
 dependencies {
-    ktlint "com.github.shyiko:ktlint:0.29.0"
+    ktlint "com.github.shyiko:ktlint:0.31.0"
 }
 
 task ktlint(type: JavaExec, group: "verification") {

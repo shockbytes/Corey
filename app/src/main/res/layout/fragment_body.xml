@@ -7,6 +7,9 @@
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/fragment_body_nsv"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"

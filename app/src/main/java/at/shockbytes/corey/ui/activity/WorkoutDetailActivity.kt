@@ -54,6 +54,11 @@ class WorkoutDetailActivity : TintableBackNavigableActivity<AppComponent>() {
         supportActionBar?.elevation = 0f
     }
 
+    override fun backwardAnimation() {
+        super.backwardAnimation()
+        activity_training_btn_start.hide()
+    }
+
     override fun onStop() {
         super.onStop()
         supportActionBar?.elevation = AppUtils.convertDpInPixel(8, this).toFloat()
@@ -80,10 +85,11 @@ class WorkoutDetailActivity : TintableBackNavigableActivity<AppComponent>() {
 
         activity_training_recyclerview.apply {
             layoutManager = LinearLayoutManager(this@WorkoutDetailActivity)
-            adapter = ExerciseAdapter(this@WorkoutDetailActivity, workout.exercises)
+            adapter = ExerciseAdapter(this@WorkoutDetailActivity).apply {
+                data = workout.exercises
+            }
         }
 
-        activity_training_btn_start.text = getString(R.string.activity_workout_detail_btn_start, workout.displayableName)
         activity_training_btn_start.setOnClickListener {
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this)
             startActivity(WorkoutActivity.newIntent(applicationContext, workout), options.toBundle())

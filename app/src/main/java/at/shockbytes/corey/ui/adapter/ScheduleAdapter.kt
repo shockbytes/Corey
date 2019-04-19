@@ -2,16 +2,24 @@ package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
 import android.support.v7.util.DiffUtil
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.addTo
+import at.shockbytes.corey.common.core.util.CoreySettings
+import at.shockbytes.corey.common.core.workout.model.LocationType
+import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.data.schedule.ScheduleItem
+import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.util.ScheduleItemDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
-import kotterknife.bindView
+import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_schedule.*
+import timber.log.Timber
 import java.util.Collections
 
 /**
@@ -21,8 +29,13 @@ import java.util.Collections
 class ScheduleAdapter(
     context: Context,
     private val onItemClickedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit),
-    private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit)
-) : BaseAdapter<ScheduleItem>(context, mutableListOf()), ItemTouchHelperAdapter {
+    private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit),
+    private val weatherResolver: ScheduleWeatherResolver,
+    private val schedulers: SchedulerFacade,
+    private val coreySettings: CoreySettings
+) : BaseAdapter<ScheduleItem>(context), ItemTouchHelperAdapter {
+
+    private val compositeDisposable = CompositeDisposable()
 
     override var data: MutableList<ScheduleItem>
         get() = super.data
@@ -34,6 +47,7 @@ class ScheduleAdapter(
         }
 
     // ----------------------------------------------------------------------
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -44,6 +58,11 @@ class ScheduleAdapter(
     override fun onBindViewHolder(holder: BaseAdapter<ScheduleItem>.ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         (holder as? ViewHolder)?.bind(data[position], position)
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        compositeDisposable.dispose()
     }
 
     override fun onItemMove(from: Int, to: Int): Boolean {
@@ -67,7 +86,7 @@ class ScheduleAdapter(
             onItemMoveListener?.onItemDismissed(entry, entry.day)
         }
         notifyItemRemoved(position)
-        addEntity(position, ScheduleItem("", position))
+        addEntity(position, emptyScheduleItem(position))
     }
 
     // -----------------------------Data Section-----------------------------
@@ -107,14 +126,16 @@ class ScheduleAdapter(
     fun resetEntity(item: ScheduleItem) {
         val location = item.day
         if (location >= 0) {
-            data[location] = ScheduleItem("", location)
+            data[location] = emptyScheduleItem(location)
             notifyItemChanged(location)
         }
     }
 
     fun reorderAfterMove(): List<ScheduleItem> {
         // Assign the right day indices to the objects
-        data.forEachIndexed { index, _ -> data[index].day = index }
+        data.forEachIndexed { index, _ ->
+            data[index].day = index
+        }
         // Only return the filled ones for syncing
         return data.filter { !it.isEmpty }
     }
@@ -127,7 +148,7 @@ class ScheduleAdapter(
         // Now add placeholder objects for empty spots
         (0 until MAX_SCHEDULES).forEach { idx ->
             if (array[idx] == null) {
-                array[idx] = ScheduleItem("", idx)
+                array[idx] = emptyScheduleItem(idx)
             }
         }
         // Safe to do so, because all nulls are already replaced
@@ -135,7 +156,7 @@ class ScheduleAdapter(
     }
 
     private fun fillUpScheduleList2(items: List<ScheduleItem>): List<ScheduleItem> {
-        val def = Array(MAX_SCHEDULES) { ScheduleItem("", it) }.toMutableList()
+        val def = Array(MAX_SCHEDULES) { emptyScheduleItem(it) }.toMutableList()
         items.forEach { item ->
             def[item.day] = item
         }
@@ -154,7 +175,7 @@ class ScheduleAdapter(
                 if (data[idx].isEmpty) {
                     array[idx] = data[idx].copy(day = idx)
                 } else {
-                    array[idx] = ScheduleItem("", idx)
+                    array[idx] = emptyScheduleItem(idx)
                 }
             }
         }
@@ -162,19 +183,20 @@ class ScheduleAdapter(
         return array.mapTo(mutableListOf()) { it!! }
     }
 
-    private inner class ViewHolder(itemView: View) : BaseAdapter<ScheduleItem>.ViewHolder(itemView) {
+    private fun emptyScheduleItem(idx: Int): ScheduleItem = ScheduleItem("", idx, locationType = LocationType.NONE)
+
+    private inner class ViewHolder(
+        override val containerView: View
+    ) : BaseAdapter<ScheduleItem>.ViewHolder(containerView), LayoutContainer {
 
         private lateinit var item: ScheduleItem
         private var itemPosition: Int = 0
 
-        private val txtName: TextView by bindView(R.id.item_schedule_txt_name)
-        private val btnClear: ImageButton by bindView(R.id.item_schedule_btn_clear)
-
         init {
-            txtName.setOnClickListener {
+            item_schedule_txt_name.setOnClickListener {
                 onItemClickedListener.invoke(item, itemView, itemPosition)
             }
-            btnClear.setOnClickListener {
+            item_schedule_btn_clear.setOnClickListener {
                 onItemDismissedListener.invoke(item, itemPosition)
             }
         }
@@ -184,7 +206,29 @@ class ScheduleAdapter(
         fun bind(item: ScheduleItem, position: Int) {
             this.item = item
             itemPosition = position
-            txtName.text = item.name
+            item_schedule_txt_name.text = item.name
+
+            if (shouldLoadWeather(item)) {
+                loadWeather(position)
+            }
+        }
+
+        private fun shouldLoadWeather(item: ScheduleItem): Boolean {
+            return (item.locationType == LocationType.OUTDOOR) && coreySettings.isWeatherForecastEnabled
+        }
+
+        private fun loadWeather(index: Int) {
+            weatherResolver.resolveWeatherForScheduleIndex(index)
+                    .subscribeOn(schedulers.io)
+                    .observeOn(schedulers.ui)
+                    .subscribe({ weatherInfo ->
+                        item_schedule_weather.setVisible(true)
+                        item_schedule_weather.setWeatherInfo(weatherInfo, unit = "°C", animate = true)
+                    }, { throwable ->
+                        Timber.e(throwable)
+                        item_schedule_weather.setVisible(false)
+                    })
+                    .addTo(compositeDisposable)
         }
     }
 

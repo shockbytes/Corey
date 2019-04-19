@@ -60,7 +60,7 @@ class FirebaseWorkoutRepository(
     override val workouts: Observable<List<Workout>> = workoutsSubject
 
     override fun poke() {
-        remoteConfig.fetch()
+        remoteConfig.fetch(0L) // Fetch immediately
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Once the config is successfully fetched

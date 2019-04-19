@@ -12,7 +12,7 @@ abstract class FilterableBaseAdapter<T : Sortable>(
     context: Context,
     data: List<T>,
     private val filterPredicate: (T, String) -> Boolean
-) : BaseAdapter<T>(context, data.toMutableList()) {
+) : BaseAdapter<T>(context) {
 
     private var originalData = ArrayList(data)
 

@@ -10,8 +10,11 @@ import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.scheduler.AppSchedulerFacade
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.location.GmsLocationRepository
+import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.common.core.running.location.GooglePlayLocationManager
 import at.shockbytes.corey.common.core.running.location.LocationManager
+import at.shockbytes.corey.common.core.util.CoreySettings
 import at.shockbytes.corey.common.core.util.ExerciseDeserializer
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.data.schedule.FirebaseScheduleRepository
@@ -23,12 +26,14 @@ import at.shockbytes.corey.wearable.WearableManager
 import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.storage.KeyValueStorage
 import at.shockbytes.corey.storage.SharedPreferencesKeyValueStorage
+import at.shockbytes.corey.util.SharedPrefsBackedCoreySettings
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import javax.inject.Singleton
 
 /**
@@ -100,6 +105,18 @@ class AppModule(private val app: Application) {
         return GsonBuilder()
                 .registerTypeHierarchyAdapter(Exercise::class.java, ExerciseDeserializer())
                 .create()
+    }
+
+    @Provides
+    @Reusable
+    fun provideCoreySettings(sharedPrefs: SharedPreferences): CoreySettings {
+        return SharedPrefsBackedCoreySettings(app.applicationContext, sharedPrefs)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationRepository(): LocationRepository {
+        return GmsLocationRepository(app.applicationContext)
     }
 
     @Provides
