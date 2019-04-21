@@ -26,7 +26,9 @@ class WorkoutOverviewFragment : WearableBaseFragment(),
 
     override fun setupViews() {
         context?.let { ctx ->
-            val adapter = WearWorkoutOverviewAdapter(ctx, workouts.sortedWith(WorkoutNameComparator()))
+            val adapter = WearWorkoutOverviewAdapter(ctx).apply {
+                data = workouts.sortedWith(WorkoutNameComparator()).toMutableList()
+            }
 
             recyclerView.isEdgeItemsCenteringEnabled = true
             recyclerView.layoutManager = WearableLinearLayoutManager(context)
@@ -35,13 +37,12 @@ class WorkoutOverviewFragment : WearableBaseFragment(),
         }
     }
 
-    override fun injectToGraph(appComponent: WearAppComponent) {
-        // Do nothing...
-    }
+    override fun injectToGraph(appComponent: WearAppComponent) = Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        workouts = arguments?.getParcelableArrayList(ARG_WORKOUTS)!!
+        workouts = arguments?.getParcelableArrayList(ARG_WORKOUTS)
+            ?: throw NullPointerException("Workout must be set!")
     }
 
     override fun onItemClick(t: Workout, v: View) {

@@ -1,17 +1,13 @@
 package at.shockbytes.corey.data.schedule
 
 import android.app.AlarmManager
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
-import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.receiver.NotificationReceiver
-import at.shockbytes.corey.util.CoreyAppUtils
 import at.shockbytes.corey.data.workout.WorkoutRepository
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -69,19 +65,6 @@ class FirebaseScheduleRepository(
                 }
                 .subscribeOn(schedulers.io)
 
-    override val isWorkoutNotificationDeliveryEnabled: Boolean
-        get() = preferences.getBoolean(context.getString(R.string.prefs_workout_day_notification_key), false)
-
-    override val isWeighNotificationDeliveryEnabled: Boolean
-        get() = preferences.getBoolean(context.getString(R.string.prefs_weigh_notification_key), false)
-
-    override val dayOfWeighNotificationDelivery: Int
-        get() {
-            return (preferences.getString(context.getString(R.string.prefs_weigh_notification_day_key),
-                    context.getString(R.string.prefs_weigh_notification_day_default_value))
-                    ?: "0").toInt()
-        }
-
     override fun poke() {
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -122,13 +105,6 @@ class FirebaseScheduleRepository(
         firebase.getReference("/schedule").child(item.id).removeValue()
     }
 
-    override fun postWeighNotification(): Completable {
-        return Completable.fromCallable {
-            val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            nm.notify(0x90, CoreyAppUtils.getWeighNotification(context))
-        }
-    }
-
     override fun deleteAll(): Completable {
         return Completable
                 .create { emitter ->
@@ -139,27 +115,11 @@ class FirebaseScheduleRepository(
                 .subscribeOn(schedulers.io)
     }
 
-    override fun postWorkoutNotification(): Completable {
-        return Completable.fromObservable(schedule
-                .map { scheduleItems ->
-                    scheduleItems
-                            .firstOrNull { it.day == CoreyUtils.getDayOfWeek() && !it.isEmpty }
-                            ?.let { item -> postWorkoutNotificationForToday(item) }
-                }
-                .subscribeOn(schedulers.io)
-        )
-    }
-
     private fun readNotificationTimeFromPreferences(): List<Int> {
         val str = preferences.getString(context.getString(R.string.prefs_workout_day_notification_daytime_key),
                 context.getString(R.string.prefs_workout_day_notification_daytime_defValue)) ?: ""
         return str.split(":")
                 .mapTo(mutableListOf()) { it.toInt() }
-    }
-
-    private fun postWorkoutNotificationForToday(item: ScheduleItem) {
-        val nm = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        nm.notify(0x91, CoreyAppUtils.getWorkoutNotification(context, item.name))
     }
 
     private fun setupFirebase() {

@@ -13,4 +13,12 @@ class SharedPreferencesKeyValueStorage(
     override fun putBoolean(value: Boolean, key: String) {
         sharedPreferences.edit().putBoolean(key, value).apply()
     }
+
+    override fun putInt(value: Int, key: String) {
+        sharedPreferences.edit().putInt(key, value).apply()
+    }
+
+    override fun getInt(key: String, defaultValue: Int): Int {
+        return sharedPreferences.getInt(key, defaultValue)
+    }
 }

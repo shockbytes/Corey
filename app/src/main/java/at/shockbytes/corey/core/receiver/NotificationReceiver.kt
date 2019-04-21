@@ -3,25 +3,34 @@ package at.shockbytes.corey.core.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.core.CoreyApp
-import at.shockbytes.corey.data.schedule.ScheduleRepository
+import at.shockbytes.corey.data.reminder.ReminderManager
+import timber.log.Timber
 import javax.inject.Inject
 
 class NotificationReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var manager: ScheduleRepository
+    lateinit var manager: ReminderManager
 
     override fun onReceive(context: Context, intent: Intent) {
         (context.applicationContext as CoreyApp).appComponent.inject(this)
 
-        if (manager.isWeighNotificationDeliveryEnabled &&
-                CoreyUtils.getDayOfWeek() == manager.dayOfWeighNotificationDelivery) {
-            manager.postWeighNotification().subscribe()
+        if (manager.shouldScheduleWeighReminder()) {
+            manager.postWeighNotification(context)
+                .subscribe({
+                    Timber.d("Weigh notification successfully posted!")
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
         }
-        if (manager.isWorkoutNotificationDeliveryEnabled) {
-            manager.postWorkoutNotification().subscribe()
+        if (manager.isWorkoutReminderEnabled) {
+            manager.postWorkoutNotification(context)
+                .subscribe({
+                    Timber.d("Workout notification successfully posted!")
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
         }
     }
 }

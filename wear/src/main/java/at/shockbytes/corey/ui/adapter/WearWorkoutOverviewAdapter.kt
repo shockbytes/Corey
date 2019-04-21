@@ -17,9 +17,8 @@ import kotterknife.bindView
  * Date:    14.03.2017
  */
 class WearWorkoutOverviewAdapter(
-    cxt: Context,
-    data: List<Workout>
-) : BaseAdapter<Workout>(cxt, data.toMutableList()) {
+    cxt: Context
+) : BaseAdapter<Workout>(cxt) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<Workout>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_wear_workout_overview, parent, false))

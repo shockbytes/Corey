@@ -14,12 +14,6 @@ interface ScheduleRepository : Pokeable {
 
     val schedulableItems: Observable<List<SchedulableItem>>
 
-    val isWorkoutNotificationDeliveryEnabled: Boolean
-
-    val isWeighNotificationDeliveryEnabled: Boolean
-
-    val dayOfWeighNotificationDelivery: Int
-
     fun insertScheduleItem(item: ScheduleItem): ScheduleItem
 
     fun updateScheduleItem(item: ScheduleItem)
@@ -27,8 +21,4 @@ interface ScheduleRepository : Pokeable {
     fun deleteScheduleItem(item: ScheduleItem)
 
     fun deleteAll(): Completable
-
-    fun postWeighNotification(): Completable
-
-    fun postWorkoutNotification(): Completable
 }
