@@ -36,15 +36,19 @@ class GoalsFragment : BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActi
 
         viewModel.getBodyGoals().observe(this, Observer {
             it?.let { goals ->
-                (fragment_body_card_goals_rv.adapter as GoalAdapter).data = goals.toMutableList()
-                fragment_body_card_goals_rv.invalidate()
-                fragment_body_card_goals_rv.scrollToPosition(0)
+                fragment_body_card_goals_rv.apply {
+                    (adapter as GoalAdapter).data = goals.toMutableList()
+                    invalidate()
+                    scrollToPosition(0)
+                }
             }
         })
 
         viewModel.selectHideFinishedGoals().observe(this, Observer {
-            fragment_goals_cb_hide_finished.isChecked = (it == true)
-            fragment_goals_cb_hide_finished.invalidate()
+            fragment_goals_cb_hide_finished.apply {
+                isChecked = (it == true)
+                invalidate()
+            }
         })
     }
 

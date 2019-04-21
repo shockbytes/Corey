@@ -26,8 +26,16 @@ class DefaultReminderManager(
         set(value) = localStorage.putBoolean(value, KEY_WEIGH_REMINDER_ENABLED)
 
     override var dayOfWeighReminder: Int
-        get() = localStorage.getInt(KEY_REMINDER_DAY, REMINDER_DAY_DEFAULT_VALUE)
-        set(value) = localStorage.putInt(value, KEY_REMINDER_DAY)
+        get() = localStorage.getInt(KEY_REMINDER_WEIGH_DAY, REMINDER_DAY_DEFAULT_VALUE)
+        set(value) = localStorage.putInt(value, KEY_REMINDER_WEIGH_DAY)
+
+    override var hourOfWorkoutReminder: Int
+        get() = localStorage.getInt(KEY_REMINDER_WORKOUT_HOUR, REMINDER_HOUR_DEFAULT_VALUE)
+        set(value) = localStorage.putInt(value, KEY_REMINDER_WORKOUT_HOUR)
+
+    override var hourOfWeighReminder: Int
+        get() = localStorage.getInt(KEY_REMINDER_WEIGH_HOUR, REMINDER_HOUR_DEFAULT_VALUE)
+        set(value) = localStorage.putInt(value, KEY_REMINDER_WEIGH_HOUR)
 
     override fun postWorkoutNotification(context: Context): Completable {
         return scheduleRepository.schedule
@@ -65,7 +73,11 @@ class DefaultReminderManager(
 
         private const val KEY_WORKOUT_REMINDER_ENABLED = "key_workout_reminder"
         private const val KEY_WEIGH_REMINDER_ENABLED = "key_weigh_reminder"
-        private const val KEY_REMINDER_DAY = "key_reminder_day"
+        private const val KEY_REMINDER_WEIGH_DAY = "key_reminder_day"
+        private const val KEY_REMINDER_WORKOUT_HOUR = "key_reminder_workout_hour"
+        private const val KEY_REMINDER_WEIGH_HOUR = "key_reminder_weigh_hour"
+
         private const val REMINDER_DAY_DEFAULT_VALUE = 0
+        private const val REMINDER_HOUR_DEFAULT_VALUE = 6
     }
 }

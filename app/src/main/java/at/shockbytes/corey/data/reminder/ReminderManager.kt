@@ -11,6 +11,10 @@ interface ReminderManager {
 
     var dayOfWeighReminder: Int
 
+    var hourOfWorkoutReminder: Int
+
+    var hourOfWeighReminder: Int
+
     fun postWeighNotification(context: Context): Completable
 
     fun postWorkoutNotification(context: Context): Completable

@@ -122,7 +122,7 @@ class MenuFragment : BottomSheetDialogFragment() {
     private fun openNotificationSettingsFragment() {
         fragmentManager?.run {
 
-            val fragment = NotificationSettingsFragment()
+            val fragment = ReminderFragment()
 
             beginTransaction()
                 .setCustomAnimations(

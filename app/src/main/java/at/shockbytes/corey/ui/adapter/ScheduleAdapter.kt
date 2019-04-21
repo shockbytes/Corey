@@ -46,6 +46,10 @@ class ScheduleAdapter(
             fillUpScheduleList(value).forEach { addEntityAtLast(it) }
         }
 
+    init {
+        data = mutableListOf()
+    }
+
     // ----------------------------------------------------------------------
 
     override fun onCreateViewHolder(

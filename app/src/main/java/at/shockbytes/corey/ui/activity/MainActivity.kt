@@ -40,16 +40,6 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
 
     override val imageLoader: ImageLoader = GlideImageLoader(R.drawable.ic_account)
 
-    /*
-    private val fabMenuOptions = FabMenuOptions(
-            menuId = R.menu.menu_fab,
-            menuColorList = listOf(R.color.colorPrimary, R.color.material_red),
-            visiblePageIndices = listOf(0, 3),
-            iconClosed = R.drawable.ic_add,
-            iconOpened = R.drawable.ic_cancel
-    )
-    */
-
     private val additionalToolbarActionItems = listOf(
             AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.create_workout, true) {
                 activityTransition(CreateWorkoutActivity.newIntent(applicationContext), AppParams.REQUEST_CODE_CREATE_WORKOUT)

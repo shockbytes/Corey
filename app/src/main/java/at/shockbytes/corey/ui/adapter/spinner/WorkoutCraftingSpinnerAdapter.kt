@@ -1,4 +1,4 @@
-package at.shockbytes.corey.ui.adapter
+package at.shockbytes.corey.ui.adapter.spinner
 
 import android.content.Context
 import android.graphics.Color
@@ -31,10 +31,10 @@ class WorkoutCraftingSpinnerAdapter(
                 .inflate(R.layout.item_spinner_workout, parent, false)
 
         val text = v.findViewById<View>(R.id.item_spinner_workout_text) as TextView
-        text.text = getItem(position).text
+        text.text = getItem(position)?.text
         val imgView = v.findViewById<View>(R.id.item_spinner_workout_image) as ImageView
-        val iconId = getItem(position).iconId
-        if (iconId > 0) {
+        val iconId = getItem(position)?.iconId
+        if (iconId != null && iconId > 0) {
             imgView.setImageResource(iconId)
             imgView.setColorFilter(Color.parseColor("#545454"))
         } else {
