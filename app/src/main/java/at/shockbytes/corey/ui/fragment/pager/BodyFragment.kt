@@ -80,7 +80,8 @@ class BodyFragment : BaseFragment<AppComponent>() {
                     )
 
                     weightHistoryBodyFragmentView.setWeightData(
-                            state.bodyInfo,
+                            state.weightLines,
+                            state.bodyInfo.dreamWeight,
                             state.weightUnit
                     )
                 }

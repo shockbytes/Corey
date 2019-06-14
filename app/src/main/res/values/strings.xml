@@ -237,5 +237,6 @@
     <string name="reminder">Reminder</string>
     <string name="workout_reminder">Workout reminder</string>
     <string name="weigh_reminder">Weigh reminder</string>
+    <string name="averaged">Averaged</string>
 
 </resources>

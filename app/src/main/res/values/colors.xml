@@ -16,6 +16,8 @@
     <color name="material_red">#F44336</color>
     <color name="material_blue">#2196F3</color>
 
+    <color name="material_teal_200">#FF80cbc4</color>
+
     <color name="white">#FFF</color>
 
     <color name="seven_accent">#6095F1</color>

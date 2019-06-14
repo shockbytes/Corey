@@ -10,11 +10,15 @@ import at.shockbytes.corey.data.goal.FirebaseGoalsRepository
 import at.shockbytes.corey.data.goal.GoalsRepository
 import at.shockbytes.corey.data.workout.FirebaseWorkoutRepository
 import at.shockbytes.corey.data.workout.WorkoutRepository
+import at.shockbytes.corey.ui.fragment.body.weight.filter.RawWeightLineFilter
+import at.shockbytes.corey.ui.fragment.body.weight.filter.RunningAverageWeightLineFilter
+import at.shockbytes.corey.ui.fragment.body.weight.filter.WeightLineFilter
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import javax.inject.Singleton
 
 /**
@@ -53,5 +57,11 @@ class WorkoutModule(private val app: Application) {
     @Singleton
     fun provideRunningManager(): RunningManager {
         return DefaultRunningManager()
+    }
+
+    @Provides
+    @Reusable
+    fun provideWeightLineFilters(): Array<WeightLineFilter> {
+        return arrayOf(RawWeightLineFilter(), RunningAverageWeightLineFilter())
     }
 }

@@ -3,9 +3,9 @@ package at.shockbytes.corey.ui.fragment.body
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import at.shockbytes.corey.R
-import at.shockbytes.corey.data.body.info.BodyInfo
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.ui.fragment.body.weight.WeightHistoryLine
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -47,40 +47,49 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
         }
     }
 
-    fun setWeightData(bodyInfo: BodyInfo, weightUnit: String) {
+    fun setWeightData(
+        weightLines: List<WeightHistoryLine>,
+        dreamWeight: Int,
+        weightUnit: String
+    ) {
 
-        val entries = mutableListOf<Entry>()
-        val labels = mutableListOf<String>()
-
-        bodyInfo.weightPoints.forEachIndexed { idx, p ->
-            labels.add(CoreyUtils.formatDate(p.timeStamp, true))
-            entries.add(Entry(idx.toFloat(), p.weight.toFloat()))
+        if (weightLines.isEmpty()) {
+            return
         }
 
-        val dataSet = LineDataSet(entries, getString(R.string.weight)).apply {
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            setDrawCircles(false)
-            setDrawValues(false)
-            isHighlightEnabled = false
+        val labels = weightLines.maxBy { it.points.size }!!.points.map { p ->
+            CoreyUtils.formatDate(p.timeStamp, true)
         }
 
-        context?.let { ctx ->
-            dataSet.color = ContextCompat.getColor(ctx, R.color.body_card_weight_history)
+        val dataSets = weightLines.map { weightHistoryLine ->
 
-            // Add dream weight line
-            val dreamWeightLine = getDreamWeightLine(
-                    bodyInfo.dreamWeight.toFloat(),
-                    getString(R.string.dreamweight),
-                    ContextCompat.getColor(ctx, R.color.body_card_weight_history)
-            )
-            fragment_body_card_weight_graph_linechart.axisLeft.addLimitLine(dreamWeightLine)
+            val entries = weightHistoryLine.points.mapIndexed { idx, p ->
+                Entry(idx.toFloat(), p.weight.toFloat())
+            }
+
+            LineDataSet(entries, getString(weightHistoryLine.name)).apply {
+                mode = LineDataSet.Mode.CUBIC_BEZIER
+                setDrawCircles(false)
+                setDrawValues(false)
+                isHighlightEnabled = false
+                color = ContextCompat.getColor(requireContext(), weightHistoryLine.lineColor)
+                lineWidth = weightHistoryLine.lineThickness
+            }
         }
+
+        // Add dream weight line
+        val dreamWeightLine = getDreamWeightLine(
+                dreamWeight.toFloat(),
+                getString(R.string.dreamweight),
+                ContextCompat.getColor(requireContext(), R.color.body_card_weight_history)
+        )
 
         fragment_body_card_weight_graph_linechart.apply {
             xAxis.valueFormatter = IAxisValueFormatter { value, _ -> labels[value.toInt()] }
             axisLeft.valueFormatter = IAxisValueFormatter { value, _ -> "${value.toInt()} $weightUnit" }
+            axisLeft.addLimitLine(dreamWeightLine)
 
-            data = LineData(dataSet)
+            data = LineData(dataSets)
             invalidate()
         }
 
@@ -104,29 +113,4 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
             textColor = dreamWeightLineColor
         }
     }
-
-    /*
-    private fun requestCustomFont() {
-
-        val request = FontRequest(
-                "com.google.android.gms.fonts",
-                "com.google.android.gms",
-                "Montserrat",
-                R.array.com_google_android_gms_fonts_certs)
-
-        val callback = object : FontsContract.FontRequestCallback() {
-
-            override fun onTypefaceRetrieved(typeface: Typeface) {
-                // Your code to use the font goes here
-                ...
-            }
-
-            override fun onTypefaceRequestFailed(reason: Int) {
-                // Your code to deal with the failure goes here
-                ...
-            }
-        }
-        FontsContract.requestFonts(context, request, handler, null, callback)
-    }
-    */
 }
