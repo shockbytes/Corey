@@ -8,7 +8,7 @@ class RawWeightLineFilter: WeightLineFilter {
     override val filterName: String = "Raw"
     override val filterNameRes: Int = R.string.weight
 
-    override val lineColor: Int = R.color.body_card_weight_history
+    override val lineColor: Int = R.color.material_blue
     override val lineThickness: Float = 2f
 
     override fun map(points: List<WeightPoint>): List<WeightPoint> = points
