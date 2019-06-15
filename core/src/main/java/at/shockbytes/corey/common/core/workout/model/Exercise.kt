@@ -17,7 +17,7 @@ open class Exercise(
 ) : Parcelable, Sortable {
 
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
+            parcel.readString() ?: "",
             parcel.readInt(),
             parcel.readSerializable() as Equipment)
 

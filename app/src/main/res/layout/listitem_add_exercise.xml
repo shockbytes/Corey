@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listitem_add_exercise_btn_title"
-    style="?attr/borderlessButtonStyle"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="4dp"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:text="Upper Body"
-    android:textColor="@android:color/tertiary_text_light"
-    android:textSize="14sp" />
+    android:foreground="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tv_listitem_add_exercise_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:padding="4dp"
+        android:textColor="@android:color/tertiary_text_light"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_listitem_add_exercise_title"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Upper Body" />
+
+    <ImageView
+        android:id="@+id/iv_listitem_add_exercise_title"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_freeletics" />
+
+</android.support.constraint.ConstraintLayout>

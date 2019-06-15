@@ -1,15 +1,18 @@
 package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.Sortable
 import at.shockbytes.corey.data.schedule.SchedulableItem
 import at.shockbytes.util.adapter.BaseAdapter
-import kotterknife.bindView
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.listitem_add_exercise.*
+import timber.log.Timber
 
 /**
  * Author:  Martin Macheiner
@@ -17,7 +20,7 @@ import kotterknife.bindView
  */
 class AddScheduleItemAdapter(
     context: Context,
-    data: List<ScheduleDisplayItem>,
+    data: List<ScheduleDisplayItem> = listOf(),
     filterPredicate: (ScheduleDisplayItem, String) -> Boolean
 ) : FilterableBaseAdapter<AddScheduleItemAdapter.ScheduleDisplayItem>(context, data.toMutableList(), filterPredicate) {
 
@@ -25,12 +28,21 @@ class AddScheduleItemAdapter(
         return ViewHolder(inflater.inflate(R.layout.listitem_add_exercise, parent, false))
     }
 
-    internal inner class ViewHolder(itemView: View) : BaseAdapter<ScheduleDisplayItem>.ViewHolder(itemView) {
-
-        private val btnTitle: Button by bindView(R.id.listitem_add_exercise_btn_title)
+    internal inner class ViewHolder(
+        override val containerView: View
+    ) : BaseAdapter<ScheduleDisplayItem>.ViewHolder(containerView), LayoutContainer {
 
         override fun bindToView(t: ScheduleDisplayItem) {
-            btnTitle.text = t.item.title
+            with(t.item) {
+                tv_listitem_add_exercise_title.text = title
+                iv_listitem_add_exercise_title.apply {
+                    Timber.d("$title - $workoutType")
+                    setImageResource(workoutType.iconRes)
+                    workoutType.iconTint?.let { tintColor ->
+                        imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, tintColor))
+                    }
+                }
+            }
         }
     }
 

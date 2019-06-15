@@ -39,6 +39,8 @@
 
     <color name="menu_item_color">#616161</color>
 
+    <color name="workout_icon_color">#222222</color>
+
     <color name="translucent_dark">#77000000</color>
 
 </resources>

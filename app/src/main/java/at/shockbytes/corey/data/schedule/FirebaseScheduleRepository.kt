@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.workout.model.WorkoutIconType
 import at.shockbytes.corey.core.receiver.NotificationReceiver
 import at.shockbytes.corey.data.workout.WorkoutRepository
 import com.google.firebase.database.ChildEventListener
@@ -49,8 +50,12 @@ class FirebaseScheduleRepository(
         get() = workoutManager.workouts
                 .map { workouts ->
                     val workoutItems = workouts
-                            .map { workout ->
-                                SchedulableItem(workout.displayableName, workout.locationType)
+                            .map { w ->
+                                SchedulableItem(
+                                    w.displayableName,
+                                    w.locationType,
+                                    WorkoutIconType.fromBodyRegion(w.bodyRegion)
+                                )
                             }
                             .toMutableList()
 
@@ -63,7 +68,6 @@ class FirebaseScheduleRepository(
                             }
                             .toList()
                 }
-                .subscribeOn(schedulers.io)
 
     override fun poke() {
 

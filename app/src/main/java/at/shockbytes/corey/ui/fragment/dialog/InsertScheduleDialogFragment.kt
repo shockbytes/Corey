@@ -18,9 +18,10 @@ import at.shockbytes.corey.ui.adapter.AddScheduleItemAdapter
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.util.adapter.BaseAdapter
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -46,7 +47,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
             }
         }
 
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
     }
 
     private var addScheduleItemAdapter: AddScheduleItemAdapter? = null
@@ -67,7 +68,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
         val contentView = View.inflate(context, R.layout.dialogfragment_add_exercises, null)
         dialog.setContentView(contentView)
         (contentView.parent as View)
-                .setBackgroundColor(ContextCompat.getColor(context!!, android.R.color.transparent))
+                .setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
         val layoutParams = (contentView.parent as View).layoutParams as CoordinatorLayout.LayoutParams
         val behavior = layoutParams.behavior
         if (behavior != null && behavior is BottomSheetBehavior<*>) {
@@ -96,18 +97,29 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
 
     private fun setupViews() {
 
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
-        addScheduleItemAdapter = AddScheduleItemAdapter(context!!, listOf()) { item, query -> item.item.title.contains(query) }
-        addScheduleItemAdapter?.onItemClickListener = this
-        recyclerView.adapter = addScheduleItemAdapter
+        addScheduleItemAdapter = AddScheduleItemAdapter(requireContext()) { item, query ->
+            item.item.title.contains(query)
+        }.apply {
+            onItemClickListener = this@InsertScheduleDialogFragment
+        }
+        recyclerView.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = addScheduleItemAdapter
+        }
 
-        scheduleManager.schedulableItems
-                .map { data -> data.map { AddScheduleItemAdapter.ScheduleDisplayItem(it) } }
-                .subscribe { data ->
-                    Timber.d("Schedulable items size: ${data.size}")
-                    addScheduleItemAdapter?.setData(data, false)
+        scheduleManager
+            .schedulableItems
+            .map { data ->
+                data.map { item ->
+                    AddScheduleItemAdapter.ScheduleDisplayItem(item)
                 }
-                .addTo(compositeDisposable)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { data ->
+                addScheduleItemAdapter?.setData(data, false)
+            }
+            .addTo(compositeDisposable)
 
         editTextFilter.addTextChangedListener(this)
     }
