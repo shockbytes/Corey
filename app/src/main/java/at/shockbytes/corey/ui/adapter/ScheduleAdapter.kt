@@ -1,6 +1,8 @@
 package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.support.v4.content.ContextCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -214,6 +216,13 @@ class ScheduleAdapter(
 
             if (shouldLoadWeather(item)) {
                 loadWeather(position)
+            }
+
+            item_schedule_iv_icon.apply {
+                setImageResource((item.workoutIconType.iconRes ?: 0))
+                item.workoutIconType.iconTint?.let { tintColor ->
+                    imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, tintColor))
+                }
             }
         }
 

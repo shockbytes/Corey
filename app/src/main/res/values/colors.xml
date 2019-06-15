@@ -27,7 +27,7 @@
     <color name="navigation_bar_item_text">#424242</color>
     <color name="sb_foreground">#FFF</color>
     <color name="sb_background">#424242</color>
-    <color name="colorPrimaryText">#424242</color>
+    <color name="colorPrimaryText">#222222</color>
     <color name="colorSecondaryText">#868686</color>
 
 </resources>

@@ -5,9 +5,10 @@ import android.support.annotation.DrawableRes
 import at.shockbytes.corey.common.core.R
 
 enum class WorkoutIconType(
-    @DrawableRes val iconRes: Int,
+    @DrawableRes val iconRes: Int?,
     @ColorRes val iconTint: Int? = null
 ) {
+    NONE(null, null),
     // Built in
     LEGS(R.drawable.ic_bodyregion_legs, R.color.workout_icon_color),
     CORE(R.drawable.ic_bodyregion_core, R.color.workout_icon_color),

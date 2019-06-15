@@ -12,7 +12,6 @@ import at.shockbytes.corey.data.schedule.SchedulableItem
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.listitem_add_exercise.*
-import timber.log.Timber
 
 /**
  * Author:  Martin Macheiner
@@ -36,8 +35,9 @@ class AddScheduleItemAdapter(
             with(t.item) {
                 tv_listitem_add_exercise_title.text = title
                 iv_listitem_add_exercise_title.apply {
-                    Timber.d("$title - $workoutType")
-                    setImageResource(workoutType.iconRes)
+                    workoutType.iconRes?.let { iconRes ->
+                        setImageResource(iconRes)
+                    }
                     workoutType.iconTint?.let { tintColor ->
                         imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, tintColor))
                     }

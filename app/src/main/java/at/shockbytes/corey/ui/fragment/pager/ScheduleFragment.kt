@@ -132,7 +132,13 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
         if (item.isEmpty) {
             InsertScheduleDialogFragment.newInstance()
                     .setOnScheduleItemSelectedListener { i ->
-                        scheduleRepository.insertScheduleItem(ScheduleItem(i.item.title, position, locationType = i.item.locationType))
+                        scheduleRepository.insertScheduleItem(
+                            ScheduleItem(i.item.title,
+                                position,
+                                locationType = i.item.locationType,
+                                workoutIconType = i.item.workoutType
+                            )
+                        )
                     }
                     .show(fragmentManager, "dialogfragment-insert-schedule")
         }
