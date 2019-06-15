@@ -2,14 +2,24 @@ package at.shockbytes.corey.data.reminder
 
 import android.app.NotificationManager
 import android.content.Context
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ListenableWorker
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.common.core.util.CoreyUtils
+import at.shockbytes.corey.data.reminder.worker.WeighNotificationWorker
+import at.shockbytes.corey.data.reminder.worker.WorkoutNotificationWorker
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.storage.KeyValueStorage
 import at.shockbytes.corey.util.CoreyAppUtils
 import at.shockbytes.corey.util.isItemOfCurrentDay
 import io.reactivex.Completable
+import org.joda.time.DateTime
+import java.util.concurrent.TimeUnit
 
 class DefaultReminderManager(
     private val localStorage: KeyValueStorage,
@@ -36,6 +46,42 @@ class DefaultReminderManager(
     override var hourOfWeighReminder: Int
         get() = localStorage.getInt(KEY_REMINDER_WEIGH_HOUR, REMINDER_HOUR_DEFAULT_VALUE)
         set(value) = localStorage.putInt(value, KEY_REMINDER_WEIGH_HOUR)
+
+    override fun poke(context: Context) {
+
+        val hourToRemind = 6
+        val initialDelayOffset = ReminderHelper.getInitialDelayOffset(DateTime.now(), hourToRemind)
+
+        val workoutTag = "periodic_workout_notification_worker"
+        val workoutRequest = buildNotificationRequest(initialDelayOffset, workoutTag, WorkoutNotificationWorker::class.java)
+
+        val weighTag = "periodic_weigh_notification_worker"
+        val weighRequest = buildNotificationRequest(initialDelayOffset, weighTag, WeighNotificationWorker::class.java)
+
+        WorkManager.getInstance(context)
+            .enqueueUniquePeriodicWork(workoutTag, ExistingPeriodicWorkPolicy.REPLACE, workoutRequest)
+
+        WorkManager.getInstance(context)
+            .enqueueUniquePeriodicWork(weighTag, ExistingPeriodicWorkPolicy.REPLACE, weighRequest)
+    }
+
+    private fun buildNotificationRequest(
+        initialDelayOffset: Minutes,
+        tag: String,
+        workerClass: Class<out ListenableWorker>
+    ): PeriodicWorkRequest {
+        return PeriodicWorkRequest
+            .Builder(
+                workerClass,
+                24,
+                TimeUnit.HOURS,
+                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+                TimeUnit.MILLISECONDS
+            )
+            .setInitialDelay(initialDelayOffset.minutes, TimeUnit.MINUTES)
+            .addTag(tag)
+            .build()
+    }
 
     override fun postWorkoutNotification(context: Context): Completable {
         return scheduleRepository.schedule

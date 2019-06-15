@@ -10,6 +10,7 @@ import at.shockbytes.corey.common.core.util.CoreySettings
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.data.goal.Goal
 import at.shockbytes.corey.data.goal.GoalsRepository
+import at.shockbytes.corey.data.reminder.ReminderManager
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.data.user.UserRepository
 import at.shockbytes.corey.data.workout.WorkoutRepository
@@ -23,6 +24,7 @@ class MainViewModel @Inject constructor(
     private val goalsRepository: GoalsRepository,
     private val coreySettings: CoreySettings,
     private val scheduleRepository: ScheduleRepository,
+    private val reminderManager: ReminderManager,
     workoutRepository: WorkoutRepository
 ) : BaseViewModel() {
 
@@ -37,6 +39,7 @@ class MainViewModel @Inject constructor(
 
     init {
         workoutRepository.poke()
+        reminderManager.poke()
 
         userEvent.postValue(LoginUserEvent.SuccessEvent(userRepository.user, false))
         weatherForecastEnabled.postValue(coreySettings.isWeatherForecastEnabled)
