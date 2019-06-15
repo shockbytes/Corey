@@ -24,7 +24,8 @@ enum class WorkoutIconType(
     CYCLING(R.drawable.ic_biking, R.color.workout_icon_color),
     FOOTBALL(R.drawable.ic_football, R.color.workout_icon_color),
     WEIGHT_ROOM(R.drawable.ic_equipment_gym, R.color.workout_icon_color),
-    SWIMMING(R.drawable.ic_swimming, R.color.workout_icon_color);
+    SWIMMING(R.drawable.ic_swimming, R.color.workout_icon_color),
+    HIKING(R.drawable.ic_hiking, R.color.workout_icon_color);
 
     companion object {
 
