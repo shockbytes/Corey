@@ -10,7 +10,7 @@ import java.util.LinkedList
  */
 class RunningAverageWeightLineFilter(
     private val window: Int = 4
-): WeightLineFilter {
+) : WeightLineFilter {
 
     override val filterName: String = "Running Average"
     override val filterNameRes: Int = R.string.averaged

@@ -21,5 +21,4 @@ interface WeightLineFilter {
     val lineThickness: Float
 
     fun map(points: List<WeightPoint>): List<WeightPoint>
-
 }

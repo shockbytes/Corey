@@ -3,7 +3,7 @@ package at.shockbytes.corey.ui.fragment.body.weight.filter
 import at.shockbytes.corey.R
 import at.shockbytes.corey.data.body.info.WeightPoint
 
-class RawWeightLineFilter: WeightLineFilter {
+class RawWeightLineFilter : WeightLineFilter {
 
     override val filterName: String = "Raw"
     override val filterNameRes: Int = R.string.weight
