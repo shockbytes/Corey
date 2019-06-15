@@ -1,7 +1,7 @@
 package at.shockbytes.corey.dagger
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.corey.ui.viewmodel.BodyViewModel
 import at.shockbytes.corey.ui.viewmodel.GoalsViewModel
 import at.shockbytes.corey.ui.viewmodel.MainViewModel

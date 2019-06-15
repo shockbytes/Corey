@@ -1,8 +1,8 @@
 package at.shockbytes.corey.ui.adapter
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.ui.fragment.workoutpager.WearExercisePagerFragment
@@ -13,15 +13,15 @@ import at.shockbytes.corey.ui.fragment.workoutpager.WearTimeExercisePagerFragmen
  * Date:    03.12.2015
  */
 class WearExercisePagerAdapter(
-    fm: FragmentManager,
+    fm: androidx.fragment.app.FragmentManager,
     private val workout: Workout
-) : FragmentStatePagerAdapter(fm) {
+) : androidx.fragment.app.FragmentStatePagerAdapter(fm) {
 
     override fun getCount(): Int {
         return workout.exercises.size
     }
 
-    override fun getItem(position: Int): Fragment {
+    override fun getItem(position: Int): androidx.fragment.app.Fragment {
 
         val exercise = workout.exercises[position]
         return if (exercise is TimeExercise) {

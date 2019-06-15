@@ -8,7 +8,7 @@
     app:behavior_peekHeight="0dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="-16dp"
@@ -47,7 +47,7 @@
                     android:textColor="@android:color/secondary_text_light"
                     android:textSize="16sp" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/fragment_create_workout_bottom_sheet_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="250dp" />
@@ -82,7 +82,7 @@
                     app:np_textSize="20sp"
                     app:np_value="@integer/repetitions_default" />
 
-                <android.support.v7.widget.AppCompatButton
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/fragment_create_workout_bottom_sheet_btn_reps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.AppCompatButton
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/fragment_create_workout_bottom_sheet_btn_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -190,6 +190,6 @@
             </LinearLayout>
 
         </ViewFlipper>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

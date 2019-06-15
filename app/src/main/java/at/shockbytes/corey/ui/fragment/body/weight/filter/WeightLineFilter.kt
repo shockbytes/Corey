@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.fragment.body.weight.filter
 
-import android.support.annotation.ColorRes
-import android.support.annotation.StringRes
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import at.shockbytes.corey.data.body.info.WeightPoint
 
 /**

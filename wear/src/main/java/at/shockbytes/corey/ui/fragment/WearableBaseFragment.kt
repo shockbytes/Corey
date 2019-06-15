@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.fragment
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +13,7 @@ import at.shockbytes.corey.dagger.WearAppComponent
  * Author:  Martin Macheiner
  * Date:    07.03.2017.
  */
-abstract class WearableBaseFragment : Fragment() {
+abstract class WearableBaseFragment : androidx.fragment.app.Fragment() {
 
     abstract val layoutId: Int
 

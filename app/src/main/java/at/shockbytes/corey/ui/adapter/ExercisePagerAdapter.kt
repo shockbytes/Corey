@@ -1,8 +1,8 @@
 package at.shockbytes.corey.ui.adapter
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.ui.fragment.workoutpager.ExercisePagerFragment

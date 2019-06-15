@@ -1,8 +1,8 @@
 package at.shockbytes.corey.ui.activity
 
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
-import android.support.wear.widget.drawer.WearableNavigationDrawerView
+import androidx.fragment.app.FragmentActivity
+import androidx.wear.widget.drawer.WearableNavigationDrawerView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.CoreyNavigationAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
@@ -15,7 +15,7 @@ import java.util.Arrays
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class MainActivity : FragmentActivity() {
+class MainActivity : androidx.fragment.app.FragmentActivity() {
 
     interface OnWorkoutsLoadedListener {
 

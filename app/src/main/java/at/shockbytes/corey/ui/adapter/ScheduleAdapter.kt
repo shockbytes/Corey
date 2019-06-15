@@ -2,9 +2,9 @@ package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.support.v4.content.ContextCompat
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.core.scheduler.SchedulerFacade
@@ -66,7 +66,7 @@ class ScheduleAdapter(
         (holder as? ViewHolder)?.bind(data[position], position)
     }
 
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+    override fun onDetachedFromRecyclerView(recyclerView: androidx.recyclerview.widget.RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
         compositeDisposable.dispose()
     }

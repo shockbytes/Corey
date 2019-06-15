@@ -71,6 +71,7 @@ class FirebaseScheduleRepository(
 
     override fun poke() {
 
+        // TODO Remove this logic
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, NotificationReceiver::class.java)
         val pIntent = PendingIntent.getBroadcast(context, 0x9238, intent, 0)

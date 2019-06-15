@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.fragment.dialog
 
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
  * Author:  Martin Macheiner
  * Date:    21.03.2015.
  */
-class WearTimeExerciseCountdownDialogFragment : DialogFragment() {
+class WearTimeExerciseCountdownDialogFragment : androidx.fragment.app.DialogFragment() {
 
     private val txtTimer: TextView by bindView(R.id.dialogfr_countdown_txt_timer)
 
@@ -30,7 +30,7 @@ class WearTimeExerciseCountdownDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isCancelable = false
-        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Material_Dialog_Presentation)
+        setStyle(androidx.fragment.app.DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Material_Dialog_Presentation)
         countdown = arguments?.getInt(ARG_SECONDS) ?: 5
     }
 

@@ -1,14 +1,14 @@
 package at.shockbytes.corey.ui.fragment.pager
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.util.Pair
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.View
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
@@ -41,11 +41,11 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
 
-    private val layoutManagerForOrientation: RecyclerView.LayoutManager
+    private val layoutManagerForOrientation: androidx.recyclerview.widget.RecyclerView.LayoutManager
         get() = if (isPortrait()) {
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            androidx.recyclerview.widget.LinearLayoutManager(activity, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         } else {
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            androidx.recyclerview.widget.StaggeredGridLayoutManager(2, androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL)
         }
 
     override val layoutId = R.layout.fragment_workout_overview

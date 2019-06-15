@@ -2,7 +2,7 @@ package at.shockbytes.corey.ui.fragment.body
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.support.v7.widget.CardView
+import androidx.cardview.widget.CardView
 import android.view.animation.AnticipateOvershootInterpolator
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
@@ -19,7 +19,7 @@ abstract class BodySubFragment : BaseFragment<AppComponent>() {
 
     abstract fun animateView(startDelay: Long)
 
-    protected fun animateCard(cardView: CardView, startDelay: Long) {
+    protected fun animateCard(cardView: androidx.cardview.widget.CardView, startDelay: Long) {
         val cardAnimAlpha = ObjectAnimator.ofFloat(cardView, "alpha", 0.1f, 1f)
         val cardAnimScaleX = ObjectAnimator.ofFloat(cardView, "scaleX", 0.1f, 1f)
         val cardAnimScaleY = ObjectAnimator.ofFloat(cardView, "scaleY", 0.1f, 1f)

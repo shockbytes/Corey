@@ -2,12 +2,12 @@ package at.shockbytes.corey.ui.fragment.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetDialogFragment
-import android.support.design.widget.CoordinatorLayout
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -37,7 +37,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
     private val compositeDisposable = CompositeDisposable()
 
     private val editTextFilter: EditText by bindView(R.id.fragment_create_workout_bottom_sheet_edit_filter)
-    private val recyclerView: RecyclerView by bindView(R.id.fragment_create_workout_bottom_sheet_recyclerview)
+    private val recyclerView: androidx.recyclerview.widget.RecyclerView by bindView(R.id.fragment_create_workout_bottom_sheet_recyclerview)
 
     private val behaviorCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
@@ -103,7 +103,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
             onItemClickListener = this@InsertScheduleDialogFragment
         }
         recyclerView.apply {
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 2)
             adapter = addScheduleItemAdapter
         }
 

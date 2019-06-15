@@ -2,10 +2,10 @@ package at.shockbytes.corey.ui.fragment.pager
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.widget.Toast
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.ui.fragment.BaseFragment
@@ -61,14 +61,14 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
         )
     }
 
-    private val recyclerView: RecyclerView by bindView(R.id.fragment_schedule_rv)
-    private val recyclerViewDays: RecyclerView by bindView(R.id.fragment_schedule_rv_days)
+    private val recyclerView: androidx.recyclerview.widget.RecyclerView by bindView(R.id.fragment_schedule_rv)
+    private val recyclerViewDays: androidx.recyclerview.widget.RecyclerView by bindView(R.id.fragment_schedule_rv_days)
 
-    private val recyclerViewLayoutManager: RecyclerView.LayoutManager
+    private val recyclerViewLayoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager
         get() = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         } else {
-            GridLayoutManager(context, ScheduleAdapter.MAX_SCHEDULES)
+            androidx.recyclerview.widget.GridLayoutManager(context, ScheduleAdapter.MAX_SCHEDULES)
         }
 
     override val layoutId = R.layout.fragment_schedule

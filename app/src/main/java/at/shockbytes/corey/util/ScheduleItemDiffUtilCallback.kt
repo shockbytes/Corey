@@ -1,6 +1,6 @@
 package at.shockbytes.corey.util
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import at.shockbytes.corey.data.schedule.ScheduleItem
 
 /**

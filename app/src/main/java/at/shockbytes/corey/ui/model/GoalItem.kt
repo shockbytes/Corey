@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.model
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import org.joda.time.DateTime
 
 data class GoalItem(

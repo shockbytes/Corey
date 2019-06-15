@@ -4,8 +4,8 @@ import android.app.Notification
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.ContextCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.view.model.SpinnerData
 

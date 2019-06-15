@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.activity
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import at.shockbytes.core.ui.activity.base.ContainerBackNavigableActivity
 import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.AppComponent

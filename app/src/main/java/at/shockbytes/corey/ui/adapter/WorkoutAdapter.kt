@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
-import android.support.v7.widget.PopupMenu
+import androidx.appcompat.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup

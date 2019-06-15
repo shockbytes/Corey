@@ -2,10 +2,10 @@ package at.shockbytes.corey.ui.adapter
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
-import android.support.v4.content.ContextCompat
-import android.support.wear.widget.drawer.WearableNavigationDrawerView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
+import androidx.wear.widget.drawer.WearableNavigationDrawerView
 
 /**
  * Author:  Martin Macheiner

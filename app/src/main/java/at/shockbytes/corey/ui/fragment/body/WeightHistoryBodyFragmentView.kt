@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.fragment.body
 
-import android.support.annotation.ColorInt
-import android.support.v4.content.ContextCompat
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.dagger.AppComponent

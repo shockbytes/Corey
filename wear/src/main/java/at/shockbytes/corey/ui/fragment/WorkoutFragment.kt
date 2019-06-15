@@ -11,8 +11,8 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.SystemClock
 import android.os.Vibrator
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import android.widget.Chronometer
 import android.widget.ProgressBar
 import android.widget.TextView

@@ -1,7 +1,7 @@
 package at.shockbytes.corey.common.core.workout.model
 
-import android.support.annotation.ColorRes
-import android.support.annotation.DrawableRes
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import at.shockbytes.corey.common.core.R
 
 enum class WorkoutIconType(

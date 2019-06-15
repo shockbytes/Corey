@@ -1,8 +1,8 @@
 package at.shockbytes.corey.common.core.util
 
 import android.annotation.SuppressLint
-import android.support.v7.view.menu.MenuPopupHelper
-import android.support.v7.widget.PopupMenu
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import at.shockbytes.corey.common.core.R
 import at.shockbytes.corey.common.core.workout.model.Equipment
 import org.joda.time.LocalDate

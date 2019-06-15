@@ -23,7 +23,7 @@ class TimeExercise(
         get() = repetitions * (workDuration + restDuration)
 
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
+            parcel.readString() ?: "",
             parcel.readInt(),
             parcel.readSerializable() as Equipment,
             parcel.readInt(),

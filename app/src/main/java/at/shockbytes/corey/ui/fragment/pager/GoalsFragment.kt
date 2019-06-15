@@ -1,10 +1,10 @@
 package at.shockbytes.corey.ui.fragment.pager
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.GoalAdapter import at.shockbytes.corey.dagger.DaggerAppComponent
@@ -12,7 +12,7 @@ import at.shockbytes.corey.ui.model.GoalItem
 import at.shockbytes.corey.ui.viewmodel.GoalsViewModel
 import kotlinx.android.synthetic.main.fragment_goals.*
 import javax.inject.Inject
-import android.support.v7.widget.DividerItemDecoration
+import androidx.recyclerview.widget.DividerItemDecoration
 
 class GoalsFragment : BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActionClickedListener {
 
@@ -58,8 +58,8 @@ class GoalsFragment : BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActi
 
     override fun setupViews() {
         context?.let { ctx ->
-            fragment_body_card_goals_rv.layoutManager = LinearLayoutManager(ctx)
-            fragment_body_card_goals_rv.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+            fragment_body_card_goals_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(ctx)
+            fragment_body_card_goals_rv.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(activity, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
             val goalAdapter = GoalAdapter(ctx)
             goalAdapter.setOnGoalActionClickedListener(this)
             fragment_body_card_goals_rv.adapter = goalAdapter

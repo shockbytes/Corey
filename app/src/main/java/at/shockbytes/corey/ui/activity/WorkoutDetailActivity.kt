@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.transition.Fade
 import at.shockbytes.core.ui.activity.base.TintableBackNavigableActivity
 import at.shockbytes.corey.R
@@ -84,7 +84,7 @@ class WorkoutDetailActivity : TintableBackNavigableActivity<AppComponent>() {
         activity_training_detail_txt_exercise_count.text = getString(R.string.exercises_with_count, workout.exerciseCount)
 
         activity_training_recyclerview.apply {
-            layoutManager = LinearLayoutManager(this@WorkoutDetailActivity)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@WorkoutDetailActivity)
             adapter = ExerciseAdapter(this@WorkoutDetailActivity).apply {
                 data = workout.exercises
             }

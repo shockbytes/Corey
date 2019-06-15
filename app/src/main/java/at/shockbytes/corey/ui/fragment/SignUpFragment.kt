@@ -3,7 +3,7 @@ package at.shockbytes.corey.ui.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
+import androidx.core.app.ActivityOptionsCompat
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.AppComponent

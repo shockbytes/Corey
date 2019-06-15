@@ -4,7 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.support.v7.graphics.Palette
+import androidx.palette.graphics.Palette
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -22,7 +22,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    05.02.2018
  */
-class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener, ImageLoadingCallback {
+class ProfileBodyFragmentView : BodySubFragment(), androidx.palette.graphics.Palette.PaletteAsyncListener, ImageLoadingCallback {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -67,11 +67,11 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
     override fun animateView(startDelay: Long) {
     }
 
-    override fun onGenerated(palette: Palette?) = Unit
+    override fun onGenerated(palette: androidx.palette.graphics.Palette?) = Unit
 
     override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let { bitmap ->
-            Palette.from(bitmap).generate(this)
+            androidx.palette.graphics.Palette.from(bitmap).generate(this)
         }
     }
 

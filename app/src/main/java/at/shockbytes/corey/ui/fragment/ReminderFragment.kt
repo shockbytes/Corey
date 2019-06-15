@@ -1,8 +1,8 @@
 package at.shockbytes.corey.ui.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
@@ -91,11 +91,11 @@ class ReminderFragment : BaseFragment<AppComponent>() {
     override fun bindViewModel() {
 
         viewModel.isWorkoutReminderEnabled().observe(this, Observer { isWorkoutReminderEnabled ->
-            enableWorkoutViews(isWorkoutReminderEnabled == true)
+            enableWorkoutViews(isWorkoutReminderEnabled)
         })
 
         viewModel.isWeighReminderEnabled().observe(this, Observer { isWeighReminderEnabled ->
-            enableWeighViews(isWeighReminderEnabled == true)
+            enableWeighViews(isWeighReminderEnabled)
         })
     }
 

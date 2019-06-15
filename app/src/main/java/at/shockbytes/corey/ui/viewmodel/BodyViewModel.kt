@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import at.shockbytes.core.model.ShockbytesUser
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.viewmodel.BaseViewModel

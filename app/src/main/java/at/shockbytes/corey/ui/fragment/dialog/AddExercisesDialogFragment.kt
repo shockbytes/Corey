@@ -2,11 +2,11 @@ package at.shockbytes.corey.ui.fragment.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetDialogFragment
-import android.support.design.widget.CoordinatorLayout
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -52,7 +52,7 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
     private var exerciseCreatedListener: ((Exercise) -> Unit)? = null
 
     private val editTextFilter: EditText by bindView(R.id.fragment_create_workout_bottom_sheet_edit_filter)
-    private val rvAddExercises: RecyclerView by bindView(R.id.fragment_create_workout_bottom_sheet_recyclerview)
+    private val rvAddExercises: androidx.recyclerview.widget.RecyclerView by bindView(R.id.fragment_create_workout_bottom_sheet_recyclerview)
     private val viewFlipper: ViewFlipper by bindView(R.id.fragment_create_workout_bottom_sheet_viewflipper)
     private val numberPickerRepetitions: NumberPicker by bindView(R.id.fragment_create_workout_bottom_sheet_numberpicker_reps)
     private val numberPickerWorkDuration: NumberPicker by bindView(R.id.fragment_create_workout_bottom_sheet_numberpicker_workduration)
@@ -136,7 +136,7 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
         viewFlipper.setInAnimation(context, R.anim.slide_in_right)
         viewFlipper.setOutAnimation(context, R.anim.slide_out_left)
 
-        rvAddExercises.layoutManager = GridLayoutManager(context, 3)
+        rvAddExercises.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
         exerciseAdapter = AddExerciseAdapter(context!!, listOf()) { item, query -> item.name.contains(query) }
         exerciseAdapter.onItemClickListener = this
         rvAddExercises.adapter = exerciseAdapter

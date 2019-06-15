@@ -1,9 +1,9 @@
 package at.shockbytes.corey.ui.fragment
 
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.wear.widget.WearableLinearLayoutManager
-import android.support.wear.widget.WearableRecyclerView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.wear.widget.WearableLinearLayoutManager
+import androidx.wear.widget.WearableRecyclerView
 import android.view.View
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.WearWorkoutOverviewAdapter

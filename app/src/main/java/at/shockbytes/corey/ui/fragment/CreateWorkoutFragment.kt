@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -56,7 +56,7 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
     private val editDuration: EditText by bindView(R.id.fragment_create_workout_edit_duration)
     private val spinnerBodyRegion: Spinner by bindView(R.id.fragment_create_workout_spinner_body_region)
     private val spinnerIntensity: Spinner by bindView(R.id.fragment_create_workout_spinner_intensity)
-    private val recyclerViewExercises: RecyclerView by bindView(R.id.fragment_create_workout_recyclerview_exercises)
+    private val recyclerViewExercises: androidx.recyclerview.widget.RecyclerView by bindView(R.id.fragment_create_workout_recyclerview_exercises)
     private val imgBtnExpandCollapse: ImageButton by bindView(R.id.fragment_create_workout_btn_exp_col_general)
     private val generalCollapseContainer: View by bindView(R.id.fragment_create_workout_general_collapse_container)
 
@@ -119,7 +119,7 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
                 CoreyAppUtils.getIntensitySpinnerData(ctx))
             spinnerIntensity.onItemSelectedListener = this
 
-            recyclerViewExercises.layoutManager = LinearLayoutManager(ctx)
+            recyclerViewExercises.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(ctx)
             exerciseAdapter = ExerciseAdapter(ctx)
             exerciseAdapter.setItemsMovable(true)
             // exerciseAdapter.setOnItemMoveListener(this);

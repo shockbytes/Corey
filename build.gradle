@@ -47,10 +47,10 @@ ext {
     shockUtilVersion = "4.0.2"
     shockbytesCoreVersion = "0.2.1"
 
-    firebaseVersionDatabase = "16.1.0"
-    firebaseVersionConfig = "16.5.0"
-    firebaseVersionCore = "16.0.8"
-    firebaseVersionAuth = "16.2.1"
+    firebaseVersionDatabase = "17.0.0"
+    firebaseVersionConfig = "17.0.0"
+    firebaseVersionCore = "16.0.9"
+    firebaseVersionAuth = "17.0.0"
 
     firebaseUIVersion = "4.2.1"
 
@@ -60,7 +60,9 @@ ext {
     playServicesVersionWearable = "16.0.1"
     playServicesVersionFitness = "16.0.1"
     archVersion = "1.1.1"
-    crashlyticsVersion = "2.9.9"
+    crashlyticsVersion = "2.10.1"
+
+    workVersion = '2.1.0-beta01'
 
     glideVersion = "4.8.0"
     retrofitVersion = "2.5.0"

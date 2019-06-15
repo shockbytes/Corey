@@ -9,7 +9,7 @@
     android:weightSum="1"
     tools:context="at.shockbytes.corey.fragment.RunningOverviewFragment">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/fragment_running_overview_card_free_run"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -22,7 +22,7 @@
             android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/fragment_running_overview_imgview_free_run"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
@@ -40,9 +40,9 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/fragment_running_overview_card_distance"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -55,7 +55,7 @@
             android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
                 android:padding="12dp"
@@ -72,9 +72,9 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/fragment_running_overview_card_time"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -87,7 +87,7 @@
             android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
                 android:padding="12dp"
@@ -104,9 +104,9 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/fragment_running_overview_card_calories"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -119,7 +119,7 @@
             android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
                 android:padding="12dp"
@@ -136,7 +136,7 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 </LinearLayout>
