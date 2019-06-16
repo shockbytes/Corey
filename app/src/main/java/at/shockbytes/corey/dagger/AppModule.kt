@@ -73,15 +73,20 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideScheduleManager(
-        preferences: SharedPreferences,
         gson: Gson,
         workoutManager: WorkoutRepository,
         remoteConfig: FirebaseRemoteConfig,
         firebase: FirebaseDatabase,
         schedulerFacade: SchedulerFacade
     ): ScheduleRepository {
-        return FirebaseScheduleRepository(app.applicationContext, preferences, gson,
-                workoutManager, remoteConfig, firebase, schedulerFacade)
+        return FirebaseScheduleRepository(
+            app.applicationContext,
+            gson,
+            workoutManager,
+            remoteConfig,
+            firebase,
+            schedulerFacade
+        )
     }
 
     @Provides

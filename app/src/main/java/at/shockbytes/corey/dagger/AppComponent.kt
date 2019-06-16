@@ -2,8 +2,6 @@ package at.shockbytes.corey.dagger
 
 import at.shockbytes.core.ShockbytesInjector
 import at.shockbytes.corey.core.CoreyApp
-import at.shockbytes.corey.core.receiver.NotificationReceiver
-import at.shockbytes.corey.core.receiver.OnBootReceiver
 import at.shockbytes.corey.ui.activity.MainActivity
 import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.ReminderFragment
@@ -58,10 +56,6 @@ interface AppComponent : ShockbytesInjector {
     fun inject(dialogFragment: DesiredWeightDialogFragment)
 
     fun inject(dialogFragment: InsertScheduleDialogFragment)
-
-    fun inject(broadcastReceiver: NotificationReceiver)
-
-    fun inject(broadcastReceiver: OnBootReceiver)
 
     fun inject(fragment: ProfileBodyFragmentView)
 
