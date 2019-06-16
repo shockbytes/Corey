@@ -4,18 +4,14 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.info.BodyInfo
-import at.shockbytes.corey.data.reminder.worker.TestWorker
 import at.shockbytes.corey.data.reminder.worker.WeighNotificationWorker
 import at.shockbytes.corey.data.reminder.worker.WorkoutNotificationWorker
 import at.shockbytes.corey.data.schedule.ScheduleItem
@@ -57,15 +53,6 @@ class DefaultReminderManager(
 
         postWorkoutNotificationWorker(context)
         postWeighNotificationWorker(context)
-
-        val tag = "a"
-        val request = OneTimeWorkRequestBuilder<TestWorker>()
-            .addTag(tag)
-            .setConstraints(Constraints())
-            .build()
-
-        WorkManager.getInstance(context)
-            .enqueueUniqueWork(tag, ExistingWorkPolicy.REPLACE, request)
     }
 
     private fun createNotificationChannel(context: Context) {
@@ -155,7 +142,7 @@ class DefaultReminderManager(
                     weightUnit = bodyRepository.weightUnit
                 )
 
-                (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).run {
+                getNotificationManager(context).run {
                     notify(0x90, notification)
                 }
             }
@@ -173,7 +160,7 @@ class DefaultReminderManager(
             item.workoutIconType
         )
 
-        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).run {
+        getNotificationManager(context).run {
             notify(0x91, notification)
         }
     }
@@ -186,7 +173,7 @@ class DefaultReminderManager(
         private const val KEY_REMINDER_WORKOUT_HOUR = "key_reminder_workout_hour"
         private const val KEY_REMINDER_WEIGH_HOUR = "key_reminder_weigh_hour"
 
-        private const val REMINDER_DAY_DEFAULT_VALUE = 0
+        private const val REMINDER_DAY_DEFAULT_VALUE = 3 // Thursday is the default weigh day
         private const val REMINDER_HOUR_DEFAULT_VALUE = 6
     }
 }
