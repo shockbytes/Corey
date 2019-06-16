@@ -86,6 +86,7 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        viewModel.pokeReminderManager(this)
     }
 
     override fun bindViewModel() {

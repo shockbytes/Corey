@@ -6,5 +6,5 @@ interface BestOwmForecastItemMatcher {
 
     fun isRangeMatch(owmWeatherRecord: OwmWeatherRecord, hour: Int): Boolean
 
-    fun findBestMatch(records: List<OwmWeatherRecord>): OwmWeatherRecord
+    fun findBestMatch(records: List<OwmWeatherRecord>): OwmWeatherRecord?
 }

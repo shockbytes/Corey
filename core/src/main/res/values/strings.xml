@@ -1,14 +1,33 @@
 <resources>
 
-    <string name="app_name">core</string>
+    <string name="app_name" translatable="false">core</string>
 
     <string name="format_time_exercise">%1$d minutes %2$s</string>
     <string name="format_exercise" translatable="false">%1$d %2$s</string>
 
     <string name="dialogfragment_countdown">Exercise starts in</string>
 
-    <string name="capability_device">corey_wear_capability</string>
-    <string name="capability_wear_device">corey_wear_capability_wear_device</string>
+    <string name="capability_device" translatable="false">corey_wear_capability</string>
+    <string name="capability_wear_device" translatable="false">corey_wear_capability_wear_device</string>
 
+    <string-array name="days">
+        <item>MO</item>
+        <item>TU</item>
+        <item>WE</item>
+        <item>TH</item>
+        <item>FR</item>
+        <item>SA</item>
+        <item>SU</item>
+    </string-array>
+
+    <string-array name="daysFull">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 
 </resources>

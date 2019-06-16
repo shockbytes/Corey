@@ -62,6 +62,11 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
 
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="at.shockbytes.corey.workmanager-init"
+            android:enabled="false"/>
+
     </application>
 
 </manifest>

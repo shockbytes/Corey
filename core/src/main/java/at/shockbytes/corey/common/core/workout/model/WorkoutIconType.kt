@@ -6,7 +6,8 @@ import at.shockbytes.corey.common.core.R
 
 enum class WorkoutIconType(
     @DrawableRes val iconRes: Int?,
-    @ColorRes val iconTint: Int? = null
+    @ColorRes val iconTint: Int? = null,
+    @ColorRes val notificationTint: Int? = iconTint
 ) {
     NONE(null, null),
     // Built in

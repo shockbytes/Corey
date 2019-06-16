@@ -1,5 +1,6 @@
 package at.shockbytes.corey.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.core.model.LoginUserEvent
@@ -39,10 +40,13 @@ class MainViewModel @Inject constructor(
 
     init {
         workoutRepository.poke()
-        reminderManager.poke()
 
         userEvent.postValue(LoginUserEvent.SuccessEvent(userRepository.user, false))
         weatherForecastEnabled.postValue(coreySettings.isWeatherForecastEnabled)
+    }
+
+    fun pokeReminderManager(context: Context) {
+        reminderManager.poke(context)
     }
 
     fun storeWorkout(w: Workout) {

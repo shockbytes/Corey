@@ -121,26 +121,6 @@
         <item>Full body</item>
     </string-array>
 
-    <string-array name="days">
-        <item>MO</item>
-        <item>TU</item>
-        <item>WE</item>
-        <item>TH</item>
-        <item>FR</item>
-        <item>SA</item>
-        <item>SU</item>
-    </string-array>
-
-    <string-array name="daysFull">
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
-        <item>Sunday</item>
-    </string-array>
-
     <string-array name="workoutDaytimeReminder">
         <item>06:00</item>
         <item>08:00</item>
@@ -183,8 +163,8 @@
     <string name="remote_config_scheduling_items" translatable="false">scheduling_items</string>
     <string name="notification_workout_title">Get up and work out!</string>
     <string name="notification_workout_msg">%s is waiting for you</string>
-    <string name="notification_weigh_msg">Weigh yourself</string>
-    <string name="notification_weigh_title">Today is weigh day</string>
+    <string name="notification_weigh_title">%s is weigh day</string>
+    <string name="notification_weigh_msg">Last time you weighed %1$s %2$s. Go fight your weight!</string>
     <string name="my_goals">My goals</string>
     <string name="no_goals">No goals so far, create one!</string>
     <string name="your_crushed_goals">Your crushed goals</string>
@@ -238,5 +218,7 @@
     <string name="workout_reminder">Workout reminder</string>
     <string name="weigh_reminder">Weigh reminder</string>
     <string name="averaged">Averaged</string>
-
+    <string name="corey_notification_channel_name">Corey notifications</string>
+    <string name="corey_notification_channel_description">Main Corey notification channel</string>
+    <string name="corey_notification_channel_id" translatable="false">corey_notifications</string>
 </resources>

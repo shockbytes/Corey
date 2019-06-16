@@ -1,11 +1,6 @@
 package at.shockbytes.corey.util
 
-import android.app.Notification
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.media.RingtoneManager
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.view.model.SpinnerData
 
@@ -14,36 +9,6 @@ import at.shockbytes.corey.common.core.util.view.model.SpinnerData
  * Date:    14.03.2017
  */
 object CoreyAppUtils {
-
-    private const val channelId: String = "corey_notifications"
-
-    fun getWorkoutNotification(context: Context, name: String): Notification {
-
-        return NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_tab_workout)
-                .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_notification_workout))
-                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                .setAutoCancel(true)
-                .setContentText(context.getString(R.string.notification_workout_msg, name))
-                .setContentTitle(context.getString(R.string.notification_workout_title))
-                .setVibrate(longArrayOf(150, 150, 150))
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .build()
-    }
-
-    fun getWeighNotification(context: Context): Notification {
-
-        return NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_tab_workout)
-                .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_notification_weigh))
-                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                .setAutoCancel(true)
-                .setContentText(context.getString(R.string.notification_weigh_msg))
-                .setContentTitle(context.getString(R.string.notification_weigh_title))
-                .setVibrate(longArrayOf(150, 150, 150))
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .build()
-    }
 
     fun getBodyRegionSpinnerData(c: Context): List<SpinnerData> {
 

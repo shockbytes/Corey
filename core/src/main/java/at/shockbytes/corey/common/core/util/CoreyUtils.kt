@@ -1,6 +1,7 @@
 package at.shockbytes.corey.common.core.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import at.shockbytes.corey.common.core.R
@@ -28,6 +29,10 @@ object CoreyUtils {
 
     fun formatDate(date: Long, yearFormat: Boolean): String {
         return if (yearFormat) SDF_DATE_W_YEAR.format(Date(date)) else SDF_DATE.format(Date(date))
+    }
+
+    fun getLocalizedDayOfWeek(context: Context): String {
+        return context.resources.getStringArray(R.array.daysFull)[getDayOfWeek()]
     }
 
     fun getImageByEquipment(equipment: Equipment): Int {

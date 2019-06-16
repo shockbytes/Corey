@@ -1,30 +1,35 @@
 package at.shockbytes.corey.data.reminder
 
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
+import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.WorkRequest
-import at.shockbytes.core.scheduler.SchedulerFacade
+import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
+import at.shockbytes.corey.data.body.BodyRepository
+import at.shockbytes.corey.data.body.info.BodyInfo
+import at.shockbytes.corey.data.reminder.worker.TestWorker
 import at.shockbytes.corey.data.reminder.worker.WeighNotificationWorker
 import at.shockbytes.corey.data.reminder.worker.WorkoutNotificationWorker
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.storage.KeyValueStorage
-import at.shockbytes.corey.util.CoreyAppUtils
 import at.shockbytes.corey.util.isItemOfCurrentDay
-import io.reactivex.Completable
+import io.reactivex.Single
 import org.joda.time.DateTime
 import java.util.concurrent.TimeUnit
 
 class DefaultReminderManager(
     private val localStorage: KeyValueStorage,
     private val scheduleRepository: ScheduleRepository,
-    private val schedulers: SchedulerFacade
+    private val bodyRepository: BodyRepository
 ) : ReminderManager {
 
     override var isWorkoutReminderEnabled: Boolean
@@ -48,21 +53,63 @@ class DefaultReminderManager(
         set(value) = localStorage.putInt(value, KEY_REMINDER_WEIGH_HOUR)
 
     override fun poke(context: Context) {
+        createNotificationChannel(context)
 
-        val hourToRemind = 6
-        val initialDelayOffset = ReminderHelper.getInitialDelayOffset(DateTime.now(), hourToRemind)
+        postWorkoutNotificationWorker(context)
+        postWeighNotificationWorker(context)
 
-        val workoutTag = "periodic_workout_notification_worker"
-        val workoutRequest = buildNotificationRequest(initialDelayOffset, workoutTag, WorkoutNotificationWorker::class.java)
-
-        val weighTag = "periodic_weigh_notification_worker"
-        val weighRequest = buildNotificationRequest(initialDelayOffset, weighTag, WeighNotificationWorker::class.java)
+        val tag = "a"
+        val request = OneTimeWorkRequestBuilder<TestWorker>()
+            .addTag(tag)
+            .setConstraints(Constraints())
+            .build()
 
         WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork(workoutTag, ExistingPeriodicWorkPolicy.REPLACE, workoutRequest)
+            .enqueueUniqueWork(tag, ExistingWorkPolicy.REPLACE, request)
+    }
+
+    private fun createNotificationChannel(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            with(context) {
+                val name = getString(R.string.corey_notification_channel_name)
+                val description = getString(R.string.corey_notification_channel_description)
+                val importance = NotificationManager.IMPORTANCE_DEFAULT
+
+                val channel = NotificationChannel(
+                    getString(R.string.corey_notification_channel_id),
+                    name,
+                    importance
+                ).apply {
+                    this.description = description
+                    enableLights(true)
+                    setShowBadge(true)
+                }
+
+                getNotificationManager(this).createNotificationChannel(channel)
+            }
+        }
+    }
+
+    private fun getNotificationManager(context: Context): NotificationManager {
+        return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
+
+    private fun postWeighNotificationWorker(context: Context) {
+        val weighTag = "periodic_weigh_notification_worker"
+        val initialWeighDelayOffset = ReminderHelper.getInitialDelayOffset(DateTime.now(), hourOfWeighReminder)
+        val weighRequest = buildNotificationRequest(initialWeighDelayOffset, weighTag, WeighNotificationWorker::class.java)
 
         WorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(weighTag, ExistingPeriodicWorkPolicy.REPLACE, weighRequest)
+    }
+
+    private fun postWorkoutNotificationWorker(context: Context) {
+        val workoutTag = "periodic_workout_notification_worker"
+        val initialWorkoutDelayOffset = ReminderHelper.getInitialDelayOffset(DateTime.now(), hourOfWorkoutReminder)
+        val workoutRequest = buildNotificationRequest(initialWorkoutDelayOffset, workoutTag, WorkoutNotificationWorker::class.java)
+
+        WorkManager.getInstance(context)
+            .enqueueUniquePeriodicWork(workoutTag, ExistingPeriodicWorkPolicy.REPLACE, workoutRequest)
     }
 
     private fun buildNotificationRequest(
@@ -83,27 +130,35 @@ class DefaultReminderManager(
             .build()
     }
 
-    override fun postWorkoutNotification(context: Context): Completable {
+    override fun postWorkoutNotification(context: Context): Single<ScheduleItem> {
         return scheduleRepository.schedule
             .flatMapIterable { it }
             .filter { item ->
                 // Filter all days which are not happening on the current day
-                !item.isItemOfCurrentDay(CoreyUtils.getDayOfWeek())
+                item.isItemOfCurrentDay(CoreyUtils.getDayOfWeek())
             }
-            .doOnNext { item ->
+            .firstOrError()
+            .doOnSuccess { item ->
                 postWorkoutNotificationForToday(context, item)
             }
-            .flatMapCompletable {
-                Completable.complete()
-            }
-            .subscribeOn(schedulers.io)
     }
 
-    override fun postWeighNotification(context: Context): Completable {
-        return Completable.fromCallable {
-            val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            nm.notify(0x90, CoreyAppUtils.getWeighNotification(context))
-        }
+    override fun postWeighNotification(context: Context): Single<BodyInfo> {
+        return bodyRepository.bodyInfo
+            .singleOrError()
+            .doOnSuccess { bodyInfo ->
+
+                val notification = ReminderNotificationBuilder.buildWeighNotification(
+                    context,
+                    CoreyUtils.getLocalizedDayOfWeek(context),
+                    weight = String.format("%,.0f", bodyInfo.latestWeightPoint.weight),
+                    weightUnit = bodyRepository.weightUnit
+                )
+
+                (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).run {
+                    notify(0x90, notification)
+                }
+            }
     }
 
     override fun shouldScheduleWeighReminder(): Boolean {
@@ -111,8 +166,16 @@ class DefaultReminderManager(
     }
 
     private fun postWorkoutNotificationForToday(context: Context, item: ScheduleItem) {
-        val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        nm.notify(0x91, CoreyAppUtils.getWorkoutNotification(context, item.name))
+
+        val notification = ReminderNotificationBuilder.buildWorkoutNotification(
+            context,
+            item.name,
+            item.workoutIconType
+        )
+
+        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).run {
+            notify(0x91, notification)
+        }
     }
 
     companion object {

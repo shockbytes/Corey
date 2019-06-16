@@ -1,6 +1,7 @@
 package at.shockbytes.corey.dagger
 
 import at.shockbytes.core.ShockbytesInjector
+import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.core.receiver.NotificationReceiver
 import at.shockbytes.corey.core.receiver.OnBootReceiver
 import at.shockbytes.corey.ui.activity.MainActivity
@@ -31,9 +32,12 @@ import javax.inject.Singleton
     FirebaseModule::class,
     ViewModelModule::class,
     WeatherModule::class,
-    NetModule::class
+    NetModule::class,
+    WorkerModule::class
 ])
 interface AppComponent : ShockbytesInjector {
+
+    fun inject(app: CoreyApp)
 
     fun inject(activity: MainActivity)
 

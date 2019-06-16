@@ -70,26 +70,6 @@
         <item>Ich sehe den Fortschritt</item>
     </string-array>
 
-    <string-array name="days">
-        <item>MO</item>
-        <item>DI</item>
-        <item>MI</item>
-        <item>DO</item>
-        <item>FR</item>
-        <item>SA</item>
-        <item>SO</item>
-    </string-array>
-
-    <string-array name="daysFull">
-        <item>Montag</item>
-        <item>Dienstag</item>
-        <item>Mittwoch</item>
-        <item>Donnerstag</item>
-        <item>Freitag</item>
-        <item>Samstag</item>
-        <item>Sonntag</item>
-    </string-array>
-
     <string-array name="goal_category_names">
         <item>Körperfett</item>
         <item>Gewicht</item>
@@ -130,8 +110,8 @@
     <string name="tab_my_body">Mein Körper</string>
     <string name="tab_workout">Workouts</string>
     <string name="tab_schedule">Wochenplan</string>
-    <string name="notification_weigh_msg">Wieg dich!</string>
-    <string name="notification_weigh_title">Heute ist es wieder soweit!</string>
+    <string name="notification_weigh_title">%s! Zeit zum Wiegen</string>
+    <string name="notification_weigh_msg">Letztes Mal hast du %1$s %2$s. Gib nicht auf.</string>
     <string name="notification_workout_msg">%s wartet heute auf dich</string>
     <string name="notification_workout_title">Steh auf und mach was</string>
     <string name="no_goals">Keine Ziele soweit…</string>

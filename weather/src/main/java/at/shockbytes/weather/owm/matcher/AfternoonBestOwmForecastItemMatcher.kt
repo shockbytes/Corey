@@ -8,8 +8,10 @@ class AfternoonBestOwmForecastItemMatcher : BestOwmForecastItemMatcher {
         return hour in 11..17
     }
 
-    override fun findBestMatch(records: List<OwmWeatherRecord>): OwmWeatherRecord {
+    override fun findBestMatch(records: List<OwmWeatherRecord>): OwmWeatherRecord? {
         val middleIdx = Math.floor(records.size / 2.toDouble()).toInt()
-        return records[middleIdx]
+        return if (middleIdx != 0) {
+            records[middleIdx]
+        } else null
     }
 }
