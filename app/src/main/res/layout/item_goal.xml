@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:padding="8dp">
 
     <TextView
@@ -17,6 +17,7 @@
         android:layout_marginEnd="8dp"
         android:layout_toStartOf="@+id/item_goal_btn_done"
         android:gravity="center_vertical"
+        android:textColor="@color/coreyBlack"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/item_goal_btn_done"
         app:layout_constraintEnd_toStartOf="@+id/item_goal_btn_done"
@@ -32,7 +33,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:tint="@color/controls"
+        android:tint="@color/coreyBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_done" />
@@ -46,6 +47,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:tint="@color/coreyBlack"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/item_goal_text"
         app:layout_constraintTop_toBottomOf="@+id/item_goal_text"
@@ -59,11 +61,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        tools:text="Category"
+        android:textColor="@color/coreyBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/item_goal_text"
-        app:layout_constraintTop_toBottomOf="@+id/item_goal_iv_category" />
+        app:layout_constraintTop_toBottomOf="@+id/item_goal_iv_category"
+        tools:text="Category" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -79,6 +82,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:tint="@color/coreyBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/item_goal_text"
@@ -92,10 +96,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        tools:text="July 2018"
+        android:textColor="@color/coreyBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/item_goal_iv_due_date" />
+        app:layout_constraintTop_toBottomOf="@+id/item_goal_iv_due_date"
+        tools:text="July 2018" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

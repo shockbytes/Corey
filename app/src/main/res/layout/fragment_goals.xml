@@ -52,6 +52,8 @@
                 android:layout_marginBottom="16dp"
                 android:drawableStart="@drawable/ic_body_card_goals"
                 android:drawablePadding="16dp"
+                android:drawableTint="@color/coreyBlack"
+                android:textColor="@color/coreyBlack"
                 android:gravity="center_vertical"
                 android:text="@string/my_goals"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />

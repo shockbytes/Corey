@@ -3,14 +3,16 @@
 
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_workout">
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="false"
+            android:icon="@drawable/ic_settings_vibration"
             android:key="@string/prefs_vibrations_key"
             android:summary="@string/prefs_vibrations_summary"
             android:title="@string/prefs_vibrations_title" />
 
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
             android:defaultValue="@integer/prefs_time_countdown_default"
+            android:icon="@drawable/ic_settings_countdown"
             android:key="@string/prefs_time_countdown_key"
             android:summary="@string/prefs_time_countdown_summary"
             android:text="@string/prefs_time_countdown_unit"
@@ -20,11 +22,13 @@
 
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_about">
 
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_developer"
             android:summary="@string/prefs_developer_summary"
             android:title="@string/prefs_developer_title" />
 
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_version"
             android:summary="@string/app_version"
             android:title="@string/prefs_version_title" />
 

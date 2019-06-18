@@ -38,6 +38,7 @@
             android:name=".ui.activity.CreateWorkoutActivity"
             android:label="@string/label_create_workout"
             android:screenOrientation="portrait" />
+
         <activity android:name=".ui.activity.WorkoutDetailActivity" />
         <activity android:name=".ui.activity.WorkoutActivity" />
 

@@ -23,7 +23,7 @@
     <color name="seven_accent">#6095F1</color>
     <color name="toolbar_item_color">@color/white</color>
     <color name="navigation_bar_color">@color/white</color>
-    <color name="navigationBarItemDisabled">#BBB</color>
+    <color name="navigationBarItemDisabled">#AAA</color>
     <color name="navigation_bar_item_text">#424242</color>
     <color name="sb_foreground">#FFF</color>
     <color name="sb_background">#424242</color>

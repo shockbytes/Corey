@@ -4,7 +4,9 @@
     <color name="colorPrimary">#8BC34A</color>
     <color name="colorPrimaryDark">#689F38</color>
     <color name="colorAccent">#FF9800</color>
-    
+
+    <color name="coreyBlack">#222222</color>
+
     <!-- Running colors -->
     <color name="running_mode_free_run">#795548</color>
     <color name="running_mode_distance">#00DD99</color>
