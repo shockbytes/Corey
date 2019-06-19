@@ -10,13 +10,13 @@ import at.shockbytes.corey.ui.adapter.WearWorkoutOverviewAdapter
 import at.shockbytes.corey.common.core.util.WorkoutNameComparator
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.WearAppComponent
-import at.shockbytes.corey.ui.activity.MainActivity
+import at.shockbytes.corey.ui.activity.WearMainActivity
 import at.shockbytes.corey.ui.activity.WorkoutActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 
 class WorkoutOverviewFragment : WearableBaseFragment(),
-        BaseAdapter.OnItemClickListener<Workout>, MainActivity.OnWorkoutsLoadedListener {
+        BaseAdapter.OnItemClickListener<Workout>, WearMainActivity.OnWorkoutsLoadedListener {
 
     private lateinit var workouts: List<Workout>
 

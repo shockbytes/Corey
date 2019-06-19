@@ -140,7 +140,7 @@ class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveLis
                             )
                         )
                     }
-                    .show(fragmentManager, "dialogfragment-insert-schedule")
+                    .show(childFragmentManager, "dialogfragment-insert-schedule")
         }
     }
 

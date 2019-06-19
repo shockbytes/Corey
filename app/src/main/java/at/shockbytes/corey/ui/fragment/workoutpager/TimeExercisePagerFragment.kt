@@ -80,7 +80,7 @@ class TimeExercisePagerFragment : BaseFragment<AppComponent>() {
                 .setCountdownCompleteListener {
                     startTimer()
                 }
-                .show(fragmentManager, "dialog-fragment-countdown-time-exercise")
+                .show(childFragmentManager, "dialog-fragment-countdown-time-exercise")
     }
 
     override fun onDestroy() {

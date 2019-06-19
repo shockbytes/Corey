@@ -42,7 +42,8 @@ dependencies {
     implementation (project(':weather'))
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    // implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.palette:palette:1.0.0'
@@ -77,6 +78,7 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation 'com.github.florent37:viewanimator:1.1.0'
+    implementation 'com.github.michaldrabik:classicmaterialtimepicker:1.0.0'
 
 
     implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"

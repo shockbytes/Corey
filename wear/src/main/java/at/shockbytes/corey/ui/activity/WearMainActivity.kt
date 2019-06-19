@@ -15,7 +15,7 @@ import java.util.Arrays
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class MainActivity : androidx.fragment.app.FragmentActivity() {
+class WearMainActivity : androidx.fragment.app.FragmentActivity() {
 
     interface OnWorkoutsLoadedListener {
 

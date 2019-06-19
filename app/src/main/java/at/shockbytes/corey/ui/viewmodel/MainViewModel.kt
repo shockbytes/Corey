@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
     private val coreySettings: CoreySettings,
     private val scheduleRepository: ScheduleRepository,
     private val reminderManager: ReminderManager,
-    workoutRepository: WorkoutRepository
+    private val workoutRepository: WorkoutRepository
 ) : BaseViewModel() {
 
     private val userEvent = MutableLiveData<LoginUserEvent>()
@@ -50,11 +50,11 @@ class MainViewModel @Inject constructor(
     }
 
     fun storeWorkout(w: Workout) {
-        TODO("storeWorkout() not implemented")
+        workoutRepository.storeWorkout(w)
     }
 
     fun updateWorkout(w: Workout) {
-        TODO("updateWorkout() not implemented")
+        workoutRepository.updateWorkout(w)
     }
 
     fun resetSchedule() {

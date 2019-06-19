@@ -35,9 +35,13 @@ class WorkoutFragment : BaseFragment<AppComponent>() {
 
     public override fun setupViews() {
 
-        fragment_workout_viewpager.adapter = ExercisePagerAdapter(fragmentManager, workout)
-        fragment_workout_viewpager.pageMargin = 32
-        fragment_workout_viewpager.makeFancyPageTransformation()
+        fragmentManager?.run {
+            fragment_workout_viewpager.apply {
+                adapter = ExercisePagerAdapter(this@run, workout)
+                pageMargin = 32
+                makeFancyPageTransformation()
+            }
+        }
 
         fragment_workout_chronometer.base = SystemClock.elapsedRealtime()
         fragment_workout_chronometer.start()
@@ -84,7 +88,7 @@ class WorkoutFragment : BaseFragment<AppComponent>() {
                 .setOnMessageAgreeClickedListener {
                     activity?.supportFinishAfterTransition()
                 }
-                .show(fragmentManager, "dialogfragment-finish-workout")
+                .show(childFragmentManager, "dialogfragment-finish-workout")
     }
 
     companion object {

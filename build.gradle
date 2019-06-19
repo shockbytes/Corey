@@ -45,7 +45,7 @@ ext {
     rxAndroidVersion = "2.1.0"
 
     shockUtilVersion = "4.0.2"
-    shockbytesCoreVersion = "0.2.1"
+    shockbytesCoreVersion = "0.3.1"
 
     firebaseVersionDatabase = "17.0.0"
     firebaseVersionConfig = "17.0.0"

@@ -153,6 +153,7 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     override fun unbindViewModel() = Unit
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == AppParams.REQUEST_CODE_CREATE_WORKOUT && resultCode == Activity.RESULT_OK) {
 

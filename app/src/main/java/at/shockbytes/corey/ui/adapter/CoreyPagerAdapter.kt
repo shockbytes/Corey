@@ -16,15 +16,15 @@ import at.shockbytes.corey.ui.fragment.pager.WorkoutOverviewFragment
 class CoreyPagerAdapter(
     fm: FragmentManager,
     private val tabs: List<BottomNavigationTab>
-) : FragmentStatePagerAdapter(fm) {
+) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    override fun getItem(position: Int): Fragment? {
+    override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> WorkoutOverviewFragment.newInstance()
             1 -> ScheduleFragment.newInstance()
             2 -> BodyFragment.newInstance()
             3 -> GoalsFragment.newInstance()
-            else -> null // Never the case
+            else -> throw IllegalStateException("Cannot resolve fragment in CoreyPagerAdapter for position $position") // Never the case
         }
     }
 

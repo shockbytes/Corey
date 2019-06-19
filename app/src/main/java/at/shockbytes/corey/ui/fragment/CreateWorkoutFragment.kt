@@ -5,8 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuInflater
@@ -165,7 +163,7 @@ class CreateWorkoutFragment : BaseFragment<AppComponent>(), AdapterView.OnItemSe
                 .setOnExerciseCreatedListener { exercise ->
                     exerciseAdapter.addEntityAtLast(exercise)
                 }
-                .show(fragmentManager, "dialog-fragment-add-exercise")
+                .show(childFragmentManager, "dialog-fragment-add-exercise")
     }
 
     private fun validateInput() {

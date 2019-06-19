@@ -10,6 +10,9 @@ import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.adapter.spinner.DayPickerSpinnerAdapter
 import at.shockbytes.corey.ui.viewmodel.ReminderViewModel
 import com.github.florent37.viewanimator.ViewAnimator
+import com.michaldrabik.classicmaterialtimepicker.CmtpDialogFragment
+import com.michaldrabik.classicmaterialtimepicker.OnTime24PickedListener
+import com.michaldrabik.classicmaterialtimepicker.model.CmtpTime24
 import kotlinx.android.synthetic.main.fragment_notification_settings.*
 import javax.inject.Inject
 
@@ -55,7 +58,32 @@ class ReminderFragment : BaseFragment<AppComponent>() {
             viewModel.enableWeighReminder(isChecked)
         }
 
+        btn_fragment_reminder_workout.setOnClickListener {
+            openTimePicker { hour, _ ->
+                viewModel.setHourOfWorkoutReminder(hour)
+            }
+        }
+
+        btn_fragment_reminder_weigh.setOnClickListener {
+            openTimePicker { hour, _ ->
+                viewModel.setHourOfWeighReminder(hour)
+            }
+        }
+
         animateCardIn()
+    }
+
+    private fun openTimePicker(onSelect: (hour: Int, minute: Int) -> Unit) {
+        CmtpDialogFragment
+            .newInstance().apply {
+                setInitialTime24(hour = 6, minute = 0)
+                setOnTime24PickedListener(object : OnTime24PickedListener {
+                    override fun onTimePicked(time: CmtpTime24) {
+                        onSelect(time.hour, time.minute)
+                    }
+                })
+            }
+            .show(childFragmentManager, "adflk")
     }
 
     private fun animateCardIn() {
