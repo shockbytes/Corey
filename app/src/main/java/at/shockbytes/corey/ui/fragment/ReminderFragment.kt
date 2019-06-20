@@ -4,6 +4,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.AppComponent
@@ -43,11 +45,19 @@ class ReminderFragment : BaseFragment<AppComponent>() {
             closeFragment()
         }
 
-        context?.let { ctx ->
-            spinner_fragment_reminder_weigh.adapter = DayPickerSpinnerAdapter(
-                ctx,
+        spinner_fragment_reminder_weigh.apply {
+            adapter = DayPickerSpinnerAdapter(
+                requireContext(),
                 resources.getStringArray(R.array.daysFull)
             )
+
+            onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    viewModel.setDayOfWeighReminder(requireContext(), position)
+                }
+            }
         }
 
         cb_fragment_reminder_workout.setOnCheckedChangeListener { _, isChecked ->
@@ -58,15 +68,15 @@ class ReminderFragment : BaseFragment<AppComponent>() {
             viewModel.enableWeighReminder(isChecked)
         }
 
-        btn_fragment_reminder_workout.setOnClickListener {
+        btn_fragment_reminder_workout.setOnClickListener { v ->
             openTimePicker { hour, _ ->
-                viewModel.setHourOfWorkoutReminder(hour)
+                viewModel.setHourOfWorkoutReminder(v.context, hour)
             }
         }
 
-        btn_fragment_reminder_weigh.setOnClickListener {
+        btn_fragment_reminder_weigh.setOnClickListener { v ->
             openTimePicker { hour, _ ->
-                viewModel.setHourOfWeighReminder(hour)
+                viewModel.setHourOfWeighReminder(v.context, hour)
             }
         }
 
@@ -83,7 +93,7 @@ class ReminderFragment : BaseFragment<AppComponent>() {
                     }
                 })
             }
-            .show(childFragmentManager, "adflk")
+            .show(childFragmentManager, "hour-picker-fragment")
     }
 
     private fun animateCardIn() {
@@ -112,7 +122,7 @@ class ReminderFragment : BaseFragment<AppComponent>() {
             .alpha(1f, 0.0f)
             .accelerate()
             .duration(300)
-            .onStop { endAction.invoke() }
+            .onStop { endAction() }
             .start()
     }
 
@@ -124,6 +134,18 @@ class ReminderFragment : BaseFragment<AppComponent>() {
 
         viewModel.isWeighReminderEnabled().observe(this, Observer { isWeighReminderEnabled ->
             enableWeighViews(isWeighReminderEnabled)
+        })
+
+        viewModel.getHourOfWeighReminder().observe(this, Observer { hourOfWeighing ->
+            btn_fragment_reminder_weigh.text = hourOfWeighing
+        })
+
+        viewModel.getDayOfWeighReminder().observe(this, Observer { dayIndexOfWeighing ->
+            spinner_fragment_reminder_weigh.setSelection(dayIndexOfWeighing, true)
+        })
+
+        viewModel.getHourOfWorkoutReminder().observe(this, Observer { hourOfWorkout ->
+            btn_fragment_reminder_workout.text = hourOfWorkout
         })
     }
 
