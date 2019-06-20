@@ -5,15 +5,13 @@ import androidx.appcompat.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
-import kotterknife.bindView
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_workout.*
 
 /**
  * Author:  Martin Macheiner
@@ -36,45 +34,49 @@ class WorkoutAdapter(
     }
 
     inner class ViewHolder(
-        itemView: View
-    ) : BaseAdapter<Workout>.ViewHolder(itemView), PopupMenu.OnMenuItemClickListener {
+        override val containerView: View
+    ) : BaseAdapter<Workout>.ViewHolder(containerView), PopupMenu.OnMenuItemClickListener, LayoutContainer {
 
-        private val popupMenu: PopupMenu
-
-        private val txtTitle: TextView by bindView(R.id.item_training_txt_title)
-        private val txtDuration: TextView by bindView(R.id.item_training_txt_duration)
-        private val txtWorkoutCount: TextView by bindView(R.id.item_training_txt_workouts)
-        private val imgViewBodyRegion: ImageView by bindView(R.id.item_training_imgview_body_region)
-        private val imgViewEquipment: ImageView by bindView(R.id.item_training_imgview_equipment)
-        private val imgBtnOverflow: ImageButton by bindView(R.id.item_training_imgbtn_overflow)
+        private val popupMenu: PopupMenu = PopupMenu(context, item_training_imgbtn_overflow)
 
         init {
-            popupMenu = PopupMenu(context, imgBtnOverflow)
             setupPopupMenu()
         }
 
         override fun bindToView(t: Workout) {
             content = t
+            with(t){
+                item_training_txt_title.text = displayableName
+                item_training_txt_duration.text = context.getString(R.string.duration_with_minutes, duration)
+                item_training_txt_workouts.text = context.getString(R.string.exercises_with_count, exerciseCount)
 
-            txtTitle.text = t.displayableName
-            txtDuration.text = context.getString(R.string.duration_with_minutes, t.duration)
-            txtWorkoutCount.text = context.getString(R.string.exercises_with_count, t.exerciseCount)
+                item_training_imgview_body_region
+                    .setImageDrawable(
+                        AppUtils.createRoundedBitmapFromResource(
+                            context,
+                            imageResForBodyRegion,
+                            colorResForIntensity
+                        )
+                    )
 
-            imgViewBodyRegion.setImageDrawable(AppUtils.createRoundedBitmapFromResource(context,
-                    t.imageResForBodyRegion, t.colorResForIntensity))
+                item_training_imgbtn_overflow.setOnClickListener { popupMenu.show() }
 
-            imgBtnOverflow.setOnClickListener { popupMenu.show() }
-
-            imgViewEquipment.setImageDrawable(AppUtils.createRoundedBitmapFromResource(context,
-                    CoreyUtils.getImageByEquipment(t.equipment), R.color.equipmentBackground))
+                item_training_imgview_equipment
+                    .setImageDrawable(
+                        AppUtils.createRoundedBitmapFromResource(
+                            context,
+                            CoreyUtils.getImageByEquipment(equipment),
+                            R.color.equipmentBackground
+                        )
+                    )
+            }
         }
 
         override fun onMenuItemClick(item: MenuItem): Boolean {
 
-            if (item.itemId == R.id.menu_popup_workout_edit) {
-                onWorkoutPopupItemSelectedListener?.onEdit(content)
-            } else if (item.itemId == R.id.menu_popup_workout_delete) {
-                onWorkoutPopupItemSelectedListener?.onDelete(content)
+            when (item.itemId) {
+                R.id.menu_popup_workout_edit -> onWorkoutPopupItemSelectedListener?.onEdit(content)
+                R.id.menu_popup_workout_delete -> onWorkoutPopupItemSelectedListener?.onDelete(content)
             }
             return true
         }

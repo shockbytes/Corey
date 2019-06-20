@@ -19,10 +19,10 @@ class RunningFragment : WearableBaseFragment() {
     companion object {
 
         fun newInstance(): RunningFragment {
-            val fragment = RunningFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
+            return RunningFragment().apply {
+                arguments = Bundle().apply {
+                }
+            }
         }
     }
-} // Required empty public constructor
+}

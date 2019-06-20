@@ -41,11 +41,11 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
 
-    private val layoutManagerForOrientation: androidx.recyclerview.widget.RecyclerView.LayoutManager
+    private val layoutManagerForOrientation: RecyclerView.LayoutManager
         get() = if (isPortrait()) {
-            androidx.recyclerview.widget.LinearLayoutManager(activity, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         } else {
-            androidx.recyclerview.widget.StaggeredGridLayoutManager(2, androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL)
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
 
     override val layoutId = R.layout.fragment_workout_overview
@@ -127,11 +127,6 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
 
     companion object {
 
-        fun newInstance(): WorkoutOverviewFragment {
-            val fragment = WorkoutOverviewFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance(): WorkoutOverviewFragment = WorkoutOverviewFragment()
     }
 }
