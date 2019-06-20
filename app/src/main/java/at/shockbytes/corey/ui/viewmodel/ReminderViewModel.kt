@@ -2,7 +2,6 @@ package at.shockbytes.corey.ui.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import at.shockbytes.core.viewmodel.BaseViewModel

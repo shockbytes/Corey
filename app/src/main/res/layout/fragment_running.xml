@@ -9,7 +9,7 @@
         android:id="@+id/fragment_running_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         android:elevation="8dp"
         android:minHeight="160dp"
         android:paddingTop="0dp">
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/help_text_running"
                 android:gravity="center"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="36sp" />
 
             <ImageView
@@ -59,7 +59,8 @@
                     android:drawablePadding="8dp"
                     android:drawableTop="@drawable/ic_run_time"
                     android:gravity="center"
-                    android:textColor="@android:color/white"
+                    android:drawableTint="@color/colorPrimary"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="32sp" />
 
                 <TextView
@@ -70,7 +71,9 @@
                     android:drawablePadding="8dp"
                     android:drawableTop="@drawable/ic_stats_distance"
                     android:gravity="center"
-                    android:textColor="@android:color/white"
+                    android:drawableTint="@color/colorPrimary"
+                    android:textColor="@color/colorPrimary"
+                    tools:text="10.00km"
                     android:textSize="32sp" />
 
             </LinearLayout>
@@ -91,7 +94,9 @@
                     android:drawableTop="@drawable/ic_run_pace"
                     android:gravity="center"
                     android:lines="2"
-                    android:textColor="@android:color/white"
+                    android:drawableTint="@color/colorPrimary"
+                    android:textColor="@color/colorPrimary"
+                    tools:text="06:00"
                     android:textSize="20sp" />
 
                 <TextView
@@ -102,7 +107,9 @@
                     android:drawablePadding="8dp"
                     android:drawableTop="@drawable/ic_stats_calories"
                     android:gravity="center"
-                    android:textColor="@android:color/white"
+                    android:drawableTint="@color/colorPrimary"
+                    android:textColor="@color/colorPrimary"
+                    tools:text="600 kcal"
                     android:textSize="20sp" />
 
                 <TextView
@@ -114,7 +121,9 @@
                     android:drawableTop="@drawable/ic_run_average_pace"
                     android:gravity="center"
                     android:lines="2"
-                    android:textColor="@android:color/white"
+                    android:drawableTint="@color/colorPrimary"
+                    android:textColor="@color/colorPrimary"
+                    tools:text="45:00 min"
                     android:textSize="20sp" />
 
             </LinearLayout>

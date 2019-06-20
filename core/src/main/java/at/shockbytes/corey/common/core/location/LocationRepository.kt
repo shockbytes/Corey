@@ -5,16 +5,18 @@ import io.reactivex.Single
 
 interface LocationRepository {
 
-    fun getLastKnownLocation(): Single<Location>
+    fun getLastKnownLocation(): Single<CoreyLocation>
 
-    fun requestLocationUpdates(): Observable<Location>
+    fun requestLocationUpdates(): Observable<CoreyLocation>
 
     fun stopLocationUpdates()
 
-    fun resolveLocation(loc: Location): Single<String>
+    fun resolveLocation(loc: CoreyLocation): Single<String>
 
     /**
      * @return Distance in meter
      */
-    fun calculateDistanceToLastKnownLocation(location: Location): Single<Int>
+    fun calculateDistanceToLastKnownLocation(location: CoreyLocation): Single<Int>
+
+    fun distanceBetween(start: CoreyLocation, end: CoreyLocation): Float
 }

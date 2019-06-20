@@ -12,5 +12,4 @@ object TextFormatting {
             "$hour:00"
         }
     }
-
 }

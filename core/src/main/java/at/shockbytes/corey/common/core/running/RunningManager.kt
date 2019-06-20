@@ -1,6 +1,6 @@
 package at.shockbytes.corey.common.core.running
 
-import android.location.Location
+import at.shockbytes.corey.common.core.location.CoreyLocation
 
 /**
  * @author Martin Macheiner
@@ -17,7 +17,7 @@ interface RunningManager {
 
     fun startRunRecording()
 
-    fun stopRunRecord(timeInMs: Long)
+    fun stopRunRecord(timeInMs: Long): Run
 
-    fun updateCurrentRun(location: Location): Run
+    fun updateCurrentRun(location: CoreyLocation): Run
 }

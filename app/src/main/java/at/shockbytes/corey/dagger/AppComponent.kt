@@ -5,6 +5,7 @@ import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.ui.activity.MainActivity
 import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.ReminderFragment
+import at.shockbytes.corey.ui.fragment.running.RunningFragment
 import at.shockbytes.corey.ui.fragment.SettingsFragment
 import at.shockbytes.corey.ui.fragment.WorkoutFragment
 import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
@@ -64,4 +65,6 @@ interface AppComponent : ShockbytesInjector {
     fun inject(fragment: MenuFragment)
 
     fun inject(fragment: ReminderFragment)
+
+    fun inject(fragment: RunningFragment)
 }

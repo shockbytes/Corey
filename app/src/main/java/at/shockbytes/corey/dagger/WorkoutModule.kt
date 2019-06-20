@@ -2,6 +2,7 @@ package at.shockbytes.corey.dagger
 
 import android.app.Application
 import android.content.SharedPreferences
+import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.GoogleFitBodyRepository
 import at.shockbytes.corey.common.core.running.DefaultRunningManager
@@ -55,8 +56,8 @@ class WorkoutModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideRunningManager(): RunningManager {
-        return DefaultRunningManager()
+    fun provideRunningManager(locationRepository: LocationRepository): RunningManager {
+        return DefaultRunningManager(locationRepository)
     }
 
     @Provides

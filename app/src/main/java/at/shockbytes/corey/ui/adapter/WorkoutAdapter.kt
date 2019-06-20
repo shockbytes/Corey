@@ -45,7 +45,7 @@ class WorkoutAdapter(
 
         override fun bindToView(t: Workout) {
             content = t
-            with(t){
+            with(t) {
                 item_training_txt_title.text = displayableName
                 item_training_txt_duration.text = context.getString(R.string.duration_with_minutes, duration)
                 item_training_txt_workouts.text = context.getString(R.string.exercises_with_count, exerciseCount)

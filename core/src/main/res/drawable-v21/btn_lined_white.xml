@@ -13,7 +13,7 @@
     <!-- This is the border -->
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="2dp"/>
+            <corners android:radius="8dp"/>
             <stroke android:width="2dp" android:color="@android:color/white"/>
         </shape>
     </item>
