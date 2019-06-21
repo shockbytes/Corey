@@ -120,10 +120,10 @@ class MenuFragment : BottomSheetDialogFragment() {
             }
         })
 
-        viewModel.getWatchInfo().observe(this, Observer { (title, _) ->
+        viewModel.getWatchInfo().observe(this, Observer { (title, isConnected) ->
             view.findViewById<MenuEntryItemView>(R.id.menu_item_watch).apply {
                 setTitle(title ?: getString(R.string.unknown_smartwatch))
-                setVisible(true)
+                setVisible(isConnected)
             }
         })
     }

@@ -11,11 +11,16 @@ import at.shockbytes.corey.core.WearCoreyApp
 import at.shockbytes.corey.ui.fragment.RunningFragment
 import at.shockbytes.corey.ui.fragment.WorkoutOverviewFragment
 import kotterknife.bindView
-import java.util.Arrays
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import androidx.wear.ambient.AmbientModeSupport
 
-class WearMainActivity : androidx.fragment.app.FragmentActivity() {
+class WearMainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvider {
+
+    override fun getAmbientCallback(): AmbientModeSupport.AmbientCallback {
+        return object : AmbientModeSupport.AmbientCallback() {
+        }
+    }
 
     interface OnWorkoutsLoadedListener {
 
@@ -30,18 +35,20 @@ class WearMainActivity : androidx.fragment.app.FragmentActivity() {
     private var workoutListener: OnWorkoutsLoadedListener? = null
 
     private val navigationItems: List<CoreyNavigationAdapter.NavigationItem>
-        get() = Arrays.asList(
-                CoreyNavigationAdapter.NavigationItem(R.string.navigation_workout,
-                        R.drawable.ic_workout),
-                CoreyNavigationAdapter.NavigationItem(R.string.navigation_running,
-                        R.drawable.ic_tab_running),
-                CoreyNavigationAdapter.NavigationItem(R.string.navigation_settings,
-                        R.drawable.ic_settings))
+        get() = listOf(
+            CoreyNavigationAdapter.NavigationItem(R.string.navigation_workout,
+                R.drawable.ic_workout),
+            CoreyNavigationAdapter.NavigationItem(R.string.navigation_running,
+                R.drawable.ic_tab_running),
+            CoreyNavigationAdapter.NavigationItem(R.string.navigation_settings,
+                R.drawable.ic_settings_white)
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         (application as WearCoreyApp).appComponent.inject(this)
+        val controller = AmbientModeSupport.attach(this)
 
         setupNavigationDrawer()
 
@@ -72,17 +79,17 @@ class WearMainActivity : androidx.fragment.app.FragmentActivity() {
 
     private fun showWorkoutFragment() {
         val workoutOverviewFragment = WorkoutOverviewFragment
-                .newInstance(ArrayList(communicationManager.cachedWorkouts))
+            .newInstance(ArrayList(communicationManager.cachedWorkouts))
         workoutListener = workoutOverviewFragment
         supportFragmentManager.beginTransaction()
-                .replace(R.id.main_content, workoutOverviewFragment)
-                .commit()
+            .replace(R.id.main_content, workoutOverviewFragment)
+            .commit()
     }
 
     private fun showRunningFragment() {
         supportFragmentManager.beginTransaction()
-                .replace(R.id.main_content, RunningFragment.newInstance())
-                .commit()
+            .replace(R.id.main_content, RunningFragment.newInstance())
+            .commit()
     }
 
     private fun showSettings() {

@@ -112,7 +112,6 @@
                     app:item_title="@string/unknown_smartwatch"
                     app:item_icon="@drawable/ic_watch" />
 
-
                 <at.shockbytes.corey.ui.custom.MenuEntryItemView
                     android:id="@+id/menu_item_notifications"
                     android:layout_width="match_parent"

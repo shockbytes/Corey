@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">Corey</string>
-    <string name="app_version" translatable="false">3.3</string>
+    <string name="app_version" translatable="false">3.6</string>
     <string name="action_settings">Settings</string>
 
     <string name="tab_workout">Workouts</string>

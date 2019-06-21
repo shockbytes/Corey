@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/wear_background"
     tools:context="at.shockbytes.corey.ui.activity.WorkoutActivity"
+    android:keepScreenOn="true"
     tools:deviceIds="wear_round">
 
     <FrameLayout
