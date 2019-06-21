@@ -5,6 +5,7 @@ import at.shockbytes.corey.ui.fragment.pager.BodyFragment
 import at.shockbytes.corey.ui.fragment.pager.GoalsFragment
 import at.shockbytes.corey.ui.fragment.pager.ScheduleFragment
 import at.shockbytes.corey.ui.fragment.pager.WorkoutOverviewFragment
+import at.shockbytes.corey.ui.fragment.running.RunningFragment
 
 object CoreyPageFragmentResolver {
 
@@ -26,12 +27,14 @@ object CoreyPageFragmentResolver {
     }
     */
 
+    // TODO Improve caching of Fragments
     fun createFragmentForPosition(position: Int): Fragment {
         return when (position) {
-            0 -> WorkoutOverviewFragment.newInstance()
-            1 -> ScheduleFragment.newInstance()
-            2 -> BodyFragment.newInstance()
-            3 -> GoalsFragment.newInstance()
+            0 -> RunningFragment.newInstance()
+            1 -> WorkoutOverviewFragment.newInstance()
+            2 -> ScheduleFragment.newInstance()
+            3 -> BodyFragment.newInstance()
+            4 -> GoalsFragment.newInstance()
             else -> throw IllegalStateException("Cannot resolve fragment in CoreyPagerAdapter for position $position") // Never the case
         }
     }

@@ -28,4 +28,8 @@ class MenuEntryItemView(context: Context, attrs: AttributeSet) : FrameLayout(con
             recycle()
         }
     }
+
+    fun setTitle(title: String) {
+        tv_menu_entry_item_view.text = title
+    }
 }

@@ -39,6 +39,14 @@ class RunningFragment : BaseFragment<AppComponent>(),
     OnMapReadyCallback,
     GestureDetector.OnDoubleTapListener {
 
+    private enum class HeaderState {
+        NORMAL, TIME_UPFRONT, DISTANCE_UPFRONT
+    }
+
+    private enum class SwipeDirection {
+        LEFT, RIGHT
+    }
+
     private var map: GoogleMap? = null
     private var trackLine: Polyline? = null
     private var isFirstLocation: Boolean = false
@@ -87,14 +95,6 @@ class RunningFragment : BaseFragment<AppComponent>(),
 
     override fun unbindViewModel() = Unit
 
-    private enum class HeaderState {
-        NORMAL, TIME_UPFRONT, DISTANCE_UPFRONT
-    }
-
-    private enum class SwipeDirection {
-        LEFT, RIGHT
-    }
-
     override fun setupViews() {
         clearViews()
         setupHeaderGestureRecognizer()
@@ -131,13 +131,18 @@ class RunningFragment : BaseFragment<AppComponent>(),
         setupMapAndLocationServices()
     }
 
-    override fun onSingleTapConfirmed(motionEvent: MotionEvent): Boolean = true
+    override fun onSingleTapConfirmed(motionEvent: MotionEvent): Boolean {
+        return true
+    }
+
     override fun onDoubleTap(motionEvent: MotionEvent): Boolean {
         stopRun()
         return true
     }
 
-    override fun onDoubleTapEvent(motionEvent: MotionEvent): Boolean = true
+    override fun onDoubleTapEvent(motionEvent: MotionEvent): Boolean {
+        return true
+    }
 
     @SuppressLint("MissingPermission")
     @AfterPermissionGranted(REQ_CODE_PERM_LOCATION)
@@ -159,10 +164,18 @@ class RunningFragment : BaseFragment<AppComponent>(),
 
         gestureDetector = GestureDetectorCompat(context,
             object : GestureDetector.OnGestureListener {
-                override fun onDown(motionEvent: MotionEvent): Boolean = true
-                override fun onShowPress(motionEvent: MotionEvent) = Unit
-                override fun onSingleTapUp(motionEvent: MotionEvent): Boolean = true
-                override fun onScroll(motionEvent: MotionEvent, motionEvent1: MotionEvent, v: Float, v1: Float): Boolean = false
+
+                override fun onDown(motionEvent: MotionEvent): Boolean {
+                    return true
+                }
+                override fun onShowPress(motionEvent: MotionEvent) { }
+
+                override fun onSingleTapUp(motionEvent: MotionEvent): Boolean {
+                    return true
+                }
+                override fun onScroll(motionEvent: MotionEvent, motionEvent1: MotionEvent, v: Float, v1: Float): Boolean {
+                    return false
+                }
 
                 override fun onLongPress(motionEvent: MotionEvent) {
                     showHelpHeader()
@@ -187,10 +200,6 @@ class RunningFragment : BaseFragment<AppComponent>(),
             gestureDetector.onTouchEvent(motionEvent)
         }
     }
-
-    // -----------------------------------------------------------
-
-    // ------------------ Show views / fragments -----------------
 
     private fun showMapFragment() {
         isFirstLocation = true
@@ -225,7 +234,7 @@ class RunningFragment : BaseFragment<AppComponent>(),
                     .alpha(1f)
                     .scaleY(1f)
                     .scaleX(1f)
-                    .setStartDelay(200L)
+                    .setStartDelay(2000L)
                     .start()
             }.start()
 

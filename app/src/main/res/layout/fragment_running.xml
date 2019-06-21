@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <FrameLayout
@@ -10,32 +10,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:elevation="8dp"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:focusable="true"
         android:minHeight="160dp"
         android:paddingTop="0dp">
 
         <LinearLayout
-            android:alpha="0"
             android:id="@+id/fragment_running_stop_help_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:alpha="0"
             android:background="@color/help_background"
-            android:padding="24dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/help_text_running"
                 android:gravity="center"
-                android:textColor="@color/colorPrimary"
+                android:text="@string/help_text_running"
+                android:textColor="@color/white"
                 android:textSize="36sp" />
 
             <ImageView
                 android:id="@+id/fragment_running_stop_help_imgview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_touch_finger"/>
+                app:srcCompat="@drawable/ic_touch_finger" />
 
         </LinearLayout>
 
@@ -56,11 +58,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:drawablePadding="8dp"
                     android:drawableTop="@drawable/ic_run_time"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/coreyBlack"
                     android:gravity="center"
-                    android:drawableTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/coreyBlack"
                     android:textSize="32sp" />
 
                 <TextView
@@ -68,13 +70,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:drawablePadding="8dp"
                     android:drawableTop="@drawable/ic_stats_distance"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/coreyBlack"
                     android:gravity="center"
-                    android:drawableTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
-                    tools:text="10.00km"
-                    android:textSize="32sp" />
+                    android:textColor="@color/coreyBlack"
+                    android:textSize="32sp"
+                    tools:text="10.00km" />
 
             </LinearLayout>
 
@@ -90,41 +92,41 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:drawablePadding="8dp"
                     android:drawableTop="@drawable/ic_run_pace"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/coreyBlack"
                     android:gravity="center"
                     android:lines="2"
-                    android:drawableTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
-                    tools:text="06:00"
-                    android:textSize="20sp" />
+                    android:textColor="@color/coreyBlack"
+                    android:textSize="20sp"
+                    tools:text="06:00" />
 
                 <TextView
                     android:id="@+id/fragment_running_txt_calories"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:drawablePadding="8dp"
                     android:drawableTop="@drawable/ic_stats_calories"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/coreyBlack"
                     android:gravity="center"
-                    android:drawableTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
-                    tools:text="600 kcal"
-                    android:textSize="20sp" />
+                    android:textColor="@color/coreyBlack"
+                    android:textSize="20sp"
+                    tools:text="600 kcal" />
 
                 <TextView
                     android:id="@+id/fragment_running_txt_avg_pace"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:drawablePadding="8dp"
                     android:drawableTop="@drawable/ic_run_average_pace"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/coreyBlack"
                     android:gravity="center"
                     android:lines="2"
-                    android:drawableTint="@color/colorPrimary"
-                    android:textColor="@color/colorPrimary"
-                    tools:text="45:00 min"
-                    android:textSize="20sp" />
+                    android:textColor="@color/coreyBlack"
+                    android:textSize="20sp"
+                    tools:text="45:00 min" />
 
             </LinearLayout>
 
@@ -154,10 +156,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/btn_lined_white"
-            android:padding="16dp"
+            android:padding="24dp"
             android:text="@string/start_run"
             android:textColor="#fff"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
     </FrameLayout>
 

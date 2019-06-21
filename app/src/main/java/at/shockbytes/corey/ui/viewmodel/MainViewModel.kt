@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.core.model.LoginUserEvent
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.util.CoreySettings
+import at.shockbytes.corey.common.core.util.WatchInfo
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.data.goal.Goal
 import at.shockbytes.corey.data.goal.GoalsRepository
@@ -15,6 +17,7 @@ import at.shockbytes.corey.data.reminder.ReminderManager
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.data.user.UserRepository
 import at.shockbytes.corey.data.workout.WorkoutRepository
+import at.shockbytes.corey.wearable.WearableManager
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -26,7 +29,9 @@ class MainViewModel @Inject constructor(
     private val coreySettings: CoreySettings,
     private val scheduleRepository: ScheduleRepository,
     private val reminderManager: ReminderManager,
-    private val workoutRepository: WorkoutRepository
+    private val workoutRepository: WorkoutRepository,
+    private val wearableManager: WearableManager,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     private val userEvent = MutableLiveData<LoginUserEvent>()
@@ -38,11 +43,33 @@ class MainViewModel @Inject constructor(
     private val toastSubject = PublishSubject.create<Int>()
     fun getToastMessages(): Observable<Int> = toastSubject
 
+    private val watchInfo = MutableLiveData<WatchInfo>()
+    fun getWatchInfo(): LiveData<WatchInfo> = watchInfo
+
     init {
         workoutRepository.poke()
 
         userEvent.postValue(LoginUserEvent.SuccessEvent(userRepository.user, false))
         weatherForecastEnabled.postValue(coreySettings.isWeatherForecastEnabled)
+
+        wearableManager.onStart { watchInfo ->
+            onWatchInfoAvailable(watchInfo)
+        }
+    }
+
+    private fun onWatchInfoAvailable(wi: WatchInfo) {
+        watchInfo.postValue(wi)
+
+        if (wi.isConnected) {
+            workoutRepository.workouts
+                .subscribeOn(schedulers.io)
+                .subscribe({ workouts ->
+                    wearableManager.synchronizeWorkouts(workouts)
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
+                .addTo(compositeDisposable)
+        }
     }
 
     fun pokeReminderManager(context: Context) {
@@ -78,5 +105,10 @@ class MainViewModel @Inject constructor(
 
     fun enableWeatherForecast(isEnabled: Boolean) {
         coreySettings.isWeatherForecastEnabled = isEnabled
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        wearableManager.onPause()
     }
 }

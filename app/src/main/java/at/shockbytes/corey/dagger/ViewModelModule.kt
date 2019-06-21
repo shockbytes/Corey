@@ -6,6 +6,7 @@ import at.shockbytes.corey.ui.viewmodel.BodyViewModel
 import at.shockbytes.corey.ui.viewmodel.GoalsViewModel
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import at.shockbytes.corey.ui.viewmodel.ReminderViewModel
+import at.shockbytes.corey.ui.viewmodel.RunningViewModel
 import at.shockbytes.corey.ui.viewmodel.SignupViewModel
 import at.shockbytes.corey.ui.viewmodel.WorkoutOverviewViewModel
 import dagger.Binds
@@ -65,6 +66,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ReminderViewModel::class)
     internal abstract fun reminderViewModel(viewModel: ReminderViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RunningViewModel::class)
+    internal abstract fun runningViewModel(viewModel: RunningViewModel): ViewModel
 
     @Binds
     @IntoMap

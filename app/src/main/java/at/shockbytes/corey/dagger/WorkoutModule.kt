@@ -11,6 +11,8 @@ import at.shockbytes.corey.data.goal.FirebaseGoalsRepository
 import at.shockbytes.corey.data.goal.GoalsRepository
 import at.shockbytes.corey.data.workout.FirebaseWorkoutRepository
 import at.shockbytes.corey.data.workout.WorkoutRepository
+import at.shockbytes.corey.storage.running.RunningStorageRepository
+import at.shockbytes.corey.storage.running.SharedPreferencesRunningStorageRepository
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RawWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RunningAverageWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.WeightLineFilter
@@ -58,6 +60,14 @@ class WorkoutModule(private val app: Application) {
     @Singleton
     fun provideRunningManager(locationRepository: LocationRepository): RunningManager {
         return DefaultRunningManager(locationRepository)
+    }
+
+    @Provides
+    @Reusable
+    fun provideRunningStorageRepository(
+        sharedPreferences: SharedPreferences
+    ): RunningStorageRepository {
+        return SharedPreferencesRunningStorageRepository(sharedPreferences)
     }
 
     @Provides

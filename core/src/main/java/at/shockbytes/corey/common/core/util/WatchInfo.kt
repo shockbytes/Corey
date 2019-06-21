@@ -1,8 +1,7 @@
 package at.shockbytes.corey.common.core.util
 
 /**
- * @author Martin Macheiner
- * Date: 05-Mar-18.
+ * Author: Martin Macheiner
+ * Date: 05.03.2018
  */
-
 data class WatchInfo(val name: String?, val isConnected: Boolean)

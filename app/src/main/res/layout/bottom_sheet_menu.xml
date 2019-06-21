@@ -102,6 +102,17 @@
                     app:checkable_item_icon="@drawable/ic_weather"
                     app:checkable_item_title="@string/show_weather_forecast"/>
 
+
+                <at.shockbytes.corey.ui.custom.MenuEntryItemView
+                    android:id="@+id/menu_item_watch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:item_title="@string/unknown_smartwatch"
+                    app:item_icon="@drawable/ic_watch" />
+
+
                 <at.shockbytes.corey.ui.custom.MenuEntryItemView
                     android:id="@+id/menu_item_notifications"
                     android:layout_width="match_parent"

@@ -164,5 +164,12 @@
     <string name="schedule_deletion_error">Fehler beim zurücksetzen des Wochenplans</string>
     <string name="dreamweight">Zielgewicht</string>
     <string name="notifications">Benachrichtigungen</string>
+    <string name="corey_notification_channel_name">Corey Benachrichtigungen</string>
+    <string name="averaged">Durchschnitt</string>
+    <string name="ic_running_history">Letzte Läufe</string>
+    <string name="reminder">Erinnerung</string>
+    <string name="unknown_smartwatch">Unbekannte Smartwatch</string>
+    <string name="weigh_reminder">Gewichtserinnerung</string>
+    <string name="workout_reminder">Workouterinnerung</string>
 
 </resources>

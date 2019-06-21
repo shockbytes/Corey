@@ -61,9 +61,9 @@ class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
 
     override fun onItemClick(t: Workout, v: View) {
 
-        val intent = WorkoutDetailActivity.newIntent(context!!, t)
+        val intent = WorkoutDetailActivity.newIntent(requireContext(), t)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!,
+                requireActivity(),
                 Pair(v.findViewById(R.id.item_training_imgview_body_region),
                         getString(R.string.transition_workout_body_region)),
                 Pair(v.findViewById(R.id.item_training_container_duration),

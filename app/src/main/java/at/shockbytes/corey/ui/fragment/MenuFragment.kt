@@ -17,10 +17,13 @@ import android.widget.TextView
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.model.LoginUserEvent
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.ui.activity.SettingsActivity
 import at.shockbytes.corey.ui.custom.CheckableMenuEntryItemView
+import at.shockbytes.corey.ui.custom.MenuEntryItemView
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.bottom_sheet_menu.*
 import javax.inject.Inject
 
 /**
@@ -114,6 +117,13 @@ class MenuFragment : BottomSheetDialogFragment() {
                         }
                     }
                 }
+            }
+        })
+
+        viewModel.getWatchInfo().observe(this, Observer { (title, _) ->
+            view.findViewById<MenuEntryItemView>(R.id.menu_item_watch).apply {
+                setTitle(title ?: getString(R.string.unknown_smartwatch))
+                setVisible(true)
             }
         })
     }
