@@ -17,7 +17,7 @@ interface RunningManager {
 
     fun startRunRecording()
 
-    fun stopRunRecord(timeInMs: Long): Run
+    fun stopRunRecord(timeInMs: Long, userWeight: Double): Run
 
     fun updateCurrentRun(location: CoreyLocation): Run
 }

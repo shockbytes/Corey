@@ -37,13 +37,12 @@ class DefaultRunningManager(
         prevLocation = null
     }
 
-    override fun stopRunRecord(timeInMs: Long): Run {
+    override fun stopRunRecord(timeInMs: Long, userWeight: Double): Run {
         isRecording = false
 
         run.time = timeInMs
         run.averagePace = RunUtils.calculatePace(timeInMs, run.distance)
-        val weight = 80.0 // TODO This should not be hardcoded
-        run.calories = RunUtils.calculateCaloriesBurned(run.distance, weight)
+        run.calories = RunUtils.calculateCaloriesBurned(run.distance, userWeight)
 
         return run
     }

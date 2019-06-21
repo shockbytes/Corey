@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -93,6 +94,13 @@ class GoogleFitBodyRepository(
                 "Exception while connecting to Google Play Services: ${connectionResult.errorMessage}",
                 Toast.LENGTH_LONG).show()
     }
+
+    override val currentWeight: Single<Double>
+        get() = bodyInfo
+            .map { bodyInfo ->
+                bodyInfo.latestWeightPoint.weight
+            }
+            .singleOrError()
 
     // -----------------------------------------------------------------------------------------
 

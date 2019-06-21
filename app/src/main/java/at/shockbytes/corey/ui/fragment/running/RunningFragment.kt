@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.common.core.running.CoreyLatLng
+import at.shockbytes.corey.common.core.location.CoreyLocation
 import at.shockbytes.corey.common.core.running.Run
 import at.shockbytes.corey.common.core.running.RunUpdate
 import at.shockbytes.corey.common.core.running.RunViewAnimations
@@ -349,16 +349,14 @@ class RunningFragment : BaseFragment<AppComponent>(),
         if (isFirstLocation) {
             isFirstLocation = false
             map?.moveCamera(CameraUpdateFactory
-                .newLatLngZoom(LatLng(location.latitude, location.longitude), 16f))
+                .newLatLngZoom(LatLng(location.lat, location.lng), 16f))
         } else {
             map?.animateCamera(CameraUpdateFactory
-                .newLatLng(LatLng(location.latitude, location.longitude)))
+                .newLatLng(LatLng(location.lat, location.lng)))
         }
 
-        if (runUpdate.isRunInfoAvailable) {
-            updateViews(runUpdate)
-            setTrackOnMap(runUpdate.locations)
-        }
+        updateViews(runUpdate)
+        setTrackOnMap(runUpdate.locations)
     }
 
     @SuppressLint("SetTextI18n")
@@ -373,7 +371,7 @@ class RunningFragment : BaseFragment<AppComponent>(),
         fragment_running_txt_calories.text = "$calories\nkcal"
     }
 
-    private fun setTrackOnMap(runPoints: List<CoreyLatLng>) {
+    private fun setTrackOnMap(runPoints: List<CoreyLocation>) {
 
         if (trackLine == null) {
             val lineOptions = PolylineOptions()
@@ -381,7 +379,7 @@ class RunningFragment : BaseFragment<AppComponent>(),
                 .color(Color.parseColor("#03A9F4"))
             trackLine = map?.addPolyline(lineOptions)
         }
-        trackLine?.points = runPoints.map { LatLng(it.latitude, it.longitude) }
+        trackLine?.points = runPoints.map { LatLng(it.lat, it.lng) }
     }
 
     @SuppressLint("SetTextI18n")

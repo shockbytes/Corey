@@ -2,6 +2,7 @@ package at.shockbytes.corey.data.body
 
 import at.shockbytes.corey.data.body.info.BodyInfo
 import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * Author:  Martin Macheiner
@@ -14,4 +15,6 @@ interface BodyRepository {
     var desiredWeight: Int
 
     val weightUnit: String
+
+    val currentWeight: Single<Double>
 }
