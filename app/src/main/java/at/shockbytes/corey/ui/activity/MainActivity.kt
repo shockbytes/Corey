@@ -8,8 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
-import androidx.viewpager.widget.PagerAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import at.shockbytes.core.image.GlideImageLoader
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.model.ShockbytesUser
@@ -19,9 +19,9 @@ import at.shockbytes.core.ui.model.BottomNavigationActivityOptions
 import at.shockbytes.core.ui.model.BottomNavigationTab
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.ui.adapter.CoreyPagerAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.navigation.CoreyPageFragmentResolver
 import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
@@ -41,45 +41,49 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     override val imageLoader: ImageLoader = GlideImageLoader(R.drawable.ic_account)
 
     private val additionalToolbarActionItems = listOf(
-            AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.create_workout, true) {
-                activityTransition(CreateWorkoutActivity.newIntent(applicationContext), AppParams.REQUEST_CODE_CREATE_WORKOUT)
-            },
-            AdditionalToolbarAction(R.drawable.ic_cancel_red, R.string.reset_schedule, true) {
-                showScheduleDeletionApprovalDialog()
-            },
-            AdditionalToolbarAction(R.drawable.ic_body_card_weight_history_colored, R.string.change_dreamweight, true) {
-                askForDesiredWeight()
-            },
-            AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.add_goal, true) {
-                AddGoalDialogFragment.newInstance()
-                        .setOnGoalCreatedListener { goal ->
-                            viewModel.storeBodyGoal(goal)
-                        }
-                        .show(supportFragmentManager, "dialog-fragment-add-goal")
-            }
+        AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.create_workout, true) {
+            activityTransition(CreateWorkoutActivity.newIntent(applicationContext), AppParams.REQUEST_CODE_CREATE_WORKOUT)
+        },
+        AdditionalToolbarAction(R.drawable.ic_cancel_red, R.string.reset_schedule, true) {
+            showScheduleDeletionApprovalDialog()
+        },
+        AdditionalToolbarAction(R.drawable.ic_body_card_weight_history_colored, R.string.change_dreamweight, true) {
+            askForDesiredWeight()
+        },
+        AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.add_goal, true) {
+            AddGoalDialogFragment.newInstance()
+                .setOnGoalCreatedListener { goal ->
+                    viewModel.storeBodyGoal(goal)
+                }
+                .show(supportFragmentManager, "dialog-fragment-add-goal")
+        }
     )
+
+    private val tabs by lazy {
+        listOf(
+            BottomNavigationTab(R.id.nav_item_workout, R.drawable.navigation_item, R.drawable.ic_tab_workout, getString(R.string.tab_workout)),
+            BottomNavigationTab(R.id.nav_item_schedule, R.drawable.navigation_item, R.drawable.ic_tab_schedule, getString(R.string.tab_schedule)),
+            BottomNavigationTab(R.id.nav_item_my_body, R.drawable.navigation_item, R.drawable.ic_tab_my_body, getString(R.string.tab_my_body)),
+            BottomNavigationTab(R.id.nav_item_goals, R.drawable.navigation_item, R.drawable.ic_tab_goals, getString(R.string.tab_goals))
+        )
+    }
 
     override val options: BottomNavigationActivityOptions by lazy {
         BottomNavigationActivityOptions(
-                tabs = listOf(
-                        BottomNavigationTab(R.id.nav_item_workout, R.drawable.navigation_item, R.drawable.ic_tab_workout, getString(R.string.tab_workout)),
-                        BottomNavigationTab(R.id.nav_item_schedule, R.drawable.navigation_item, R.drawable.ic_tab_schedule, getString(R.string.tab_schedule)),
-                        BottomNavigationTab(R.id.nav_item_my_body, R.drawable.navigation_item, R.drawable.ic_tab_my_body, getString(R.string.tab_my_body)),
-                        BottomNavigationTab(R.id.nav_item_goals, R.drawable.navigation_item, R.drawable.ic_tab_goals, getString(R.string.tab_goals))
-                ),
-                defaultTab = R.id.nav_item_schedule,
-                appName = getString(R.string.app_name),
-                viewPagerOffscreenLimit = 3,
-                appTheme = R.style.AppTheme_NoActionBar,
-                fabMenuOptions = null,
-                overflowIcon = R.drawable.ic_overflow,
-                initialAdditionalToolbarAction = additionalToolbarActionItems[1],
-                toolbarColor = R.color.white,
-                toolbarItemColor = R.color.controls,
-                titleColor = R.color.colorPrimary,
-                navigationBarColor = R.color.navigation_bar_color,
-                navigationItemTextColor = R.color.navigation_bar_item_text,
-                navigationItemTintColor = R.color.navigation_bar_item_text
+            tabs = tabs,
+            defaultTab = R.id.nav_item_schedule,
+            appName = getString(R.string.app_name),
+            viewPagerOffscreenLimit = 3,
+            appTheme = R.style.AppTheme_NoActionBar,
+            fabMenuOptions = null,
+            overflowIcon = R.drawable.ic_overflow,
+            initialAdditionalToolbarAction = additionalToolbarActionItems[1],
+            toolbarColor = R.color.white,
+            toolbarItemColor = R.color.controls,
+            titleColor = R.color.colorPrimary,
+            navigationBarColor = R.color.navigation_bar_color,
+            navigationItemTextColor = R.color.navigation_bar_item_text,
+            navigationItemTintColor = R.color.navigation_bar_item_text
         )
     }
 
@@ -97,13 +101,13 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         })
 
         viewModel.getToastMessages()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ message ->
-                    showToast(message)
-                }, { throwable ->
-                    Timber.e(throwable)
-                })
-                .addTo(compositeDisposable)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ message ->
+                showToast(message)
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     override fun injectToGraph(appComponent: AppComponent?) {
@@ -120,16 +124,16 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
 
             R.id.menu_fab_create_workout -> {
                 activityTransition(CreateWorkoutActivity.newIntent(applicationContext),
-                        AppParams.REQUEST_CODE_CREATE_WORKOUT)
+                    AppParams.REQUEST_CODE_CREATE_WORKOUT)
                 false
             }
             R.id.menu_fab_new_goal -> {
 
                 AddGoalDialogFragment.newInstance()
-                        .setOnGoalCreatedListener { goal ->
-                            viewModel.storeBodyGoal(goal)
-                        }
-                        .show(supportFragmentManager, "dialog-fragment-add-goal")
+                    .setOnGoalCreatedListener { goal ->
+                        viewModel.storeBodyGoal(goal)
+                    }
+                    .show(supportFragmentManager, "dialog-fragment-add-goal")
                 false
             }
             else -> false
@@ -138,8 +142,8 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
 
     override fun setupDarkMode() = Unit
 
-    override fun setupPagerAdapter(tabs: List<BottomNavigationTab>): PagerAdapter {
-        return CoreyPagerAdapter(supportFragmentManager, tabs)
+    override fun createFragmentForIndex(index: Int): Fragment {
+        return CoreyPageFragmentResolver.createFragmentForPosition(index)
     }
 
     override fun showLoginScreen() = Unit
@@ -170,15 +174,15 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
 
     private fun showScheduleDeletionApprovalDialog() {
         AlertDialog.Builder(this)
-                .setTitle(R.string.delete_schedule)
-                .setMessage(R.string.delete_schedule_message)
-                .setIcon(R.drawable.ic_cancel_red)
-                .setNegativeButton(R.string.cancel) { _, _ -> Unit }
-                .setPositiveButton(R.string.delete) { _, _ ->
-                    viewModel.resetSchedule()
-                }
-                .create()
-                .show()
+            .setTitle(R.string.delete_schedule)
+            .setMessage(R.string.delete_schedule_message)
+            .setIcon(R.drawable.ic_cancel_red)
+            .setNegativeButton(R.string.cancel) { _, _ -> Unit }
+            .setPositiveButton(R.string.delete) { _, _ ->
+                viewModel.resetSchedule()
+            }
+            .create()
+            .show()
     }
 
     private fun activityTransition(intent: Intent, reqCodeForResult: Int) {
