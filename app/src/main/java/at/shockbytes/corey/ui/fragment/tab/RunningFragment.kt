@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.View
 import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -254,17 +255,46 @@ class RunningFragment : TabBaseFragment<AppComponent>(),
 
     private fun animateStartingViews(animateOut: Boolean) {
 
-        val alpha = if (animateOut) 0 else 1
-        // Animate button & transparent view with a fade out ;transition and hide it in the end
-        fragment_running_btn_start
-            .animate()
-            .alpha(alpha.toFloat())
-            .duration = 500
+        if (animateOut)  {
 
-        fragment_running_map_background
-            .animate()
-            .alpha(alpha.toFloat())
-            .duration = 500
+            fragment_running_btn_start
+                .animate()
+                .alpha(0f)
+                .setDuration(500)
+                .withEndAction {
+                    fragment_running_btn_start.visibility = View.GONE
+                }
+                .start()
+
+            fragment_running_map_background
+                .animate()
+                .alpha(0f)
+                .setDuration(500)
+                .withEndAction {
+                    fragment_running_btn_start.visibility = View.GONE
+                }
+                .start()
+
+        } else {
+
+            fragment_running_btn_start
+                .animate()
+                .alpha(1f)
+                .setDuration(500)
+                .withStartAction() {
+                    fragment_running_btn_start.visibility = View.VISIBLE
+                }
+                .start()
+
+            fragment_running_map_background
+                .animate()
+                .alpha(1f)
+                .setDuration(500)
+                .withStartAction() {
+                    fragment_running_btn_start.visibility = View.VISIBLE
+                }
+                .start()
+        }
     }
 
     private fun animateTimeDistanceHeader(direction: SwipeDirection) {

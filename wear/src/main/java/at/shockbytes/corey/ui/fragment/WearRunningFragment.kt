@@ -1,18 +1,21 @@
 package at.shockbytes.corey.ui.fragment
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.HapticFeedbackConstants
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.WearAppComponent
 import at.shockbytes.corey.ui.viewmodel.WearRunningViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_running.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class RunningFragment : WearableBaseFragment() {
+class WearRunningFragment : WearableBaseFragment() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -37,18 +40,46 @@ class RunningFragment : WearableBaseFragment() {
     override fun bindViewModel() {
 
         viewModel.onStartEvent
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
                 removeStartButton()
+                showRunningViewRootLayout()
+                startChronometer()
             }, { throwable ->
                 Timber.e(throwable)
             })
             .addTo(compositeDisposable)
     }
 
+    private fun startChronometer() {
+        chronometer_fragment_running.apply {
+            base = SystemClock.elapsedRealtime()
+            start()
+        }
+    }
+
+    private fun showRunningViewRootLayout() {
+
+        layout_fragment_running_run_views
+            .animate()
+            .withStartAction {
+                layout_fragment_running_run_views.apply {
+                    visibility = View.VISIBLE
+                }
+            }
+            .alpha(1f)
+            .setDuration(500)
+            .start()
+    }
+
     private fun removeStartButton() {
         btn_fragment_running_start
             .animate()
             .alpha(0f)
+            .setDuration(500)
+            .withEndAction {
+                btn_fragment_running_start.visibility = View.GONE
+            }
             .start()
     }
 
@@ -58,8 +89,8 @@ class RunningFragment : WearableBaseFragment() {
 
     companion object {
 
-        fun newInstance(): RunningFragment {
-            return RunningFragment().apply {
+        fun newInstance(): WearRunningFragment {
+            return WearRunningFragment().apply {
                 arguments = Bundle().apply {
                 }
             }

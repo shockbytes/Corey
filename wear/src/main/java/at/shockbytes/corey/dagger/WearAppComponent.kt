@@ -1,10 +1,9 @@
 package at.shockbytes.corey.dagger
 
 import at.shockbytes.corey.ui.activity.WearMainActivity
-import at.shockbytes.corey.ui.fragment.RunningFragment
+import at.shockbytes.corey.ui.fragment.WearRunningFragment
 import at.shockbytes.corey.ui.fragment.WorkoutFragment
 import at.shockbytes.corey.ui.fragment.workoutpager.WearTimeExercisePagerFragment
-import at.shockbytes.corey.ui.viewmodel.WearRunningViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -20,7 +19,7 @@ interface WearAppComponent {
 
     fun inject(fragment: WorkoutFragment)
 
-    fun inject(fragment: RunningFragment)
+    fun inject(fragment: WearRunningFragment)
 
     fun inject(fragment: WearTimeExercisePagerFragment)
 }
