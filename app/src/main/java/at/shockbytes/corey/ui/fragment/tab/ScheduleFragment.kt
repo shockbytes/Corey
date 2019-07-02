@@ -1,14 +1,10 @@
-package at.shockbytes.corey.ui.fragment.pager
+package at.shockbytes.corey.ui.fragment.tab
 
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.widget.Toast
 import at.shockbytes.core.scheduler.SchedulerFacade
-import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
 import at.shockbytes.corey.ui.adapter.ScheduleAdapter
@@ -32,7 +28,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    26.10.2015
  */
-class ScheduleFragment : BaseFragment<AppComponent>(), BaseAdapter.OnItemMoveListener<ScheduleItem> {
+class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMoveListener<ScheduleItem> {
 
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground

@@ -202,6 +202,10 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         DesiredWeightDialogFragment.newInstance().show(supportFragmentManager, "frag-desired-weight")
     }
 
+    fun shouldCastActionBarShadow(castsActionBarShadow: Boolean) {
+        castActionBarShadow(castsActionBarShadow)
+    }
+
     companion object {
 
         fun newIntent(context: Context): Intent {

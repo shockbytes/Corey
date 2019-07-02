@@ -1,4 +1,4 @@
-package at.shockbytes.corey.ui.fragment.running
+package at.shockbytes.corey.ui.fragment.tab
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -11,7 +11,6 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.location.CoreyLocation
@@ -35,7 +34,7 @@ import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 import kotlin.math.abs
 
-class RunningFragment : BaseFragment<AppComponent>(),
+class RunningFragment : TabBaseFragment<AppComponent>(),
     OnMapReadyCallback,
     GestureDetector.OnDoubleTapListener {
 
@@ -56,6 +55,8 @@ class RunningFragment : BaseFragment<AppComponent>(),
     private lateinit var gestureDetector: GestureDetectorCompat
 
     override val layoutId = R.layout.fragment_running
+
+    override val castsActionBarShadow: Boolean = false
 
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_background

@@ -1,8 +1,10 @@
 package at.shockbytes.corey.ui.fragment
 
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.WearAppComponent
+import kotlinx.android.synthetic.main.fragment_running.*
 
 class RunningFragment : WearableBaseFragment() {
 
@@ -10,6 +12,11 @@ class RunningFragment : WearableBaseFragment() {
 
     override fun setupViews() {
         // Setup views
+
+        btn_fragment_running_start.setOnClickListener { view ->
+            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            showToast("Coming soon...")
+        }
     }
 
     override fun injectToGraph(appComponent: WearAppComponent) {

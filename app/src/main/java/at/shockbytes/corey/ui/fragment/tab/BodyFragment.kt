@@ -1,4 +1,4 @@
-package at.shockbytes.corey.ui.fragment.pager
+package at.shockbytes.corey.ui.fragment.tab
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.fragment.body.BodySubFragment
@@ -18,7 +17,7 @@ import at.shockbytes.corey.ui.viewmodel.BodyViewModel
 import kotterknife.bindView
 import javax.inject.Inject
 
-class BodyFragment : BaseFragment<AppComponent>() {
+class BodyFragment : TabBaseFragment<AppComponent>() {
 
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
