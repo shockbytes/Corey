@@ -42,4 +42,3 @@ captures/
 # Sensitive files
 client_id.json
 google-services.json
-/src/main/res/values/font_certs.xml

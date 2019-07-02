@@ -169,7 +169,6 @@
     <string name="no_goals">No goals so far, create one!</string>
     <string name="your_crushed_goals">Your crushed goals</string>
     <string name="set_goal">Set a new goal</string>
-    <string name="start_run">START RUN</string>
     <string name="perm_location_rationale">Location information is necessary to track your running routes</string>
     <string name="running_mode_free_run">FREE RUN</string>
     <string name="running_mode_distance">DISTANCE</string>

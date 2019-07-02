@@ -1,16 +1,105 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wear_background"
-    tools:context="at.shockbytes.corey.ui.fragment.running.RunningFragment"
     tools:deviceIds="wear_round">
 
-    <TextView
+    <RelativeLayout
+        android:id="@+id/fragment_running_main_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:gravity="center"
-        android:textColor="#fff"
-        android:text="Coming soon..."/>
+        android:layout_height="match_parent"
+        app:boxedEdges="top|bottom"
+        app:layout_box="top|bottom">
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/fragment_running_main_container_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Chronometer
+                android:id="@+id/chronometer_fragment_running"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:fontFamily="sans-serif-light"
+                android:gravity="end"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textColor="@android:color/secondary_text_dark"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:src="@drawable/ic_clock"
+                android:tint="@android:color/white" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:src="@drawable/ic_body_heart"
+                android:tint="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_fragment_running_pulse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:fontFamily="sans-serif-light"
+                android:gravity="start"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="---"
+                android:textColor="@android:color/secondary_text_dark"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/fragment_running_main_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:layout_below="@+id/fragment_running_main_container_header"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="2dp"
+            android:background="#ccc" />
+
+        <FrameLayout
+            android:id="@+id/fragment_running_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/fragment_running_main_divider">
+
+            <Button
+                android:id="@+id/btn_fragment_running_start"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:textSize="28sp"
+                android:layout_height="match_parent"
+                android:text="@string/start_run" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <TextClock
+        android:id="@+id/textClock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:format24Hour="HH:mm"
+        android:gravity="center" />
+
+</androidx.wear.widget.BoxInsetLayout>

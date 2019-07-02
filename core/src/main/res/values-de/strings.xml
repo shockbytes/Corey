@@ -5,6 +5,8 @@
 
     <string name="dialogfragment_countdown">Übung beginnt in</string>
 
+    <string name="start_run">STARTE LAUF</string>
+
     <string-array name="days">
         <item>MO</item>
         <item>DI</item>
