@@ -58,6 +58,9 @@ class WorkoutFragment : WearableBaseFragment(),
         appComponent.inject(this)
     }
 
+    override fun bindViewModel() {
+    }
+
     override fun setupViews() {
         context?.let {
             progressBar.progressTintList = ColorStateList
