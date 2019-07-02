@@ -1,9 +1,18 @@
 package at.shockbytes.corey.ui.fragment
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.HapticFeedbackConstants
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import at.shockbytes.corey.R
@@ -15,7 +24,8 @@ import kotlinx.android.synthetic.main.fragment_running.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class WearRunningFragment : WearableBaseFragment() {
+class WearRunningFragment : WearableBaseFragment(), SensorEventListener {
+
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -23,6 +33,10 @@ class WearRunningFragment : WearableBaseFragment() {
     private lateinit var viewModel: WearRunningViewModel
 
     override val layoutId = R.layout.fragment_running
+
+    private var sensorManager: SensorManager? = null
+    private var sensor: Sensor? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +55,7 @@ class WearRunningFragment : WearableBaseFragment() {
 
         viewModel.onStartEvent
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({
+            .subscribe({
                 removeStartButton()
                 showRunningViewRootLayout()
                 startChronometer()
@@ -49,6 +63,10 @@ class WearRunningFragment : WearableBaseFragment() {
                 Timber.e(throwable)
             })
             .addTo(compositeDisposable)
+
+        viewModel.getFormattedHeartRate().observe(this, Observer { formattedHeartRate ->
+            tv_fragment_running_pulse.text = formattedHeartRate
+        })
     }
 
     private fun startChronometer() {
@@ -83,11 +101,48 @@ class WearRunningFragment : WearableBaseFragment() {
             .start()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == SENSOR_REQUEST_CODE &&
+            permissions[0] == Manifest.permission.BODY_SENSORS &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            initializeHeartRate()
+        }
+    }
+
+    private fun initializeHeartRate() {
+
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED) {
+            sensorManager = context?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            sensor = sensorManager?.getDefaultSensor(Sensor.TYPE_HEART_RATE)
+            if (sensor != null) {
+                val interval = 1000000
+                sensorManager?.registerListener(this, sensor, interval)
+            }
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.BODY_SENSORS), SENSOR_REQUEST_CODE)
+        }
+    }
+
+    override fun onSensorChanged(event: SensorEvent) {
+        val pulse = event.values[0].toInt()
+        viewModel.onHeartRateAvailable(pulse)
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) = Unit
+
     override fun injectToGraph(appComponent: WearAppComponent) {
         appComponent.inject(this)
     }
 
     companion object {
+
+        private const val SENSOR_REQUEST_CODE = 0x4104
+
 
         fun newInstance(): WearRunningFragment {
             return WearRunningFragment().apply {
