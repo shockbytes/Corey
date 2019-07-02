@@ -8,7 +8,7 @@ import at.shockbytes.corey.ui.adapter.CoreyNavigationAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.core.CommunicationManager
 import at.shockbytes.corey.core.WearCoreyApp
-import at.shockbytes.corey.ui.fragment.RunningFragment
+import at.shockbytes.corey.ui.fragment.WearRunningFragment
 import at.shockbytes.corey.ui.fragment.WorkoutOverviewFragment
 import kotterknife.bindView
 import javax.inject.Inject
@@ -88,7 +88,7 @@ class WearMainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackP
 
     private fun showRunningFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_content, RunningFragment.newInstance())
+            .replace(R.id.main_content, WearRunningFragment.newInstance())
             .commit()
     }
 

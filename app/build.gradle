@@ -51,17 +51,11 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$rootProject.ext.workVersion"
     implementation "androidx.work:work-rxjava2:$rootProject.ext.workVersion"
 
-    implementation "com.github.shockbytes:ShockbytesCore:$rootProject.ext.shockbytesCoreVersion"
-
     implementation "com.google.android.gms:play-services-auth:$rootProject.ext.playServicesVersionAuth"
     implementation "com.google.android.gms:play-services-fitness:$rootProject.ext.playServicesVersionFitness"
     implementation "com.google.android.gms:play-services-wearable:$rootProject.ext.playServicesVersionWearable"
     implementation "com.google.android.gms:play-services-location:$rootProject.ext.playServicesVersionLocation"
     implementation "com.google.android.gms:play-services-maps:$rootProject.ext.playServicesVersionMaps"
-
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
 
     implementation "com.google.firebase:firebase-database:$rootProject.ext.firebaseVersionDatabase"
     implementation "com.google.firebase:firebase-config:$rootProject.ext.firebaseVersionConfig"

@@ -45,6 +45,9 @@ class WorkoutOverviewFragment : WearableBaseFragment(),
             ?: throw NullPointerException("Workout must be set!")
     }
 
+    override fun bindViewModel() {
+    }
+
     override fun onItemClick(t: Workout, v: View) {
         activity?.let {
             startActivity(WorkoutActivity.newIntent(it, t),

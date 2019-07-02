@@ -9,6 +9,7 @@
 
     <string name="capability_device" translatable="false">corey_wear_capability</string>
     <string name="capability_wear_device" translatable="false">corey_wear_capability_wear_device</string>
+    <string name="start_run">START RUN</string>
 
     <string-array name="days">
         <item>MO</item>

@@ -31,6 +31,9 @@ class WearExercisePagerFragment : WearableBaseFragment() {
         // Do nothing...
     }
 
+    override fun bindViewModel() {
+    }
+
     companion object {
 
         private const val ARG_EXERCISE = "arg_exercise"

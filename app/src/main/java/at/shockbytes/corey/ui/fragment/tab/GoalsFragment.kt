@@ -1,11 +1,10 @@
-package at.shockbytes.corey.ui.fragment.pager
+package at.shockbytes.corey.ui.fragment.tab
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.GoalAdapter import at.shockbytes.corey.dagger.DaggerAppComponent
 import at.shockbytes.corey.ui.model.GoalItem
@@ -14,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_goals.*
 import javax.inject.Inject
 import androidx.recyclerview.widget.DividerItemDecoration
 
-class GoalsFragment : BaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActionClickedListener {
+class GoalsFragment : TabBaseFragment<DaggerAppComponent>(), GoalAdapter.OnGoalActionClickedListener {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory

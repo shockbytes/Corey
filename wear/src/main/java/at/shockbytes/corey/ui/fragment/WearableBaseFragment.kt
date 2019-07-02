@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import at.shockbytes.corey.core.WearCoreyApp
 import at.shockbytes.corey.dagger.WearAppComponent
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Author:  Martin Macheiner
@@ -15,7 +16,11 @@ import at.shockbytes.corey.dagger.WearAppComponent
  */
 abstract class WearableBaseFragment : androidx.fragment.app.Fragment() {
 
-    abstract val layoutId: Int
+    protected val compositeDisposable = CompositeDisposable()
+
+    protected abstract val layoutId: Int
+
+    protected abstract fun bindViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +39,17 @@ abstract class WearableBaseFragment : androidx.fragment.app.Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
     }
+
+    override fun onPause() {
+        compositeDisposable.clear()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        bindViewModel()
+        super.onResume()
+    }
+
 
     protected abstract fun setupViews()
 

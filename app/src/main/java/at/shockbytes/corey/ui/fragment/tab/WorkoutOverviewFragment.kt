@@ -1,4 +1,4 @@
-package at.shockbytes.corey.ui.fragment.pager
+package at.shockbytes.corey.ui.fragment.tab
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.View
-import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.WorkoutAdapter
 import at.shockbytes.corey.common.core.workout.model.Workout
@@ -28,7 +27,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    26.10.2015
  */
-class WorkoutOverviewFragment : BaseFragment<AppComponent>(),
+class WorkoutOverviewFragment : TabBaseFragment<AppComponent>(),
         BaseAdapter.OnItemClickListener<Workout>,
         WorkoutAdapter.OnWorkoutPopupItemSelectedListener {
 

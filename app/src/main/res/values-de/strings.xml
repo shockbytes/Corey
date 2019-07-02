@@ -118,7 +118,6 @@
     <string name="set_goal">Neues Ziel setzen</string>
     <string name="my_goals">Meine Ziele</string>
     <string name="your_crushed_goals">Deine erreichten Ziele</string>
-    <string name="start_run">STARTE LAUF</string>
     <string name="tab_running">Running</string>
     <string name="title_running">Corey Running</string>
     <string name="perm_location_rationale">Deine Position wird benötigt um deine Läufe zu tracken.</string>

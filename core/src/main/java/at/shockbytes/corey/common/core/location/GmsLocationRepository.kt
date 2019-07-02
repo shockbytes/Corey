@@ -90,7 +90,7 @@ class GmsLocationRepository(private val context: Context) : LocationRepository {
     override fun distanceBetween(start: CoreyLocation, end: CoreyLocation): Float {
         val res = FloatArray(1)
         android.location.Location.distanceBetween(start.lat, start.lng, end.lat, end.lng, res)
-        return res[0] // .div(1000f)
+        return res[0].div(1000f)
     }
 
     private fun createLocationRequest(): LocationRequest {

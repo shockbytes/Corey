@@ -1,4 +1,4 @@
-package at.shockbytes.corey.ui.fragment.running
+package at.shockbytes.corey.ui.fragment.tab
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.View
 import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.location.CoreyLocation
@@ -35,7 +35,7 @@ import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 import kotlin.math.abs
 
-class RunningFragment : BaseFragment<AppComponent>(),
+class RunningFragment : TabBaseFragment<AppComponent>(),
     OnMapReadyCallback,
     GestureDetector.OnDoubleTapListener {
 
@@ -56,6 +56,8 @@ class RunningFragment : BaseFragment<AppComponent>(),
     private lateinit var gestureDetector: GestureDetectorCompat
 
     override val layoutId = R.layout.fragment_running
+
+    override val castsActionBarShadow: Boolean = false
 
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_background
@@ -253,17 +255,46 @@ class RunningFragment : BaseFragment<AppComponent>(),
 
     private fun animateStartingViews(animateOut: Boolean) {
 
-        val alpha = if (animateOut) 0 else 1
-        // Animate button & transparent view with a fade out ;transition and hide it in the end
-        fragment_running_btn_start
-            .animate()
-            .alpha(alpha.toFloat())
-            .duration = 500
+        if (animateOut)  {
 
-        fragment_running_map_background
-            .animate()
-            .alpha(alpha.toFloat())
-            .duration = 500
+            fragment_running_btn_start
+                .animate()
+                .alpha(0f)
+                .setDuration(500)
+                .withEndAction {
+                    fragment_running_btn_start.visibility = View.GONE
+                }
+                .start()
+
+            fragment_running_map_background
+                .animate()
+                .alpha(0f)
+                .setDuration(500)
+                .withEndAction {
+                    fragment_running_btn_start.visibility = View.GONE
+                }
+                .start()
+
+        } else {
+
+            fragment_running_btn_start
+                .animate()
+                .alpha(1f)
+                .setDuration(500)
+                .withStartAction() {
+                    fragment_running_btn_start.visibility = View.VISIBLE
+                }
+                .start()
+
+            fragment_running_map_background
+                .animate()
+                .alpha(1f)
+                .setDuration(500)
+                .withStartAction() {
+                    fragment_running_btn_start.visibility = View.VISIBLE
+                }
+                .start()
+        }
     }
 
     private fun animateTimeDistanceHeader(direction: SwipeDirection) {
