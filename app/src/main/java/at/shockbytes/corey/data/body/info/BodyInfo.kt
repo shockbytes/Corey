@@ -24,7 +24,7 @@ data class BodyInfo(
         get() = weightPoints.min()?.weight ?: startWeight
 
     val highestWeight: Double
-        get() = weightPoints.sortedByDescending { it.weight }.first().weight
+        get() = weightPoints.maxByOrNull { it.weight }?.weight ?: 0.0
 
     val latestBmi: Double
         get() {

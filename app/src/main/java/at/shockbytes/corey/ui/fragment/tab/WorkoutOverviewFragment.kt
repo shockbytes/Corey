@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment.tab
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -36,6 +35,8 @@ class WorkoutOverviewFragment : TabBaseFragment<AppComponent>(),
 
     private lateinit var workoutOverviewAdapter: WorkoutAdapter
     private lateinit var viewModel: WorkoutOverviewViewModel
+
+    override val castsActionBarShadow: Boolean = false
 
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
@@ -86,8 +87,8 @@ class WorkoutOverviewFragment : TabBaseFragment<AppComponent>(),
     }
 
     override fun onEdit(w: Workout?) {
-        val intent = CreateWorkoutActivity.newIntent(context!!, w)
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!)
+        val intent = CreateWorkoutActivity.newIntent(requireContext(), w)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity())
         activity?.startActivityForResult(intent, AppParams.REQUEST_CODE_CREATE_WORKOUT, options.toBundle())
     }
 
@@ -106,7 +107,7 @@ class WorkoutOverviewFragment : TabBaseFragment<AppComponent>(),
 
     override fun bindViewModel() {
 
-        viewModel.getWorkouts().observe(this, Observer { state ->
+        viewModel.getWorkouts().observe(this, { state ->
 
             when (state) {
 

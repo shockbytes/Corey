@@ -27,7 +27,7 @@ object CoreyPageFragmentResolver {
     fun createFragmentForPosition(position: Int): Fragment {
         return when (position) {
             0 -> NutritionFragment.newInstance()
-            1 -> WorkoutOverviewFragment.newInstance()
+            1 -> CombinedWorkoutFragment.newInstance()
             2 -> ScheduleFragment.newInstance()
             3 -> BodyFragment.newInstance()
             4 -> GoalsFragment.newInstance()
