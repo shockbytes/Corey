@@ -5,17 +5,13 @@ import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.ui.activity.MainActivity
 import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.ReminderFragment
-import at.shockbytes.corey.ui.fragment.tab.RunningFragment
 import at.shockbytes.corey.ui.fragment.SettingsFragment
 import at.shockbytes.corey.ui.fragment.WorkoutFragment
 import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
 import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
-import at.shockbytes.corey.ui.fragment.tab.BodyFragment
-import at.shockbytes.corey.ui.fragment.tab.GoalsFragment
-import at.shockbytes.corey.ui.fragment.tab.ScheduleFragment
-import at.shockbytes.corey.ui.fragment.tab.WorkoutOverviewFragment
+import at.shockbytes.corey.ui.fragment.tab.*
 import at.shockbytes.corey.ui.fragment.workoutpager.TimeExercisePagerFragment
 import dagger.Component
 import javax.inject.Singleton
@@ -67,4 +63,6 @@ interface AppComponent : ShockbytesInjector {
     fun inject(fragment: ReminderFragment)
 
     fun inject(fragment: RunningFragment)
+
+    fun inject(fragment: NutritionFragment)
 }

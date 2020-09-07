@@ -108,7 +108,7 @@
     <string name="prefs_workout_day_notification_daytime_summary">Wähle die Tageszeit, wenn du Erinnerungen erhalten möchtest</string>
     <string name="prefs_workout_day_notification_daytime_title">Zeit für Workoutbenachrichtigungen</string>
     <string name="tab_my_body">Mein Körper</string>
-    <string name="tab_workout">Workouts</string>
+    <string name="tab_workout">Workout</string>
     <string name="tab_schedule">Wochenplan</string>
     <string name="notification_weigh_title">%s! Zeit zum Wiegen</string>
     <string name="notification_weigh_msg">Letztes Mal hast du %1$s %2$s. Gib nicht auf.</string>
@@ -170,5 +170,6 @@
     <string name="unknown_smartwatch">Unbekannte Smartwatch</string>
     <string name="weigh_reminder">Gewichtserinnerung</string>
     <string name="workout_reminder">Workouterinnerung</string>
+    <string name="tab_nutrition">Ernährung</string>
 
 </resources>

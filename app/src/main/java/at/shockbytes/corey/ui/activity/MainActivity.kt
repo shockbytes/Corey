@@ -41,8 +41,8 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     override val imageLoader: ImageLoader = GlideImageLoader(R.drawable.ic_account)
 
     private val additionalToolbarActionItems = listOf(
-        AdditionalToolbarAction(R.drawable.ic_running_history, R.string.ic_running_history, changeWithAnimation = true) {
-            showToast("Running history (coming soon...)")
+        AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.add_nutrition_entry, changeWithAnimation = true) {
+            showToast("Create new nutrition entry")
         },
         AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.create_workout, true) {
             activityTransition(CreateWorkoutActivity.newIntent(applicationContext), AppParams.REQUEST_CODE_CREATE_WORKOUT)
@@ -64,7 +64,7 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
 
     private val tabs by lazy {
         listOf(
-            BottomNavigationTab(R.id.nav_item_running, R.drawable.navigation_item, R.drawable.ic_tab_running, getString(R.string.tab_running)),
+            BottomNavigationTab(R.id.nav_item_nutrition, R.drawable.navigation_item, R.drawable.ic_tab_nutrition, getString(R.string.tab_nutrition)),
             BottomNavigationTab(R.id.nav_item_workout, R.drawable.navigation_item, R.drawable.ic_tab_workout, getString(R.string.tab_workout)),
             BottomNavigationTab(R.id.nav_item_schedule, R.drawable.navigation_item, R.drawable.ic_tab_schedule, getString(R.string.tab_schedule)),
             BottomNavigationTab(R.id.nav_item_my_body, R.drawable.navigation_item, R.drawable.ic_tab_my_body, getString(R.string.tab_my_body)),

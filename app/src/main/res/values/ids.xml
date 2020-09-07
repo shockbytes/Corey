@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="id" name="nav_item_running" />
+    <item type="id" name="nav_item_nutrition" />
     <item type="id" name="nav_item_workout" />
     <item type="id" name="nav_item_schedule" />
     <item type="id" name="nav_item_my_body" />

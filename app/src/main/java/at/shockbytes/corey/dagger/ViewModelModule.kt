@@ -2,13 +2,7 @@ package at.shockbytes.corey.dagger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import at.shockbytes.corey.ui.viewmodel.BodyViewModel
-import at.shockbytes.corey.ui.viewmodel.GoalsViewModel
-import at.shockbytes.corey.ui.viewmodel.MainViewModel
-import at.shockbytes.corey.ui.viewmodel.ReminderViewModel
-import at.shockbytes.corey.ui.viewmodel.RunningViewModel
-import at.shockbytes.corey.ui.viewmodel.SignupViewModel
-import at.shockbytes.corey.ui.viewmodel.WorkoutOverviewViewModel
+import at.shockbytes.corey.ui.viewmodel.*
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -71,6 +65,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RunningViewModel::class)
     internal abstract fun runningViewModel(viewModel: RunningViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NutritionViewModel::class)
+    internal abstract fun nutritionViewModel(viewModel: NutritionViewModel): ViewModel
 
     @Binds
     @IntoMap

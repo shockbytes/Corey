@@ -1,10 +1,11 @@
 <resources>
 
     <string name="app_name">Corey</string>
-    <string name="app_version" translatable="false">3.6</string>
+    <string name="app_version" translatable="false">3.7</string>
     <string name="action_settings">Settings</string>
 
-    <string name="tab_workout">Workouts</string>
+    <string name="tab_nutrition">Nutrition</string>
+    <string name="tab_workout">Workout</string>
     <string name="tab_schedule">Schedule</string>
     <string name="tab_my_body">My body</string>
     <string name="tab_goals">Goals</string>
@@ -206,6 +207,7 @@
     <string name="show_weather_forecast">Weather forecast</string>
     <string name="prefs_schedule_weather_forecast_key" translatable="false">prefs_schedule_weather_forecast_key</string>
     <string name="create_workout">Create workout</string>
+    <string name="add_nutrition_entry">Add nutrition entry</string>
     <string name="reset_schedule">Reset schedule</string>
     <string name="change_dreamweight">Change dreamweight</string>
     <string name="add_goal">Add goal</string>

@@ -1,11 +1,7 @@
 package at.shockbytes.corey.navigation
 
 import androidx.fragment.app.Fragment
-import at.shockbytes.corey.ui.fragment.tab.BodyFragment
-import at.shockbytes.corey.ui.fragment.tab.GoalsFragment
-import at.shockbytes.corey.ui.fragment.tab.ScheduleFragment
-import at.shockbytes.corey.ui.fragment.tab.WorkoutOverviewFragment
-import at.shockbytes.corey.ui.fragment.tab.RunningFragment
+import at.shockbytes.corey.ui.fragment.tab.*
 
 object CoreyPageFragmentResolver {
 
@@ -30,7 +26,7 @@ object CoreyPageFragmentResolver {
     // TODO Improve caching of Fragments
     fun createFragmentForPosition(position: Int): Fragment {
         return when (position) {
-            0 -> RunningFragment.newInstance()
+            0 -> NutritionFragment.newInstance()
             1 -> WorkoutOverviewFragment.newInstance()
             2 -> ScheduleFragment.newInstance()
             3 -> BodyFragment.newInstance()
