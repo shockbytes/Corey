@@ -7,6 +7,7 @@ import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.ReminderFragment
 import at.shockbytes.corey.ui.fragment.SettingsFragment
 import at.shockbytes.corey.ui.fragment.WorkoutFragment
+import at.shockbytes.corey.ui.fragment.body.GoalsFragment
 import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
 import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment

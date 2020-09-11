@@ -22,7 +22,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    05.02.2018
  */
-class ProfileBodyFragmentView : BodySubFragment(), androidx.palette.graphics.Palette.PaletteAsyncListener, ImageLoadingCallback {
+class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener, ImageLoadingCallback {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -64,14 +64,11 @@ class ProfileBodyFragmentView : BodySubFragment(), androidx.palette.graphics.Pal
         animateContent(bodyInfo)
     }
 
-    override fun animateView(startDelay: Long) {
-    }
-
-    override fun onGenerated(palette: androidx.palette.graphics.Palette?) = Unit
+    override fun onGenerated(palette: Palette?) = Unit
 
     override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let { bitmap ->
-            androidx.palette.graphics.Palette.from(bitmap).generate(this)
+            Palette.from(bitmap).generate(this)
         }
     }
 

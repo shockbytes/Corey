@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.common.addTo
+import at.shockbytes.corey.data.goal.Goal
 import at.shockbytes.corey.data.goal.GoalsRepository
 import at.shockbytes.corey.storage.KeyValueStorage
 import at.shockbytes.corey.storage.StorageConstants
@@ -65,5 +66,9 @@ class GoalsViewModel @Inject constructor(
     private fun postGoals() {
         val postGoals = if (hideFinished) { goals.filter { !it.isCompleted } } else goals
         bodyGoals.postValue(postGoals)
+    }
+
+    fun storeBodyGoal(goal: Goal) {
+        goalsRepository.storeBodyGoal(goal)
     }
 }

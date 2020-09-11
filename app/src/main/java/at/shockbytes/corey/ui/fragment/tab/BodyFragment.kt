@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment.tab
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -9,10 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.ui.fragment.body.BodySubFragment
-import at.shockbytes.corey.ui.fragment.body.DreamWeightBodyFragmentView
-import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
-import at.shockbytes.corey.ui.fragment.body.WeightHistoryBodyFragmentView
+import at.shockbytes.corey.ui.fragment.body.*
 import at.shockbytes.corey.ui.viewmodel.BodyViewModel
 import kotterknife.bindView
 import javax.inject.Inject
@@ -27,12 +23,14 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
     private val profileBodyFragment = ProfileBodyFragmentView()
     private val dreamWeightBodyFragmentView = DreamWeightBodyFragmentView()
     private val weightHistoryBodyFragmentView = WeightHistoryBodyFragmentView()
+    private val goalsFragment = GoalsFragment.newInstance()
 
     private val fragmentViews: List<BodySubFragment> by lazy {
         listOf(
                 profileBodyFragment,
                 dreamWeightBodyFragmentView,
-                weightHistoryBodyFragmentView
+                weightHistoryBodyFragmentView,
+                goalsFragment
         )
     }
 
@@ -61,7 +59,7 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
     override fun bindViewModel() {
         viewModel.requestBodyInfo()
 
-        viewModel.getBodyInfo().observe(this, Observer { state ->
+        viewModel.getBodyInfo().observe(this, { state ->
             when (state) {
                 is BodyViewModel.BodyInfoState.SuccessState -> {
                     hideErrorView()

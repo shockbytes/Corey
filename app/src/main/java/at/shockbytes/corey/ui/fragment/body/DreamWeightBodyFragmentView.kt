@@ -18,7 +18,7 @@ class DreamWeightBodyFragmentView : BodySubFragment() {
     override fun injectToGraph(appComponent: AppComponent?) = Unit
     override fun unbindViewModel() = Unit
 
-    private val cardView by bindView<androidx.cardview.widget.CardView>(R.id.fragment_body_card_dream_weight)
+    private val cardView by bindView<CardView>(R.id.fragment_body_card_dream_weight)
     private val txtHeadline by bindView<TextView>(R.id.fragment_body_card_dream_weight_txt_headline)
     private val txtContent by bindView<TextView>(R.id.fragment_body_card_dream_weight_txt_content)
     private val txtDiff by bindView<TextView>(R.id.fragment_body_card_dream_weight_txt_diff)
@@ -41,6 +41,4 @@ class DreamWeightBodyFragmentView : BodySubFragment() {
 
         animateCard(cardView, 0)
     }
-
-    override fun animateView(startDelay: Long) = Unit
 }

@@ -17,9 +17,7 @@ abstract class BodySubFragment : BaseFragment<AppComponent>() {
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
-    abstract fun animateView(startDelay: Long)
-
-    protected fun animateCard(cardView: androidx.cardview.widget.CardView, startDelay: Long) {
+    protected fun animateCard(cardView: CardView, startDelay: Long = 0L) {
         val cardAnimAlpha = ObjectAnimator.ofFloat(cardView, "alpha", 0.1f, 1f)
         val cardAnimScaleX = ObjectAnimator.ofFloat(cardView, "scaleX", 0.1f, 1f)
         val cardAnimScaleY = ObjectAnimator.ofFloat(cardView, "scaleY", 0.1f, 1f)

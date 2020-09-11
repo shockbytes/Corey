@@ -22,7 +22,6 @@ import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.navigation.CoreyPageFragmentResolver
 import at.shockbytes.corey.ui.fragment.MenuFragment
-import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import at.shockbytes.corey.util.AppParams
@@ -49,13 +48,6 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         AdditionalToolbarAction(R.drawable.ic_body_card_weight_history_colored, R.string.change_dreamweight, true) {
             askForDesiredWeight()
         },
-        AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.add_goal, true) {
-            AddGoalDialogFragment.newInstance()
-                .setOnGoalCreatedListener { goal ->
-                    viewModel.storeBodyGoal(goal)
-                }
-                .show(supportFragmentManager, "dialog-fragment-add-goal")
-        }
     )
 
     private val tabs by lazy {
@@ -114,25 +106,8 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         additionalToolbarActionItem = additionalToolbarActionItems[newPageIndex]
     }
 
-    override fun onFabMenuItemClicked(id: Int): Boolean {
+    override fun onFabMenuItemClicked(id: Int): Boolean = false
 
-        return when (id) {
-
-            R.id.menu_fab_create_workout -> {
-                false
-            }
-            R.id.menu_fab_new_goal -> {
-
-                AddGoalDialogFragment.newInstance()
-                    .setOnGoalCreatedListener { goal ->
-                        viewModel.storeBodyGoal(goal)
-                    }
-                    .show(supportFragmentManager, "dialog-fragment-add-goal")
-                false
-            }
-            else -> false
-        }
-    }
 
     override fun setupDarkMode() = Unit
 
@@ -177,15 +152,6 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
             }
             .create()
             .show()
-    }
-
-    private fun activityTransition(intent: Intent, reqCodeForResult: Int) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this)
-        if (reqCodeForResult > 0) {
-            startActivityForResult(intent, reqCodeForResult, options.toBundle())
-        } else {
-            startActivity(intent, options.toBundle())
-        }
     }
 
     private fun askForDesiredWeight() {
