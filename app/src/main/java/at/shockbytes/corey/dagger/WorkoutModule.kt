@@ -7,6 +7,9 @@ import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.GoogleFitBodyRepository
 import at.shockbytes.corey.common.core.running.DefaultRunningManager
 import at.shockbytes.corey.common.core.running.RunningManager
+import at.shockbytes.corey.data.body.bmr.Bmr
+import at.shockbytes.corey.data.body.bmr.BmrComputation
+import at.shockbytes.corey.data.body.bmr.RevisedHarrisBenedictBmrComputation
 import at.shockbytes.corey.data.goal.FirebaseGoalsRepository
 import at.shockbytes.corey.data.goal.GoalsRepository
 import at.shockbytes.corey.data.workout.FirebaseWorkoutRepository
@@ -42,12 +45,18 @@ class WorkoutModule(private val app: Application) {
     }
 
     @Provides
+    fun provideBmrComputation(): BmrComputation {
+        return RevisedHarrisBenedictBmrComputation()
+    }
+
+    @Provides
     @Singleton
     fun provideBodyManager(
         preferences: SharedPreferences,
-        firebase: FirebaseDatabase
+        firebase: FirebaseDatabase,
+        bmrComputation: BmrComputation
     ): BodyRepository {
-        return GoogleFitBodyRepository(app.applicationContext, preferences, firebase)
+        return GoogleFitBodyRepository(app.applicationContext, preferences, firebase, bmrComputation)
     }
 
     @Provides

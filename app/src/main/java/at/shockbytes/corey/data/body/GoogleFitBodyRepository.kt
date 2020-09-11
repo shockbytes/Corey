@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import at.shockbytes.corey.R
+import at.shockbytes.corey.data.body.bmr.Bmr
+import at.shockbytes.corey.data.body.bmr.BmrComputation
 import at.shockbytes.corey.data.body.info.BodyInfo
 import at.shockbytes.corey.data.body.info.WeightPoint
 import at.shockbytes.util.AppUtils
@@ -31,9 +33,10 @@ import java.util.concurrent.TimeUnit
  * Date:    04.08.2016
  */
 class GoogleFitBodyRepository(
-    private val context: Context,
-    private val preferences: SharedPreferences,
-    private val firebase: FirebaseDatabase
+        private val context: Context,
+        private val preferences: SharedPreferences,
+        private val firebase: FirebaseDatabase,
+        private val bmrComputation: BmrComputation
 ) : BodyRepository, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private val apiClient: GoogleApiClient
@@ -102,14 +105,25 @@ class GoogleFitBodyRepository(
             }
             .singleOrError()
 
+    override fun computeBasalMetabolicRate(): Single<Bmr> {
+        return retrieveCoreyUser()
+                .flatMap(bmrComputation::compute)
+    }
+
+    override fun retrieveCoreyUser(): Single<CoreyUser> {
+        TODO("Not yet implemented")
+    }
+
     // -----------------------------------------------------------------------------------------
 
     private fun loadFitnessData() {
         Fitness.HistoryApi.readData(apiClient, buildGoogleFitRequest())
                 .setResultCallback { res ->
-                    _bodyInfo = BodyInfo(getWeightList(res.getDataSet(DataType.TYPE_WEIGHT)),
+                    _bodyInfo = BodyInfo(
+                            getWeightList(res.getDataSet(DataType.TYPE_WEIGHT)),
                             getHeight(res.getDataSet(DataType.TYPE_HEIGHT)),
-                            desiredWeight)
+                            desiredWeight
+                    )
                 }
     }
 
@@ -165,6 +179,18 @@ class GoogleFitBodyRepository(
             override fun onCancelled(databaseError: DatabaseError) = Unit
         })
     }
+
+    private fun buildCaloriesReadRequest(
+            startTime: Long = 1L,
+            endTime: Long = System.currentTimeMillis()
+    ): DataReadRequest {
+        return DataReadRequest.Builder()
+                .aggregate(DataType.TYPE_CALORIES_EXPENDED, DataType.AGGREGATE_CALORIES_EXPENDED)
+                .bucketByActivityType(1, TimeUnit.SECONDS)
+                .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
+                .build()
+    }
+
 
     companion object {
 
