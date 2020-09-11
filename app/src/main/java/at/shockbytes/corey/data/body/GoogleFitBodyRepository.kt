@@ -57,15 +57,10 @@ class GoogleFitBodyRepository(
 
     private var _bodyInfo: BodyInfo = BodyInfo()
 
-    private var _desiredWeight: Int = -1
 
     override var desiredWeight: Int
-        get() {
-            // No sync with firebase, use local cached value
-            return if (_desiredWeight < 0) {
-                preferences.getInt(PREF_DREAM_WEIGHT, 0)
-            } else _desiredWeight
-        }
+        get() = preferences.getInt(PREF_DREAM_WEIGHT, 0)
+
         set(value) {
             preferences.edit().putInt(PREF_DREAM_WEIGHT, value).apply()
             firebase.getReference("/body/desired").setValue(value)
@@ -171,8 +166,8 @@ class GoogleFitBodyRepository(
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val data = dataSnapshot.value
                 if (data != null) {
-                    _desiredWeight = Integer.parseInt(data.toString())
-                    preferences.edit().putInt(PREF_DREAM_WEIGHT, _desiredWeight).apply()
+                    val fbDesiredWeight = Integer.parseInt(data.toString())
+                    preferences.edit().putInt(PREF_DREAM_WEIGHT, fbDesiredWeight).apply()
                 }
             }
 
