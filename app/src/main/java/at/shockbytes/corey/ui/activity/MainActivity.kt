@@ -1,7 +1,6 @@
 package at.shockbytes.corey.ui.activity
 
 import android.app.Activity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
@@ -44,9 +43,6 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.add_nutrition_entry, changeWithAnimation = true) {
             showToast("Create new nutrition entry")
         },
-        AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.create_workout, true) {
-            activityTransition(CreateWorkoutActivity.newIntent(applicationContext), AppParams.REQUEST_CODE_CREATE_WORKOUT)
-        },
         AdditionalToolbarAction(R.drawable.ic_cancel_red, R.string.reset_schedule, true) {
             showScheduleDeletionApprovalDialog()
         },
@@ -65,10 +61,8 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     private val tabs by lazy {
         listOf(
             BottomNavigationTab(R.id.nav_item_nutrition, R.drawable.navigation_item, R.drawable.ic_tab_nutrition, getString(R.string.tab_nutrition)),
-            BottomNavigationTab(R.id.nav_item_workout, R.drawable.navigation_item, R.drawable.ic_tab_workout, getString(R.string.tab_workout)),
             BottomNavigationTab(R.id.nav_item_schedule, R.drawable.navigation_item, R.drawable.ic_tab_schedule, getString(R.string.tab_schedule)),
             BottomNavigationTab(R.id.nav_item_my_body, R.drawable.navigation_item, R.drawable.ic_tab_my_body, getString(R.string.tab_my_body)),
-            BottomNavigationTab(R.id.nav_item_goals, R.drawable.navigation_item, R.drawable.ic_tab_goals, getString(R.string.tab_goals))
         )
     }
 
@@ -98,10 +92,8 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     }
 
     override fun bindViewModel() {
-        viewModel.getUserEvent().observe(this, Observer {
-            it?.let { event ->
-                onUserEvent(event)
-            }
+        viewModel.getUserEvent().observe(this,  { event ->
+            onUserEvent(event)
         })
 
         viewModel.getToastMessages()
@@ -127,8 +119,6 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         return when (id) {
 
             R.id.menu_fab_create_workout -> {
-                activityTransition(CreateWorkoutActivity.newIntent(applicationContext),
-                    AppParams.REQUEST_CODE_CREATE_WORKOUT)
                 false
             }
             R.id.menu_fab_new_goal -> {

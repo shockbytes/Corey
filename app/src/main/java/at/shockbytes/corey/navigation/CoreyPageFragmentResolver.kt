@@ -27,10 +27,8 @@ object CoreyPageFragmentResolver {
     fun createFragmentForPosition(position: Int): Fragment {
         return when (position) {
             0 -> NutritionFragment.newInstance()
-            1 -> CombinedWorkoutFragment.newInstance()
-            2 -> ScheduleFragment.newInstance()
-            3 -> BodyFragment.newInstance()
-            4 -> GoalsFragment.newInstance()
+            1 -> ScheduleFragment.newInstance()
+            2 -> BodyFragment.newInstance()
             else -> throw IllegalStateException("Cannot resolve fragment in CoreyPagerAdapter for position $position") // Never the case
         }
     }
