@@ -10,11 +10,9 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.util.CoreySettings
 import at.shockbytes.corey.common.core.util.WatchInfo
-import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.data.reminder.ReminderManager
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.data.user.UserRepository
-import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.wearable.WearableManager
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -26,9 +24,7 @@ class MainViewModel @Inject constructor(
     private val coreySettings: CoreySettings,
     private val scheduleRepository: ScheduleRepository,
     private val reminderManager: ReminderManager,
-    private val workoutRepository: WorkoutRepository,
     private val wearableManager: WearableManager,
-    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     private val userEvent = MutableLiveData<LoginUserEvent>()
@@ -44,8 +40,6 @@ class MainViewModel @Inject constructor(
     fun getWatchInfo(): LiveData<WatchInfo> = watchInfo
 
     init {
-        workoutRepository.poke()
-
         userEvent.postValue(LoginUserEvent.SuccessEvent(userRepository.user, false))
         weatherForecastEnabled.postValue(coreySettings.isWeatherForecastEnabled)
 
@@ -56,29 +50,10 @@ class MainViewModel @Inject constructor(
 
     private fun onWatchInfoAvailable(wi: WatchInfo) {
         watchInfo.postValue(wi)
-
-        if (wi.isConnected) {
-            workoutRepository.workouts
-                .subscribeOn(schedulers.io)
-                .subscribe({ workouts ->
-                    wearableManager.synchronizeWorkouts(workouts)
-                }, { throwable ->
-                    Timber.e(throwable)
-                })
-                .addTo(compositeDisposable)
-        }
     }
 
     fun pokeReminderManager(context: Context) {
         reminderManager.poke(context)
-    }
-
-    fun storeWorkout(w: Workout) {
-        workoutRepository.storeWorkout(w)
-    }
-
-    fun updateWorkout(w: Workout) {
-        workoutRepository.updateWorkout(w)
     }
 
     fun resetSchedule() {

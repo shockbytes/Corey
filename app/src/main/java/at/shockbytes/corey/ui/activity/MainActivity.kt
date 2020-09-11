@@ -1,12 +1,10 @@
 package at.shockbytes.corey.ui.activity
 
-import android.app.Activity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.app.ActivityOptionsCompat
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import at.shockbytes.core.image.GlideImageLoader
@@ -18,13 +16,11 @@ import at.shockbytes.core.ui.model.BottomNavigationActivityOptions
 import at.shockbytes.core.ui.model.BottomNavigationTab
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.navigation.CoreyPageFragmentResolver
 import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
-import at.shockbytes.corey.util.AppParams
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -124,22 +120,6 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     override fun showWelcomeScreen(user: ShockbytesUser) = Unit
 
     override fun unbindViewModel() = Unit
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == AppParams.REQUEST_CODE_CREATE_WORKOUT && resultCode == Activity.RESULT_OK) {
-
-            val isUpdated = data?.getBooleanExtra(AppParams.INTENT_EXTRA_WORKOUT_UPDATED, false)
-            data?.getParcelableExtra<Workout>(AppParams.INTENT_EXTRA_NEW_WORKOUT)?.let { w ->
-                if (isUpdated == false) {
-                    viewModel.storeWorkout(w)
-                } else {
-                    viewModel.updateWorkout(w)
-                }
-            }
-        }
-    }
 
     private fun showScheduleDeletionApprovalDialog() {
         AlertDialog.Builder(this)
