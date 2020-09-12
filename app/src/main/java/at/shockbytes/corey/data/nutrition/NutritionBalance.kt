@@ -16,7 +16,7 @@ sealed class NutritionBalance {
             get() = kcal
 
         override fun formatted(): CharSequence {
-            return "+${kcal}kcal".colored(Color.RED)
+            return "+${kcal}kcal".colored(Color.parseColor("#F44336")) // material red
         }
     }
 
@@ -25,7 +25,7 @@ sealed class NutritionBalance {
             get() = -kcal
 
         override fun formatted(): CharSequence {
-            return "-${kcal}kcal".colored(Color.GREEN)
+            return "-${kcal}kcal".colored(Color.parseColor("#8BC34A")) // colorPrimary
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.data.nutrition.PhysicalActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
@@ -39,6 +40,8 @@ class NutritionAdapter(context: Context) : BaseAdapter<NutritionAdapterItem>(con
                     layoutManager = LinearLayoutManager(context)
                     adapter = NutritionIntakeAdapter(context, intake)
                 }
+
+                tv_item_nutrition_day_burned_header.setVisible(burned.isNotEmpty())
 
                 rv_item_nutrition_day_burned.apply {
                     layoutManager = LinearLayoutManager(context)

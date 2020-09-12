@@ -31,7 +31,11 @@ class FirebaseNutritionRepository(
                                 NutritionPerDay(
                                         intake = nutritionEntries,
                                         date = date,
-                                        burned = listOf() // TODO Where to get this...
+                                        // TODO Replace this with the proper calls
+                                        burned = listOf(
+                                                // PhysicalActivity.BasalMetabolicRate("Basal Metabolic Rate", 1700),
+                                                // PhysicalActivity.Activity("Freeletics", 900)
+                                        )
                                 )
                             }
                             .sortedByDescending { it.date.dateTime }

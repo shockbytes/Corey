@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import androidx.fragment.app.Fragment
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
-import android.widget.AbsListView
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
@@ -72,8 +71,15 @@ fun RecyclerView.observePositionChanges(subscribeOn: Scheduler): Observable<Int>
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
 
-                        val position = (layoutManager as LinearLayoutManager)
-                                .findFirstCompletelyVisibleItemPosition()
+                        val lm = layoutManager as? LinearLayoutManager
+                                ?: throw IllegalStateException("Only supports type LinearLayoutManager")
+
+                        val position = if (lm.reverseLayout) {
+                            lm.findLastVisibleItemPosition()
+                        } else {
+                            lm.findFirstVisibleItemPosition()
+                        }
+
                         source.onNext(position)
                     }
                 })
