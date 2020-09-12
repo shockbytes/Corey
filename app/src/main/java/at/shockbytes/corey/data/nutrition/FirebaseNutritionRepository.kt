@@ -12,7 +12,7 @@ class FirebaseNutritionRepository(
         private val schedulers: SchedulerFacade,
 ) : NutritionRepository {
 
-    private val nutritionSubject = BehaviorSubject.createDefault<List<NutritionEntry>>(listOf())
+    private val nutritionSubject = BehaviorSubject.create<List<NutritionEntry>>() //.createDefault<List<NutritionEntry>>(listOf())
 
     init {
         setupFirebase()
@@ -34,6 +34,7 @@ class FirebaseNutritionRepository(
                                         burned = listOf() // TODO Where to get this...
                                 )
                             }
+                            .sortedByDescending { it.date.dateTime }
                 }
                 .subscribeOn(schedulers.io)
     }

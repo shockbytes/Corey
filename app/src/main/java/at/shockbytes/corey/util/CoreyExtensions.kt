@@ -7,14 +7,20 @@ import android.graphics.drawable.Drawable
 import androidx.fragment.app.Fragment
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
+import android.widget.AbsListView
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.core.ShockbytesInjector
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.R
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 fun Fragment.isPortrait(): Boolean {
     return this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
@@ -34,16 +40,16 @@ fun Drawable.toBitmap(): Bitmap {
     return bitmap
 }
 
-inline fun <reified T: BaseViewModel> FragmentActivity.viewModelOfActivity(vmFactory: ViewModelProvider.Factory): T {
+inline fun <reified T : BaseViewModel> FragmentActivity.viewModelOfActivity(vmFactory: ViewModelProvider.Factory): T {
     return ViewModelProviders.of(this, vmFactory)[T::class.java]
 }
 
-inline fun <reified T: BaseViewModel> Fragment.viewModelOf(vmFactory: ViewModelProvider.Factory): T {
+inline fun <reified T : BaseViewModel> Fragment.viewModelOf(vmFactory: ViewModelProvider.Factory): T {
     return ViewModelProviders.of(this, vmFactory)[T::class.java]
 }
 
 @SuppressLint("PrivateResource")
-fun <T: ShockbytesInjector> FragmentManager.showBaseFragment(fragment: BaseFragment<T>) {
+fun <T : ShockbytesInjector> FragmentManager.showBaseFragment(fragment: BaseFragment<T>) {
 
     beginTransaction()
             .setCustomAnimations(
@@ -55,4 +61,24 @@ fun <T: ShockbytesInjector> FragmentManager.showBaseFragment(fragment: BaseFragm
             .addToBackStack(fragment.javaClass.name)
             .add(android.R.id.content, fragment)
             .commit()
+}
+
+fun RecyclerView.observePositionChanges(subscribeOn: Scheduler): Observable<Int> {
+
+    return Observable
+            .create<Int> { source ->
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+
+                        val position = (layoutManager as LinearLayoutManager)
+                                .findFirstCompletelyVisibleItemPosition()
+                        source.onNext(position)
+                    }
+                })
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(subscribeOn)
+            .distinctUntilChanged()
 }

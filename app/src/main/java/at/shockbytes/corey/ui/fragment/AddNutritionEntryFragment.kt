@@ -133,7 +133,7 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
 
         val portion = ""
         val year = dp_add_nutrition_entry.year
-        val month = dp_add_nutrition_entry.month
+        val month = dp_add_nutrition_entry.month.inc()
         val day = dp_add_nutrition_entry.dayOfMonth
         val weekOfYear = DateTime(year, month, day, 0, 0).weekOfWeekyear
 
