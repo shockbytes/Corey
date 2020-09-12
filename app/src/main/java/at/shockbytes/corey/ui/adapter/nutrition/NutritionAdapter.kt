@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.corey.R
+import at.shockbytes.corey.data.nutrition.PhysicalActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_nutrition_day.*
+import kotlinx.android.synthetic.main.item_nutrition_day_burned.*
 import kotlinx.android.synthetic.main.item_nutrition_day_intake.*
 import kotlinx.android.synthetic.main.item_nutrition_day_intake_header.*
 import java.lang.IllegalStateException
@@ -36,6 +38,11 @@ class NutritionAdapter(context: Context) : BaseAdapter<NutritionAdapterItem>(con
                 rv_item_nutrition_day_intake.apply {
                     layoutManager = LinearLayoutManager(context)
                     adapter = NutritionIntakeAdapter(context, intake)
+                }
+
+                rv_item_nutrition_day_burned.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = NutritionBurnedAdapter(context, burned)
                 }
             }
         }
@@ -88,4 +95,30 @@ class NutritionAdapter(context: Context) : BaseAdapter<NutritionAdapterItem>(con
             }
         }
     }
+
+    private class NutritionBurnedAdapter(
+            context: Context,
+            burned: List<PhysicalActivity>
+    ) : BaseAdapter<PhysicalActivity>(context) {
+
+        init {
+            data.addAll(burned)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            return NutritionBurnedViewHolder(inflater.inflate(R.layout.item_nutrition_day_burned, parent, false))
+        }
+
+        inner class NutritionBurnedViewHolder(
+                override val containerView: View
+        ) : BaseAdapter<PhysicalActivity>.ViewHolder(containerView), LayoutContainer {
+            override fun bindToView(t: PhysicalActivity) {
+                with(t) {
+                    tv_item_nutrition_day_burned_title.text = activityName
+                    tv_item_nutrition_day_burned_kcal.text = context.getString(R.string.kcal_format, kcal)
+                }
+            }
+        }
+    }
+
 }

@@ -6,8 +6,9 @@
     tools:text="Breakfast"
     android:id="@+id/tv_item_nutrition_day_intake_header"
     android:textColor="@color/colorPrimary"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="12dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginBottom="4dp"
     android:layout_height="wrap_content">
 
 </TextView>

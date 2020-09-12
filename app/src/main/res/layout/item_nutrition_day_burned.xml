@@ -8,21 +8,22 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/tv_item_nutrition_day_intake_title"
+        android:id="@+id/tv_item_nutrition_day_burned_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:textColor="@color/colorPrimaryText"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-        tools:text="Coffee" />
+        tools:text="Metabolic basal rate" />
 
     <TextView
-        android:id="@+id/tv_item_nutrition_day_intake_kcal"
+        android:id="@+id/tv_item_nutrition_day_burned_kcal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
+        android:textStyle="bold"
         android:textColor="@color/colorSecondaryText"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-        tools:text="210kcal" />
+        tools:text="-210kcal" />
 
 </LinearLayout>

@@ -13,6 +13,7 @@
 
     <string name="week_placeholder">Week %d</string>
     <string name="kcal_format" translatable="false">%dkcal</string>
+    <string name="burned_calories">Burned calories</string>
 
     <string name="title_running">Corey Running</string>
     <string name="help_text_running">Double tap to stop run</string>

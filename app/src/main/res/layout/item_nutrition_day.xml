@@ -30,9 +30,19 @@
             android:layout_height="match_parent"
             android:nestedScrollingEnabled="false" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/burned_calories"
+            android:id="@+id/tv_item_nutrition_day_burned_header"
+            android:textColor="@color/coreyBlack"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="4dp"
+            android:layout_height="wrap_content" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_item_nutrition_day_burned"
-            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:nestedScrollingEnabled="false" />
@@ -51,7 +61,7 @@
             android:layout_gravity="end"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:textStyle="bold"
             tools:text="+4000kcal"
