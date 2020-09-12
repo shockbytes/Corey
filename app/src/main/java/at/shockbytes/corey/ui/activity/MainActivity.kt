@@ -1,7 +1,6 @@
 package at.shockbytes.corey.ui.activity
 
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -19,8 +18,11 @@ import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.navigation.CoreyPageFragmentResolver
 import at.shockbytes.corey.ui.fragment.MenuFragment
+import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
+import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
+import at.shockbytes.corey.util.viewModelOfActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -31,12 +33,18 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     lateinit var vmFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var nutritionViewModel: NutritionViewModel
 
     override val imageLoader: ImageLoader = GlideImageLoader(R.drawable.ic_account)
 
     private val additionalToolbarActionItems = listOf(
         AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.add_nutrition_entry, changeWithAnimation = true) {
-            showToast("Create new nutrition entry")
+            /*
+            AddNutritionEntryDialogFragment.newInstance()
+                    .setOnNutritionEntryCreatedListener(nutritionViewModel::addNutritionEntry)
+                    .show(supportFragmentManager, "dialog-fragment-add-goal")
+
+             */
         },
         AdditionalToolbarAction(R.drawable.ic_cancel_red, R.string.reset_schedule, true) {
             showScheduleDeletionApprovalDialog()
@@ -75,7 +83,8 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        viewModel = viewModelOfActivity(vmFactory)
+        nutritionViewModel = viewModelOfActivity(vmFactory)
         viewModel.pokeReminderManager(this)
     }
 

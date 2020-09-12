@@ -44,7 +44,7 @@ inline fun <reified T> FirebaseDatabase.listen(reference: String, relay: Subject
 inline fun <reified T: FirebaseStorable> FirebaseDatabase.insertValue(reference: String, value: T) {
 
     val ref = getReference(reference).push()
-    val id = ref.key ?: ""
+    val id = ref.key ?: throw IllegalStateException("Cannot insert value $value into firebase!")
     ref.setValue(value.copyWithNewId(newId = id))
 }
 

@@ -2,6 +2,7 @@ package at.shockbytes.corey.ui.viewmodel
 
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.common.addTo
+import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionPerDay
 import at.shockbytes.corey.data.nutrition.NutritionRepository
 import timber.log.Timber
@@ -28,5 +29,16 @@ class NutritionViewModel @Inject constructor(
 
     private fun computeAndPostInitialWeekOverview(data: List<NutritionPerDay>) {
         // TODO
+    }
+
+    fun addNutritionEntry(nutritionEntry: NutritionEntry) {
+        nutritionRepository.addNutritionEntry(nutritionEntry)
+                .subscribe({
+                    Timber.d("Nutrition: Entry successfully created")
+                }, { throwable ->
+                    Timber.e(throwable)
+                    // TODO Inform user that something went wrong
+                })
+                .addTo(compositeDisposable)
     }
 }

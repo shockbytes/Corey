@@ -1,10 +1,7 @@
 package at.shockbytes.corey.data.nutrition
 
 import at.shockbytes.core.scheduler.SchedulerFacade
-import at.shockbytes.corey.util.completableOf
-import at.shockbytes.corey.util.insertValue
-import at.shockbytes.corey.util.listen
-import at.shockbytes.corey.util.removeValue
+import at.shockbytes.corey.util.*
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -42,7 +39,7 @@ class FirebaseNutritionRepository(
     }
 
     override fun addNutritionEntry(entry: NutritionEntry): Completable {
-        return completableOf{
+        return completableEmitterOf {
             firebase.insertValue(REF, entry)
         }
     }
