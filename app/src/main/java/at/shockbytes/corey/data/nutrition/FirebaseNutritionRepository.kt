@@ -19,7 +19,7 @@ class FirebaseNutritionRepository(
         setupFirebase()
     }
 
-    private val nutritionSubject = BehaviorSubject.create<List<NutritionEntry>>()
+    private val nutritionSubject = BehaviorSubject.createDefault<List<NutritionEntry>>(listOf())
 
     private fun setupFirebase() {
         firebase.listen(REF, nutritionSubject)

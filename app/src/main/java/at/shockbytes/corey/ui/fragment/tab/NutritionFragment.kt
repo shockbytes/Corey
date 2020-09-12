@@ -26,6 +26,7 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
     override val layoutId: Int = R.layout.fragment_nutrition
 
     override fun bindViewModel() {
+        viewModel.requestNutritionHistory()
     }
 
     override fun injectToGraph(appComponent: AppComponent?) {

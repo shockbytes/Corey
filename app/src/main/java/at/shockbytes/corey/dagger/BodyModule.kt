@@ -2,12 +2,15 @@ package at.shockbytes.corey.dagger
 
 import android.app.Application
 import android.content.SharedPreferences
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.GoogleFitBodyRepository
 import at.shockbytes.corey.data.body.bmr.BmrComputation
 import at.shockbytes.corey.data.body.bmr.RevisedHarrisBenedictBmrComputation
 import at.shockbytes.corey.data.goal.FirebaseGoalsRepository
 import at.shockbytes.corey.data.goal.GoalsRepository
+import at.shockbytes.corey.data.nutrition.FirebaseNutritionRepository
+import at.shockbytes.corey.data.nutrition.NutritionRepository
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RawWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RunningAverageWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.WeightLineFilter
@@ -42,9 +45,16 @@ class BodyModule(private val app: Application) {
     }
 
     @Provides
-    @Reusable
     fun provideWeightLineFilters(): Array<WeightLineFilter> {
         return arrayOf(RawWeightLineFilter(), RunningAverageWeightLineFilter())
+    }
+
+    @Provides
+    fun provideNutritionRepository(
+            firebase: FirebaseDatabase,
+            schedulers: SchedulerFacade
+    ): NutritionRepository {
+        return FirebaseNutritionRepository(firebase, schedulers)
     }
 
 }
