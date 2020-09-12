@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.corey.R
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.ui.custom.selection.CoreySingleSelectionItem
 import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
 import at.shockbytes.corey.util.viewModelOf
 import com.github.florent37.viewanimator.ViewAnimator
@@ -78,6 +79,25 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
 
     override fun setupViews() {
         animateCardIn()
+
+        cssv_fragment_add_nutrition_entry_portion.apply {
+            data = listOf(
+                    CoreySingleSelectionItem(getString(R.string.portion_small)),
+                    CoreySingleSelectionItem(getString(R.string.portion_medium)),
+                    CoreySingleSelectionItem(getString(R.string.portion_big)),
+            )
+            selectPosition(1)
+        }
+
+        cssv_fragment_add_nutrition_entry_time.apply {
+            data = listOf(
+                    CoreySingleSelectionItem(getString(R.string.nutrition_time_morning)),
+                    CoreySingleSelectionItem(getString(R.string.nutrition_time_lunch)),
+                    CoreySingleSelectionItem(getString(R.string.nutrition_time_evening)),
+            )
+            selectPosition(0)
+        }
+
     }
 
     override fun unbindViewModel() = Unit

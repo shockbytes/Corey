@@ -72,11 +72,10 @@
 
             <Button
                 android:id="@+id/btn_fragment_reminder_workout"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/rounded_button_outlined"
                 android:paddingStart="48dp"
                 android:paddingEnd="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +127,7 @@
 
             <Button
                 android:id="@+id/btn_fragment_reminder_weigh"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"

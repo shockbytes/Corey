@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/color_single_selection_background" />
+    <corners android:radius="20dp" />
+    <stroke android:color="@color/color_single_selection_background" />
+</shape>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.tabs.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tabs_corey_single_selection"
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:background="@drawable/background_grey_rounded"
+    app:tabGravity="fill"
+    app:tabIndicator="@drawable/background_corey_single_selection_view"
+    app:tabIndicatorColor="@color/white"
+    app:tabInlineLabel="true"
+    app:tabMode="fixed"
+    app:tabRippleColor="@null"
+    app:tabTextAppearance="@style/CoreySingleSelectionView">
+
+</com.google.android.material.tabs.TabLayout>
