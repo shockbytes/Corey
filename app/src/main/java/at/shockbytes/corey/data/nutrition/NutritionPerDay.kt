@@ -2,8 +2,8 @@ package at.shockbytes.corey.data.nutrition
 
 import kotlin.math.absoluteValue
 
-data class DailyNutritionEntry(
-        val date: NutritionFormattedDate,
+data class NutritionPerDay(
+        val date: NutritionDate,
         val intake: List<NutritionEntry>,
         val burned: List<PhysicalActivity>
 ) {

@@ -29,7 +29,8 @@ import javax.inject.Singleton
     ViewModelModule::class,
     WeatherModule::class,
     NetModule::class,
-    WorkerModule::class
+    WorkerModule::class,
+    BodyModule::class
 ])
 interface AppComponent : ShockbytesInjector {
 

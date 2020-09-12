@@ -3,11 +3,7 @@ package at.shockbytes.corey.core
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import at.shockbytes.core.ShockbytesApp
-import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.dagger.AppModule
-import at.shockbytes.corey.dagger.DaggerAppComponent
-import at.shockbytes.corey.dagger.WorkerFactory
-import at.shockbytes.corey.dagger.WorkoutModule
+import at.shockbytes.corey.dagger.*
 import net.danlew.android.joda.JodaTimeAndroid
 import javax.inject.Inject
 
@@ -48,6 +44,7 @@ class CoreyApp : ShockbytesApp<AppComponent>() {
         return DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .workoutModule(WorkoutModule(this))
+            .bodyModule(BodyModule(this))
             .build()
     }
 }

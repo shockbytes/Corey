@@ -45,27 +45,6 @@ class WorkoutModule(private val app: Application) {
     }
 
     @Provides
-    fun provideBmrComputation(): BmrComputation {
-        return RevisedHarrisBenedictBmrComputation()
-    }
-
-    @Provides
-    @Singleton
-    fun provideBodyManager(
-        preferences: SharedPreferences,
-        firebase: FirebaseDatabase,
-        bmrComputation: BmrComputation
-    ): BodyRepository {
-        return GoogleFitBodyRepository(app.applicationContext, preferences, firebase, bmrComputation)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGoalsRepository(firebase: FirebaseDatabase): GoalsRepository {
-        return FirebaseGoalsRepository(firebase)
-    }
-
-    @Provides
     @Singleton
     fun provideRunningManager(locationRepository: LocationRepository): RunningManager {
         return DefaultRunningManager(locationRepository)
@@ -77,11 +56,5 @@ class WorkoutModule(private val app: Application) {
         sharedPreferences: SharedPreferences
     ): RunningStorageRepository {
         return SharedPreferencesRunningStorageRepository(sharedPreferences)
-    }
-
-    @Provides
-    @Reusable
-    fun provideWeightLineFilters(): Array<WeightLineFilter> {
-        return arrayOf(RawWeightLineFilter(), RunningAverageWeightLineFilter())
     }
 }
