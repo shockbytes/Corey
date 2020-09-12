@@ -1,5 +1,6 @@
 package at.shockbytes.corey.util
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -7,10 +8,13 @@ import androidx.fragment.app.Fragment
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import at.shockbytes.core.ShockbytesInjector
+import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.core.viewmodel.BaseViewModel
-import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
+import at.shockbytes.corey.R
 
 fun Fragment.isPortrait(): Boolean {
     return this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
@@ -36,4 +40,19 @@ inline fun <reified T: BaseViewModel> FragmentActivity.viewModelOfActivity(vmFac
 
 inline fun <reified T: BaseViewModel> Fragment.viewModelOf(vmFactory: ViewModelProvider.Factory): T {
     return ViewModelProviders.of(this, vmFactory)[T::class.java]
+}
+
+@SuppressLint("PrivateResource")
+fun <T: ShockbytesInjector> FragmentManager.showBaseFragment(fragment: BaseFragment<T>) {
+
+    beginTransaction()
+            .setCustomAnimations(
+                    R.anim.abc_fade_in,
+                    R.anim.abc_fade_out,
+                    R.anim.abc_fade_in,
+                    R.anim.abc_fade_out
+            )
+            .addToBackStack(fragment.javaClass.name)
+            .add(android.R.id.content, fragment)
+            .commit()
 }

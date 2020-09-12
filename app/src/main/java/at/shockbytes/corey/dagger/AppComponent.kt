@@ -3,10 +3,7 @@ package at.shockbytes.corey.dagger
 import at.shockbytes.core.ShockbytesInjector
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.ui.activity.MainActivity
-import at.shockbytes.corey.ui.fragment.MenuFragment
-import at.shockbytes.corey.ui.fragment.ReminderFragment
-import at.shockbytes.corey.ui.fragment.SettingsFragment
-import at.shockbytes.corey.ui.fragment.WorkoutFragment
+import at.shockbytes.corey.ui.fragment.*
 import at.shockbytes.corey.ui.fragment.body.GoalsFragment
 import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
 import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment
@@ -67,4 +64,6 @@ interface AppComponent : ShockbytesInjector {
     fun inject(fragment: RunningFragment)
 
     fun inject(fragment: NutritionFragment)
+
+    fun inject(fragment: AddNutritionEntryFragment)
 }

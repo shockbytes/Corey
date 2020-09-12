@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -22,6 +21,7 @@ import at.shockbytes.corey.ui.activity.SettingsActivity
 import at.shockbytes.corey.ui.custom.CheckableMenuEntryItemView
 import at.shockbytes.corey.ui.custom.MenuEntryItemView
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
+import at.shockbytes.corey.util.showBaseFragment
 import javax.inject.Inject
 
 /**
@@ -125,23 +125,8 @@ class MenuFragment : BottomSheetDialogFragment() {
         })
     }
 
-    @SuppressLint("PrivateResource")
     private fun openNotificationSettingsFragment() {
-        fragmentManager?.run {
-
-            val fragment = ReminderFragment()
-
-            beginTransaction()
-                .setCustomAnimations(
-                    R.anim.abc_fade_in,
-                    R.anim.abc_fade_out,
-                    R.anim.abc_fade_in,
-                    R.anim.abc_fade_out
-                )
-                .addToBackStack(fragment.javaClass.name)
-                .add(android.R.id.content, fragment)
-                .commit()
-        }
+        parentFragmentManager.showBaseFragment(ReminderFragment.newInstance())
     }
 
     private fun startSettingsActivity() {

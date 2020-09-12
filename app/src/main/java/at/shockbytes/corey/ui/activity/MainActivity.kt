@@ -17,11 +17,11 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.navigation.CoreyPageFragmentResolver
+import at.shockbytes.corey.ui.fragment.AddNutritionEntryFragment
 import at.shockbytes.corey.ui.fragment.MenuFragment
-import at.shockbytes.corey.ui.fragment.dialog.AddGoalDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
-import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
+import at.shockbytes.corey.util.showBaseFragment
 import at.shockbytes.corey.util.viewModelOfActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
@@ -33,25 +33,28 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     lateinit var vmFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var nutritionViewModel: NutritionViewModel
 
     override val imageLoader: ImageLoader = GlideImageLoader(R.drawable.ic_account)
 
     private val additionalToolbarActionItems = listOf(
-        AdditionalToolbarAction(R.drawable.ic_add_colored, R.string.add_nutrition_entry, changeWithAnimation = true) {
-            /*
-            AddNutritionEntryDialogFragment.newInstance()
-                    .setOnNutritionEntryCreatedListener(nutritionViewModel::addNutritionEntry)
-                    .show(supportFragmentManager, "dialog-fragment-add-goal")
-
-             */
+        AdditionalToolbarAction(
+                R.drawable.ic_add_colored,
+                R.string.add_nutrition_entry,
+                changeWithAnimation = true) {
+            AddNutritionEntryFragment.newInstance().let(supportFragmentManager::showBaseFragment)
         },
-        AdditionalToolbarAction(R.drawable.ic_cancel_red, R.string.reset_schedule, true) {
-            showScheduleDeletionApprovalDialog()
-        },
-        AdditionalToolbarAction(R.drawable.ic_body_card_weight_history_colored, R.string.change_dreamweight, true) {
-            askForDesiredWeight()
-        },
+        AdditionalToolbarAction(
+                R.drawable.ic_cancel_red,
+                R.string.reset_schedule,
+                changeWithAnimation = true,
+                onActionClick = ::showScheduleDeletionApprovalDialog
+        ),
+        AdditionalToolbarAction(
+                R.drawable.ic_body_card_weight_history_colored,
+                R.string.change_dreamweight,
+                changeWithAnimation = true,
+                onActionClick = ::askForDesiredWeight
+        )
     )
 
     private val tabs by lazy {
@@ -84,7 +87,6 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = viewModelOfActivity(vmFactory)
-        nutritionViewModel = viewModelOfActivity(vmFactory)
         viewModel.pokeReminderManager(this)
     }
 

@@ -32,7 +32,7 @@ class AddGoalDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        return AlertDialog.Builder(context!!)
+        return AlertDialog.Builder(requireContext())
                 .setTitle(R.string.set_goal)
                 .setIcon(R.mipmap.ic_launcher)
                 .setView(createView())
