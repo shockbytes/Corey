@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.4.0'
+    ext.kotlin_version = '1.4.10'
 
     repositories {
         jcenter()
@@ -51,6 +51,8 @@ ext {
     firebaseVersionConfig = "17.0.0"
     firebaseVersionCore = "16.0.9"
     firebaseVersionAuth = "17.0.0"
+
+    rxBindingsVersion = "2.2.0"
 
     firebaseUIVersion = "4.2.1"
 

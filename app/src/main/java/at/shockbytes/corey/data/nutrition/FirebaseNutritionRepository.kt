@@ -12,11 +12,11 @@ class FirebaseNutritionRepository(
         private val schedulers: SchedulerFacade,
 ) : NutritionRepository {
 
+    private val nutritionSubject = BehaviorSubject.createDefault<List<NutritionEntry>>(listOf())
+
     init {
         setupFirebase()
     }
-
-    private val nutritionSubject = BehaviorSubject.createDefault<List<NutritionEntry>>(listOf())
 
     private fun setupFirebase() {
         firebase.listen(REF, nutritionSubject)

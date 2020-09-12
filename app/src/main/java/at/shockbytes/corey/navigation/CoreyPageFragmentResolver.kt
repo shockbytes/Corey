@@ -23,7 +23,7 @@ object CoreyPageFragmentResolver {
     }
     */
 
-    // TODO Improve caching of Fragments
+    // Improve caching of Fragments
     fun createFragmentForPosition(position: Int): Fragment {
         return when (position) {
             0 -> NutritionFragment.newInstance()

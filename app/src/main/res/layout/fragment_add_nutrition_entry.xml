@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_fragment_add_nutrition_entry"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,8 +32,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/add_nutrition_entry"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,14 +44,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Name">
+                android:hint="@string/hint_name"
+                app:endIconCheckable="true"
+                android:id="@+id/til_add_nutrition_entry_name"
+                app:endIconDrawable="@drawable/ic_smart"
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_add_nutrition_entry_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:lines="1"
                     android:inputType="text"
+                    android:lines="1"
                     android:maxLines="1"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                     android:textCursorDrawable="@drawable/cursor" />
@@ -63,9 +68,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Estimated kcal">
+                android:hint="@string/hint_estimated_kcal">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_add_nutrition_entry_estimated_kcal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
@@ -80,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Portion size"
+                android:text="@string/portion_size"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
             <at.shockbytes.corey.ui.custom.selection.CoreySingleSelectionView
@@ -93,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Time"
+                android:text="@string/time"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Overline" />
 
 
@@ -111,6 +117,7 @@
                 android:datePickerMode="spinner" />
 
             <Button
+                android:id="@+id/btn_add_nutrition_entry"
                 style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

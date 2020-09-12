@@ -27,7 +27,7 @@ class SignUpFragment : BaseFragment<AppComponent>() {
     override fun onStart() {
         super.onStart()
 
-        // TODO Put this call into the viewmoel
+        // Put this call into the viewmoel
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             openMainActivityWithoutAnimation()

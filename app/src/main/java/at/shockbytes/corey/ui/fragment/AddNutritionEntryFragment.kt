@@ -4,12 +4,19 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.corey.R
 import at.shockbytes.core.ui.fragment.BaseFragment
+import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.data.nutrition.NutritionDate
+import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.ui.custom.selection.CoreySingleSelectionItem
 import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
 import at.shockbytes.corey.util.viewModelOf
 import com.github.florent37.viewanimator.ViewAnimator
+import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_add_nutrition_entry.*
+import org.joda.time.DateTime
 import javax.inject.Inject
 
 class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
@@ -80,6 +87,10 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
     override fun setupViews() {
         animateCardIn()
 
+        til_add_nutrition_entry_name.setEndIconOnClickListener {
+            showToast("Coming soon...")
+        }
+
         cssv_fragment_add_nutrition_entry_portion.apply {
             data = listOf(
                     CoreySingleSelectionItem(getString(R.string.portion_small)),
@@ -98,6 +109,41 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
             selectPosition(0)
         }
 
+        Observable
+                .combineLatest(
+                        RxTextView.textChanges(et_add_nutrition_entry_name),
+                        RxTextView.textChanges(et_add_nutrition_entry_estimated_kcal),
+                        { name, kcal -> name.isNotBlank() && kcal.isNotEmpty() }
+                )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(btn_add_nutrition_entry::setEnabled)
+                .addTo(compositeDisposable)
+
+        btn_add_nutrition_entry.setOnClickListener {
+
+            val nutritionEntry = gatherNutritionEntry()
+            viewModel.addNutritionEntry(nutritionEntry)
+        }
+    }
+
+    private fun gatherNutritionEntry(): NutritionEntry {
+
+        val title = et_add_nutrition_entry_name.text?.toString()!!
+        val estimatedKcal = et_add_nutrition_entry_estimated_kcal.text.toString().toInt()
+
+        val portion = ""
+        val year = dp_add_nutrition_entry.year
+        val month = dp_add_nutrition_entry.month
+        val day = dp_add_nutrition_entry.dayOfMonth
+        val weekOfYear = DateTime(year, month, day, 0, 0).weekOfWeekyear
+
+        return NutritionEntry(
+                id = "",
+                name = title,
+                kcal = estimatedKcal,
+                portion = portion,
+                date = NutritionDate(year, month, day, weekOfYear)
+        )
     }
 
     override fun unbindViewModel() = Unit

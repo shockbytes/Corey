@@ -125,7 +125,7 @@
     <string name="running_mode_calories">KALORIEN</string>
     <string name="running_mode_distance">ENTFERNUNG</string>
     <string name="running_mode_free_run">FREIER LAUF</string>
-    <string name="running_mode_time">ZEIT</string>
+    <string name="time">ZEIT</string>
     <string name="anonymous_user">Anonymer Benutzer</string>
     <string name="error_account_photo">Profilbild konnte nicht geladen werden</string>
     <string name="menu_main_watch">Watch verbunden</string>
@@ -171,5 +171,14 @@
     <string name="weigh_reminder">Gewichtserinnerung</string>
     <string name="workout_reminder">Workouterinnerung</string>
     <string name="tab_nutrition">Ernährung</string>
+    <string name="add_nutrition_entry">Neuer Nahrungseintrag</string>
+    <string name="portion_size">Portionsgröße</string>
+    <string name="portion_small">Klein</string>
+    <string name="portion_medium">Normal</string>
+    <string name="portion_big">Groß</string>
+    <string name="nutrition_time_morning">Frühstück</string>
+    <string name="nutrition_time_lunch">Mittag</string>
+    <string name="nutrition_time_evening">Abend</string>
+    <string name="hint_estimated_kcal">Ungefähre Kalorien</string>
 
 </resources>

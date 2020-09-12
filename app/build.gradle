@@ -52,6 +52,8 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$rootProject.ext.workVersion"
     implementation "androidx.work:work-rxjava2:$rootProject.ext.workVersion"
 
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingsVersion"
+
     implementation "com.google.android.gms:play-services-auth:$rootProject.ext.playServicesVersionAuth"
     implementation "com.google.android.gms:play-services-fitness:$rootProject.ext.playServicesVersionFitness"
     implementation "com.google.android.gms:play-services-wearable:$rootProject.ext.playServicesVersionWearable"

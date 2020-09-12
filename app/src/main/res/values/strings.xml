@@ -51,6 +51,7 @@
     <string name="prefs_weigh_notification_day_title">Weigh reminder day</string>
 
     <string name="hint_name">Name</string>
+    <string name="hint_estimated_kcal">Estimated calories</string>
 
     <string name="cd_imgview_time">Pick Training Time</string>
     <string name="cd_imgview_intensity">Pick intensity</string>
@@ -174,7 +175,7 @@
     <string name="running_mode_free_run">FREE RUN</string>
     <string name="running_mode_distance">DISTANCE</string>
     <string name="running_mode_calories">CALORIES</string>
-    <string name="running_mode_time">TIME</string>
+    <string name="time">Time</string>
     <string name="menu_main_account" translatable="false">Account</string>
     <string name="error_account_photo">Cannot load your profile image</string>
     <string name="anonymous_user">Anonymous User</string>
@@ -208,6 +209,8 @@
     <string name="prefs_schedule_weather_forecast_key" translatable="false">prefs_schedule_weather_forecast_key</string>
     <string name="create_workout">Create workout</string>
     <string name="add_nutrition_entry">Add nutrition entry</string>
+
+    <string name="portion_size">Portion size</string>
 
     <string name="portion_small">Small</string>
     <string name="portion_medium">Medium</string>

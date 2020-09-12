@@ -2,6 +2,7 @@ package at.shockbytes.corey.ui.viewmodel
 
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.common.addTo
+import at.shockbytes.corey.data.nutrition.NutritionBalance
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionPerDay
 import at.shockbytes.corey.data.nutrition.NutritionRepository
@@ -10,16 +11,22 @@ import javax.inject.Inject
 
 class NutritionViewModel @Inject constructor(
         private val nutritionRepository: NutritionRepository
-): BaseViewModel() {
+) : BaseViewModel() {
+
+    data class WeekOverview(
+            val week: Int,
+            val year: Int,
+            val balance: NutritionBalance,
+            val kcalIntake: Int,
+            val percentageToPreviousWeek: Double?
+    )
 
     fun requestNutritionHistory() {
 
-        Timber.e("Nutrition: Request nutrition history")
         nutritionRepository
                 .loadDailyNutritionEntries()
-                .doOnNext(::computeAndPostInitialWeekOverview)
+                .doOnNext(::computeWeekOverviews)
                 .subscribe({ entries ->
-                    Timber.e("Nutrition: No data available")
                     Timber.d(entries.toString())
                 }, { throwable ->
                     Timber.e(throwable)
@@ -27,8 +34,29 @@ class NutritionViewModel @Inject constructor(
                 .addTo(compositeDisposable)
     }
 
-    private fun computeAndPostInitialWeekOverview(data: List<NutritionPerDay>) {
-        // TODO
+    private data class DateGroup(
+            val year: Int,
+            val weekOfYear: Int
+    )
+
+    private fun computeWeekOverviews(data: List<NutritionPerDay>) {
+        data
+                .groupBy { DateGroup(it.date.year, it.date.weekOfYear) }
+                .map { (dateGroup, weekData) ->
+                    val weekBalance = NutritionBalance.fromRawKcal(weekData.sumBy { it.balance.rawKcal })
+
+                    WeekOverview(
+                            week = dateGroup.weekOfYear,
+                            year = dateGroup.year,
+                            balance = weekBalance,
+                            kcalIntake = weekData.sumBy { day -> day.intake.sumBy { it.kcal } },
+                            percentageToPreviousWeek = null // TODO Get reference to previous week
+                    )
+                }
+                .let { weekOverview ->
+                    // TODO Cache this value...
+                    Timber.d(weekOverview.toString())
+                }
     }
 
     fun addNutritionEntry(nutritionEntry: NutritionEntry) {

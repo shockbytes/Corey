@@ -110,7 +110,7 @@ class RunningFragment : TabBaseFragment<AppComponent>(),
         super.onResume()
         showMapFragment()
 
-        /* TODO When running in background
+        /* When running in background
         if (runningManager.isRecording) {
             setResetRunningViews(true)
             chronometer.base = runningManager.r.startTime
@@ -250,7 +250,7 @@ class RunningFragment : TabBaseFragment<AppComponent>(),
     }
 
     private fun showDetailFragment(run: Run) {
-        // TODO Show detail fragment, old implementation wasn't nice anyway
+        // Show detail fragment, old implementation wasn't nice anyway
     }
 
     private fun animateStartingViews(animateOut: Boolean) {
