@@ -19,12 +19,12 @@ class WorkoutActivity : BaseActivity<AppComponent>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workout)
 
-        val w = intent.getParcelableExtra<Workout>(ARG_WORKOUT)
-
-        setupActionBar(w.displayableName, w.colorResForIntensity, w.darkColorResForIntensity)
-        supportFragmentManager.beginTransaction()
-                .replace(android.R.id.content, WorkoutFragment.newInstance(w))
-                .commit()
+        intent.getParcelableExtra<Workout>(ARG_WORKOUT)?.let { w ->
+            setupActionBar(w.displayableName, w.colorResForIntensity, w.darkColorResForIntensity)
+            supportFragmentManager.beginTransaction()
+                    .replace(android.R.id.content, WorkoutFragment.newInstance(w))
+                    .commit()
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent?) = Unit

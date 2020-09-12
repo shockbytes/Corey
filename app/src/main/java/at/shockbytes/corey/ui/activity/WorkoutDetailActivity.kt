@@ -39,7 +39,7 @@ class WorkoutDetailActivity : TintableBackNavigableActivity<AppComponent>() {
         window.exitTransition = Fade(Fade.OUT)
         setContentView(R.layout.activity_workout_detail)
 
-        workout = intent.getParcelableExtra(ARG_WORKOUT)
+        workout = intent.getParcelableExtra(ARG_WORKOUT)!!
         setupViews()
     }
 

@@ -31,12 +31,13 @@ class WorkoutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workout)
 
-        val w = intent.getParcelableExtra<Workout>(ARG_WORKOUT)
-        val workoutFragment = WorkoutFragment.newInstance(w)
-        navigationListener = workoutFragment
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.activity_workout_container, workoutFragment)
-                .commit()
+        intent.getParcelableExtra<Workout>(ARG_WORKOUT)?.let { w ->
+            val workoutFragment = WorkoutFragment.newInstance(w)
+            navigationListener = workoutFragment
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.activity_workout_container, workoutFragment)
+                    .commit()
+        }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
