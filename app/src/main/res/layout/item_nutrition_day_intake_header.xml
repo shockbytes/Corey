@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:text="Breakfast"
+    android:id="@+id/tv_item_nutrition_day_intake_header"
+    android:textColor="@color/colorPrimary"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="12dp"
+    android:layout_height="wrap_content">
+
+</TextView>

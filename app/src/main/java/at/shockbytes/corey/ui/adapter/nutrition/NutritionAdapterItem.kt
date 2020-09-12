@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.adapter.nutrition
 
-import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionPerDay
 import at.shockbytes.corey.data.nutrition.PhysicalActivity
 import org.joda.time.format.DateTimeFormat
@@ -21,8 +20,17 @@ data class NutritionAdapterItem(
     val weekBundle: Pair<Int, Int>
         get() = Pair(nutritionPerDay.date.weekOfYear, nutritionPerDay.date.year)
 
-    val intake: List<NutritionEntry>
+    val intake: List<NutritionIntakeAdapterItem>
         get() = nutritionPerDay.intake
+                .sortedBy { it.time.ordinal }
+                .groupBy { it.time.time }
+                .map { (time, entriesForTime) ->
+                    entriesForTime
+                            .mapTo(mutableListOf(NutritionIntakeAdapterItem.Header(time))) { entry ->
+                                NutritionIntakeAdapterItem.Intake(entry)
+                            }
+                }
+                .flatten()
 
     val burned: List<PhysicalActivity>
         get() = nutritionPerDay.burned

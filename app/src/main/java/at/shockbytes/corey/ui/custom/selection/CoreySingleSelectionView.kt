@@ -16,8 +16,11 @@ class CoreySingleSelectionView @JvmOverloads constructor(
     private val activeColor = ContextCompat.getColor(context, R.color.colorPrimary)
     private val inactiveColor = ContextCompat.getColor(context, R.color.white)
 
-    var selectedItem: CoreySingleSelectionItem? = null
-        private set
+    fun selectedItem(): CoreySingleSelectionItem {
+        return data[selectedItemPosition]
+    }
+
+    private var selectedItemPosition: Int = 0
 
     var data: List<CoreySingleSelectionItem> = listOf()
         set(value) {
@@ -42,7 +45,7 @@ class CoreySingleSelectionView @JvmOverloads constructor(
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     tab?.position?.let { pos ->
-                        selectedItem = data[pos]
+                        selectedItemPosition = pos
                     }
                 }
             })

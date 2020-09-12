@@ -7,6 +7,7 @@ data class NutritionEntry(
         val name: String = "",
         val kcal: Int = -1,
         val portion: String = "",
+        val time: NutritionTime = NutritionTime(),
         val date: NutritionDate = NutritionDate()
 ) : FirebaseStorable {
 
