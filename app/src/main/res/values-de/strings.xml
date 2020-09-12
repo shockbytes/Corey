@@ -180,5 +180,6 @@
     <string name="nutrition_time_lunch">Mittag</string>
     <string name="nutrition_time_evening">Abend</string>
     <string name="hint_estimated_kcal">Ungefähre Kalorien</string>
+    <string name="week_placeholder">KW %d</string>
 
 </resources>

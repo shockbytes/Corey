@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
@@ -12,7 +11,9 @@ import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.adapter.nutrition.NutritionAdapter
 import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
+import at.shockbytes.corey.util.LastItemBottomMarginItemDecoration
 import at.shockbytes.corey.util.observePositionChanges
+import at.shockbytes.util.AppUtils
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_nutrition.*
 import timber.log.Timber
@@ -24,6 +25,8 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
     protected lateinit var vmFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: NutritionViewModel
+
+    override val castsActionBarShadow: Boolean = false
 
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
@@ -47,7 +50,7 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
 
     private fun handleWeekOverview(weekOverview: NutritionViewModel.WeekOverview) {
         with(weekOverview) {
-            tv_fragment_nutrition_week.text = "Week $week" // TODO
+            tv_fragment_nutrition_week.text = getString(R.string.week_placeholder, week)
             tv_fragment_nutrition_year.text = year.toString()
 
             tv_fragment_nutrition_balance.text = balance.formatted()
@@ -56,7 +59,7 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
 
                 tv_fragment_nutrition_balance_percentage.apply {
                     setVisible(true)
-                    text = "+${percentageToPreviousWeek}%" // TODO
+                    text = "+${percentageToPreviousWeek}%" // TODO fix this when we have the data
                 }
             } else {
                 tv_fragment_nutrition_balance_percentage.setVisible(false)
@@ -75,7 +78,8 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
         rv_nutrition_data.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, true)
             adapter = nutritionAdapter
-            PagerSnapHelper().attachToRecyclerView(this)
+
+            addItemDecoration(LastItemBottomMarginItemDecoration(AppUtils.convertDpInPixel(122, requireContext())))
 
             observePositionChanges(subscribeOn = Schedulers.io())
                     .subscribe { position ->

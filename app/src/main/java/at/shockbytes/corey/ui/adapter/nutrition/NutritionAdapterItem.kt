@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.adapter.nutrition
 
-import at.shockbytes.corey.data.nutrition.NutritionBalance
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionPerDay
 import at.shockbytes.corey.data.nutrition.PhysicalActivity
