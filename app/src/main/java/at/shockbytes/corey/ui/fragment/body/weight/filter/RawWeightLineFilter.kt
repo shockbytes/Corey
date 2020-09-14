@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.fragment.body.weight.filter
 
 import at.shockbytes.corey.R
-import at.shockbytes.corey.data.body.info.WeightPoint
+import at.shockbytes.corey.data.body.model.WeightDataPoint
 
 class RawWeightLineFilter : WeightLineFilter {
 
@@ -11,5 +11,5 @@ class RawWeightLineFilter : WeightLineFilter {
     override val lineColor: Int = R.color.material_blue
     override val lineThickness: Float = 2f
 
-    override fun map(points: List<WeightPoint>): List<WeightPoint> = points
+    override fun map(points: List<WeightDataPoint>): List<WeightDataPoint> = points
 }

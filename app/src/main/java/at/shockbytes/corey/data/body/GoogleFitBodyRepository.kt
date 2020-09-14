@@ -5,10 +5,12 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.Gender
 import at.shockbytes.corey.data.body.bmr.Bmr
 import at.shockbytes.corey.data.body.bmr.BmrComputation
-import at.shockbytes.corey.data.body.info.BodyInfo
-import at.shockbytes.corey.data.body.info.WeightPoint
+import at.shockbytes.corey.data.body.model.User
+import at.shockbytes.corey.data.body.model.WeightDataPoint
+import at.shockbytes.corey.data.body.model.WeightUnit
 import at.shockbytes.util.AppUtils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.Scopes
@@ -24,8 +26,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 
 /**
@@ -55,29 +56,30 @@ class GoogleFitBodyRepository(
         apiClient.connect()
     }
 
-    private var _bodyInfo: BodyInfo = BodyInfo()
+    // TODO Where to get this information?
+    private val age: Int = 27
+    private val userGender = Gender.MALE
 
+    private val userBodySubject =  BehaviorSubject.create<User>()
 
     override var desiredWeight: Int
         get() = preferences.getInt(PREF_DREAM_WEIGHT, 0)
 
         set(value) {
             preferences.edit().putInt(PREF_DREAM_WEIGHT, value).apply()
-            firebase.getReference("/body/desired").setValue(value)
+            firebase.getReference(REF_DESIRED).setValue(value)
         }
 
-    override val weightUnit: String
-        get() = preferences.getString(PREF_WEIGHT_UNIT, context.getString(R.string.default_weight_unit))
-                ?: context.getString(R.string.default_weight_unit)
-
-    override val bodyInfo: Observable<BodyInfo>
+    override val weightUnit: WeightUnit
         get() {
-            return if (_bodyInfo.isNotEmpty) {
-                Observable.just(_bodyInfo)
-            } else {
-                loadFitnessDataSync() // Request new data if nothing is available
-            }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+            val acronym = preferences
+                    .getString(PREF_WEIGHT_UNIT, context.getString(R.string.default_weight_unit))
+                    ?: context.getString(R.string.default_weight_unit)
+
+            return WeightUnit.of(acronym)
         }
+
+    override val user: Observable<User> = userBodySubject
 
     override fun onConnected(bundle: Bundle?) {
         loadFitnessData()
@@ -93,43 +95,34 @@ class GoogleFitBodyRepository(
                 Toast.LENGTH_LONG).show()
     }
 
-    override val currentWeight: Single<Double>
-        get() = bodyInfo
+    override val currentWeight: Observable<Double>
+        get() = user
             .map { bodyInfo ->
-                bodyInfo.latestWeightPoint.weight
+                bodyInfo.latestWeightDataPoint?.weight ?: 0.0
             }
-            .singleOrError()
+
 
     override fun computeBasalMetabolicRate(): Single<Bmr> {
-        return retrieveCoreyUser()
+        return userBodySubject
+                .singleOrError()
                 .flatMap(bmrComputation::compute)
-    }
-
-    override fun retrieveCoreyUser(): Single<CoreyUser> {
-        TODO("Not yet implemented")
     }
 
     // -----------------------------------------------------------------------------------------
 
     private fun loadFitnessData() {
         Fitness.HistoryApi.readData(apiClient, buildGoogleFitRequest())
-                .setResultCallback { res ->
-                    _bodyInfo = BodyInfo(
-                            getWeightList(res.getDataSet(DataType.TYPE_WEIGHT)),
-                            getHeight(res.getDataSet(DataType.TYPE_HEIGHT)),
-                            desiredWeight
+                .setResultCallback { result ->
+                    userBodySubject.onNext(
+                            User(
+                                getWeightList(result.getDataSet(DataType.TYPE_WEIGHT)),
+                                getHeight(result.getDataSet(DataType.TYPE_HEIGHT)),
+                                userGender,
+                                age,
+                                desiredWeight
+                        )
                     )
                 }
-    }
-
-    private fun loadFitnessDataSync(): Observable<BodyInfo> {
-        return Observable.fromCallable {
-            val res = Fitness.HistoryApi.readData(apiClient, buildGoogleFitRequest()).await()
-            _bodyInfo = BodyInfo(getWeightList(res.getDataSet(DataType.TYPE_WEIGHT)),
-                    getHeight(res.getDataSet(DataType.TYPE_HEIGHT)),
-                    desiredWeight)
-            _bodyInfo
-        }
     }
 
     private fun buildGoogleFitRequest(): DataReadRequest {
@@ -141,28 +134,29 @@ class GoogleFitBodyRepository(
                 .setTimeRange(startMillis, endMillis, TimeUnit.MILLISECONDS)
                 .read(DataType.TYPE_WEIGHT)
                 .read(DataType.TYPE_HEIGHT)
-                .read(DataType.TYPE_BODY_FAT_PERCENTAGE)
+                // .read(DataType.TYPE_BODY_FAT_PERCENTAGE)
                 .build()
     }
 
-    private fun getWeightList(set: DataSet): List<WeightPoint> {
-        return set.dataPoints.mapTo(mutableListOf()) {
-            val timeStamp = it.getStartTime(TimeUnit.MILLISECONDS)
-            val weight = it.getValue(it.dataType.fields[0]).asFloat().toDouble()
-            WeightPoint(timeStamp, AppUtils.roundDouble(weight, 1))
+    private fun getWeightList(set: DataSet): List<WeightDataPoint> {
+        return set.dataPoints.mapTo(mutableListOf()) { dp ->
+            val timeStamp = dp.getStartTime(TimeUnit.MILLISECONDS)
+            val weight = dp.getValue(dp.dataType.fields[0]).asFloat().toDouble()
+            WeightDataPoint(timeStamp, AppUtils.roundDouble(weight, 1))
         }
     }
 
-    private fun getHeight(set: DataSet): Double {
+    private fun getHeight(set: DataSet): Int {
         return if (set.dataPoints.isNotEmpty()) {
             val dp = set.dataPoints[set.dataPoints.size - 1]
-            AppUtils.roundDouble(dp.getValue(dp.dataType.fields[0]).asFloat().toDouble(), 2)
-        } else 0.0
+            val extracted = dp.getValue(dp.dataType.fields[0]).asFloat().toDouble()
+            AppUtils.roundDouble(extracted, 2).toInt()
+        } else 0
     }
 
     private fun setupFirebase() {
 
-        firebase.getReference("/body/desired").addValueEventListener(object : ValueEventListener {
+        firebase.getReference(REF_DESIRED).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val data = dataSnapshot.value
                 if (data != null) {
@@ -191,5 +185,7 @@ class GoogleFitBodyRepository(
 
         private const val PREF_DREAM_WEIGHT = "dreamweight"
         private const val PREF_WEIGHT_UNIT = "weight_unit"
+
+        private const val REF_DESIRED = "/body/desired"
     }
 }

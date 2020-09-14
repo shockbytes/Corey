@@ -1,19 +1,19 @@
 package at.shockbytes.corey.data.body.bmr
 
 import at.shockbytes.corey.common.core.Gender
-import at.shockbytes.corey.data.body.CoreyUser
+import at.shockbytes.corey.data.body.model.User
 import io.reactivex.Single
 
 class RevisedHarrisBenedictBmrComputation : BmrComputation {
 
     override val name: String = "Revised Harris-Benedict Formula"
 
-    override fun compute(user: CoreyUser): Single<Bmr> {
+    override fun compute(user: User): Single<Bmr> {
         return Single
                 .fromCallable {
                     when (user.gender) {
-                        Gender.MALE -> computeMaleBmr(user.weight, user.heightInCm, user.age)
-                        Gender.FEMALE -> computeFemaleBmr(user.weight, user.heightInCm, user.age)
+                        Gender.MALE -> computeMaleBmr(user.currentWeight, user.height, user.age)
+                        Gender.FEMALE -> computeFemaleBmr(user.currentWeight, user.height, user.age)
                     }
                 }
                 .map { kcal ->

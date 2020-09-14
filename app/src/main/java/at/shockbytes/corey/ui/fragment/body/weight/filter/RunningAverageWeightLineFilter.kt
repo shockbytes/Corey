@@ -1,7 +1,7 @@
 package at.shockbytes.corey.ui.fragment.body.weight.filter
 
 import at.shockbytes.corey.R
-import at.shockbytes.corey.data.body.info.WeightPoint
+import at.shockbytes.corey.data.body.model.WeightDataPoint
 import java.util.LinkedList
 
 /**
@@ -18,9 +18,9 @@ class RunningAverageWeightLineFilter(
     override val lineColor: Int = R.color.material_teal_200
     override val lineThickness: Float = 4f
 
-    override fun map(points: List<WeightPoint>): List<WeightPoint> {
+    override fun map(points: List<WeightDataPoint>): List<WeightDataPoint> {
 
-        val mapped = mutableListOf<WeightPoint>()
+        val mapped = mutableListOf<WeightDataPoint>()
         var sum = 0.0
         val buffer: LinkedList<Double> = LinkedList()
 
@@ -34,7 +34,7 @@ class RunningAverageWeightLineFilter(
             buffer.addLast(weight)
             val averaged = sum / buffer.size
 
-            mapped.add(WeightPoint(timestamp, averaged))
+            mapped.add(WeightDataPoint(timestamp, averaged))
         }
 
         return mapped

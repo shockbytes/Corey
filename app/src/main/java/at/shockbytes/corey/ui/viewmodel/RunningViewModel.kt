@@ -58,9 +58,9 @@ class RunningViewModel @Inject constructor(
     }
 
     private fun enrichLocationWithUserWeight(location: CoreyLocation): Observable<Pair<CoreyLocation, Double>> {
-        return bodyRepository.bodyInfo
+        return bodyRepository.user
             .subscribeOn(schedulers.io)
-            .map { Pair(location, it.latestWeightPoint.weight) }
+            .map { Pair(location, it.currentWeight) }
             .onErrorReturn { Pair(location, 0.0) }
     }
 
@@ -78,10 +78,10 @@ class RunningViewModel @Inject constructor(
 
     fun stopRun() {
 
-        bodyRepository.bodyInfo
+        bodyRepository.user
             .subscribeOn(schedulers.io)
             .map { bodyInfo ->
-                bodyInfo.latestWeightPoint.weight
+                bodyInfo.currentWeight
             }
             .subscribe({ userWeight ->
                 val run = runningManager.stopRunRecord(System.currentTimeMillis(), userWeight)

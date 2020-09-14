@@ -1,7 +1,8 @@
 package at.shockbytes.corey.data.body
 
 import at.shockbytes.corey.data.body.bmr.Bmr
-import at.shockbytes.corey.data.body.info.BodyInfo
+import at.shockbytes.corey.data.body.model.User
+import at.shockbytes.corey.data.body.model.WeightUnit
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -11,15 +12,13 @@ import io.reactivex.Single
  */
 interface BodyRepository {
 
-    val bodyInfo: Observable<BodyInfo>
+    val user: Observable<User>
 
     var desiredWeight: Int
 
-    val weightUnit: String
+    val weightUnit: WeightUnit
 
-    val currentWeight: Single<Double>
+    val currentWeight: Observable<Double>
 
     fun computeBasalMetabolicRate(): Single<Bmr>
-
-    fun retrieveCoreyUser(): Single<CoreyUser>
 }

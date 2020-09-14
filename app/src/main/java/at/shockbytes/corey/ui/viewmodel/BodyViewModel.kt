@@ -6,7 +6,7 @@ import at.shockbytes.core.model.ShockbytesUser
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.data.body.BodyRepository
-import at.shockbytes.corey.data.body.info.BodyInfo
+import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.data.user.UserRepository
 import at.shockbytes.corey.ui.fragment.body.weight.WeightHistoryLine
@@ -24,10 +24,10 @@ class BodyViewModel @Inject constructor(
     sealed class BodyInfoState {
 
         data class SuccessState(
-            val bodyInfo: BodyInfo,
-            val user: ShockbytesUser,
-            val weightUnit: String,
-            val weightLines: List<WeightHistoryLine>
+                val userBody: User,
+                val user: ShockbytesUser,
+                val weightUnit: String,
+                val weightLines: List<WeightHistoryLine>
         ) : BodyInfoState()
 
         data class ErrorState(val throwable: Throwable) : BodyInfoState()
@@ -36,16 +36,16 @@ class BodyViewModel @Inject constructor(
     private val bodyInfo = MutableLiveData<BodyInfoState>()
 
     fun requestBodyInfo() {
-        bodyRepository.bodyInfo
+        bodyRepository.user
             .subscribeOn(schedulerFacade.io)
-            .map { info ->
+            .map { user ->
 
-                val weightLines = buildLinesFromBodyInfo(info)
+                val weightLines = buildLinesFromUser(user)
 
                 BodyInfoState.SuccessState(
-                    info,
+                    user,
                     userManager.user,
-                    bodyRepository.weightUnit,
+                    bodyRepository.weightUnit.acronym,
                     weightLines
                 )
             }
@@ -58,11 +58,11 @@ class BodyViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    private fun buildLinesFromBodyInfo(info: BodyInfo): List<WeightHistoryLine> {
+    private fun buildLinesFromUser(user: User): List<WeightHistoryLine> {
         return weightLineFilters.map { filter ->
             WeightHistoryLine(
                 filter.filterNameRes,
-                filter.map(info.weightPoints),
+                filter.map(user.weightDataPoints),
                 filter.lineColor,
                 filter.lineThickness
             )

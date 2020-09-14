@@ -12,7 +12,7 @@ import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.image.ImageLoadingCallback
 import at.shockbytes.core.model.ShockbytesUser
 import at.shockbytes.corey.R
-import at.shockbytes.corey.data.body.info.BodyInfo
+import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.dagger.AppComponent
 import kotlinx.android.synthetic.main.fragment_body_view_profile.*
@@ -37,12 +37,12 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
 
     override val layoutId = R.layout.fragment_body_view_profile
 
-    fun setProfileData(bodyInfo: BodyInfo, user: ShockbytesUser, weightUnit: String) {
-        val weight = "${bodyInfo.latestWeightPoint.weight} $weightUnit"
+    fun setProfileData(userBody: User, user: ShockbytesUser, weightUnit: String) {
+        val weight = "${userBody.latestWeightDataPoint?.weight} $weightUnit"
         fragment_body_txt_weight.text = weight
-        val bmi = "BMI: ${bodyInfo.latestBmi}"
+        val bmi = "BMI: ${userBody.latestBmi}"
         fragment_body_txt_bmi.text = bmi
-        val dreamWeight = "${bodyInfo.dreamWeight}$weightUnit"
+        val dreamWeight = "${userBody.desiredWeight}$weightUnit"
         fragment_body_txt_dream_weight.text = dreamWeight
         fragment_body_txt_name.text = user.displayName
 
@@ -61,7 +61,8 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
             }
         }
 
-        animateContent(bodyInfo)
+        animateCard(fragment_body_card_body_info)
+        animateContent(userBody)
     }
 
     override fun onGenerated(palette: Palette?) = Unit
@@ -76,12 +77,12 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
         fragment_body_img_avatar.setImageResource(R.drawable.ic_user_default)
     }
 
-    private fun animateContent(bodyInfo: BodyInfo) {
+    private fun animateContent(user: User) {
 
         val weightProgress = CoreyUtils.calculateDreamWeightProgress(
-                bodyInfo.highestWeight,
-                bodyInfo.latestWeightPoint.weight,
-                bodyInfo.dreamWeight.toDouble()
+                user.highestWeight,
+                user.latestWeightDataPoint?.weight ?: 0.0,
+                user.desiredWeight.toDouble()
         )
 
         // Animate image

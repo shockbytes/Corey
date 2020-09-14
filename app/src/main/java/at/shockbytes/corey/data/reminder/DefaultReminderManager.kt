@@ -11,7 +11,7 @@ import androidx.work.WorkManager
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.data.body.BodyRepository
-import at.shockbytes.corey.data.body.info.BodyInfo
+import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.data.reminder.worker.WeighNotificationWorker
 import at.shockbytes.corey.data.reminder.worker.WorkoutNotificationWorker
 import at.shockbytes.corey.data.schedule.ScheduleItem
@@ -130,16 +130,16 @@ class DefaultReminderManager(
             }
     }
 
-    override fun postWeighNotification(context: Context): Single<BodyInfo> {
-        return bodyRepository.bodyInfo
+    override fun postWeighNotification(context: Context): Single<User> {
+        return bodyRepository.user
             .singleOrError()
             .doOnSuccess { bodyInfo ->
 
                 val notification = ReminderNotificationBuilder.buildWeighNotification(
                     context,
                     CoreyUtils.getLocalizedDayOfWeek(context),
-                    weight = String.format("%,.0f", bodyInfo.latestWeightPoint.weight),
-                    weightUnit = bodyRepository.weightUnit
+                    weight = String.format("%,.0f", bodyInfo.currentWeight),
+                    weightUnit = bodyRepository.weightUnit.acronym
                 )
 
                 getNotificationManager(context).run {

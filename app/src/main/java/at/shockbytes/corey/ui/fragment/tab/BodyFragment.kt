@@ -65,25 +65,25 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
                     hideErrorView()
 
                     profileBodyFragment.setProfileData(
-                            state.bodyInfo,
+                            state.userBody,
                             state.user,
                             state.weightUnit
                     )
 
                     dreamWeightBodyFragmentView.setDreamWeightData(
-                            state.bodyInfo.dreamWeight,
-                            state.bodyInfo.latestWeightPoint.weight,
+                            state.userBody.desiredWeight,
+                            state.userBody.currentWeight,
                             state.weightUnit
                     )
 
                     weightHistoryBodyFragmentView.setWeightData(
                             state.weightLines,
-                            state.bodyInfo.dreamWeight,
+                            state.userBody.desiredWeight,
                             state.weightUnit
                     )
                 }
                 is BodyViewModel.BodyInfoState.ErrorState -> {
-                    showErrorView(state.throwable.localizedMessage)
+                    showErrorView(state.throwable.localizedMessage ?: "Unknown error")
                 }
             }
         })

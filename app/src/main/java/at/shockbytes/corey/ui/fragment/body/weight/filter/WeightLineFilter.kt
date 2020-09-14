@@ -2,7 +2,7 @@ package at.shockbytes.corey.ui.fragment.body.weight.filter
 
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
-import at.shockbytes.corey.data.body.info.WeightPoint
+import at.shockbytes.corey.data.body.model.WeightDataPoint
 
 /**
  * Author:  Martin Macheiner
@@ -20,5 +20,5 @@ interface WeightLineFilter {
 
     val lineThickness: Float
 
-    fun map(points: List<WeightPoint>): List<WeightPoint>
+    fun map(points: List<WeightDataPoint>): List<WeightDataPoint>
 }
