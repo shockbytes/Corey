@@ -48,7 +48,7 @@ class FirebaseNutritionRepository(
 
     private fun buildEnergyBalanceObservable(): Observable<EnergyBalance> {
         return Observable
-                .zip(
+                .combineLatest(
                         nutritionSubject,
                         externalWorkoutRepository.loadExternalWorkouts(),
                         bodyRepository.user,

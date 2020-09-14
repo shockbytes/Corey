@@ -2,6 +2,7 @@ package at.shockbytes.corey.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.data.nutrition.NutritionBalance
@@ -10,11 +11,13 @@ import at.shockbytes.corey.data.nutrition.NutritionPerDay
 import at.shockbytes.corey.data.nutrition.NutritionRepository
 import at.shockbytes.corey.ui.adapter.nutrition.NutritionAdapterItem
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
 class NutritionViewModel @Inject constructor(
-        private val nutritionRepository: NutritionRepository
+        private val nutritionRepository: NutritionRepository,
+        private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     data class WeekOverview(
@@ -28,6 +31,16 @@ class NutritionViewModel @Inject constructor(
     private val currentWeekOverview = MutableLiveData<WeekOverview>()
     fun getCurrentWeekOverview(): LiveData<WeekOverview> = currentWeekOverview
 
+    sealed class SaveEntryEvent {
+
+        data class Success(val entryName: String): SaveEntryEvent()
+
+        data class Error(val throwable: Throwable): SaveEntryEvent()
+    }
+
+    private val saveEntrySubject = PublishSubject.create<SaveEntryEvent>()
+    fun onSaveEntryEvent(): Observable<SaveEntryEvent> = saveEntrySubject
+
     private lateinit var weekOverviewCache: List<WeekOverview>
 
     fun requestNutritionHistory(): Observable<List<NutritionAdapterItem>> {
@@ -40,7 +53,6 @@ class NutritionViewModel @Inject constructor(
     }
 
     fun showHeaderFor(weekOfYear: Int, year: Int) {
-        Timber.e("Nutrition: $weekOfYear / $year")
         weekOverviewCache
                 .find { overview -> overview.week == weekOfYear && overview.year == year }
                 ?.let(currentWeekOverview::postValue)
@@ -72,12 +84,12 @@ class NutritionViewModel @Inject constructor(
 
     fun addNutritionEntry(nutritionEntry: NutritionEntry) {
         nutritionRepository.addNutritionEntry(nutritionEntry)
+                .observeOn(schedulers.ui)
                 .subscribe({
-                    // TODO Close fragment
-                    Timber.d("Nutrition: Entry successfully created")
+                    saveEntrySubject.onNext(SaveEntryEvent.Success(nutritionEntry.name))
                 }, { throwable ->
                     Timber.e(throwable)
-                    // TODO Inform user that something went wrong
+                    saveEntrySubject.onNext(SaveEntryEvent.Error(throwable))
                 })
                 .addTo(compositeDisposable)
     }

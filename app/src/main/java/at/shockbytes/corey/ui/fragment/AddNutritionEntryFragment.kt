@@ -19,6 +19,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_add_nutrition_entry.*
 import org.joda.time.DateTime
+import timber.log.Timber
 import javax.inject.Inject
 
 class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
@@ -39,9 +40,22 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
     }
 
     override fun bindViewModel() {
+        viewModel.onSaveEntryEvent()
+                .subscribe(::handleSaveEntryEvent, Timber::e)
+                .addTo(compositeDisposable)
+    }
 
-        layout_fragment_add_nutrition_entry.setOnClickListener {
-            closeFragment()
+
+    private fun handleSaveEntryEvent(event: NutritionViewModel.SaveEntryEvent) {
+
+        when (event) {
+            is NutritionViewModel.SaveEntryEvent.Success -> {
+                showSnackbar(event.entryName)
+                closeFragment()
+            }
+            is NutritionViewModel.SaveEntryEvent.Error -> {
+                showSnackbar(event.throwable.localizedMessage ?: "Unknown error!")
+            }
         }
     }
 
@@ -121,6 +135,10 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
 
             val nutritionEntry = gatherNutritionEntry()
             viewModel.addNutritionEntry(nutritionEntry)
+        }
+
+        layout_fragment_add_nutrition_entry.setOnClickListener {
+            closeFragment()
         }
     }
 

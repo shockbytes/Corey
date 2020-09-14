@@ -103,10 +103,6 @@
     <string name="prefs_weigh_notification_day_title">Tag für Gewichtsmessung</string>
     <string name="prefs_weigh_notification_title">"Erinnerung für Gewichtsmessung "</string>
     <string name="prefs_weigh_notification_summary">Erhalte Benachrichtigungen an Tagen wo du dich wiegen willst</string>
-    <string name="prefs_workout_day_notification_title">Workoutbenachrichtigungen</string>
-    <string name="prefs_workout_day_notification_summary">Erhalte Benachrichtigungen an Workouttagen</string>
-    <string name="prefs_workout_day_notification_daytime_summary">Wähle die Tageszeit, wenn du Erinnerungen erhalten möchtest</string>
-    <string name="prefs_workout_day_notification_daytime_title">Zeit für Workoutbenachrichtigungen</string>
     <string name="tab_my_body">Mein Körper</string>
     <string name="tab_workout">Workout</string>
     <string name="tab_schedule">Wochenplan</string>
@@ -183,5 +179,6 @@
     <string name="week_placeholder">KW %d</string>
     <string name="bmr_full">Grundumsatz</string>
     <string name="burned_calories">Verbrannte Kalorien</string>
+    <string name="prefs_category_nutrition">Ernährung</string>
 
 </resources>

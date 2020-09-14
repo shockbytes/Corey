@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_workout">
-
-        <androidx.preference.SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:icon="@drawable/ic_settings_vibration"
-            android:key="@string/prefs_vibrations_key"
-            android:summary="@string/prefs_vibrations_summary"
-            android:title="@string/prefs_vibrations_title" />
-
-        <androidx.preference.Preference
-            android:defaultValue="@integer/prefs_time_countdown_default"
-            android:icon="@drawable/ic_settings_countdown"
-            android:key="@string/prefs_time_countdown_key"
-            android:summary="@string/prefs_time_countdown_summary"
-            android:text="@string/prefs_time_countdown_unit"
-            android:title="@string/prefs_time_countdown_title" />
+    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_nutrition">
 
     </androidx.preference.PreferenceCategory>
 
