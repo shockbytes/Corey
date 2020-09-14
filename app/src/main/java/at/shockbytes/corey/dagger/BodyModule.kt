@@ -33,9 +33,8 @@ class BodyModule(private val app: Application) {
     fun provideBodyRepository(
             preferences: SharedPreferences,
             firebase: FirebaseDatabase,
-            bmrComputation: BmrComputation
     ): BodyRepository {
-        return GoogleFitBodyRepository(app.applicationContext, preferences, firebase, bmrComputation)
+        return GoogleFitBodyRepository(app.applicationContext, preferences, firebase)
     }
 
     @Provides
@@ -53,9 +52,17 @@ class BodyModule(private val app: Application) {
     fun provideNutritionRepository(
             firebase: FirebaseDatabase,
             schedulers: SchedulerFacade,
-            externalWorkoutRepository: ExternalWorkoutRepository
+            externalWorkoutRepository: ExternalWorkoutRepository,
+            bodyRepository: BodyRepository,
+            bmrComputation: BmrComputation,
     ): NutritionRepository {
-        return FirebaseNutritionRepository(firebase, schedulers, externalWorkoutRepository)
+        return FirebaseNutritionRepository(
+                firebase,
+                schedulers,
+                externalWorkoutRepository,
+                bodyRepository,
+                bmrComputation
+        )
     }
 
 }

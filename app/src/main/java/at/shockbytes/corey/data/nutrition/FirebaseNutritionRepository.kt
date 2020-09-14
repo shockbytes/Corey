@@ -1,6 +1,10 @@
 package at.shockbytes.corey.data.nutrition
 
 import at.shockbytes.core.scheduler.SchedulerFacade
+import at.shockbytes.corey.data.CoreyDate
+import at.shockbytes.corey.data.body.BodyRepository
+import at.shockbytes.corey.data.body.bmr.BmrComputation
+import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.data.workout.external.ExternalWorkout
 import at.shockbytes.corey.data.workout.external.ExternalWorkoutRepository
 import at.shockbytes.corey.util.*
@@ -12,10 +16,12 @@ import io.reactivex.subjects.BehaviorSubject
 class FirebaseNutritionRepository(
         private val firebase: FirebaseDatabase,
         private val schedulers: SchedulerFacade,
-        private val externalWorkoutRepository: ExternalWorkoutRepository
+        private val externalWorkoutRepository: ExternalWorkoutRepository,
+        private val bodyRepository: BodyRepository,
+        private val bmrComputation: BmrComputation
 ) : NutritionRepository {
 
-    private val nutritionSubject = BehaviorSubject.create<List<NutritionEntry>>() //.createDefault<List<NutritionEntry>>(listOf())
+    private val nutritionSubject = BehaviorSubject.create<List<NutritionEntry>>()
 
     init {
         setupFirebase()
@@ -34,6 +40,7 @@ class FirebaseNutritionRepository(
     private data class EnergyBalance(
             val nutritionPerDay: List<NutritionEntry>,
             val externalWorkouts: List<ExternalWorkout>,
+            val user: User
     )
 
     private fun buildEnergyBalanceObservable(): Observable<EnergyBalance> {
@@ -41,27 +48,64 @@ class FirebaseNutritionRepository(
                 .zip(
                         nutritionSubject,
                         externalWorkoutRepository.loadExternalWorkouts(),
-                        { nutritionPerDay, externalWorkouts ->
-                            EnergyBalance(nutritionPerDay, externalWorkouts)
+                        bodyRepository.user,
+                        { nutritionPerDay, externalWorkouts, user ->
+                            EnergyBalance(nutritionPerDay, externalWorkouts, user)
                         }
                 )
     }
 
-    private fun energyBalanceToNutritionPerDayItems(energyBalance: EnergyBalance): List<NutritionPerDay> {
-        return energyBalance.nutritionPerDay
+    private fun energyBalanceToNutritionPerDayItems(
+            energyBalance: EnergyBalance
+    ): List<NutritionPerDay> {
+        val (nutrition, externalWorkouts, user) = energyBalance
+
+        return nutrition
                 .groupBy { it.date }
                 .map { (date, nutritionEntries) ->
                     NutritionPerDay(
                             intake = nutritionEntries,
                             date = date,
-                            // TODO Replace this with the proper calls
-                            burned = listOf(
-                                    // PhysicalActivity.BasalMetabolicRate("Basal Metabolic Rate", 1700),
-                                    // PhysicalActivity.Activity("Freeletics", 900)
-                            )
+                            burned = computePhysicalActivityOfDate(date, user, externalWorkouts)
                     )
                 }
                 .sortedByDescending { it.date.dateTime }
+    }
+
+    private fun computePhysicalActivityOfDate(
+            date: CoreyDate,
+            user: User,
+            externalWorkouts: List<ExternalWorkout>
+    ): List<PhysicalActivity> {
+        return listOf(computeBmr(date, user)) + computeExternalActivity(date, externalWorkouts)
+    }
+
+    private fun computeBmr(date: CoreyDate, user: User): PhysicalActivity.BasalMetabolicRate {
+
+        val userWeightOfDate = user.retrieveUserWeightAt(date)
+        val userAgeOfDate = user.age // TODO not so important
+
+        return bmrComputation.compute(user.gender, userWeightOfDate, user.height, user.age)
+                .let(PhysicalActivity::BasalMetabolicRate)
+    }
+
+    private fun User.retrieveUserWeightAt(date: CoreyDate): Double {
+
+        val currentWeight = latestWeightDataPoint
+        return if (currentWeight != null) {
+            weightDataPoints.findClosest(date, currentWeight).weight
+        } else 0.0
+    }
+
+    private fun computeExternalActivity(
+            date: CoreyDate,
+            externalWorkouts: List<ExternalWorkout>
+    ): List<PhysicalActivity.Activity> {
+        return externalWorkouts
+                .filter { it.date == date }
+                .map { externalWorkout ->
+                    PhysicalActivity.Activity(externalWorkout.name, externalWorkout.burnedEnergy)
+                }
     }
 
     override fun addNutritionEntry(entry: NutritionEntry): Completable {

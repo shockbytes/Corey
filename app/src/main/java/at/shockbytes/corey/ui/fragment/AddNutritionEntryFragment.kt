@@ -6,7 +6,7 @@ import at.shockbytes.corey.R
 import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
-import at.shockbytes.corey.data.nutrition.NutritionDate
+import at.shockbytes.corey.data.CoreyDate
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionTime
 import at.shockbytes.corey.ui.custom.selection.CoreySingleSelectionItem
@@ -148,7 +148,7 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
                 kcal = estimatedKcal,
                 portion = portion,
                 time = time,
-                date = NutritionDate(year, month, day, weekOfYear)
+                date = CoreyDate(year, month, day, weekOfYear)
         )
     }
 

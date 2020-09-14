@@ -1,6 +1,6 @@
 package at.shockbytes.corey.weather
 
-import at.shockbytes.corey.data.schedule.weather.WeatherResolverHelper
+import at.shockbytes.weather.util.WeatherResolverHelper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.experimental.theories.DataPoints
 import org.junit.experimental.theories.FromDataPoints

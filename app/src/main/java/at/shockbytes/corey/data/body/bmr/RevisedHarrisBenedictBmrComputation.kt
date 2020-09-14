@@ -8,17 +8,14 @@ class RevisedHarrisBenedictBmrComputation : BmrComputation {
 
     override val name: String = "Revised Harris-Benedict Formula"
 
-    override fun compute(user: User): Single<Bmr> {
-        return Single
-                .fromCallable {
-                    when (user.gender) {
-                        Gender.MALE -> computeMaleBmr(user.currentWeight, user.height, user.age)
-                        Gender.FEMALE -> computeFemaleBmr(user.currentWeight, user.height, user.age)
-                    }
-                }
-                .map { kcal ->
-                    Bmr(kcal, computationAlgorithm = name)
-                }
+    override fun compute(gender: Gender, weight: Double, height: Int, age: Int): Bmr {
+
+        val kcal = when (gender) {
+            Gender.MALE -> computeMaleBmr(weight, height, age)
+            Gender.FEMALE -> computeFemaleBmr(weight, height, age)
+        }
+
+        return Bmr(kcal, computationAlgorithm = name)
     }
 
     private fun computeMaleBmr(weight: Double, heightInCm: Int, age: Int): Int {

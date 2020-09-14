@@ -117,7 +117,7 @@ class NutritionAdapter(context: Context) : BaseAdapter<NutritionAdapterItem>(con
         ) : BaseAdapter<PhysicalActivity>.ViewHolder(containerView), LayoutContainer {
             override fun bindToView(t: PhysicalActivity) {
                 with(t) {
-                    tv_item_nutrition_day_burned_title.text = activityName
+                    tv_item_nutrition_day_burned_title.text = activityName(context)
                     tv_item_nutrition_day_burned_kcal.text = context.getString(R.string.kcal_format, kcal)
                 }
             }

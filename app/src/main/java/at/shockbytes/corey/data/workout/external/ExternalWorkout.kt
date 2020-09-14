@@ -1,8 +1,10 @@
 package at.shockbytes.corey.data.workout.external
 
+import at.shockbytes.corey.data.CoreyDate
+
 data class ExternalWorkout(
         val name: String,
         val burnedEnergy: Int,
-        val timestamp: Long,
+        val date: CoreyDate,
         val source: ExternalWorkoutSource
 )

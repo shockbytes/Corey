@@ -37,7 +37,6 @@ class GoogleFitBodyRepository(
         private val context: Context,
         private val preferences: SharedPreferences,
         private val firebase: FirebaseDatabase,
-        private val bmrComputation: BmrComputation
 ) : BodyRepository, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private val apiClient: GoogleApiClient
@@ -100,13 +99,6 @@ class GoogleFitBodyRepository(
             .map { bodyInfo ->
                 bodyInfo.latestWeightDataPoint?.weight ?: 0.0
             }
-
-
-    override fun computeBasalMetabolicRate(): Single<Bmr> {
-        return userBodySubject
-                .singleOrError()
-                .flatMap(bmrComputation::compute)
-    }
 
     // -----------------------------------------------------------------------------------------
 

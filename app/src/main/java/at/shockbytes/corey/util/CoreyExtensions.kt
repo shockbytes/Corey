@@ -20,6 +20,7 @@ import at.shockbytes.corey.R
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlin.math.absoluteValue
 
 fun Fragment.isPortrait(): Boolean {
     return this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
@@ -87,4 +88,19 @@ fun RecyclerView.observePositionChanges(subscribeOn: Scheduler): Observable<Int>
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(subscribeOn)
             .distinctUntilChanged()
+}
+
+fun <T : FindClosestDiffable, K : FindClosestDiffable> List<T>.findClosest(key: K, default: T): T {
+    return this
+            .mapIndexed { index, e ->
+                val diffValue = (e.diffValue - key.diffValue).absoluteValue
+                Pair(index, diffValue)
+            }
+            .minByOrNull { (_, diffValue) ->
+                diffValue
+            }
+            ?.let { (index, _) ->
+                this[index]
+            }
+            ?: default
 }

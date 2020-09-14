@@ -39,7 +39,7 @@ dependencies {
     api 'androidx.percentlayout:percentlayout:1.0.0'
     api 'androidx.preference:preference:1.0.0'
 
-    api "net.danlew:android.joda:2.10.1.2"
+    api "net.danlew:android.joda:$rootProject.ext.jodaVersion"
     api "com.google.code.gson:gson:2.8.5"
     api "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
     api "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"

@@ -70,6 +70,7 @@ ext {
     retrofitVersion = "2.5.0"
 
     wearableVersion = "2.4.0"
+    jodaVersion = "2.10.3"
 }
 
 // -------------------- ktlint --------------------
