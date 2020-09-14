@@ -11,13 +11,13 @@ import at.shockbytes.corey.data.goal.FirebaseGoalsRepository
 import at.shockbytes.corey.data.goal.GoalsRepository
 import at.shockbytes.corey.data.nutrition.FirebaseNutritionRepository
 import at.shockbytes.corey.data.nutrition.NutritionRepository
+import at.shockbytes.corey.data.workout.external.ExternalWorkoutRepository
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RawWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RunningAverageWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.WeightLineFilter
 import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import javax.inject.Singleton
 
 @Module
@@ -30,7 +30,7 @@ class BodyModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideBodyManager(
+    fun provideBodyRepository(
             preferences: SharedPreferences,
             firebase: FirebaseDatabase,
             bmrComputation: BmrComputation
@@ -52,9 +52,10 @@ class BodyModule(private val app: Application) {
     @Provides
     fun provideNutritionRepository(
             firebase: FirebaseDatabase,
-            schedulers: SchedulerFacade
+            schedulers: SchedulerFacade,
+            externalWorkoutRepository: ExternalWorkoutRepository
     ): NutritionRepository {
-        return FirebaseNutritionRepository(firebase, schedulers)
+        return FirebaseNutritionRepository(firebase, schedulers, externalWorkoutRepository)
     }
 
 }
