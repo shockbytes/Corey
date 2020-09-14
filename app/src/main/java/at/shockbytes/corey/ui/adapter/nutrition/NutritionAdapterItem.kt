@@ -23,10 +23,10 @@ data class NutritionAdapterItem(
     val intake: List<NutritionIntakeAdapterItem>
         get() = nutritionPerDay.intake
                 .sortedBy { it.time.ordinal }
-                .groupBy { it.time.time }
-                .map { (time, entriesForTime) ->
+                .groupBy { it.time.nameRes }
+                .map { (timeNameRes, entriesForTime) ->
                     entriesForTime
-                            .mapTo(mutableListOf(NutritionIntakeAdapterItem.Header(time))) { entry ->
+                            .mapTo(mutableListOf(NutritionIntakeAdapterItem.Header(timeNameRes))) { entry ->
                                 NutritionIntakeAdapterItem.Intake(entry)
                             }
                 }

@@ -9,6 +9,7 @@ import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.data.CoreyDate
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionTime
+import at.shockbytes.corey.data.nutrition.PortionSize
 import at.shockbytes.corey.ui.custom.selection.CoreySingleSelectionItem
 import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
 import at.shockbytes.corey.util.viewModelOf
@@ -93,20 +94,16 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
         }
 
         cssv_fragment_add_nutrition_entry_portion.apply {
-            data = listOf(
-                    CoreySingleSelectionItem(getString(R.string.portion_small), 0),
-                    CoreySingleSelectionItem(getString(R.string.portion_medium), 1),
-                    CoreySingleSelectionItem(getString(R.string.portion_big), 2),
-            )
+            data = PortionSize.values().map { size ->
+                CoreySingleSelectionItem(getString(size.nameRes), size.ordinal, size.code)
+            }
             selectPosition(1)
         }
 
         cssv_fragment_add_nutrition_entry_time.apply {
-            data = listOf(
-                    CoreySingleSelectionItem(getString(R.string.nutrition_time_morning), 0),
-                    CoreySingleSelectionItem(getString(R.string.nutrition_time_lunch), 1),
-                    CoreySingleSelectionItem(getString(R.string.nutrition_time_evening), 2),
-            )
+            data = NutritionTime.values().map { time ->
+                CoreySingleSelectionItem(getString(time.nameRes), time.ordinal, time.code)
+            }
             selectPosition(0)
         }
 
@@ -132,10 +129,8 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
         val title = et_add_nutrition_entry_name.text?.toString()!!
         val estimatedKcal = et_add_nutrition_entry_estimated_kcal.text.toString().toInt()
 
-        val portion = cssv_fragment_add_nutrition_entry_portion.selectedItem().title
-        val time = cssv_fragment_add_nutrition_entry_time.selectedItem().let { item ->
-            NutritionTime(time = item.title, ordinal = item.position)
-        }
+        val portionCode = cssv_fragment_add_nutrition_entry_portion.selectedItem().tag
+        val timeCode = cssv_fragment_add_nutrition_entry_time.selectedItem().tag
 
         val year = dp_add_nutrition_entry.year
         val month = dp_add_nutrition_entry.month.inc()
@@ -146,8 +141,8 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
                 id = "",
                 name = title,
                 kcal = estimatedKcal,
-                portion = portion,
-                time = time,
+                portionCode = portionCode,
+                timeCode = timeCode,
                 date = CoreyDate(year, month, day, weekOfYear)
         )
     }

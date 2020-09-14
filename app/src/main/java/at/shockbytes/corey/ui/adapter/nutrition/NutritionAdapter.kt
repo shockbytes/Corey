@@ -82,7 +82,7 @@ class NutritionAdapter(context: Context) : BaseAdapter<NutritionAdapterItem>(con
         ) : BaseAdapter<NutritionIntakeAdapterItem>.ViewHolder(containerView), LayoutContainer {
             override fun bindToView(t: NutritionIntakeAdapterItem) {
                 with(t as NutritionIntakeAdapterItem.Header) {
-                    tv_item_nutrition_day_intake_header.text = time
+                    tv_item_nutrition_day_intake_header.setText(timeNameRes)
                 }
             }
         }
