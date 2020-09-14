@@ -12,7 +12,8 @@ import io.reactivex.Single
 class DefaultScheduleWeatherResolver(
     private val weatherRepository: WeatherRepository,
     private val schedulers: SchedulerFacade,
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    private val logExceptions: Boolean = false
 ) : ScheduleWeatherResolver {
 
     override fun resolveWeatherForScheduleIndex(index: Int): Single<CurrentWeather> {
@@ -30,10 +31,11 @@ class DefaultScheduleWeatherResolver(
                     // TODO Check forecast day of month relative to current day
 
                     val forecastDay = WeatherResolverHelper.indexRelativeToWeekDay(index, CoreyUtils.getDayOfWeek())
-                    if (forecastDay >= weatherRepository.forecastDays) {
+                    if (logExceptions && forecastDay >= weatherRepository.forecastDays) {
                         throw IllegalStateException("$forecastDay > than supported forecast size ${weatherRepository.forecastDays}")
+                    } else {
+                        forecast[forecastDay].toCurrentWeather(forecast.validUntil, forecast.place)
                     }
-                    forecast[forecastDay].toCurrentWeather(forecast.validUntil, forecast.place)
                 }
     }
 

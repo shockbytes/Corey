@@ -1,5 +1,6 @@
 package at.shockbytes.corey.data.body.bmr
 
+import at.shockbytes.corey.common.core.ActivityLevel
 import at.shockbytes.corey.common.core.Gender
 import at.shockbytes.corey.data.body.model.User
 import io.reactivex.Single
@@ -8,14 +9,21 @@ class RevisedHarrisBenedictBmrComputation : BmrComputation {
 
     override val name: String = "Revised Harris-Benedict Formula"
 
-    override fun compute(gender: Gender, weight: Double, height: Int, age: Int): Bmr {
+    override fun compute(
+            gender: Gender,
+            weight: Double,
+            height: Int,
+            age: Int,
+            activityLevel: ActivityLevel
+    ): Bmr {
 
         val kcal = when (gender) {
             Gender.MALE -> computeMaleBmr(weight, height, age)
             Gender.FEMALE -> computeFemaleBmr(weight, height, age)
         }
+        val kcalWithActivity = kcal.times(activityLevel.factor).toInt()
 
-        return Bmr(kcal, computationAlgorithm = name)
+        return Bmr(kcal, kcalWithActivityFactor = kcalWithActivity, computationAlgorithm = name)
     }
 
     private fun computeMaleBmr(weight: Double, heightInCm: Int, age: Int): Int {

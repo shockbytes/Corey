@@ -5,6 +5,6 @@ import io.reactivex.Observable
 class DummyExternalWorkoutRepository : ExternalWorkoutRepository {
 
     override fun loadExternalWorkouts(): Observable<List<ExternalWorkout>> {
-        return Observable.empty()
+        return Observable.just(listOf())
     }
 }

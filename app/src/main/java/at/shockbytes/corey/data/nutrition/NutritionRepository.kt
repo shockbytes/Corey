@@ -6,6 +6,8 @@ import io.reactivex.Single
 
 interface NutritionRepository {
 
+    val bmrComputationName: String
+
     fun loadDailyNutritionEntries(): Observable<List<NutritionPerDay>>
 
     fun addNutritionEntry(entry: NutritionEntry): Completable

@@ -1,5 +1,6 @@
 package at.shockbytes.corey.data.body.model
 
+import at.shockbytes.corey.common.core.ActivityLevel
 import at.shockbytes.corey.common.core.Gender
 import at.shockbytes.util.AppUtils
 
@@ -12,16 +13,9 @@ data class User(
         val height: Int = -1,
         val gender: Gender,
         val age: Int,
-        val desiredWeight: Int
+        val desiredWeight: Int,
+        val activityLevel: ActivityLevel
 ) {
-
-    val isNotEmpty: Boolean
-        get() = weightDataPoints.isNotEmpty()
-
-    val startWeight: Double
-        get() = if (weightDataPoints.isNotEmpty()) {
-            weightDataPoints[0].weight
-        } else 0.0
 
     val highestWeight: Double
         get() = weightDataPoints.maxByOrNull { it.weight }?.weight ?: 0.0

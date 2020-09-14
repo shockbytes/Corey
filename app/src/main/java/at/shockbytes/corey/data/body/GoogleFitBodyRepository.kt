@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.ActivityLevel
 import at.shockbytes.corey.common.core.Gender
+import at.shockbytes.corey.common.roundDouble
 import at.shockbytes.corey.data.body.bmr.Bmr
 import at.shockbytes.corey.data.body.bmr.BmrComputation
 import at.shockbytes.corey.data.body.model.User
@@ -58,6 +60,7 @@ class GoogleFitBodyRepository(
     // TODO Where to get this information?
     private val age: Int = 27
     private val userGender = Gender.MALE
+    private val activityLevel = ActivityLevel.MODERATE_ACTIVITY
 
     private val userBodySubject =  BehaviorSubject.create<User>()
 
@@ -111,7 +114,8 @@ class GoogleFitBodyRepository(
                                 getHeight(result.getDataSet(DataType.TYPE_HEIGHT)),
                                 userGender,
                                 age,
-                                desiredWeight
+                                desiredWeight,
+                                activityLevel
                         )
                     )
                 }
@@ -140,8 +144,12 @@ class GoogleFitBodyRepository(
     private fun getHeight(set: DataSet): Int {
         return if (set.dataPoints.isNotEmpty()) {
             val dp = set.dataPoints[set.dataPoints.size - 1]
-            val extracted = dp.getValue(dp.dataType.fields[0]).asFloat().toDouble()
-            AppUtils.roundDouble(extracted, 2).toInt()
+            dp.getValue(dp.dataType.fields[0])
+                    .asFloat()
+                    .toDouble()
+                    .roundDouble(2)
+                    .times(100)
+                    .toInt()
         } else 0
     }
 

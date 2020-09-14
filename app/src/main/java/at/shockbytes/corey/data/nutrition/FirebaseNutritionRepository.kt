@@ -31,6 +31,9 @@ class FirebaseNutritionRepository(
         firebase.listen(REF, nutritionSubject)
     }
 
+    override val bmrComputationName: String
+        get() = bmrComputation.name
+
     override fun loadDailyNutritionEntries(): Observable<List<NutritionPerDay>> {
         return buildEnergyBalanceObservable()
                 .map(::energyBalanceToNutritionPerDayItems)
@@ -83,9 +86,16 @@ class FirebaseNutritionRepository(
     private fun computeBmr(date: CoreyDate, user: User): PhysicalActivity.BasalMetabolicRate {
 
         val userWeightOfDate = user.retrieveUserWeightAt(date)
-        val userAgeOfDate = user.age // TODO not so important
+        val userAgeOfDate = user.age // TODO not so important that this changes over time
 
-        return bmrComputation.compute(user.gender, userWeightOfDate, user.height, user.age)
+        return bmrComputation
+                .compute(
+                        user.gender,
+                        userWeightOfDate,
+                        user.height,
+                        userAgeOfDate,
+                        user.activityLevel
+                )
                 .let(PhysicalActivity::BasalMetabolicRate)
     }
 
