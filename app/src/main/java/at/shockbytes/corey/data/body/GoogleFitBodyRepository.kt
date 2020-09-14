@@ -125,11 +125,10 @@ class GoogleFitBodyRepository(
                 }
     }
 
-    private fun buildGoogleFitRequest(): DataReadRequest {
-
-        val startMillis = 1.toLong()
-        val endMillis = System.currentTimeMillis()
-
+    private fun buildGoogleFitRequest(
+            startMillis: Long = 1.toLong(),
+            endMillis: Long = System.currentTimeMillis()
+    ): DataReadRequest {
         return DataReadRequest.Builder()
                 .setTimeRange(startMillis, endMillis, TimeUnit.MILLISECONDS)
                 .read(DataType.TYPE_WEIGHT)
