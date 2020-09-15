@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_nutrition">
+    <androidx.preference.PreferenceCategory android:title="User">
+
+        <EditTextPreference
+            app:useSimpleSummaryProvider="true"
+            app:negativeButtonText="@android:string/cancel"
+            app:icon="@drawable/ic_birthday"
+            android:key="@string/prefs_key_birthday"
+            app:positiveButtonText="@string/apply"
+            android:title="@string/birthday"/>
+
+        <ListPreference
+            app:useSimpleSummaryProvider="true"
+            app:negativeButtonText="@android:string/cancel"
+            app:icon="@drawable/ic_gender"
+            app:entries="@array/gender"
+            android:key="@string/prefs_key_gender"
+            app:entryValues="@array/gender_acronyms"
+            app:positiveButtonText="@string/apply"
+            android:title="@string/gender"/>
+
+        <ListPreference
+            app:useSimpleSummaryProvider="true"
+            android:key="@string/prefs_key_activity_level"
+            app:positiveButtonText="@string/apply"
+            app:allowDividerBelow="false"
+            app:icon="@drawable/ic_gauge"
+            app:entries="@array/activity_levels"
+            app:entryValues="@array/activity_levels_short"
+            app:negativeButtonText="@android:string/cancel"
+            android:title="@string/activity_level"/>
 
     </androidx.preference.PreferenceCategory>
 

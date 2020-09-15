@@ -111,6 +111,42 @@
     <string name="duration_with_minutes">%d minutes</string>
     <string name="exercises_with_count">%d exercises</string>
 
+    <string name="apply">Apply</string>
+
+    <string name="gender">Gender</string>
+    <string name="birthday">Birthday</string>
+    <string name="activity_level">Activity level</string>
+
+    <string name="prefs_key_gender" translatable="false">gender</string>
+    <string name="prefs_key_birthday" translatable="false">birthday</string>
+    <string name="prefs_key_activity_level" translatable="false">activity_level</string>
+
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="gender_acronyms">
+        <item>m</item>
+        <item>f</item>
+    </string-array>
+
+    <string-array name="activity_levels">
+        <item>Sedentary</item>
+        <item>Mild activity</item>
+        <item>Moderate activity</item>
+        <item>Heavy activity</item>
+        <item>Extreme activity</item>
+    </string-array>
+
+    <string-array name="activity_levels_short">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
     <string-array name="training_intensity">
         <item>Easy</item>
         <item>Medium</item>
