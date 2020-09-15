@@ -15,6 +15,9 @@
     <string name="kcal_format" translatable="false">%dkcal</string>
     <string name="burned_calories">Burned calories</string>
 
+    <string name="percent_placeholder_positive" translatable="false">+ %s \%</string>
+    <string name="percent_placeholder_negative" translatable="false">- %s \%</string>
+
     <string name="bmr_full">Basal Metabolic Rate</string>
 
     <string name="title_running">Corey Running</string>

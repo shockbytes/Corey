@@ -6,12 +6,18 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.subjects.Subject
+import timber.log.Timber
 
-inline fun <reified T> FirebaseDatabase.listen(reference: String, relay: Subject<List<T>>) {
+inline fun <reified T, K> FirebaseDatabase.listen(
+        reference: String,
+        relay: Subject<List<T>>,
+        crossinline changedChildKeySelector: (T) -> K
+) {
 
     val cache = mutableListOf<T>()
 
     this.getReference(reference).addChildEventListener(object : ChildEventListener {
+
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
             dataSnapshot.getValue(T::class.java)?.let { value ->
                 cache.add(value)
@@ -22,8 +28,18 @@ inline fun <reified T> FirebaseDatabase.listen(reference: String, relay: Subject
         override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
 
             dataSnapshot.getValue(T::class.java)?.let { value ->
-                cache[cache.indexOf(value)] = value
-                relay.onNext(cache)
+
+                val changedValueSelector = changedChildKeySelector(value)
+                val index = cache.indexOfFirst { v ->
+                    changedValueSelector == changedChildKeySelector(v)
+                }
+
+                if (index > -1) {
+                    cache[index] = value
+                    relay.onNext(cache)
+                } else {
+                    Timber.e(IndexOutOfBoundsException("Could not find changed index of value $value"))
+                }
             }
         }
 

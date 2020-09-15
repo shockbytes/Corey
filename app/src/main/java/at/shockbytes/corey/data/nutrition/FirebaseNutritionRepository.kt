@@ -28,7 +28,7 @@ class FirebaseNutritionRepository(
     }
 
     private fun setupFirebase() {
-        firebase.listen(REF, nutritionSubject)
+        firebase.listen(REF, nutritionSubject, changedChildKeySelector = { it.id })
     }
 
     override val bmrComputationName: String

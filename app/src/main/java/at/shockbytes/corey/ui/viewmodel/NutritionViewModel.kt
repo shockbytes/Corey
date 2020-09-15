@@ -1,10 +1,13 @@
 package at.shockbytes.corey.ui.viewmodel
 
+import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.core.scheduler.SchedulerFacade
+import at.shockbytes.core.util.CoreUtils.colored
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.common.addTo
+import at.shockbytes.corey.common.roundDouble
 import at.shockbytes.corey.data.nutrition.NutritionBalance
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionPerDay
@@ -25,8 +28,20 @@ class NutritionViewModel @Inject constructor(
             val year: Int,
             val balance: NutritionBalance,
             val kcalIntake: Int,
-            val percentageToPreviousWeek: Double?
-    )
+            private val percentageToPreviousWeek: Double?
+    ) {
+        fun percentageToPreviousWeekFormatted(): CharSequence? {
+            return if (percentageToPreviousWeek != null) {
+                if (percentageToPreviousWeek > 0) {
+                    "+${percentageToPreviousWeek}%".colored(Color.parseColor("#F44336")) // material red
+                } else {
+                    "-${percentageToPreviousWeek}%".colored(Color.parseColor("#8BC34A")) // colorPrimary
+                }
+            } else {
+                null
+            }
+        }
+    }
 
     private val currentWeekOverview = MutableLiveData<WeekOverview>()
     fun getCurrentWeekOverview(): LiveData<WeekOverview> = currentWeekOverview
@@ -64,7 +79,7 @@ class NutritionViewModel @Inject constructor(
     )
 
     private fun computeWeekOverviews(data: List<NutritionPerDay>) {
-        data
+        val intermediateWeekOverview = data
                 .groupBy { DateGroup(it.date.year, it.date.weekOfYear) }
                 .map { (dateGroup, weekData) ->
                     val weekBalance = NutritionBalance.fromRawKcal(weekData.sumBy { it.balance.rawKcal })
@@ -74,11 +89,21 @@ class NutritionViewModel @Inject constructor(
                             year = dateGroup.year,
                             balance = weekBalance,
                             kcalIntake = weekData.sumBy { day -> day.intake.sumBy { it.kcal } },
-                            percentageToPreviousWeek = null // TODO Get reference to previous week
+                            percentageToPreviousWeek = null
                     )
                 }
-                .let { weekOverview ->
-                    weekOverviewCache = weekOverview
+
+        weekOverviewCache = intermediateWeekOverview
+                .mapIndexed { index, weekOverview ->
+
+                    // TODO Clean up!
+                    val previousKcal = intermediateWeekOverview.getOrNull(index.inc())?.kcalIntake
+                    if (previousKcal != null) {
+                        val percentage = ((weekOverview.kcalIntake - previousKcal) * 100.toDouble()) / previousKcal
+                        weekOverview.copy(percentageToPreviousWeek = percentage.roundDouble(2))
+                    } else {
+                        weekOverview
+                    }
                 }
     }
 

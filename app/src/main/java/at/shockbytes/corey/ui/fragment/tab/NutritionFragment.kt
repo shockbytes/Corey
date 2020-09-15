@@ -1,5 +1,6 @@
 package at.shockbytes.corey.ui.fragment.tab
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -55,11 +56,11 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
 
             tv_fragment_nutrition_balance.text = balance.formatted()
 
-            if (percentageToPreviousWeek != null) {
+            if (percentageToPreviousWeekFormatted() != null) {
 
                 tv_fragment_nutrition_balance_percentage.apply {
                     setVisible(true)
-                    text = "+${percentageToPreviousWeek}%" // TODO fix this when we have the data
+                    text = percentageToPreviousWeekFormatted()
                 }
             } else {
                 tv_fragment_nutrition_balance_percentage.setVisible(false)
