@@ -29,7 +29,7 @@ import at.shockbytes.corey.wearable.WearableManager
 import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.storage.KeyValueStorage
 import at.shockbytes.corey.storage.SharedPreferencesKeyValueStorage
-import at.shockbytes.corey.util.SharedPrefsBackedCoreySettings
+import at.shockbytes.corey.util.ReactiveFirebaseCoreySettings
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
@@ -116,9 +116,12 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    @Reusable
-    fun provideCoreySettings(sharedPrefs: SharedPreferences): CoreySettings {
-        return SharedPrefsBackedCoreySettings(app.applicationContext, sharedPrefs)
+    @Singleton
+    fun provideCoreySettings(
+            sharedPrefs: SharedPreferences,
+            firebase: FirebaseDatabase
+    ): CoreySettings {
+        return ReactiveFirebaseCoreySettings(app.applicationContext, sharedPrefs, firebase)
     }
 
     @Provides

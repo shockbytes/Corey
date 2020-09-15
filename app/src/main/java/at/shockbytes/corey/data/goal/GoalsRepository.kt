@@ -4,11 +4,11 @@ import io.reactivex.Observable
 
 interface GoalsRepository {
 
-    val bodyGoals: Observable<List<Goal>>
+    val goals: Observable<List<Goal>>
 
-    fun updateBodyGoal(g: Goal)
+    fun updateBodyGoal(goal: Goal)
 
-    fun removeBodyGoal(g: Goal)
+    fun removeBodyGoal(goal: Goal)
 
-    fun storeBodyGoal(g: Goal)
+    fun storeBodyGoal(goal: Goal)
 }

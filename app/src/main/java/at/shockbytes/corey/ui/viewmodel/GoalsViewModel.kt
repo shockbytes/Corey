@@ -32,7 +32,7 @@ class GoalsViewModel @Inject constructor(
         hideFinished = localStorage.getBoolean(StorageConstants.KEY_HIDE_FINISHED_GOALS)
         hideFinishedGoals.postValue(hideFinished)
 
-        goalsRepository.bodyGoals
+        goalsRepository.goals
                 .subscribeOn(schedulerFacade.io)
                 .observeOn(schedulerFacade.ui)
                 .subscribe { g ->

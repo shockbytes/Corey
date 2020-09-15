@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.core.scheduler.SchedulerFacade
@@ -214,7 +213,7 @@ class ScheduleAdapter(
             itemPosition = position
             item_schedule_txt_name.text = item.name
 
-            if (shouldLoadWeather(item)) {
+            if (isOutdoor(item)) {
                 loadWeather(position)
             }
 
@@ -226,12 +225,13 @@ class ScheduleAdapter(
             }
         }
 
-        private fun shouldLoadWeather(item: ScheduleItem): Boolean {
-            return (item.locationType == LocationType.OUTDOOR) && coreySettings.isWeatherForecastEnabled
+        private fun isOutdoor(item: ScheduleItem): Boolean {
+            return (item.locationType == LocationType.OUTDOOR)
         }
 
         private fun loadWeather(index: Int) {
-            weatherResolver.resolveWeatherForScheduleIndex(index)
+            coreySettings.isWeatherForecastEnabled
+                    .flatMapSingle { weatherResolver.resolveWeatherForScheduleIndex(index) }
                     .subscribeOn(schedulers.io)
                     .observeOn(schedulers.ui)
                     .subscribe({ weatherInfo ->

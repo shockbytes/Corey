@@ -40,7 +40,6 @@ class GoalsFragment : BodySubFragment(), GoalAdapter.OnGoalActionClickedListener
                 invalidate()
                 scrollToPosition(0)
             }
-            animateCard(fragment_body_card_goals)
         })
 
         viewModel.selectHideFinishedGoals().observe(this, { hideGoals ->
@@ -56,13 +55,11 @@ class GoalsFragment : BodySubFragment(), GoalAdapter.OnGoalActionClickedListener
     }
 
     override fun setupViews() {
-        context?.let { ctx ->
-            fragment_body_card_goals_rv.layoutManager = LinearLayoutManager(ctx)
-            fragment_body_card_goals_rv.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-            val goalAdapter = GoalAdapter(ctx)
-            goalAdapter.setOnGoalActionClickedListener(this)
-            fragment_body_card_goals_rv.adapter = goalAdapter
-        }
+        fragment_body_card_goals_rv.layoutManager = LinearLayoutManager(requireContext())
+        fragment_body_card_goals_rv.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+        val goalAdapter = GoalAdapter(requireContext())
+        goalAdapter.setOnGoalActionClickedListener(this)
+        fragment_body_card_goals_rv.adapter = goalAdapter
 
         fragment_goals_cb_hide_finished.setOnCheckedChangeListener { _, isChecked ->
             viewModel.showFinishedGoals(isChecked)
@@ -73,6 +70,9 @@ class GoalsFragment : BodySubFragment(), GoalAdapter.OnGoalActionClickedListener
                     .setOnGoalCreatedListener(viewModel::storeBodyGoal)
                     .show(childFragmentManager, "dialog-fragment-add-goal")
         }
+
+        animateCard(fragment_body_card_goals)
+
     }
 
     override fun unbindViewModel() {

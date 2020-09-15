@@ -20,11 +20,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val coreySettings: CoreySettings,
-    private val scheduleRepository: ScheduleRepository,
-    private val reminderManager: ReminderManager,
-    private val wearableManager: WearableManager,
+        private val userRepository: UserRepository,
+        private val coreySettings: CoreySettings,
+        private val scheduleRepository: ScheduleRepository,
+        private val reminderManager: ReminderManager,
+        private val wearableManager: WearableManager,
 ) : BaseViewModel() {
 
     private val userEvent = MutableLiveData<LoginUserEvent>()
@@ -41,11 +41,13 @@ class MainViewModel @Inject constructor(
 
     init {
         userEvent.postValue(LoginUserEvent.SuccessEvent(userRepository.user, false))
-        weatherForecastEnabled.postValue(coreySettings.isWeatherForecastEnabled)
 
-        wearableManager.onStart { watchInfo ->
-            onWatchInfoAvailable(watchInfo)
-        }
+        coreySettings.isWeatherForecastEnabled
+                .doOnError { weatherForecastEnabled.postValue(false) }
+                .subscribe(weatherForecastEnabled::postValue, Timber::e)
+                .addTo(compositeDisposable)
+
+        wearableManager.onStart(::onWatchInfoAvailable)
     }
 
     private fun onWatchInfoAvailable(wi: WatchInfo) {
@@ -72,7 +74,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun enableWeatherForecast(isEnabled: Boolean) {
-        coreySettings.isWeatherForecastEnabled = isEnabled
+        coreySettings.setWeatherForecastEnabled(isEnabled)
+                .subscribe { Timber.d("Weather forecast flag successfully synced to $isEnabled!") }
+                .addTo(compositeDisposable)
     }
 
     override fun onCleared() {

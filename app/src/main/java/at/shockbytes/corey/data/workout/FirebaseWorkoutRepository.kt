@@ -5,6 +5,7 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.common.core.workout.model.Workout
+import at.shockbytes.corey.util.listen
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -37,7 +38,7 @@ class FirebaseWorkoutRepository(
     private val timeExerciseGson = Gson()
 
     private val workoutsList = mutableListOf<Workout>()
-    private val workoutsSubject = BehaviorSubject.create<List<Workout>>()
+    private val workoutsSubject = BehaviorSubject.createDefault<List<Workout>>(listOf())
 
     override val exercises: Observable<List<Exercise>>
         get() = Observable.fromCallable {
@@ -120,7 +121,7 @@ class FirebaseWorkoutRepository(
 
     private fun setupFirebase() {
 
-        firebase.getReference("/workout").addChildEventListener(object : ChildEventListener {
+        firebase.getReference(REF_WORKOUT).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val w = gson.fromJson(dataSnapshot.value.toString(), Workout::class.java)
 
@@ -145,5 +146,10 @@ class FirebaseWorkoutRepository(
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) = Unit
             override fun onCancelled(databaseError: DatabaseError) = Unit
         })
+    }
+
+    companion object {
+
+        private const val REF_WORKOUT = "/workout"
     }
 }

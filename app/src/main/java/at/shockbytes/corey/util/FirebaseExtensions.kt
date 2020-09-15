@@ -1,10 +1,7 @@
 package at.shockbytes.corey.util
 
 import at.shockbytes.corey.data.FirebaseStorable
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import io.reactivex.subjects.Subject
 import timber.log.Timber
 
@@ -57,11 +54,36 @@ inline fun <reified T, K> FirebaseDatabase.listen(
     })
 }
 
+
+inline fun <reified T> FirebaseDatabase.listenForValue(
+        reference: String,
+        childReference: String,
+        relay: Subject<T>,
+) {
+
+    val fullRef = reference.plus(childReference)
+    this.getReference(fullRef).addValueEventListener(object: ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            Timber.e("Snapshot: $dataSnapshot")
+            dataSnapshot
+                    .getValue(T::class.java)
+                    ?.let(relay::onNext)
+        }
+
+        override fun onCancelled(p0: DatabaseError) = Unit
+    })
+}
+
+
 inline fun <reified T: FirebaseStorable> FirebaseDatabase.insertValue(reference: String, value: T) {
 
     val ref = getReference(reference).push()
     val id = ref.key ?: throw IllegalStateException("Cannot insert value $value into firebase!")
     ref.setValue(value.copyWithNewId(newId = id))
+}
+
+fun <T> FirebaseDatabase.updateValue(reference: String, childId: String, value: T) {
+    getReference(reference).child(childId).setValue(value)
 }
 
 fun FirebaseDatabase.removeValue(reference: String, id: String) {
