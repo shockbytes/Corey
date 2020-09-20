@@ -21,7 +21,7 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
     private lateinit var viewModel: BodyViewModel
 
     private val profileBodyFragment = ProfileBodyFragmentView()
-    private val dreamWeightBodyFragmentView = DreamWeightBodyFragmentView()
+    private val dreamWeightBodyFragmentView = DesiredWeightBodyFragmentView()
     private val weightHistoryBodyFragmentView = WeightHistoryBodyFragmentView()
     private val goalsFragment = GoalsFragment.newInstance()
 
