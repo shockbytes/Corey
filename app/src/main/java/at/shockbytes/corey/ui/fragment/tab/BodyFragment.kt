@@ -21,15 +21,17 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
     private lateinit var viewModel: BodyViewModel
 
     private val profileBodyFragment = ProfileBodyFragmentView()
-    private val dreamWeightBodyFragmentView = DesiredWeightBodyFragmentView()
+    private val desiredWeightBodyFragmentView = DesiredWeightBodyFragmentView()
     private val weightHistoryBodyFragmentView = WeightHistoryBodyFragmentView()
     private val goalsFragment = GoalsFragment.newInstance()
+    private val bmrFragment = BasalMetabolicRateFragmentView.newInstance()
 
     private val fragmentViews: List<BodySubFragment> by lazy {
         listOf(
                 profileBodyFragment,
-                dreamWeightBodyFragmentView,
+                desiredWeightBodyFragmentView,
                 weightHistoryBodyFragmentView,
+                bmrFragment,
                 goalsFragment
         )
     }
@@ -61,7 +63,7 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
 
         viewModel.getBodyInfo().observe(this, { state ->
             when (state) {
-                is BodyViewModel.BodyInfoState.SuccessState -> {
+                is BodyViewModel.BodyState.SuccessState -> {
                     hideErrorView()
 
                     profileBodyFragment.setProfileData(
@@ -70,11 +72,13 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
                             state.weightUnit
                     )
 
-                    dreamWeightBodyFragmentView.setDreamWeightData(
+                    desiredWeightBodyFragmentView.setDreamWeightData(
                             state.userBody.desiredWeight,
                             state.userBody.currentWeight,
                             state.weightUnit
                     )
+
+                    bmrFragment.setBmr(state.bmr)
 
                     weightHistoryBodyFragmentView.setWeightData(
                             state.weightLines,
@@ -82,7 +86,7 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
                             state.weightUnit
                     )
                 }
-                is BodyViewModel.BodyInfoState.ErrorState -> {
+                is BodyViewModel.BodyState.ErrorState -> {
                     showErrorView(state.throwable.localizedMessage ?: "Unknown error")
                 }
             }

@@ -209,5 +209,6 @@
     <string name="bmr_full">Grundumsatz</string>
     <string name="burned_calories">Verbrannte Kalorien</string>
     <string name="prefs_category_nutrition">Ernährung</string>
+    <string name="body_card_bmr_title">Mein Grundumsatz</string>
 
 </resources>

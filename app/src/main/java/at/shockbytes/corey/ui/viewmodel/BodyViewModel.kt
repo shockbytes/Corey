@@ -10,6 +10,8 @@ import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.WeightUnit
 import at.shockbytes.corey.common.core.util.UserSettings
+import at.shockbytes.corey.data.body.bmr.Bmr
+import at.shockbytes.corey.data.nutrition.NutritionRepository
 import at.shockbytes.corey.data.user.UserRepository
 import at.shockbytes.corey.ui.fragment.body.weight.WeightHistoryLine
 import at.shockbytes.corey.ui.fragment.body.weight.filter.WeightLineFilter
@@ -22,51 +24,57 @@ class BodyViewModel @Inject constructor(
     private val userManager: UserRepository,
     private val schedulerFacade: SchedulerFacade,
     private val weightLineFilters: Array<WeightLineFilter>,
-    private val userSettings: UserSettings
+    private val userSettings: UserSettings,
+    private val nutritionRepository: NutritionRepository
 ) : BaseViewModel() {
 
-    sealed class BodyInfoState {
+    sealed class BodyState {
 
         data class SuccessState(
                 val userBody: User,
                 val user: ShockbytesUser,
                 val weightUnit: String,
-                val weightLines: List<WeightHistoryLine>
-        ) : BodyInfoState()
+                val weightLines: List<WeightHistoryLine>,
+                val bmr: Bmr,
+        ) : BodyState()
 
-        data class ErrorState(val throwable: Throwable) : BodyInfoState()
+        data class ErrorState(val throwable: Throwable) : BodyState()
     }
 
-    private val bodyInfo = MutableLiveData<BodyInfoState>()
+    private val body = MutableLiveData<BodyState>()
 
     fun requestBodyInfo() {
         buildUserData()
             .subscribeOn(schedulerFacade.io)
-            .map { (user, weightUnit) ->
+            .map { (user, weightUnit, bmr) ->
 
                 val weightLines = buildLinesFromUser(user)
 
-                BodyInfoState.SuccessState(
+                BodyState.SuccessState(
                     user,
                     userManager.user,
                     weightUnit.acronym,
-                    weightLines
+                    weightLines,
+                    bmr
                 )
             }
             .subscribe({ successState ->
-                bodyInfo.postValue(successState)
+                body.postValue(successState)
             }) { throwable ->
                 Timber.e(throwable)
-                bodyInfo.postValue(BodyInfoState.ErrorState(throwable))
+                body.postValue(BodyState.ErrorState(throwable))
             }
             .addTo(compositeDisposable)
     }
 
-    private fun buildUserData(): Observable<Pair<User, WeightUnit>> {
+    private fun buildUserData(): Observable<Triple<User, WeightUnit, Bmr>> {
         return Observable.zip(
                 bodyRepository.user,
                 userSettings.weightUnit,
-                { user, weightUnit -> user to weightUnit }
+                nutritionRepository.computeCurrentBmr(),
+                { user, weightUnit, bmr ->
+                    Triple(user, weightUnit, bmr)
+                }
         )
     }
 
@@ -81,5 +89,5 @@ class BodyViewModel @Inject constructor(
         }
     }
 
-    fun getBodyInfo(): LiveData<BodyInfoState> = bodyInfo
+    fun getBodyInfo(): LiveData<BodyState> = body
 }

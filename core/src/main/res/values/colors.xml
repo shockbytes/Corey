@@ -32,6 +32,7 @@
     <color name="body_card_weight_history">#3F51B5</color>
     <color name="body_card_goals">#FF9800</color>
     <color name="body_card_statistics">#8BC34A</color>
+    <color name="body_card_bmr">@color/running_mode_calories</color>
 
     <color name="colorBrand">#A8A8A8</color>
     <color name="colorError">#EF5350</color>

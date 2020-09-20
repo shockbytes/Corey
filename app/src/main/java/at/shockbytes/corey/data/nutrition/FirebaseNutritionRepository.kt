@@ -3,6 +3,7 @@ package at.shockbytes.corey.data.nutrition
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.common.core.CoreyDate
 import at.shockbytes.corey.data.body.BodyRepository
+import at.shockbytes.corey.data.body.bmr.Bmr
 import at.shockbytes.corey.data.body.bmr.BmrComputation
 import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.data.workout.external.ExternalWorkout
@@ -11,6 +12,7 @@ import at.shockbytes.corey.util.*
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import org.joda.time.Years
 
@@ -22,7 +24,7 @@ class FirebaseNutritionRepository(
         private val bmrComputation: BmrComputation
 ) : NutritionRepository {
 
-    private val nutritionSubject = BehaviorSubject.create<List<NutritionEntry>>()
+    private val nutritionSubject = BehaviorSubject.createDefault<List<NutritionEntry>>(listOf())
 
     init {
         setupFirebase()
@@ -32,8 +34,13 @@ class FirebaseNutritionRepository(
         firebase.listen(REF, nutritionSubject, changedChildKeySelector = { it.id })
     }
 
-    override val bmrComputationName: String
-        get() = bmrComputation.name
+    override fun computeCurrentBmr(): Observable<Bmr> {
+        return buildEnergyBalanceObservable()
+                .map { (_, _, user) ->
+                    computeBmr(user)
+                }
+    }
+
 
     override fun loadDailyNutritionEntries(): Observable<List<NutritionPerDay>> {
         return buildEnergyBalanceObservable()
@@ -81,23 +88,34 @@ class FirebaseNutritionRepository(
             user: User,
             externalWorkouts: List<ExternalWorkout>
     ): List<PhysicalActivity> {
-        return listOf(computeBmr(date, user)) + computeExternalActivity(date, externalWorkouts)
+        return listOf(computeBmrPhysicalActivity(user, date)) + computeExternalActivity(date, externalWorkouts)
     }
 
-    private fun computeBmr(date: CoreyDate, user: User): PhysicalActivity.BasalMetabolicRate {
+    private fun computeBmrPhysicalActivity(
+            user: User,
+            date: CoreyDate,
+    ): PhysicalActivity.BasalMetabolicRate {
 
         val userWeightOfDate = user.retrieveUserWeightAt(date)
         val userAgeOfDate = user.retrieveAgeAt(date)
 
+        return computeBmr(user, userWeightOfDate, userAgeOfDate)
+                .let(PhysicalActivity::BasalMetabolicRate)
+    }
+
+    private fun computeBmr(
+            user: User,
+            userWeight: Double = user.currentWeight,
+            userAge: Int = user.age
+    ): Bmr {
         return bmrComputation
                 .compute(
                         user.gender,
-                        userWeightOfDate,
+                        userWeight,
                         user.height,
-                        userAgeOfDate,
+                        userAge,
                         user.activityLevel
                 )
-                .let(PhysicalActivity::BasalMetabolicRate)
     }
 
     private fun User.retrieveUserWeightAt(date: CoreyDate): Double {

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_body_card_bmr"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:alpha="0"
+    tools:alpha="1"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:drawablePadding="16dp"
+            android:drawableTint="@color/body_card_bmr"
+            android:drawableStart="@drawable/ic_tab_nutrition"
+            android:gravity="center_vertical"
+            android:textColor="@color/body_card_bmr"
+            android:text="@string/body_card_bmr_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/tv_fragment_body_card_bmr_current_bmr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/body_card_bmr"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            tools:text="1800 kcal"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="20dp" />
+
+
+        <TextView
+            android:id="@+id/tv_fragment_body_card_bmr_active_bmr_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/body_card_bmr"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:text=""
+            android:layout_marginTop="12dp" />
+
+
+        <TextView
+            android:id="@+id/tv_fragment_body_card_bmr_active_bmr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/body_card_bmr"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            tools:text="2200 kcal"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="24dp" />
+
+
+        <TextView
+            android:id="@+id/tv_fragment_body_card_bmr_computation_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4sp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="end"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="According to Revised Harris algorithm"
+            android:textColor="@color/body_card_bmr" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
