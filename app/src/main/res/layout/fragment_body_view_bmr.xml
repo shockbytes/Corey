@@ -51,7 +51,7 @@
             android:gravity="center"
             android:textColor="@color/body_card_bmr"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:text=""
+            android:text="@string/body_card_bmr_active_title"
             android:layout_marginTop="12dp" />
 
 
@@ -64,18 +64,18 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             tools:text="2200 kcal"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="32dp" />
 
 
         <TextView
             android:id="@+id/tv_fragment_body_card_bmr_computation_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="4sp"
             android:layout_marginBottom="8dp"
-            android:layout_gravity="end"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            tools:text="According to Revised Harris algorithm"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            tools:text="According to the Revised Harris-Benedict method"
             android:textColor="@color/body_card_bmr" />
 
     </LinearLayout>

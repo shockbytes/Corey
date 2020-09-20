@@ -1,16 +1,13 @@
 package at.shockbytes.corey.ui.fragment.body
 
 import at.shockbytes.corey.R
-import at.shockbytes.corey.common.roundDouble
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.data.body.bmr.Bmr
 import kotlinx.android.synthetic.main.fragment_body_view_bmr.*
-import kotlinx.android.synthetic.main.fragment_body_view_dream_weight.*
-import java.util.Random
 
 /**
  * Author:  Martin Macheiner
- * Date:    05.03.2018
+ * Date:    20.09.2020
  */
 class BasalMetabolicRateFragmentView : BodySubFragment() {
 
@@ -25,7 +22,9 @@ class BasalMetabolicRateFragmentView : BodySubFragment() {
     fun setBmr(bmr: Bmr) {
 
         with(bmr) {
-
+            tv_fragment_body_card_bmr_current_bmr.text = getString(R.string.kcal_format_whitespace, kcal)
+            tv_fragment_body_card_bmr_active_bmr.text = getString(R.string.kcal_format_whitespace, kcalWithActivityFactor)
+            tv_fragment_body_card_bmr_computation_name.text = getString(R.string.body_card_bmr_computation_method, computationAlgorithm)
         }
 
         animateCard(fragment_body_card_bmr, 0)

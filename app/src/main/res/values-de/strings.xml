@@ -210,5 +210,7 @@
     <string name="burned_calories">Verbrannte Kalorien</string>
     <string name="prefs_category_nutrition">Ernährung</string>
     <string name="body_card_bmr_title">Mein Grundumsatz</string>
+    <string name="body_card_bmr_computation_method">Nach der %s Methode</string>
+    <string name="body_card_bmr_active_title">Unter Berücksichtigung des Aktivitätslevels</string>
 
 </resources>

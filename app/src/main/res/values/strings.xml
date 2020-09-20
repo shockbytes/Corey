@@ -13,6 +13,7 @@
 
     <string name="week_placeholder">Week %d</string>
     <string name="kcal_format" translatable="false">%dkcal</string>
+    <string name="kcal_format_whitespace" translatable="false">%d kcal</string>
     <string name="burned_calories">Burned calories</string>
 
     <string name="concat" translatable="false">%1$s %2$s</string>
@@ -237,6 +238,8 @@
     <string name="weight">Weight</string>
     <string name="body_card_dream_weight_title">My desired weight</string>
     <string name="body_card_bmr_title">My basal metabolic rate</string>
+    <string name="body_card_bmr_active_title">Activity level inclusive computation</string>
+    <string name="body_card_bmr_computation_method">According to the %s method</string>
     <string name="error_fetch_body_info">Unable to fetch your body information</string>
     <string name="reload">Reload</string>
     <string name="prefs_workout_day_notification_daytime_defValue" translatable="false">08:00</string>

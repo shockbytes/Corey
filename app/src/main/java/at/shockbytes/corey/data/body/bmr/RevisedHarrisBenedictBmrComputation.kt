@@ -2,12 +2,10 @@ package at.shockbytes.corey.data.body.bmr
 
 import at.shockbytes.corey.common.core.ActivityLevel
 import at.shockbytes.corey.common.core.Gender
-import at.shockbytes.corey.data.body.model.User
-import io.reactivex.Single
 
 class RevisedHarrisBenedictBmrComputation : BmrComputation {
 
-    override val name: String = "Revised Harris-Benedict Formula"
+    override val name: String = "Revised Harris-Benedict"
 
     override fun compute(
             gender: Gender,
