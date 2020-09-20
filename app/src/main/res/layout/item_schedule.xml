@@ -31,7 +31,7 @@
             android:maxLines="1"
             tools:text="Freeletics"
             android:padding="12dp"
-            android:textColor="@color/colorPrimaryText"
+            android:textColor="@color/coreyBlack"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_schedule_btn_clear"

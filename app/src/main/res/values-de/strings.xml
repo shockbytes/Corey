@@ -48,6 +48,8 @@
     <string name="gender">Geschlecht</string>
     <string name="birthday">Geburtstag</string>
     <string name="activity_level">Aktivitätslevel</string>
+    <string name="weight_unit">Gewichtseinheit</string>
+
     <string-array name="gender">
         <item>Männlich</item>
         <item>Weiblich</item>
@@ -74,6 +76,16 @@
         <item>Arme</item>
         <item>Brust</item>
         <item>Ganzer Körper</item>
+    </string-array>
+
+    <string-array name="weight_units">
+        <item>Kilogramm (kg)</item>
+        <item>Pfund (lb)</item>
+    </string-array>
+
+    <string-array name="weight_units_short">
+        <item>kg</item>
+        <item>lb</item>
     </string-array>
 
     <string-array name="dreamweight_motivation">

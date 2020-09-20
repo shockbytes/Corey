@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.common.core.util.CoreySettings
+import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.workout.model.LocationType
 import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.data.schedule.ScheduleItem
@@ -33,7 +33,7 @@ class ScheduleAdapter(
     private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit),
     private val weatherResolver: ScheduleWeatherResolver,
     private val schedulers: SchedulerFacade,
-    private val coreySettings: CoreySettings
+    private val userSettings: UserSettings
 ) : BaseAdapter<ScheduleItem>(context), ItemTouchHelperAdapter {
 
     private val compositeDisposable = CompositeDisposable()
@@ -168,27 +168,7 @@ class ScheduleAdapter(
         return def
     }
 
-    private fun fillUpScheduleList3(items: List<ScheduleItem>): List<ScheduleItem> {
-
-        val array = arrayOfNulls<ScheduleItem>(MAX_SCHEDULES)
-        // Populate array with all given items
-        items.forEach { array[it.day] = it }
-        // Now add placeholder objects for empty spots
-        (0 until MAX_SCHEDULES).forEach { idx ->
-            if (array[idx] == null) {
-
-                if (data[idx].isEmpty) {
-                    array[idx] = data[idx].copy(day = idx)
-                } else {
-                    array[idx] = emptyScheduleItem(idx)
-                }
-            }
-        }
-        // Safe to do so, because all nulls are already replaced
-        return array.mapTo(mutableListOf()) { it!! }
-    }
-
-    private fun emptyScheduleItem(idx: Int): ScheduleItem = ScheduleItem("", idx, locationType = LocationType.NONE)
+    private fun emptyScheduleItem(idx: Int) = ScheduleItem("", idx, locationType = LocationType.NONE)
 
     private inner class ViewHolder(
         override val containerView: View
@@ -230,13 +210,15 @@ class ScheduleAdapter(
         }
 
         private fun loadWeather(index: Int) {
-            coreySettings.isWeatherForecastEnabled
+            userSettings.isWeatherForecastEnabled
                     .flatMapSingle { weatherResolver.resolveWeatherForScheduleIndex(index) }
                     .subscribeOn(schedulers.io)
                     .observeOn(schedulers.ui)
                     .subscribe({ weatherInfo ->
-                        item_schedule_weather.setVisible(true)
-                        item_schedule_weather.setWeatherInfo(weatherInfo, unit = "°C", animate = true)
+                        item_schedule_weather.apply {
+                            setVisible(true)
+                            setWeatherInfo(weatherInfo, unit = "°C", animate = true)
+                        }
                     }, { throwable ->
                         Timber.e(throwable)
                         item_schedule_weather.setVisible(false)

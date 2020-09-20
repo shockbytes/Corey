@@ -1,4 +1,4 @@
-package at.shockbytes.corey.data.body.model
+package at.shockbytes.corey.common.core
 
 enum class WeightUnit(val acronym: String) {
     KG("kg"),

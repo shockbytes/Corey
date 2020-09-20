@@ -40,7 +40,7 @@ class ProfileBodyFragmentView : BodySubFragment(), Palette.PaletteAsyncListener,
     fun setProfileData(userBody: User, user: ShockbytesUser, weightUnit: String) {
         val weight = "${userBody.latestWeightDataPoint?.weight} $weightUnit"
         fragment_body_txt_weight.text = weight
-        val bmi = "BMI: ${userBody.latestBmi}"
+        val bmi = "BMI: ${userBody.currentBMI}"
         fragment_body_txt_bmi.text = bmi
         val dreamWeight = "${userBody.desiredWeight}$weightUnit"
         fragment_body_txt_dream_weight.text = dreamWeight

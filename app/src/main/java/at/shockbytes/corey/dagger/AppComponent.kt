@@ -66,4 +66,5 @@ interface AppComponent : ShockbytesInjector {
     fun inject(fragment: NutritionFragment)
 
     fun inject(fragment: AddNutritionEntryFragment)
+
 }

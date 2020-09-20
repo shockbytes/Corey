@@ -105,6 +105,11 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
             .addTo(compositeDisposable)
     }
 
+    override fun onDestroy() {
+        viewModel.cleanUp()
+        super.onDestroy()
+    }
+
     override fun injectToGraph(appComponent: AppComponent?) {
         appComponent?.inject(this)
     }

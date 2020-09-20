@@ -32,8 +32,9 @@
         android:layout_marginTop="48dp"
         app:srcCompat="@drawable/ic_green_heart" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/AppTheme.RoundedButton.Outlined"
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button"
+        android:backgroundTint="@color/coreyBlack"
         android:id="@+id/fragment_signup_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

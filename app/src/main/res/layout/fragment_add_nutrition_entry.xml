@@ -116,7 +116,7 @@
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_nutrition_entry"
                 style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="wrap_content"

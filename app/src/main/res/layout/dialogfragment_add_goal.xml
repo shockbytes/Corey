@@ -7,6 +7,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_add_goal"
+        style="@style/AppTheme.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -21,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/goal"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -33,6 +35,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_add_goal_month"
+        style="@style/AppTheme.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -47,11 +50,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/month"
-            android:singleLine="true" />
+            android:inputType="number"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_add_goal_year"
+        style="@style/AppTheme.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -66,7 +72,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/year"
-            android:singleLine="true" />
+            android:inputType="number"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner

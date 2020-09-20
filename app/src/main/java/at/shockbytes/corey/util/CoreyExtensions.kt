@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.fragment.app.Fragment
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -15,15 +16,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.core.ShockbytesInjector
 import at.shockbytes.core.ui.fragment.BaseFragment
+import at.shockbytes.core.util.CoreUtils.colored
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.core.CoreyDate
+import at.shockbytes.corey.common.core.util.FindClosestDiffable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import org.joda.time.DateTime
 import kotlin.math.absoluteValue
 
 fun Fragment.isPortrait(): Boolean {
     return this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+
+fun String.accentColored(): CharSequence {
+    return colored(Color.parseColor("#FF9800"))
 }
 
 fun Drawable.toBitmap(): Bitmap {
@@ -103,4 +112,8 @@ fun <T : FindClosestDiffable, K : FindClosestDiffable> List<T>.findClosest(key: 
                 this[index]
             }
             ?: default
+}
+
+fun DateTime.toCoreyDate(): CoreyDate {
+    return CoreyDate(year, monthOfYear, dayOfMonth, weekOfWeekyear)
 }

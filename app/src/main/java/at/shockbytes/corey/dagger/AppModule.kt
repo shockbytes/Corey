@@ -14,7 +14,7 @@ import at.shockbytes.corey.common.core.location.GmsLocationRepository
 import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.common.core.running.location.GooglePlayLocationManager
 import at.shockbytes.corey.common.core.running.location.LocationManager
-import at.shockbytes.corey.common.core.util.CoreySettings
+import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.util.ExerciseDeserializer
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.data.body.BodyRepository
@@ -29,7 +29,7 @@ import at.shockbytes.corey.wearable.WearableManager
 import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.storage.KeyValueStorage
 import at.shockbytes.corey.storage.SharedPreferencesKeyValueStorage
-import at.shockbytes.corey.util.ReactiveFirebaseCoreySettings
+import at.shockbytes.corey.util.ReactiveFirebaseUserSettings
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
@@ -120,8 +120,8 @@ class AppModule(private val app: Application) {
     fun provideCoreySettings(
             sharedPrefs: SharedPreferences,
             firebase: FirebaseDatabase
-    ): CoreySettings {
-        return ReactiveFirebaseCoreySettings(app.applicationContext, sharedPrefs, firebase)
+    ): UserSettings {
+        return ReactiveFirebaseUserSettings(app.applicationContext, sharedPrefs, firebase)
     }
 
     @Provides
@@ -133,11 +133,12 @@ class AppModule(private val app: Application) {
     @Provides
     @Reusable
     fun provideReminderManager(
-        localStorage: KeyValueStorage,
-        scheduleRepository: ScheduleRepository,
-        bodyRepository: BodyRepository
+            localStorage: KeyValueStorage,
+            scheduleRepository: ScheduleRepository,
+            bodyRepository: BodyRepository,
+            userSettings: UserSettings
     ): ReminderManager {
-        return DefaultReminderManager(localStorage, scheduleRepository, bodyRepository)
+        return DefaultReminderManager(localStorage, scheduleRepository, bodyRepository, userSettings)
     }
 
     @Provides

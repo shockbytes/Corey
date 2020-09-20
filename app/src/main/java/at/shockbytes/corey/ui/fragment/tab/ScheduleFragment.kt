@@ -4,12 +4,15 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
 import at.shockbytes.corey.ui.adapter.ScheduleAdapter
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.common.core.util.CoreySettings
+import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.data.schedule.ScheduleRepository
@@ -40,7 +43,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
     lateinit var schedulers: SchedulerFacade
 
     @Inject
-    lateinit var coreySettings: CoreySettings
+    lateinit var userSettings: UserSettings
 
     @Inject
     lateinit var weatherResolver: ScheduleWeatherResolver
@@ -48,23 +51,23 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
     private lateinit var touchHelper: ItemTouchHelper
     private val adapter: ScheduleAdapter by lazy {
         ScheduleAdapter(
-                context!!,
+                requireContext(),
                 { item, _, position -> onScheduleItemClicked(item, position) },
                 { item, position -> onItemDismissed(item, position) },
                 weatherResolver,
                 schedulers,
-                coreySettings
+                userSettings
         )
     }
 
-    private val recyclerView: androidx.recyclerview.widget.RecyclerView by bindView(R.id.fragment_schedule_rv)
-    private val recyclerViewDays: androidx.recyclerview.widget.RecyclerView by bindView(R.id.fragment_schedule_rv_days)
+    private val recyclerView: RecyclerView by bindView(R.id.fragment_schedule_rv)
+    private val recyclerViewDays: RecyclerView by bindView(R.id.fragment_schedule_rv_days)
 
-    private val recyclerViewLayoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager
+    private val recyclerViewLayoutManager: RecyclerView.LayoutManager
         get() = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         } else {
-            androidx.recyclerview.widget.GridLayoutManager(context, ScheduleAdapter.MAX_SCHEDULES)
+            GridLayoutManager(context, ScheduleAdapter.MAX_SCHEDULES)
         }
 
     override val layoutId = R.layout.fragment_schedule

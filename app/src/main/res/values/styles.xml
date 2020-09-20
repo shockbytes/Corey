@@ -28,6 +28,7 @@
 
     <style name="AppTheme.RoundedButton.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">@color/colorAccent</item>
+        <item name="rippleColor">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.EditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">

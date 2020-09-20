@@ -1,6 +1,6 @@
 package at.shockbytes.corey.data.body.model
 
-import at.shockbytes.corey.util.FindClosestDiffable
+import at.shockbytes.corey.common.core.util.FindClosestDiffable
 
 data class WeightDataPoint(
     val timeStamp: Long = 0,

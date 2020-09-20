@@ -3,6 +3,7 @@ package at.shockbytes.corey.dagger
 import android.app.Application
 import android.content.SharedPreferences
 import at.shockbytes.core.scheduler.SchedulerFacade
+import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.GoogleFitBodyRepository
 import at.shockbytes.corey.data.body.bmr.BmrComputation
@@ -33,8 +34,9 @@ class BodyModule(private val app: Application) {
     fun provideBodyRepository(
             preferences: SharedPreferences,
             firebase: FirebaseDatabase,
+            userSettings: UserSettings
     ): BodyRepository {
-        return GoogleFitBodyRepository(app.applicationContext, preferences, firebase)
+        return GoogleFitBodyRepository(app.applicationContext, preferences, firebase, userSettings)
     }
 
     @Provides

@@ -116,10 +116,12 @@
     <string name="gender">Gender</string>
     <string name="birthday">Birthday</string>
     <string name="activity_level">Activity level</string>
+    <string name="weight_unit">Weight unit</string>
 
     <string name="prefs_key_gender" translatable="false">gender</string>
     <string name="prefs_key_birthday" translatable="false">birthday</string>
     <string name="prefs_key_activity_level" translatable="false">activity_level</string>
+    <string name="prefs_key_weight_unit" translatable="false">weight_unit</string>
 
     <string-array name="gender">
         <item>Male</item>
@@ -145,6 +147,16 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+    </string-array>
+
+    <string-array name="weight_units">
+        <item>Kilogram (kg)</item>
+        <item>Pounds (lb)</item>
+    </string-array>
+
+    <string-array name="weight_units_short">
+        <item>kg</item>
+        <item>lb</item>
     </string-array>
 
     <string-array name="training_intensity">

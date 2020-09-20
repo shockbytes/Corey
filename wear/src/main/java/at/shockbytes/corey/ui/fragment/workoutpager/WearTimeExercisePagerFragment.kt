@@ -84,7 +84,7 @@ class WearTimeExercisePagerFragment : WearableBaseFragment() {
             .setCountdownCompleteListener {
                 startExerciseTimer()
             }
-            .show(fragmentManager, "countdown-start")
+            .show(childFragmentManager, "countdown-start")
     }
 
 

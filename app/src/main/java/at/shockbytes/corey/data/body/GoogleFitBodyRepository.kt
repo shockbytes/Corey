@@ -4,15 +4,16 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
-import at.shockbytes.corey.R
+import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.ActivityLevel
 import at.shockbytes.corey.common.core.Gender
+import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.roundDouble
-import at.shockbytes.corey.data.body.bmr.Bmr
-import at.shockbytes.corey.data.body.bmr.BmrComputation
+import at.shockbytes.corey.common.core.CoreyDate
 import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.data.body.model.WeightDataPoint
-import at.shockbytes.corey.data.body.model.WeightUnit
+import at.shockbytes.corey.util.listenForValue
+import at.shockbytes.corey.util.updateValue
 import at.shockbytes.util.AppUtils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.Scopes
@@ -22,12 +23,9 @@ import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.data.DataSet
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.request.DataReadRequest
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
-import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 
@@ -39,9 +37,17 @@ class GoogleFitBodyRepository(
         private val context: Context,
         private val preferences: SharedPreferences,
         private val firebase: FirebaseDatabase,
+        private val userSettings: UserSettings
 ) : BodyRepository, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private val apiClient: GoogleApiClient
+
+    private val compositeDisposable = CompositeDisposable()
+
+    private val userBodySubject = BehaviorSubject.create<User>()
+
+    private val desiredWeightSubject: BehaviorSubject<Int> = BehaviorSubject
+            .createDefault(preferences.getInt(PREF_DREAM_WEIGHT, 0))
 
     init {
         setupFirebase()
@@ -57,34 +63,28 @@ class GoogleFitBodyRepository(
         apiClient.connect()
     }
 
-    // TODO Where to get this information?
-    private val age: Int = 27
-    private val userGender = Gender.MALE
-    private val activityLevel = ActivityLevel.MODERATE_ACTIVITY
+    private fun setupFirebase() {
+        firebase.listenForValue(REF_USER, REF_DESIRED, desiredWeightSubject)
+    }
 
-    private val userBodySubject =  BehaviorSubject.create<User>()
+    override val desiredWeight: Observable<Int>
+        get() = desiredWeightSubject
+                .doOnNext { fbDesiredWeight ->
+                    preferences.edit().putInt(PREF_DREAM_WEIGHT, fbDesiredWeight).apply()
+                }
 
-    override var desiredWeight: Int
-        get() = preferences.getInt(PREF_DREAM_WEIGHT, 0)
+    override fun setDesiredWeight(desiredWeight: Int) {
+        firebase.updateValue(REF_USER, REF_DESIRED, desiredWeight)
+    }
 
-        set(value) {
-            preferences.edit().putInt(PREF_DREAM_WEIGHT, value).apply()
-            firebase.getReference(REF_DESIRED).setValue(value)
-        }
-
-    override val weightUnit: WeightUnit
-        get() {
-            val acronym = preferences
-                    .getString(PREF_WEIGHT_UNIT, context.getString(R.string.default_weight_unit))
-                    ?: context.getString(R.string.default_weight_unit)
-
-            return WeightUnit.of(acronym)
-        }
+    override fun cleanUp() {
+        compositeDisposable.clear()
+    }
 
     override val user: Observable<User> = userBodySubject
 
     override fun onConnected(bundle: Bundle?) {
-        loadFitnessData()
+        loadUserFromGoogleFit()
     }
 
     override fun onConnectionSuspended(i: Int) {
@@ -99,26 +99,68 @@ class GoogleFitBodyRepository(
 
     override val currentWeight: Observable<Double>
         get() = user
-            .map { bodyInfo ->
-                bodyInfo.latestWeightDataPoint?.weight ?: 0.0
-            }
-
-    // -----------------------------------------------------------------------------------------
-
-    private fun loadFitnessData() {
-        Fitness.HistoryApi.readData(apiClient, buildGoogleFitRequest())
-                .setResultCallback { result ->
-                    userBodySubject.onNext(
-                            User(
-                                getWeightList(result.getDataSet(DataType.TYPE_WEIGHT)),
-                                getHeight(result.getDataSet(DataType.TYPE_HEIGHT)),
-                                userGender,
-                                age,
-                                desiredWeight,
-                                activityLevel
-                        )
-                    )
+                .map { bodyInfo ->
+                    bodyInfo.latestWeightDataPoint?.weight ?: 0.0
                 }
+
+    private fun loadUserFromGoogleFit() {
+
+        Observable
+                .combineLatest(
+                        loadGoogleFitUserData(),
+                        gatherUserMetadata(),
+                        { weightHeightPair, userMetadata ->
+                            val (weightDataPoints, height) = weightHeightPair
+                            val (gender, age, dw, activityLevel) = userMetadata
+
+                            User(
+                                    weightDataPoints,
+                                    height,
+                                    gender,
+                                    age,
+                                    dw,
+                                    activityLevel
+                            )
+                        }
+                )
+                .subscribe(userBodySubject::onNext)
+                .addTo(compositeDisposable)
+    }
+
+    private fun loadGoogleFitUserData(): Observable<Pair<List<WeightDataPoint>, Int>> {
+        return Observable.create { emitter ->
+
+            Fitness.HistoryApi.readData(apiClient, buildGoogleFitRequest())
+                    .setResultCallback { result ->
+
+                        val weightList = getWeightList(result.getDataSet(DataType.TYPE_WEIGHT))
+                        val height = getHeight(result.getDataSet(DataType.TYPE_HEIGHT))
+
+                        if (weightList.isNotEmpty() && height > 0) {
+                            emitter.onNext(weightList to height)
+                        }
+                    }
+        }
+    }
+
+    private data class UserMetadata(
+            val gender: Gender,
+            val birthday: CoreyDate,
+            val desiredWeight: Int,
+            val activityLevel: ActivityLevel
+    )
+
+    private fun gatherUserMetadata(): Observable<UserMetadata> {
+        return Observable
+                .combineLatest(
+                        userSettings.gender,
+                        userSettings.birthday,
+                        desiredWeight,
+                        userSettings.activityLevel,
+                        { gender, birthDay, desiredWeight, activityLevel ->
+                            UserMetadata(gender, birthDay, desiredWeight, activityLevel)
+                        }
+                )
     }
 
     private fun buildGoogleFitRequest(
@@ -153,21 +195,6 @@ class GoogleFitBodyRepository(
         } else 0
     }
 
-    private fun setupFirebase() {
-
-        firebase.getReference(REF_DESIRED).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val data = dataSnapshot.value
-                if (data != null) {
-                    val fbDesiredWeight = Integer.parseInt(data.toString())
-                    preferences.edit().putInt(PREF_DREAM_WEIGHT, fbDesiredWeight).apply()
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) = Unit
-        })
-    }
-
     private fun buildCaloriesReadRequest(
             startTime: Long = 1L,
             endTime: Long = System.currentTimeMillis()
@@ -182,9 +209,9 @@ class GoogleFitBodyRepository(
 
     companion object {
 
-        private const val PREF_DREAM_WEIGHT = "dreamweight"
-        private const val PREF_WEIGHT_UNIT = "weight_unit"
+        private const val PREF_DREAM_WEIGHT = "desired_weight"
 
-        private const val REF_DESIRED = "/body/desired"
+        private const val REF_USER = "/user"
+        private const val REF_DESIRED = "/desired_weight"
     }
 }

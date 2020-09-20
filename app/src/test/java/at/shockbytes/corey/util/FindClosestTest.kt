@@ -1,5 +1,6 @@
 package at.shockbytes.corey.util
 
+import at.shockbytes.corey.common.core.util.FindClosestDiffable
 import org.assertj.core.api.Assertions.assertThat
 import org.joda.time.DateTime
 import org.junit.Test

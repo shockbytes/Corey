@@ -1,7 +1,7 @@
 package at.shockbytes.corey.data.nutrition
 
 import at.shockbytes.core.scheduler.SchedulerFacade
-import at.shockbytes.corey.data.CoreyDate
+import at.shockbytes.corey.common.core.CoreyDate
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.bmr.BmrComputation
 import at.shockbytes.corey.data.body.model.User
@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import org.joda.time.Years
 
 class FirebaseNutritionRepository(
         private val firebase: FirebaseDatabase,
@@ -86,7 +87,7 @@ class FirebaseNutritionRepository(
     private fun computeBmr(date: CoreyDate, user: User): PhysicalActivity.BasalMetabolicRate {
 
         val userWeightOfDate = user.retrieveUserWeightAt(date)
-        val userAgeOfDate = user.age // TODO not so important that this changes over time
+        val userAgeOfDate = user.retrieveAgeAt(date)
 
         return bmrComputation
                 .compute(
@@ -105,6 +106,10 @@ class FirebaseNutritionRepository(
         return if (currentWeight != null) {
             weightDataPoints.findClosest(date, currentWeight).weight
         } else 0.0
+    }
+
+    private fun User.retrieveAgeAt(date: CoreyDate): Int {
+        return Years.yearsBetween(birthday.dateTime, date.dateTime).years
     }
 
     private fun computeExternalActivity(

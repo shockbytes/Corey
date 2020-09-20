@@ -3,6 +3,8 @@ package at.shockbytes.corey.data.reminder
 import android.content.Context
 import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.data.schedule.ScheduleItem
+import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 interface ReminderManager {
@@ -19,7 +21,7 @@ interface ReminderManager {
 
     fun poke(context: Context)
 
-    fun postWeighNotification(context: Context): Single<User>
+    fun postWeighNotification(context: Context): Completable
 
     fun postWorkoutNotification(context: Context): Single<ScheduleItem>
 

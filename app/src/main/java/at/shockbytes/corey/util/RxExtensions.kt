@@ -3,6 +3,10 @@ package at.shockbytes.corey.util
 import io.reactivex.Completable
 import io.reactivex.Observable
 
+fun <T> T.asObservable(): Observable<T> = Observable.just(this)
+
+fun <T> Observable<T>.asCompletable(): Completable = Completable.fromObservable(this)
+
 fun completableOf(action: () -> Unit): Completable {
     return Completable.fromAction(action)
 }

@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.core.model.LoginUserEvent
-import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.common.core.util.CoreySettings
+import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.util.WatchInfo
+import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.reminder.ReminderManager
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.data.user.UserRepository
@@ -21,10 +21,11 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
         private val userRepository: UserRepository,
-        private val coreySettings: CoreySettings,
+        private val userSettings: UserSettings,
         private val scheduleRepository: ScheduleRepository,
         private val reminderManager: ReminderManager,
         private val wearableManager: WearableManager,
+        private val bodyRepository: BodyRepository
 ) : BaseViewModel() {
 
     private val userEvent = MutableLiveData<LoginUserEvent>()
@@ -42,7 +43,7 @@ class MainViewModel @Inject constructor(
     init {
         userEvent.postValue(LoginUserEvent.SuccessEvent(userRepository.user, false))
 
-        coreySettings.isWeatherForecastEnabled
+        userSettings.isWeatherForecastEnabled
                 .doOnError { weatherForecastEnabled.postValue(false) }
                 .subscribe(weatherForecastEnabled::postValue, Timber::e)
                 .addTo(compositeDisposable)
@@ -74,7 +75,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun enableWeatherForecast(isEnabled: Boolean) {
-        coreySettings.setWeatherForecastEnabled(isEnabled)
+        userSettings.setWeatherForecastEnabled(isEnabled)
                 .subscribe { Timber.d("Weather forecast flag successfully synced to $isEnabled!") }
                 .addTo(compositeDisposable)
     }
@@ -82,5 +83,9 @@ class MainViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         wearableManager.onPause()
+    }
+
+    fun cleanUp() {
+        bodyRepository.cleanUp()
     }
 }

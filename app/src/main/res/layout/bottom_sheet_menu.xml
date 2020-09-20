@@ -70,7 +70,7 @@
                 android:background="@color/coreyBlack"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewMenuUser" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuLogin"
                 style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="wrap_content"

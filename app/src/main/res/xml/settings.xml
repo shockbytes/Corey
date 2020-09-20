@@ -4,7 +4,7 @@
 
     <androidx.preference.PreferenceCategory android:title="User">
 
-        <EditTextPreference
+        <androidx.preference.EditTextPreference
             app:useSimpleSummaryProvider="true"
             app:negativeButtonText="@android:string/cancel"
             app:icon="@drawable/ic_birthday"
@@ -12,7 +12,7 @@
             app:positiveButtonText="@string/apply"
             android:title="@string/birthday"/>
 
-        <ListPreference
+        <androidx.preference.ListPreference
             app:useSimpleSummaryProvider="true"
             app:negativeButtonText="@android:string/cancel"
             app:icon="@drawable/ic_gender"
@@ -22,7 +22,7 @@
             app:positiveButtonText="@string/apply"
             android:title="@string/gender"/>
 
-        <ListPreference
+        <androidx.preference.ListPreference
             app:useSimpleSummaryProvider="true"
             android:key="@string/prefs_key_activity_level"
             app:positiveButtonText="@string/apply"
@@ -32,6 +32,18 @@
             app:entryValues="@array/activity_levels_short"
             app:negativeButtonText="@android:string/cancel"
             android:title="@string/activity_level"/>
+
+        <androidx.preference.ListPreference
+            app:useSimpleSummaryProvider="true"
+            android:key="@string/prefs_key_weight_unit"
+            app:positiveButtonText="@string/apply"
+            app:allowDividerBelow="false"
+            app:icon="@drawable/ic_weight"
+            app:entries="@array/weight_units"
+            app:entryValues="@array/weight_units_short"
+            app:negativeButtonText="@android:string/cancel"
+            android:title="@string/weight_unit"/>
+
 
     </androidx.preference.PreferenceCategory>
 

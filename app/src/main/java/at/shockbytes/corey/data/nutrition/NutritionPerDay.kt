@@ -1,6 +1,6 @@
 package at.shockbytes.corey.data.nutrition
 
-import at.shockbytes.corey.data.CoreyDate
+import at.shockbytes.corey.common.core.CoreyDate
 
 data class NutritionPerDay(
         val date: CoreyDate,

@@ -64,7 +64,6 @@ inline fun <reified T> FirebaseDatabase.listenForValue(
     val fullRef = reference.plus(childReference)
     this.getReference(fullRef).addValueEventListener(object: ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            Timber.e("Snapshot: $dataSnapshot")
             dataSnapshot
                     .getValue(T::class.java)
                     ?.let(relay::onNext)

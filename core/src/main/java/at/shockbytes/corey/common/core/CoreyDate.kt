@@ -1,6 +1,6 @@
-package at.shockbytes.corey.data
+package at.shockbytes.corey.common.core
 
-import at.shockbytes.corey.util.FindClosestDiffable
+import at.shockbytes.corey.common.core.util.FindClosestDiffable
 import com.google.firebase.database.Exclude
 import org.joda.time.DateTime
 

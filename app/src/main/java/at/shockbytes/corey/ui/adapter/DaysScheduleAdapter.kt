@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.util.adapter.BaseAdapter
-import kotterknife.bindView
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_schedule_days.*
 import org.joda.time.LocalDate
 
 /**
@@ -32,28 +32,30 @@ class DaysScheduleAdapter(
         holder.bind(s)
     }
 
-    internal inner class ViewHolder(itemView: View) : BaseAdapter<String>.ViewHolder(itemView) {
-
-        private val txtName: TextView by bindView(R.id.item_schedule_days_txt_name)
+    private inner class ViewHolder(
+            override val containerView: View
+    ) : BaseAdapter<String>.ViewHolder(containerView), LayoutContainer {
 
         override fun bindToView(t: String) {
             val split = t.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val item = split[0]
             val position = Integer.parseInt(split[1])
 
-            txtName.text = item
-
             val bgColor: Int
             val txtColor: Int
             if (LocalDate.now().dayOfWeek - 1 == position) {
-                bgColor = android.R.color.white
+                bgColor = ContextCompat.getColor(context, R.color.colorAccent)
                 txtColor = ContextCompat.getColor(context, R.color.colorAccent)
             } else {
-                bgColor = R.color.colorAccent
-                txtColor = ContextCompat.getColor(context, android.R.color.white)
+                bgColor = ContextCompat.getColor(context, android.R.color.transparent)
+                txtColor = ContextCompat.getColor(context, R.color.coreyBlack)
             }
-            txtName.setBackgroundResource(bgColor)
-            txtName.setTextColor(txtColor)
+
+            card_item_schedule_days.strokeColor = bgColor
+            item_schedule_days_txt_name.apply {
+                text = item
+                setTextColor(txtColor)
+            }
         }
     }
 }

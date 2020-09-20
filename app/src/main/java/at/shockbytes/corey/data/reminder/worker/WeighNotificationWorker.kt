@@ -19,7 +19,7 @@ class WeighNotificationWorker(
     override fun createWork(): Single<Result> {
         return if (shouldPostWeighNotification()) {
             reminderManager.postWeighNotification(appContext)
-                .map {
+                .toSingle {
                     Result.success()
                 }
                 .onErrorReturn {

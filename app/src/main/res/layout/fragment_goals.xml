@@ -60,7 +60,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_fragment_goals_new_goal"
             style="@style/AppTheme.RoundedButton.Outlined"
             android:layout_gravity="center"

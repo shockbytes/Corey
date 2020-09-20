@@ -8,9 +8,12 @@ import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.common.addTo
+import at.shockbytes.corey.common.core.WeightUnit
+import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.data.user.UserRepository
 import at.shockbytes.corey.ui.fragment.body.weight.WeightHistoryLine
 import at.shockbytes.corey.ui.fragment.body.weight.filter.WeightLineFilter
+import io.reactivex.Observable
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -18,7 +21,8 @@ class BodyViewModel @Inject constructor(
     private val bodyRepository: BodyRepository,
     private val userManager: UserRepository,
     private val schedulerFacade: SchedulerFacade,
-    private val weightLineFilters: Array<WeightLineFilter>
+    private val weightLineFilters: Array<WeightLineFilter>,
+    private val userSettings: UserSettings
 ) : BaseViewModel() {
 
     sealed class BodyInfoState {
@@ -36,16 +40,16 @@ class BodyViewModel @Inject constructor(
     private val bodyInfo = MutableLiveData<BodyInfoState>()
 
     fun requestBodyInfo() {
-        bodyRepository.user
+        buildUserData()
             .subscribeOn(schedulerFacade.io)
-            .map { user ->
+            .map { (user, weightUnit) ->
 
                 val weightLines = buildLinesFromUser(user)
 
                 BodyInfoState.SuccessState(
                     user,
                     userManager.user,
-                    bodyRepository.weightUnit.acronym,
+                    weightUnit.acronym,
                     weightLines
                 )
             }
@@ -56,6 +60,14 @@ class BodyViewModel @Inject constructor(
                 bodyInfo.postValue(BodyInfoState.ErrorState(throwable))
             }
             .addTo(compositeDisposable)
+    }
+
+    private fun buildUserData(): Observable<Pair<User, WeightUnit>> {
+        return Observable.zip(
+                bodyRepository.user,
+                userSettings.weightUnit,
+                { user, weightUnit -> user to weightUnit }
+        )
     }
 
     private fun buildLinesFromUser(user: User): List<WeightHistoryLine> {
