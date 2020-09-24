@@ -7,10 +7,10 @@ import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.common.core.CoreyDate
+import at.shockbytes.corey.common.hideKeyboard
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionTime
 import at.shockbytes.corey.data.nutrition.PortionSize
-import at.shockbytes.corey.data.nutrition.lookup.KcalLookupResult
 import at.shockbytes.corey.ui.custom.selection.CoreySingleSelectionItem
 import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
 import at.shockbytes.corey.util.viewModelOf
@@ -63,22 +63,19 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
         }
     }
 
-    private fun handleKcalLookupEvent(result: Result<KcalLookupResult>) {
+    private fun handleKcalLookupEvent(state: NutritionViewModel.KcalLookupResultState) {
 
-        if (result.isSuccess) {
-            val content = result.getOrNull()?.toString()
-            Timber.d(content)
-            showToast(content ?: "No content...")
-        } else {
-            result.exceptionOrNull()?.let { exception ->
-                when(exception) {
-                    is IllegalStateException -> {
-                        showToast("Looks like an empty query -.-")
-                    }
-                    else -> {
-                        showToast("Oh, a network error!")
-                    }
-                }
+        when (state) {
+            is NutritionViewModel.KcalLookupResultState.Success -> {
+                val content = state.result.toString()
+                Timber.d(content)
+                showToast(content)
+            }
+            is NutritionViewModel.KcalLookupResultState.NoResults -> {
+                showSnackbar("No results found for ${state.searchedText}") // TODO not hardcode this
+            }
+            is NutritionViewModel.KcalLookupResultState.Error -> {
+                showToast("Exception happened: ${state.throwable.localizedMessage}")
             }
         }
     }
@@ -127,6 +124,7 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
         animateCardIn()
 
         til_add_nutrition_entry_name.setEndIconOnClickListener {
+            requireActivity().hideKeyboard()
             viewModel.lookupEstimatedKcal(gatherTitle())
         }
 

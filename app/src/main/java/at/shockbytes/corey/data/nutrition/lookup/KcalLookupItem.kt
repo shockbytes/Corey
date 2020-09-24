@@ -17,7 +17,7 @@ sealed class KcalLookupItem {
             override val dishName: String,
             override val portionSize: String,
             override val kcal: Int,
-            val imageUrl: String
+            val imageUrl: String?
     ) : KcalLookupItem()
 
 }

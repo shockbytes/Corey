@@ -6,6 +6,8 @@ import at.shockbytes.corey.data.body.bmr.BmrComputation
 import at.shockbytes.corey.data.nutrition.FirebaseNutritionRepository
 import at.shockbytes.corey.data.nutrition.NutritionRepository
 import at.shockbytes.corey.data.nutrition.lookup.KcalLookup
+import at.shockbytes.corey.data.nutrition.lookup.edamam.EdamamApi
+import at.shockbytes.corey.data.nutrition.lookup.edamam.EdamamKcalLookup
 import at.shockbytes.corey.data.nutrition.lookup.usda.UsdaApi
 import at.shockbytes.corey.data.nutrition.lookup.usda.UsdaKcalLookup
 import at.shockbytes.corey.data.workout.external.ExternalWorkoutRepository
@@ -43,7 +45,7 @@ class NutritionModule {
 
     @Provides
     @Singleton
-    fun provideOwmWeatherApi(okHttpClient: OkHttpClient): UsdaApi {
+    fun provideUsdaApi(okHttpClient: OkHttpClient): UsdaApi {
         return Retrofit.Builder()
                 .baseUrl(UsdaApi.SERVICE_ENDPOINT)
                 .client(okHttpClient)
@@ -54,10 +56,22 @@ class NutritionModule {
     }
 
     @Provides
+    @Singleton
+    fun provideEdamamApi(okHttpClient: OkHttpClient): EdamamApi {
+        return Retrofit.Builder()
+                .baseUrl(EdamamApi.SERVICE_ENDPOINT)
+                .client(okHttpClient)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(Gson()))
+                .build()
+                .create(EdamamApi::class.java)
+    }
+
+    @Provides
     fun provideKcalLookup(
-            usdaApi: UsdaApi,
+            api: EdamamApi,
             schedulers: SchedulerFacade
     ): KcalLookup {
-        return UsdaKcalLookup(usdaApi, schedulers)
+        return EdamamKcalLookup(api, schedulers)
     }
 }

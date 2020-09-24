@@ -56,8 +56,17 @@ class NutritionViewModel @Inject constructor(
         data class Error(val throwable: Throwable) : SaveEntryEvent()
     }
 
-    private val kcalLookupSubject = PublishSubject.create<Result<KcalLookupResult>>()
-    fun onKcalLookupEvent(): Observable<Result<KcalLookupResult>> = kcalLookupSubject.observeOn(schedulers.ui)
+    sealed class KcalLookupResultState {
+
+        data class Success(val result: KcalLookupResult) : KcalLookupResultState()
+
+        data class NoResults(val searchedText: String) : KcalLookupResultState()
+
+        data class Error(val throwable: Throwable) : KcalLookupResultState()
+    }
+
+    private val kcalLookupSubject = PublishSubject.create<KcalLookupResultState>()
+    fun onKcalLookupEvent(): Observable<KcalLookupResultState> = kcalLookupSubject
 
     private val saveEntrySubject = PublishSubject.create<SaveEntryEvent>()
     fun onSaveEntryEvent(): Observable<SaveEntryEvent> = saveEntrySubject
@@ -126,18 +135,18 @@ class NutritionViewModel @Inject constructor(
     }
 
     fun lookupEstimatedKcal(query: String) {
-
-        if (query.isEmpty()) {
-            kcalLookupSubject.onNext(Result.failure(IllegalStateException("Query must not be null!")))
-        } else {
-            kcalLookup.lookup(foodName = query)
-                    .subscribe({ result ->
-                        kcalLookupSubject.onNext(Result.success(result))
-                    }, { throwable ->
-                        Timber.e(throwable)
-                        kcalLookupSubject.onNext(Result.failure(throwable))
-                    })
-                    .addTo(compositeDisposable)
-        }
+        kcalLookup.lookup(foodName = query)
+                .map { result ->
+                    if (result.items.isEmpty()) {
+                        KcalLookupResultState.NoResults(query)
+                    } else {
+                        KcalLookupResultState.Success(result)
+                    }
+                }
+                .doOnError { throwable ->
+                    kcalLookupSubject.onNext(KcalLookupResultState.Error(throwable))
+                }
+                .subscribe(kcalLookupSubject::onNext, Timber::e)
+                .addTo(compositeDisposable)
     }
 }

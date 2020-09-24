@@ -50,6 +50,11 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
 
+    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    api "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    api "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
     api "com.github.shockbytes:ShockbytesCore:$rootProject.ext.shockbytesCoreVersion"
 
     api "com.google.firebase:firebase-database:$firebaseVersionDatabase"

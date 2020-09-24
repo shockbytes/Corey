@@ -67,7 +67,7 @@ ext {
     workVersion = '2.1.0-beta01'
 
     glideVersion = "4.8.0"
-    retrofitVersion = "2.5.0"
+    retrofitVersion = "2.9.0"
 
     wearableVersion = "2.4.0"
     jodaVersion = "2.10.3"
