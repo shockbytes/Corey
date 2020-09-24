@@ -12,6 +12,8 @@ import at.shockbytes.corey.data.nutrition.NutritionBalance
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionPerDay
 import at.shockbytes.corey.data.nutrition.NutritionRepository
+import at.shockbytes.corey.data.nutrition.lookup.KcalLookup
+import at.shockbytes.corey.data.nutrition.lookup.KcalLookupResult
 import at.shockbytes.corey.ui.adapter.nutrition.NutritionAdapterItem
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -20,7 +22,8 @@ import javax.inject.Inject
 
 class NutritionViewModel @Inject constructor(
         private val nutritionRepository: NutritionRepository,
-        private val schedulers: SchedulerFacade
+        private val schedulers: SchedulerFacade,
+        private val kcalLookup: KcalLookup
 ) : BaseViewModel() {
 
     data class WeekOverview(
@@ -48,10 +51,13 @@ class NutritionViewModel @Inject constructor(
 
     sealed class SaveEntryEvent {
 
-        data class Success(val entryName: String): SaveEntryEvent()
+        data class Success(val entryName: String) : SaveEntryEvent()
 
-        data class Error(val throwable: Throwable): SaveEntryEvent()
+        data class Error(val throwable: Throwable) : SaveEntryEvent()
     }
+
+    private val kcalLookupSubject = PublishSubject.create<Result<KcalLookupResult>>()
+    fun onKcalLookupEvent(): Observable<Result<KcalLookupResult>> = kcalLookupSubject.observeOn(schedulers.ui)
 
     private val saveEntrySubject = PublishSubject.create<SaveEntryEvent>()
     fun onSaveEntryEvent(): Observable<SaveEntryEvent> = saveEntrySubject
@@ -117,5 +123,21 @@ class NutritionViewModel @Inject constructor(
                     saveEntrySubject.onNext(SaveEntryEvent.Error(throwable))
                 })
                 .addTo(compositeDisposable)
+    }
+
+    fun lookupEstimatedKcal(query: String) {
+
+        if (query.isEmpty()) {
+            kcalLookupSubject.onNext(Result.failure(IllegalStateException("Query must not be null!")))
+        } else {
+            kcalLookup.lookup(foodName = query)
+                    .subscribe({ result ->
+                        kcalLookupSubject.onNext(Result.success(result))
+                    }, { throwable ->
+                        Timber.e(throwable)
+                        kcalLookupSubject.onNext(Result.failure(throwable))
+                    })
+                    .addTo(compositeDisposable)
+        }
     }
 }

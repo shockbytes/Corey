@@ -10,6 +10,7 @@ import at.shockbytes.corey.common.core.CoreyDate
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionTime
 import at.shockbytes.corey.data.nutrition.PortionSize
+import at.shockbytes.corey.data.nutrition.lookup.KcalLookupResult
 import at.shockbytes.corey.ui.custom.selection.CoreySingleSelectionItem
 import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
 import at.shockbytes.corey.util.viewModelOf
@@ -43,8 +44,11 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
         viewModel.onSaveEntryEvent()
                 .subscribe(::handleSaveEntryEvent, Timber::e)
                 .addTo(compositeDisposable)
-    }
 
+        viewModel.onKcalLookupEvent()
+                .subscribe(::handleKcalLookupEvent, Timber::e)
+                .addTo(compositeDisposable)
+    }
 
     private fun handleSaveEntryEvent(event: NutritionViewModel.SaveEntryEvent) {
 
@@ -59,10 +63,29 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
         }
     }
 
-    private fun closeFragment() {
+    private fun handleKcalLookupEvent(result: Result<KcalLookupResult>) {
 
+        if (result.isSuccess) {
+            val content = result.getOrNull()?.toString()
+            Timber.d(content)
+            showToast(content ?: "No content...")
+        } else {
+            result.exceptionOrNull()?.let { exception ->
+                when(exception) {
+                    is IllegalStateException -> {
+                        showToast("Looks like an empty query -.-")
+                    }
+                    else -> {
+                        showToast("Oh, a network error!")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun closeFragment() {
         animateCardOut {
-            fragmentManager?.popBackStack()
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -104,7 +127,7 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
         animateCardIn()
 
         til_add_nutrition_entry_name.setEndIconOnClickListener {
-            showToast("Coming soon...")
+            viewModel.lookupEstimatedKcal(gatherTitle())
         }
 
         cssv_fragment_add_nutrition_entry_portion.apply {
@@ -144,7 +167,7 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
 
     private fun gatherNutritionEntry(): NutritionEntry {
 
-        val title = et_add_nutrition_entry_name.text?.toString()!!
+        val title = gatherTitle()
         val estimatedKcal = et_add_nutrition_entry_estimated_kcal.text.toString().toInt()
 
         val portionCode = cssv_fragment_add_nutrition_entry_portion.selectedItem().tag
@@ -164,6 +187,9 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
                 date = CoreyDate(year, month, day, weekOfYear)
         )
     }
+
+    private fun gatherTitle(): String = et_add_nutrition_entry_name.text?.toString()!!
+
 
     override fun unbindViewModel() = Unit
 
