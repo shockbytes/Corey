@@ -7,8 +7,12 @@ data class UsdaSearchResponse(
         val foods: List<Foods>
 ) {
 
+    val fdcIds: List<String>
+        get() = foods.map { it.fdcId }
+
     data class Foods(
             val fdcId: String,
             val description: String,
+            val additionalDescriptions: String
     )
 }

@@ -4,5 +4,7 @@ import io.reactivex.Single
 
 interface KcalLookup {
 
+    val dataSource: LookupDataSource
+
     fun lookup(foodName: String): Single<KcalLookupResult>
 }
