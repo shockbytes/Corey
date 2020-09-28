@@ -1,6 +1,5 @@
 package at.shockbytes.corey.ui.fragment.tab
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -50,6 +49,8 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
     }
 
     private fun handleWeekOverview(weekOverview: NutritionViewModel.WeekOverview) {
+        pb_nutrition.setVisible(false)
+
         with(weekOverview) {
             tv_fragment_nutrition_week.text = getString(R.string.week_placeholder, week)
             tv_fragment_nutrition_year.text = year.toString()
@@ -73,6 +74,7 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
     }
 
     override fun setupViews() {
+        pb_nutrition.setVisible(true)
 
         nutritionAdapter = NutritionAdapter(requireContext())
 
