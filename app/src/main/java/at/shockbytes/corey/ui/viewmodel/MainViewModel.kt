@@ -14,6 +14,7 @@ import at.shockbytes.corey.data.nutrition.NutritionRepository
 import at.shockbytes.corey.data.reminder.ReminderManager
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.data.user.UserRepository
+import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.wearable.WearableManager
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -28,6 +29,7 @@ class MainViewModel @Inject constructor(
         private val wearableManager: WearableManager,
         private val bodyRepository: BodyRepository,
         private val nutritionRepository: NutritionRepository,
+        private val workoutRepository: WorkoutRepository
 ) : BaseViewModel() {
 
     private val userEvent = MutableLiveData<LoginUserEvent>()
@@ -92,6 +94,11 @@ class MainViewModel @Inject constructor(
     }
 
     fun prefetch() {
+        prefetchNutritionHistory()
+        prefetchWorkouts()
+    }
+
+    private fun prefetchNutritionHistory() {
         val start = System.currentTimeMillis()
         nutritionRepository.prefetchNutritionHistory()
                 .subscribe({
@@ -101,5 +108,9 @@ class MainViewModel @Inject constructor(
                     Timber.e(throwable)
                 })
                 .addTo(compositeDisposable)
+    }
+
+    private fun prefetchWorkouts() {
+        workoutRepository.poke()
     }
 }
