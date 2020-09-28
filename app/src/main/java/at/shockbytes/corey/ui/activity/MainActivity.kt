@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import at.shockbytes.core.image.GlideImageLoader
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.model.ShockbytesUser
@@ -88,20 +89,15 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         super.onCreate(savedInstanceState)
         viewModel = viewModelOfActivity(vmFactory)
         viewModel.pokeReminderManager(this)
+        viewModel.prefetch()
     }
 
     override fun bindViewModel() {
-        viewModel.getUserEvent().observe(this,  { event ->
-            onUserEvent(event)
-        })
+        viewModel.getUserEvent().observe(this, Observer(::onUserEvent))
 
         viewModel.getToastMessages()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ message ->
-                showToast(message)
-            }, { throwable ->
-                Timber.e(throwable)
-            })
+            .subscribe(::showToast, Timber::e)
             .addTo(compositeDisposable)
     }
 

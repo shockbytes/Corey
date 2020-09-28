@@ -34,3 +34,5 @@ fun Double.roundDouble(digits: Int): Double {
 fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
     compositeDisposable.add(this)
 }
+
+fun isListNotEmpty(data: List<*>): Boolean = data.isNotEmpty()

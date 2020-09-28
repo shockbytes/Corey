@@ -75,7 +75,7 @@ class NutritionViewModel @Inject constructor(
 
     fun requestNutritionHistory(): Observable<List<NutritionAdapterItem>> {
         return nutritionRepository
-                .loadDailyNutritionEntries()
+                .loadNutritionHistory()
                 .doOnNext(::computeWeekOverviews)
                 .map { data ->
                     data.map(NutritionAdapterItem.Companion::fromNutritionPerDay)

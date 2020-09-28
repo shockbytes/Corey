@@ -26,6 +26,7 @@ import javax.inject.Singleton
 class NutritionModule {
 
     @Provides
+    @Singleton
     fun provideNutritionRepository(
             firebase: FirebaseDatabase,
             schedulers: SchedulerFacade,
