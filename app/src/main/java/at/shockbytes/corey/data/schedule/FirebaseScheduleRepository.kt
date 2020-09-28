@@ -5,6 +5,10 @@ import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.WorkoutIconType
 import at.shockbytes.corey.data.workout.WorkoutRepository
+import at.shockbytes.corey.util.insertValue
+import at.shockbytes.corey.util.listen
+import at.shockbytes.corey.util.removeValue
+import at.shockbytes.corey.util.updateValue
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -29,15 +33,14 @@ class FirebaseScheduleRepository(
     private val schedulers: SchedulerFacade
 ) : ScheduleRepository {
 
+    private val scheduleItemSubject = BehaviorSubject.create<List<ScheduleItem>>()
+    override val schedule: Observable<List<ScheduleItem>> = scheduleItemSubject
+
     init {
         setupFirebase()
     }
 
-    private val scheduleItems: MutableList<ScheduleItem> = mutableListOf()
-
-    private val scheduleItemSubject = BehaviorSubject.create<List<ScheduleItem>>()
-    override val schedule: Observable<List<ScheduleItem>> = scheduleItemSubject
-
+    // TODO Fix this
     override val schedulableItems: Observable<List<SchedulableItem>>
         get() = workoutManager.workouts
                 .map { workouts ->
@@ -61,27 +64,22 @@ class FirebaseScheduleRepository(
                             .toList()
                 }
 
-    override fun poke() = Unit
-
     override fun insertScheduleItem(item: ScheduleItem): ScheduleItem {
-        val ref = firebase.getReference("/schedule").push()
-        val updated = item.copy(id = ref.key ?: "")
-        ref.setValue(updated)
-        return updated
+        return firebase.insertValue(REF_SCHEDULE, item)
     }
 
     override fun updateScheduleItem(item: ScheduleItem) {
-        firebase.getReference("/schedule").child(item.id).setValue(item)
+        firebase.updateValue(REF_SCHEDULE, item.id, item)
     }
 
     override fun deleteScheduleItem(item: ScheduleItem) {
-        firebase.getReference("/schedule").child(item.id).removeValue()
+        firebase.removeValue(REF_SCHEDULE, item.id)
     }
 
     override fun deleteAll(): Completable {
         return Completable
                 .create { emitter ->
-                    firebase.getReference("/schedule").removeValue()
+                    firebase.getReference(REF_SCHEDULE).removeValue()
                             .addOnCompleteListener { emitter.onComplete() }
                             .addOnFailureListener { throwable -> emitter.onError(throwable) }
                 }
@@ -89,34 +87,10 @@ class FirebaseScheduleRepository(
     }
 
     private fun setupFirebase() {
+        firebase.listen(REF_SCHEDULE, scheduleItemSubject, changedChildKeySelector = { it.id })
+    }
 
-        firebase.getReference("/schedule").addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                dataSnapshot.getValue(ScheduleItem::class.java)?.let { item ->
-                    scheduleItems.add(item)
-                    scheduleItemSubject.onNext(scheduleItems)
-                }
-            }
-
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-                dataSnapshot.getValue(ScheduleItem::class.java)?.let { changed ->
-                    scheduleItems[scheduleItems.indexOf(changed)] = changed
-                    scheduleItemSubject.onNext(scheduleItems)
-                }
-            }
-
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-                dataSnapshot.getValue(ScheduleItem::class.java)?.let { removed ->
-                    scheduleItems.remove(removed)
-                    scheduleItemSubject.onNext(scheduleItems)
-                }
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
-                Timber.d("ScheduleItem moved: $dataSnapshot / $s")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) = Unit
-        })
+    companion object {
+        private const val REF_SCHEDULE = "/schedule"
     }
 }

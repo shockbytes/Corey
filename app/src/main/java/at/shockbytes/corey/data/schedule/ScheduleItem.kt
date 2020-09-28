@@ -2,6 +2,7 @@ package at.shockbytes.corey.data.schedule
 
 import at.shockbytes.corey.common.core.workout.model.LocationType
 import at.shockbytes.corey.common.core.workout.model.WorkoutIconType
+import at.shockbytes.corey.data.FirebaseStorable
 import java.util.UUID
 
 /**
@@ -14,8 +15,10 @@ data class ScheduleItem(
     val id: String = UUID.randomUUID().toString(),
     val locationType: LocationType = LocationType.NONE,
     val workoutIconType: WorkoutIconType = WorkoutIconType.NONE
-) {
+) : FirebaseStorable {
 
     val isEmpty: Boolean
         get() = name.isEmpty()
+
+    override fun copyWithNewId(newId: String): FirebaseStorable = copy(id = newId)
 }
