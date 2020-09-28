@@ -49,11 +49,13 @@ class NutritionViewModel @Inject constructor(
     private val currentWeekOverview = MutableLiveData<WeekOverview>()
     fun getCurrentWeekOverview(): LiveData<WeekOverview> = currentWeekOverview
 
-    sealed class SaveEntryEvent {
+    sealed class ModifyEntryEvent {
 
-        data class Success(val entryName: String) : SaveEntryEvent()
+        data class Save(val entryName: String) : ModifyEntryEvent()
 
-        data class Error(val throwable: Throwable) : SaveEntryEvent()
+        data class Delete(val entryName: String): ModifyEntryEvent()
+
+        data class Error(val throwable: Throwable) : ModifyEntryEvent()
     }
 
     sealed class KcalLookupResultState {
@@ -68,8 +70,8 @@ class NutritionViewModel @Inject constructor(
     private val kcalLookupSubject = PublishSubject.create<KcalLookupResultState>()
     fun onKcalLookupEvent(): Observable<KcalLookupResultState> = kcalLookupSubject
 
-    private val saveEntrySubject = PublishSubject.create<SaveEntryEvent>()
-    fun onSaveEntryEvent(): Observable<SaveEntryEvent> = saveEntrySubject
+    private val modifyEntrySubject = PublishSubject.create<ModifyEntryEvent>()
+    fun onModifyEntryEvent(): Observable<ModifyEntryEvent> = modifyEntrySubject
 
     private lateinit var weekOverviewCache: List<WeekOverview>
 
@@ -126,10 +128,10 @@ class NutritionViewModel @Inject constructor(
         nutritionRepository.addNutritionEntry(nutritionEntry)
                 .observeOn(schedulers.ui)
                 .subscribe({
-                    saveEntrySubject.onNext(SaveEntryEvent.Success(nutritionEntry.name))
+                    modifyEntrySubject.onNext(ModifyEntryEvent.Save(nutritionEntry.name))
                 }, { throwable ->
                     Timber.e(throwable)
-                    saveEntrySubject.onNext(SaveEntryEvent.Error(throwable))
+                    modifyEntrySubject.onNext(ModifyEntryEvent.Error(throwable))
                 })
                 .addTo(compositeDisposable)
     }
@@ -147,6 +149,18 @@ class NutritionViewModel @Inject constructor(
                     kcalLookupSubject.onNext(KcalLookupResultState.Error(throwable))
                 }
                 .subscribe(kcalLookupSubject::onNext, Timber::e)
+                .addTo(compositeDisposable)
+    }
+
+    fun deleteNutritionEntry(entry: NutritionEntry) {
+        nutritionRepository.deleteNutritionEntry(entry.id)
+                .subscribeOn(schedulers.io)
+                .subscribe({
+                    modifyEntrySubject.onNext(ModifyEntryEvent.Delete(entry.name))
+                }, { throwable ->
+                    Timber.e(throwable)
+                    modifyEntrySubject.onNext(ModifyEntryEvent.Error(throwable))
+                })
                 .addTo(compositeDisposable)
     }
 }

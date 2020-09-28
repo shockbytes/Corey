@@ -107,8 +107,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
             adapter = addScheduleItemAdapter
         }
 
-        scheduleManager
-            .schedulableItems
+        scheduleManager.schedulableItems
             .map { data ->
                 data.map { item ->
                     AddScheduleItemAdapter.ScheduleDisplayItem(item)

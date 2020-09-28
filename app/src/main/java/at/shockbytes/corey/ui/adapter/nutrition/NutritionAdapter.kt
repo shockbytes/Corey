@@ -15,7 +15,10 @@ import kotlinx.android.synthetic.main.item_nutrition_day_intake.*
 import kotlinx.android.synthetic.main.item_nutrition_day_intake_header.*
 import java.lang.IllegalStateException
 
-class NutritionAdapter(context: Context) : BaseAdapter<NutritionAdapterItem>(context) {
+class NutritionAdapter(
+        context: Context,
+        private val onNutritionIntakeClickedListener: (NutritionIntakeAdapterItem.Intake) -> Unit
+) : BaseAdapter<NutritionAdapterItem>(context) {
 
     fun updateData(items: List<NutritionAdapterItem>) {
         data.clear()
@@ -38,7 +41,16 @@ class NutritionAdapter(context: Context) : BaseAdapter<NutritionAdapterItem>(con
 
                 rv_item_nutrition_day_intake.apply {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = NutritionIntakeAdapter(context, intake)
+                    adapter = NutritionIntakeAdapter(
+                            context,
+                            intake,
+                            object : OnItemLongClickListener<NutritionIntakeAdapterItem> {
+                                override fun onItemLongClick(t: NutritionIntakeAdapterItem, v: View) {
+                                    if (t is NutritionIntakeAdapterItem.Intake) {
+                                        onNutritionIntakeClickedListener(t)
+                                    }
+                                }
+                            })
                 }
 
                 tv_item_nutrition_day_burned_header.setVisible(burned.isNotEmpty())
@@ -53,11 +65,13 @@ class NutritionAdapter(context: Context) : BaseAdapter<NutritionAdapterItem>(con
 
     private class NutritionIntakeAdapter(
             context: Context,
-            adapterData: List<NutritionIntakeAdapterItem>
-    ): BaseAdapter<NutritionIntakeAdapterItem>(context) {
+            adapterData: List<NutritionIntakeAdapterItem>,
+            onItemLongClickListener: OnItemLongClickListener<NutritionIntakeAdapterItem>
+    ) : BaseAdapter<NutritionIntakeAdapterItem>(context) {
 
         init {
             data.addAll(adapterData)
+            this.onItemLongClickListener = onItemLongClickListener
         }
 
         override fun getItemViewType(position: Int): Int {

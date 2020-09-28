@@ -41,7 +41,7 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
     }
 
     override fun bindViewModel() {
-        viewModel.onSaveEntryEvent()
+        viewModel.onModifyEntryEvent()
                 .subscribe(::handleSaveEntryEvent, Timber::e)
                 .addTo(compositeDisposable)
 
@@ -50,14 +50,14 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
                 .addTo(compositeDisposable)
     }
 
-    private fun handleSaveEntryEvent(event: NutritionViewModel.SaveEntryEvent) {
+    private fun handleSaveEntryEvent(event: NutritionViewModel.ModifyEntryEvent) {
 
         when (event) {
-            is NutritionViewModel.SaveEntryEvent.Success -> {
+            is NutritionViewModel.ModifyEntryEvent.Save -> {
                 showSnackbar(event.entryName)
                 closeFragment()
             }
-            is NutritionViewModel.SaveEntryEvent.Error -> {
+            is NutritionViewModel.ModifyEntryEvent.Error -> {
                 showSnackbar(event.throwable.localizedMessage ?: "Unknown error!")
             }
         }

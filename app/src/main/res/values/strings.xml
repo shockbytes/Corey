@@ -266,6 +266,9 @@
     <string name="prefs_schedule_weather_forecast_key" translatable="false">prefs_schedule_weather_forecast_key</string>
     <string name="create_workout">Create workout</string>
     <string name="add_nutrition_entry">Add nutrition entry</string>
+    <string name="delete_nutrition_entry_message">Are you sure that you want to delete the entry %s?</string>
+    <string name="item_deleted">%s deleted!</string>
+    <string name="unable_to_perform_action">Could not perform action!</string>
 
     <string name="portion_size">Portion size</string>
 

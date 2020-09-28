@@ -1,19 +1,25 @@
 package at.shockbytes.corey.ui.fragment.tab
 
+import android.graphics.Color
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import at.shockbytes.core.util.CoreUtils.colored
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.ui.adapter.nutrition.NutritionAdapter
+import at.shockbytes.corey.ui.adapter.nutrition.NutritionIntakeAdapterItem
 import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
 import at.shockbytes.corey.util.LastItemBottomMarginItemDecoration
+import at.shockbytes.corey.util.ShockColors
 import at.shockbytes.corey.util.observePositionChanges
 import at.shockbytes.util.AppUtils
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_nutrition.*
 import timber.log.Timber
@@ -45,6 +51,11 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
                 .subscribe(nutritionAdapter::updateData, Timber::e)
                 .addTo(compositeDisposable)
 
+        viewModel.onModifyEntryEvent()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(::handleModifyEvent)
+                .addTo(compositeDisposable)
+
         viewModel.getCurrentWeekOverview().observe(this, ::handleWeekOverview)
     }
 
@@ -69,6 +80,17 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
         }
     }
 
+    private fun handleModifyEvent(event: NutritionViewModel.ModifyEntryEvent) {
+        when (event) {
+            is NutritionViewModel.ModifyEntryEvent.Delete -> {
+                showToast(getString(R.string.item_deleted, event.entryName))
+            }
+            is NutritionViewModel.ModifyEntryEvent.Error -> {
+                showToast(R.string.unable_to_perform_action)
+            }
+        }
+    }
+
     override fun injectToGraph(appComponent: AppComponent?) {
         appComponent?.inject(this)
     }
@@ -76,7 +98,7 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
     override fun setupViews() {
         pb_nutrition.setVisible(true)
 
-        nutritionAdapter = NutritionAdapter(requireContext())
+        nutritionAdapter = NutritionAdapter(requireContext(), ::requestNutritionEntryDeletion)
 
         rv_nutrition_data.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, true)
@@ -98,8 +120,20 @@ class NutritionFragment : TabBaseFragment<AppComponent>() {
         }
     }
 
-    override fun unbindViewModel() {
+    private fun requestNutritionEntryDeletion(intakeItem: NutritionIntakeAdapterItem.Intake) {
+        AlertDialog.Builder(requireContext())
+                .setTitle(R.string.delete)
+                .setMessage(getString(R.string.delete_nutrition_entry_message, intakeItem.entry.name))
+                .setIcon(R.drawable.ic_delete)
+                .setNegativeButton(getString(R.string.cancel).colored(Color.BLACK)) { _, _ -> Unit }
+                .setPositiveButton(getString(R.string.delete).colored(ShockColors.ERROR)) { _, _ ->
+                    viewModel.deleteNutritionEntry(intakeItem.entry)
+                }
+                .create()
+                .show()
     }
+
+    override fun unbindViewModel() = Unit
 
     companion object {
 
