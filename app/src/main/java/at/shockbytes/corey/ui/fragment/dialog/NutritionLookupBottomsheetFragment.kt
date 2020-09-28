@@ -7,12 +7,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import android.view.View
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.corey.R
 import at.shockbytes.corey.core.CoreyApp
 import at.shockbytes.corey.data.nutrition.lookup.KcalLookupItem
 import at.shockbytes.corey.data.nutrition.lookup.KcalLookupResult
+import at.shockbytes.corey.ui.adapter.nutrition.NutritionLookupAdapter
 import at.shockbytes.util.adapter.BaseAdapter
+import kotterknife.bindView
 import javax.inject.Inject
 
 /**
@@ -35,6 +40,9 @@ class NutritionLookupBottomsheetFragment : BottomSheetDialogFragment(),
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
     }
+
+    private val tvDataSource: TextView by bindView(R.id.tv_nutrition_lookup_source)
+    private val rvLookup: RecyclerView by bindView(R.id.rv_nutrition_lookup_picker)
 
     private var listener: ((item: KcalLookupItem) -> Unit)? = null
 
@@ -72,7 +80,19 @@ class NutritionLookupBottomsheetFragment : BottomSheetDialogFragment(),
 
     private fun setupViews() {
         arguments?.getParcelable<KcalLookupResult>(ARG_RESULT)?.let { item ->
-
+            tvDataSource.text = getString(R.string.data_provided, item.dataSource.name)
+            rvLookup.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = NutritionLookupAdapter(context, imageLoader) { item ->
+                    listener?.invoke(item)
+                    dismiss()
+                }.apply {
+                    data.apply {
+                        clear()
+                        addAll(item.items)
+                    }
+                }
+            }
         }
     }
 

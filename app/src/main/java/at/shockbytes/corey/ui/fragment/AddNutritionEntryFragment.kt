@@ -149,6 +149,11 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
             selectPosition(0)
         }
 
+        RxTextView.textChanges(et_add_nutrition_entry_name)
+                .map { it.isNotEmpty() }
+                .subscribe(til_add_nutrition_entry_name::setEndIconVisible)
+                .addTo(compositeDisposable)
+
         Observable
                 .combineLatest(
                         RxTextView.textChanges(et_add_nutrition_entry_name),

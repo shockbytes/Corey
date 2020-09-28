@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">Corey</string>
-    <string name="app_version" translatable="false">4.0</string>
+    <string name="app_version" translatable="false">4.1</string>
     <string name="action_settings">Settings</string>
 
     <string name="tab_nutrition">Nutrition</string>
@@ -269,7 +269,9 @@
     <string name="delete_nutrition_entry_message">Are you sure that you want to delete the entry %s?</string>
     <string name="nutrition_lookup_not_found">No results found for %s.</string>
     <string name="nutrition_error">An unexpected error happened: %s.</string>
+    <string name="data_provided">Data provided by %s</string>
 
+    <string name="kcal_format_w_portion">%d kcal per %s</string>
     <string name="item_deleted">%s deleted!</string>
     <string name="unable_to_perform_action">Could not perform action!</string>
 
