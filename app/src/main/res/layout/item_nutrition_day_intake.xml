@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,20 +9,23 @@
 
     <TextView
         android:id="@+id/tv_item_nutrition_day_intake_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:layout_marginEnd="4dp"
+        android:layout_toStartOf="@id/tv_item_nutrition_day_intake_kcal"
         android:textColor="@color/colorPrimaryText"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
         tools:text="Coffee" />
 
     <TextView
         android:id="@+id/tv_item_nutrition_day_intake_kcal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:textColor="@color/colorSecondaryText"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
         tools:text="210kcal" />
 
-</LinearLayout>
+</RelativeLayout>
