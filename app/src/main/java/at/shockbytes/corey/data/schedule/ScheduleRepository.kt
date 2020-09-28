@@ -1,6 +1,5 @@
 package at.shockbytes.corey.data.schedule
 
-import at.shockbytes.corey.common.core.util.Pokeable
 import io.reactivex.Completable
 import io.reactivex.Observable
 
@@ -8,7 +7,7 @@ import io.reactivex.Observable
  * Author:  Martin Macheiner
  * Date:    21.02.2017
  */
-interface ScheduleRepository : Pokeable {
+interface ScheduleRepository {
 
     val schedule: Observable<List<ScheduleItem>>
 

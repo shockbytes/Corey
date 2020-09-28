@@ -9,6 +9,9 @@ sealed class NutritionBalance {
     abstract val kcal: Int
     abstract val rawKcal: Int
 
+    protected val absoluteKcal: Int
+        get() = kcal.absoluteValue
+
     abstract fun formatted(): CharSequence
 
     class Positive(override val kcal: Int) : NutritionBalance() {
@@ -16,7 +19,7 @@ sealed class NutritionBalance {
             get() = kcal
 
         override fun formatted(): CharSequence {
-            return "+${kcal}kcal".colored(Color.parseColor("#F44336")) // material red
+            return "+${absoluteKcal}kcal".colored(Color.parseColor("#F44336")) // material red
         }
     }
 
@@ -25,7 +28,7 @@ sealed class NutritionBalance {
             get() = -kcal
 
         override fun formatted(): CharSequence {
-            return "-${kcal}kcal".colored(Color.parseColor("#8BC34A")) // colorPrimary
+            return "-${absoluteKcal}kcal".colored(Color.parseColor("#8BC34A")) // colorPrimary
         }
     }
 

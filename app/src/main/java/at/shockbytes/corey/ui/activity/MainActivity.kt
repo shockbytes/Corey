@@ -3,9 +3,11 @@ package at.shockbytes.corey.ui.activity
 import androidx.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import at.shockbytes.core.image.GlideImageLoader
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.model.ShockbytesUser
@@ -13,6 +15,7 @@ import at.shockbytes.core.ui.activity.BottomNavigationBarActivity
 import at.shockbytes.core.ui.model.AdditionalToolbarAction
 import at.shockbytes.core.ui.model.BottomNavigationActivityOptions
 import at.shockbytes.core.ui.model.BottomNavigationTab
+import at.shockbytes.core.util.CoreUtils.colored
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
@@ -21,6 +24,8 @@ import at.shockbytes.corey.ui.fragment.AddNutritionEntryFragment
 import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
+import at.shockbytes.corey.util.ShockColors
+import at.shockbytes.corey.util.accentColored
 import at.shockbytes.corey.util.showBaseFragment
 import at.shockbytes.corey.util.viewModelOfActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -88,20 +93,15 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         super.onCreate(savedInstanceState)
         viewModel = viewModelOfActivity(vmFactory)
         viewModel.pokeReminderManager(this)
+        viewModel.prefetch()
     }
 
     override fun bindViewModel() {
-        viewModel.getUserEvent().observe(this,  { event ->
-            onUserEvent(event)
-        })
+        viewModel.getUserEvent().observe(this, Observer(::onUserEvent))
 
         viewModel.getToastMessages()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ message ->
-                showToast(message)
-            }, { throwable ->
-                Timber.e(throwable)
-            })
+            .subscribe(::showToast, Timber::e)
             .addTo(compositeDisposable)
     }
 
@@ -142,8 +142,8 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
             .setTitle(R.string.delete_schedule)
             .setMessage(R.string.delete_schedule_message)
             .setIcon(R.drawable.ic_cancel_red)
-            .setNegativeButton(R.string.cancel) { _, _ -> Unit }
-            .setPositiveButton(R.string.delete) { _, _ ->
+            .setNegativeButton(getString(R.string.cancel).colored(Color.BLACK)) { _, _ -> Unit }
+            .setPositiveButton(getString(R.string.delete).colored(ShockColors.ERROR)) { _, _ ->
                 viewModel.resetSchedule()
             }
             .create()

@@ -9,6 +9,7 @@ import at.shockbytes.corey.ui.fragment.body.ProfileBodyFragmentView
 import at.shockbytes.corey.ui.fragment.dialog.AddExercisesDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
+import at.shockbytes.corey.ui.fragment.dialog.NutritionLookupBottomsheetFragment
 import at.shockbytes.corey.ui.fragment.tab.*
 import at.shockbytes.corey.ui.fragment.workoutpager.TimeExercisePagerFragment
 import dagger.Component
@@ -27,7 +28,8 @@ import javax.inject.Singleton
     WeatherModule::class,
     NetModule::class,
     WorkerModule::class,
-    BodyModule::class
+    BodyModule::class,
+    NutritionModule::class
 ])
 interface AppComponent : ShockbytesInjector {
 
@@ -67,4 +69,5 @@ interface AppComponent : ShockbytesInjector {
 
     fun inject(fragment: AddNutritionEntryFragment)
 
+    fun inject(fragment: NutritionLookupBottomsheetFragment)
 }

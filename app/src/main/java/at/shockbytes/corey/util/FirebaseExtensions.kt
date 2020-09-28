@@ -74,12 +74,17 @@ inline fun <reified T> FirebaseDatabase.listenForValue(
 }
 
 
-inline fun <reified T: FirebaseStorable> FirebaseDatabase.insertValue(reference: String, value: T) {
+inline fun <reified T: FirebaseStorable> FirebaseDatabase.insertValue(reference: String, value: T): T {
 
     val ref = getReference(reference).push()
     val id = ref.key ?: throw IllegalStateException("Cannot insert value $value into firebase!")
-    ref.setValue(value.copyWithNewId(newId = id))
+
+    val updatedValue = value.copyWithNewId(newId = id)
+    ref.setValue(updatedValue)
+
+    return updatedValue as T
 }
+
 
 fun <T> FirebaseDatabase.updateValue(reference: String, childId: String, value: T) {
     getReference(reference).child(childId).setValue(value)

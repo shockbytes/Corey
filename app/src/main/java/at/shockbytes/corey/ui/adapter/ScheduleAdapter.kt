@@ -44,7 +44,7 @@ class ScheduleAdapter(
             for (i in data.size - 1 downTo 0) {
                 deleteEntity(i)
             }
-            fillUpScheduleList(value).forEach { addEntityAtLast(it) }
+            fillUpScheduleList2(value).forEach { addEntityAtLast(it) }
         }
 
     init {
@@ -107,35 +107,6 @@ class ScheduleAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    fun insertScheduleItem(item: ScheduleItem) {
-        val location = item.day
-        if (location >= 0) {
-            data[location] = item
-            notifyItemChanged(location)
-        }
-    }
-
-    fun updateScheduleItem(item: ScheduleItem) {
-
-        val oldLocation = getLocation(item)
-        val newLocation = item.day
-        if (newLocation >= 0 && oldLocation != newLocation) {
-            val newLocationItem = data[newLocation]
-            data[newLocation] = item
-            data[oldLocation] = newLocationItem
-            notifyItemChanged(newLocation)
-            notifyItemChanged(oldLocation)
-        }
-    }
-
-    fun resetEntity(item: ScheduleItem) {
-        val location = item.day
-        if (location >= 0) {
-            data[location] = emptyScheduleItem(location)
-            notifyItemChanged(location)
-        }
-    }
-
     fun reorderAfterMove(): List<ScheduleItem> {
         // Assign the right day indices to the objects
         data.forEachIndexed { index, _ ->
@@ -143,21 +114,6 @@ class ScheduleAdapter(
         }
         // Only return the filled ones for syncing
         return data.filter { !it.isEmpty }
-    }
-
-    private fun fillUpScheduleList(items: List<ScheduleItem>): List<ScheduleItem> {
-
-        val array = arrayOfNulls<ScheduleItem>(MAX_SCHEDULES)
-        // Populate array with all given items
-        items.forEach { array[it.day] = it }
-        // Now add placeholder objects for empty spots
-        (0 until MAX_SCHEDULES).forEach { idx ->
-            if (array[idx] == null) {
-                array[idx] = emptyScheduleItem(idx)
-            }
-        }
-        // Safe to do so, because all nulls are already replaced
-        return array.mapTo(mutableListOf()) { it!! }
     }
 
     private fun fillUpScheduleList2(items: List<ScheduleItem>): List<ScheduleItem> {

@@ -2,11 +2,8 @@ package at.shockbytes.corey.ui.fragment.tab
 
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
@@ -24,6 +21,7 @@ import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -49,7 +47,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
     lateinit var weatherResolver: ScheduleWeatherResolver
 
     private lateinit var touchHelper: ItemTouchHelper
-    private val adapter: ScheduleAdapter by lazy {
+    private val scheduleAdapter: ScheduleAdapter by lazy {
         ScheduleAdapter(
                 requireContext(),
                 { item, _, position -> onScheduleItemClicked(item, position) },
@@ -60,7 +58,6 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
         )
     }
 
-    private val recyclerView: RecyclerView by bindView(R.id.fragment_schedule_rv)
     private val recyclerViewDays: RecyclerView by bindView(R.id.fragment_schedule_rv_days)
 
     private val recyclerViewLayoutManager: RecyclerView.LayoutManager
@@ -75,7 +72,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
     override fun onItemMove(t: ScheduleItem, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() {
-        adapter.reorderAfterMove()
+        scheduleAdapter.reorderAfterMove()
                 .forEach { item ->
                     scheduleRepository.updateScheduleItem(item)
                 }
@@ -93,7 +90,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ scheduleItems ->
-                    adapter.updateData(scheduleItems)
+                    scheduleAdapter.updateData(scheduleItems)
                 }, { throwable ->
                     throwable.printStackTrace()
                     Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()
@@ -105,21 +102,22 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
 
     override fun setupViews() {
 
-        context?.let { ctx ->
+        recyclerViewDays.apply {
+            layoutManager = recyclerViewLayoutManager
+            adapter = DaysScheduleAdapter(requireContext(), resources.getStringArray(R.array.days).toList())
+            addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, requireContext())))
+        }
 
-            recyclerViewDays.layoutManager = recyclerViewLayoutManager
-            recyclerViewDays.adapter = DaysScheduleAdapter(ctx, resources.getStringArray(R.array.days).toList())
-            recyclerViewDays.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, ctx)))
-
-            recyclerView.layoutManager = recyclerViewLayoutManager
-            recyclerView.isNestedScrollingEnabled = false
-            recyclerView.addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, ctx)))
-            val callback = BaseItemTouchHelper(adapter, false, BaseItemTouchHelper.DragAccess.ALL)
-            adapter.onItemMoveListener = this
+        fragment_schedule_rv.apply {
+            layoutManager = recyclerViewLayoutManager
+            isNestedScrollingEnabled = false
+            addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, requireContext())))
+            val callback = BaseItemTouchHelper(scheduleAdapter, false, BaseItemTouchHelper.DragAccess.ALL)
+            scheduleAdapter.onItemMoveListener = this@ScheduleFragment
 
             touchHelper = ItemTouchHelper(callback)
-            touchHelper.attachToRecyclerView(recyclerView)
-            recyclerView.adapter = adapter
+            touchHelper.attachToRecyclerView(this)
+            adapter = scheduleAdapter
         }
     }
 
@@ -132,11 +130,12 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
             InsertScheduleDialogFragment.newInstance()
                     .setOnScheduleItemSelectedListener { i ->
                         scheduleRepository.insertScheduleItem(
-                            ScheduleItem(i.item.title,
-                                position,
-                                locationType = i.item.locationType,
-                                workoutIconType = i.item.workoutType
-                            )
+                                ScheduleItem(
+                                        i.item.title,
+                                        position,
+                                        locationType = i.item.locationType,
+                                        workoutIconType = i.item.workoutType
+                                )
                         )
                     }
                     .show(childFragmentManager, "dialogfragment-insert-schedule")

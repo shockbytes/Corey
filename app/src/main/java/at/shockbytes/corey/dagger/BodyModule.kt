@@ -49,22 +49,4 @@ class BodyModule(private val app: Application) {
     fun provideWeightLineFilters(): Array<WeightLineFilter> {
         return arrayOf(RawWeightLineFilter(), RunningAverageWeightLineFilter())
     }
-
-    @Provides
-    fun provideNutritionRepository(
-            firebase: FirebaseDatabase,
-            schedulers: SchedulerFacade,
-            externalWorkoutRepository: ExternalWorkoutRepository,
-            bodyRepository: BodyRepository,
-            bmrComputation: BmrComputation,
-    ): NutritionRepository {
-        return FirebaseNutritionRepository(
-                firebase,
-                schedulers,
-                externalWorkoutRepository,
-                bodyRepository,
-                bmrComputation
-        )
-    }
-
 }

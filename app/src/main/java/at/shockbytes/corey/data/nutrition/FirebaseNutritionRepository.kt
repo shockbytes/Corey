@@ -2,6 +2,7 @@ package at.shockbytes.corey.data.nutrition
 
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.common.core.CoreyDate
+import at.shockbytes.corey.common.isListNotEmpty
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.bmr.Bmr
 import at.shockbytes.corey.data.body.bmr.BmrComputation
@@ -12,9 +13,9 @@ import at.shockbytes.corey.util.*
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import org.joda.time.Years
+import timber.log.Timber
 
 class FirebaseNutritionRepository(
         private val firebase: FirebaseDatabase,
@@ -24,29 +25,35 @@ class FirebaseNutritionRepository(
         private val bmrComputation: BmrComputation
 ) : NutritionRepository {
 
-    private val nutritionSubject = BehaviorSubject.createDefault<List<NutritionEntry>>(listOf())
+    private val nutritionFirebaseSubject = BehaviorSubject.create<List<NutritionEntry>>()
+    private val nutritionCacheSubject = BehaviorSubject.create<List<NutritionPerDay>>()
 
     init {
         setupFirebase()
     }
 
     private fun setupFirebase() {
-        firebase.listen(REF, nutritionSubject, changedChildKeySelector = { it.id })
+        firebase.listen(REF, nutritionFirebaseSubject, changedChildKeySelector = { it.id })
     }
 
     override fun computeCurrentBmr(): Observable<Bmr> {
         return buildEnergyBalanceObservable()
-                .map { (_, _, user) ->
-                    computeBmr(user)
-                }
+                .map { (_, _, user) -> computeBmr(user) }
     }
 
-
-    override fun loadDailyNutritionEntries(): Observable<List<NutritionPerDay>> {
+    override fun prefetchNutritionHistory(): Observable<*> {
         return buildEnergyBalanceObservable()
                 .map(::energyBalanceToNutritionPerDayItems)
                 .subscribeOn(schedulers.io)
+                .observeOn(schedulers.ui)
+                .filter(::isListNotEmpty)
+                .doOnNext(nutritionCacheSubject::onNext)
+                .doOnNext { data ->
+                    Timber.d("Pre-fetched nutrition history with ${data.size} items.")
+                }
     }
+
+    override fun loadNutritionHistory(): Observable<List<NutritionPerDay>> = nutritionCacheSubject
 
     private data class EnergyBalance(
             val nutritionPerDay: List<NutritionEntry>,
@@ -57,7 +64,7 @@ class FirebaseNutritionRepository(
     private fun buildEnergyBalanceObservable(): Observable<EnergyBalance> {
         return Observable
                 .combineLatest(
-                        nutritionSubject,
+                        nutritionFirebaseSubject,
                         externalWorkoutRepository.loadExternalWorkouts(),
                         bodyRepository.user,
                         { nutritionPerDay, externalWorkouts, user ->

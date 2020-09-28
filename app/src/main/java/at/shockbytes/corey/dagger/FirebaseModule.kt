@@ -40,4 +40,9 @@ class FirebaseModule {
             .reference
             .database
     }
+
+    companion object {
+
+        const val REF_RESPONSE_TIME_METRICS = "/metrics/response_times/"
+    }
 }

@@ -7,10 +7,13 @@ import at.shockbytes.core.ui.fragment.BaseFragment
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.common.core.CoreyDate
+import at.shockbytes.corey.common.hideKeyboard
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionTime
 import at.shockbytes.corey.data.nutrition.PortionSize
+import at.shockbytes.corey.data.nutrition.lookup.KcalLookupResult
 import at.shockbytes.corey.ui.custom.selection.CoreySingleSelectionItem
+import at.shockbytes.corey.ui.fragment.dialog.NutritionLookupBottomsheetFragment
 import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
 import at.shockbytes.corey.util.viewModelOf
 import com.github.florent37.viewanimator.ViewAnimator
@@ -40,29 +43,53 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
     }
 
     override fun bindViewModel() {
-        viewModel.onSaveEntryEvent()
+        viewModel.onModifyEntryEvent()
                 .subscribe(::handleSaveEntryEvent, Timber::e)
+                .addTo(compositeDisposable)
+
+        viewModel.onKcalLookupEvent()
+                .subscribe(::handleKcalLookupEvent, Timber::e)
                 .addTo(compositeDisposable)
     }
 
-
-    private fun handleSaveEntryEvent(event: NutritionViewModel.SaveEntryEvent) {
+    private fun handleSaveEntryEvent(event: NutritionViewModel.ModifyEntryEvent) {
 
         when (event) {
-            is NutritionViewModel.SaveEntryEvent.Success -> {
+            is NutritionViewModel.ModifyEntryEvent.Save -> {
                 showSnackbar(event.entryName)
                 closeFragment()
             }
-            is NutritionViewModel.SaveEntryEvent.Error -> {
+            is NutritionViewModel.ModifyEntryEvent.Error -> {
                 showSnackbar(event.throwable.localizedMessage ?: "Unknown error!")
             }
         }
     }
 
-    private fun closeFragment() {
+    private fun handleKcalLookupEvent(state: NutritionViewModel.KcalLookupResultState) {
+        when (state) {
+            is NutritionViewModel.KcalLookupResultState.Success -> {
+                showLookupResult(state.result)
+            }
+            is NutritionViewModel.KcalLookupResultState.NoResults -> {
+                showSnackbar(getString(R.string.nutrition_lookup_not_found, state.searchedText))
+            }
+            is NutritionViewModel.KcalLookupResultState.Error -> {
+                showToast(getString(R.string.nutrition_error, state.throwable.localizedMessage))
+            }
+        }
+    }
 
+    private fun showLookupResult(result: KcalLookupResult) {
+        NutritionLookupBottomsheetFragment.newInstance(result)
+                .setOnLookupItemSelectedListener { item ->
+                    et_add_nutrition_entry_estimated_kcal.setText(item.formattedKcal)
+                }
+                .show(childFragmentManager, "bottomsheet-nutrition-lookup")
+    }
+
+    private fun closeFragment() {
         animateCardOut {
-            fragmentManager?.popBackStack()
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -104,7 +131,8 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
         animateCardIn()
 
         til_add_nutrition_entry_name.setEndIconOnClickListener {
-            showToast("Coming soon...")
+            requireActivity().hideKeyboard()
+            viewModel.lookupEstimatedKcal(gatherTitle())
         }
 
         cssv_fragment_add_nutrition_entry_portion.apply {
@@ -120,6 +148,11 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
             }
             selectPosition(0)
         }
+
+        RxTextView.textChanges(et_add_nutrition_entry_name)
+                .map { it.isNotEmpty() }
+                .subscribe(til_add_nutrition_entry_name::setEndIconVisible)
+                .addTo(compositeDisposable)
 
         Observable
                 .combineLatest(
@@ -144,7 +177,7 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
 
     private fun gatherNutritionEntry(): NutritionEntry {
 
-        val title = et_add_nutrition_entry_name.text?.toString()!!
+        val title = gatherTitle()
         val estimatedKcal = et_add_nutrition_entry_estimated_kcal.text.toString().toInt()
 
         val portionCode = cssv_fragment_add_nutrition_entry_portion.selectedItem().tag
@@ -164,6 +197,9 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
                 date = CoreyDate(year, month, day, weekOfYear)
         )
     }
+
+    private fun gatherTitle(): String = et_add_nutrition_entry_name.text?.toString()!!
+
 
     override fun unbindViewModel() = Unit
 
