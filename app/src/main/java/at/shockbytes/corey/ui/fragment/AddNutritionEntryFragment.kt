@@ -11,7 +11,9 @@ import at.shockbytes.corey.common.hideKeyboard
 import at.shockbytes.corey.data.nutrition.NutritionEntry
 import at.shockbytes.corey.data.nutrition.NutritionTime
 import at.shockbytes.corey.data.nutrition.PortionSize
+import at.shockbytes.corey.data.nutrition.lookup.KcalLookupResult
 import at.shockbytes.corey.ui.custom.selection.CoreySingleSelectionItem
+import at.shockbytes.corey.ui.fragment.dialog.NutritionLookupBottomsheetFragment
 import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
 import at.shockbytes.corey.util.viewModelOf
 import com.github.florent37.viewanimator.ViewAnimator
@@ -64,20 +66,25 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
     }
 
     private fun handleKcalLookupEvent(state: NutritionViewModel.KcalLookupResultState) {
-
         when (state) {
             is NutritionViewModel.KcalLookupResultState.Success -> {
-                val content = state.result.toString()
-                Timber.d(content)
-                showToast(content)
+                showLookupResult(state.result)
             }
             is NutritionViewModel.KcalLookupResultState.NoResults -> {
-                showSnackbar("No results found for ${state.searchedText}") // TODO not hardcode this
+                showSnackbar(getString(R.string.nutrition_lookup_not_found, state.searchedText))
             }
             is NutritionViewModel.KcalLookupResultState.Error -> {
-                showToast("Exception happened: ${state.throwable.localizedMessage}")
+                showToast(getString(R.string.nutrition_error, state.throwable.localizedMessage))
             }
         }
+    }
+
+    private fun showLookupResult(result: KcalLookupResult) {
+        NutritionLookupBottomsheetFragment.newInstance(result)
+                .setOnLookupItemSelectedListener { item ->
+                    et_add_nutrition_entry_estimated_kcal.setText(item.formattedKcal)
+                }
+                .show(childFragmentManager, "bottomsheet-nutrition-lookup")
     }
 
     private fun closeFragment() {
