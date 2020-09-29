@@ -1,11 +1,20 @@
-# Corey - Personal Training Mate
+# Corey - Personal Fitness Mate
+
+### Version 4.3
+- [ ] Improved website (Do necessary changes in the app, if required)
+
+### Version 4.2
+- [ ] External workout repository implementation (Google Fit or Garmin or Manual)
+
+### Version 4.1
+- [x] Kcal lookup service
 
 ### Version 4.0
-- [ ] Improve basically the whole code base (use ViewModels)
-- [ ] Fix workout notification
+- [x] Improve basically the whole code base (use ViewModels)
+- [x] Drastically simplify navigation
+- [x] Add nutrition history as separate tab
+- [x] Remove workout feature since it's no longer used
 - [x] Clean up data layer (Do not subscribe there observables, rather in the ViewModel)
-- [x] Bring back workout mode
-- [x] Bring back workout creation
 
 ## Version 2.2
 - [x] Fix notification icons + delivery
