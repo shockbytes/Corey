@@ -10,6 +10,7 @@ import at.shockbytes.corey.data.body.bmr.BmrComputation
 import at.shockbytes.corey.data.body.bmr.RevisedHarrisBenedictBmrComputation
 import at.shockbytes.corey.data.goal.FirebaseGoalsRepository
 import at.shockbytes.corey.data.goal.GoalsRepository
+import at.shockbytes.corey.data.google.CoreyGoogleApiClient
 import at.shockbytes.corey.data.nutrition.FirebaseNutritionRepository
 import at.shockbytes.corey.data.nutrition.NutritionRepository
 import at.shockbytes.corey.data.workout.external.ExternalWorkoutRepository
@@ -25,6 +26,12 @@ import javax.inject.Singleton
 class BodyModule(private val app: Application) {
 
     @Provides
+    @Singleton
+    fun provideCoreyGoogleApiClient(): CoreyGoogleApiClient {
+        return CoreyGoogleApiClient(app.applicationContext)
+    }
+
+    @Provides
     fun provideBmrComputation(): BmrComputation {
         return RevisedHarrisBenedictBmrComputation()
     }
@@ -32,11 +39,12 @@ class BodyModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideBodyRepository(
+            coreyGoogleApiClient: CoreyGoogleApiClient,
             preferences: SharedPreferences,
             firebase: FirebaseDatabase,
             userSettings: UserSettings
     ): BodyRepository {
-        return GoogleFitBodyRepository(app.applicationContext, preferences, firebase, userSettings)
+        return GoogleFitBodyRepository(coreyGoogleApiClient, preferences, firebase, userSettings)
     }
 
     @Provides
