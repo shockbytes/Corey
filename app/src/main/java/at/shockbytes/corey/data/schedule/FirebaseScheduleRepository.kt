@@ -40,7 +40,6 @@ class FirebaseScheduleRepository(
         setupFirebase()
     }
 
-    // TODO Fix this
     override val schedulableItems: Observable<List<SchedulableItem>>
         get() = workoutManager.workouts
                 .map { workouts ->

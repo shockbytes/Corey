@@ -1,6 +1,7 @@
 package at.shockbytes.corey.data.nutrition.lookup.edamam
 
 import at.shockbytes.core.scheduler.SchedulerFacade
+import at.shockbytes.corey.R
 import at.shockbytes.corey.data.nutrition.lookup.KcalLookup
 import at.shockbytes.corey.data.nutrition.lookup.KcalLookupItem
 import at.shockbytes.corey.data.nutrition.lookup.KcalLookupResult
@@ -15,7 +16,7 @@ class EdamamKcalLookup(
     override val dataSource = LookupDataSource(
             name = "Edamam Food Database API",
             url = "https://developer.edamam.com/",
-            icon = 0 // TODO add icon
+            icon = R.drawable.ic_edamam
     )
 
     override fun lookup(foodName: String): Single<KcalLookupResult> {

@@ -36,9 +36,11 @@ class NutritionViewModel @Inject constructor(
         fun percentageToPreviousWeekFormatted(): CharSequence? {
             return if (percentageToPreviousWeek != null) {
                 if (percentageToPreviousWeek > 0) {
-                    "+${percentageToPreviousWeek}%".colored(Color.parseColor("#F44336")) // material red
+                    "+${percentageToPreviousWeek}%"
+                            .colored(Color.parseColor("#F44336")) // material red
                 } else {
-                    "-${percentageToPreviousWeek}%".colored(Color.parseColor("#8BC34A")) // colorPrimary
+                    "${percentageToPreviousWeek}%"
+                            .colored(Color.parseColor("#8BC34A")) // colorPrimary
                 }
             } else {
                 null
@@ -53,7 +55,7 @@ class NutritionViewModel @Inject constructor(
 
         data class Save(val entryName: String) : ModifyEntryEvent()
 
-        data class Delete(val entryName: String): ModifyEntryEvent()
+        data class Delete(val entryName: String) : ModifyEntryEvent()
 
         data class Error(val throwable: Throwable) : ModifyEntryEvent()
     }
@@ -113,14 +115,16 @@ class NutritionViewModel @Inject constructor(
         weekOverviewCache = intermediateWeekOverview
                 .mapIndexed { index, weekOverview ->
 
-                    // TODO Clean up!
-                    val previousKcal = intermediateWeekOverview.getOrNull(index.inc())?.kcalIntake
-                    if (previousKcal != null) {
-                        val percentage = ((weekOverview.kcalIntake - previousKcal) * 100.toDouble()) / previousKcal
-                        weekOverview.copy(percentageToPreviousWeek = percentage.roundDouble(2))
-                    } else {
-                        weekOverview
-                    }
+                    intermediateWeekOverview
+                            .getOrNull(index.inc())?.kcalIntake
+                            ?.let { previousKcal ->
+                                val percentage = ((weekOverview.kcalIntake - previousKcal)
+                                        .times(100.toDouble()))
+                                        .div(previousKcal)
+                                        .roundDouble(2)
+                                weekOverview.copy(percentageToPreviousWeek = percentage)
+                            }
+                            ?: weekOverview
                 }
     }
 
