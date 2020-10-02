@@ -22,7 +22,7 @@ class ExerciseAdapter(
 
     private var isItemMovable: Boolean = false
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<Exercise>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<Exercise> {
         return ViewHolder(inflater.inflate(R.layout.item_exercises, parent, false))
     }
 
@@ -76,11 +76,9 @@ class ExerciseAdapter(
 
     inner class ViewHolder(
         override val containerView: View
-    ) : BaseAdapter<Exercise>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<Exercise>(containerView), LayoutContainer {
 
-        override fun bindToView(t: Exercise) {
-            content = t
-
+        override fun bindToView(t: Exercise, position: Int) {
             item_exercise_txt_name.text = t.getDisplayName(context)
             item_exercise_imgview_move.setVisible(isItemMovable)
         }

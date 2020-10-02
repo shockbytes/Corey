@@ -23,20 +23,20 @@ class DaysScheduleAdapter(
         this.data = data.toMutableList()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<String>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<String> {
         return ViewHolder(inflater.inflate(R.layout.item_schedule_days, parent, false))
     }
 
-    override fun onBindViewHolder(holder: BaseAdapter<String>.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseAdapter.ViewHolder<String>, position: Int) {
         val s = data[position] + "_" + position
         holder.bind(s)
     }
 
     private inner class ViewHolder(
             override val containerView: View
-    ) : BaseAdapter<String>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<String>(containerView), LayoutContainer {
 
-        override fun bindToView(t: String) {
+        override fun bindToView(t: String, position: Int) {
             val split = t.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val item = split[0]
             val position = Integer.parseInt(split[1])

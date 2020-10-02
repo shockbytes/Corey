@@ -11,8 +11,9 @@ import at.shockbytes.util.adapter.BaseAdapter
 abstract class FilterableBaseAdapter<T : Sortable>(
     context: Context,
     data: List<T>,
+    onItemClickListener: OnItemClickListener<T>,
     private val filterPredicate: (T, String) -> Boolean
-) : BaseAdapter<T>(context) {
+) : BaseAdapter<T>(context, onItemClickListener) {
 
     private var originalData = ArrayList(data)
 

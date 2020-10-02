@@ -65,7 +65,7 @@ class NutritionLookupBottomsheetFragment : BottomSheetDialogFragment(),
         setupViews()
     }
 
-    override fun onItemClick(t: KcalLookupItem, v: View) {
+    override fun onItemClick(t: KcalLookupItem, position: Int, v: View) {
         listener?.invoke(t)
         dismiss()
     }

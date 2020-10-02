@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ViewFlipper
 import at.shockbytes.corey.R
+import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.ui.adapter.AddExerciseAdapter
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
@@ -52,7 +53,7 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
     private var exerciseCreatedListener: ((Exercise) -> Unit)? = null
 
     private val editTextFilter: EditText by bindView(R.id.fragment_create_workout_bottom_sheet_edit_filter)
-    private val rvAddExercises: androidx.recyclerview.widget.RecyclerView by bindView(R.id.fragment_create_workout_bottom_sheet_recyclerview)
+    private val rvAddExercises: RecyclerView by bindView(R.id.fragment_create_workout_bottom_sheet_recyclerview)
     private val viewFlipper: ViewFlipper by bindView(R.id.fragment_create_workout_bottom_sheet_viewflipper)
     private val numberPickerRepetitions: NumberPicker by bindView(R.id.fragment_create_workout_bottom_sheet_numberpicker_reps)
     private val numberPickerWorkDuration: NumberPicker by bindView(R.id.fragment_create_workout_bottom_sheet_numberpicker_workduration)
@@ -78,7 +79,7 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
         setupViews()
     }
 
-    override fun onItemClick(t: Exercise, v: View) {
+    override fun onItemClick(t: Exercise, position: Int, v: View) {
 
         exercise = t
         isTimeExercise = t is TimeExercise
@@ -136,9 +137,12 @@ class AddExercisesDialogFragment : BottomSheetDialogFragment(), TextWatcher, Bas
         viewFlipper.setInAnimation(context, R.anim.slide_in_right)
         viewFlipper.setOutAnimation(context, R.anim.slide_out_left)
 
-        rvAddExercises.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
-        exerciseAdapter = AddExerciseAdapter(context!!, listOf()) { item, query -> item.name.contains(query) }
-        exerciseAdapter.onItemClickListener = this
+        rvAddExercises.layoutManager = GridLayoutManager(context, 3)
+        exerciseAdapter = AddExerciseAdapter(
+                requireContext(),
+                listOf(),
+                onItemClickListener = this
+        ) { item, query -> item.name.contains(query) }
         rvAddExercises.adapter = exerciseAdapter
 
         workoutManager.exercises

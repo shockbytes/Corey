@@ -52,6 +52,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
                 requireContext(),
                 { item, _, position -> onScheduleItemClicked(item, position) },
                 { item, position -> onItemDismissed(item, position) },
+                onItemMoveListener = this,
                 weatherResolver,
                 schedulers,
                 userSettings
@@ -113,7 +114,6 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
             isNestedScrollingEnabled = false
             addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, requireContext())))
             val callback = BaseItemTouchHelper(scheduleAdapter, false, BaseItemTouchHelper.DragAccess.ALL)
-            scheduleAdapter.onItemMoveListener = this@ScheduleFragment
 
             touchHelper = ItemTouchHelper(callback)
             touchHelper.attachToRecyclerView(this)

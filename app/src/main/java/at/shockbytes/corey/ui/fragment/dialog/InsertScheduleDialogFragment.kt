@@ -84,7 +84,7 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
 
     override fun afterTextChanged(editable: Editable) = Unit
 
-    override fun onItemClick(t: AddScheduleItemAdapter.ScheduleDisplayItem, v: View) {
+    override fun onItemClick(t: AddScheduleItemAdapter.ScheduleDisplayItem, position: Int, v: View) {
         onScheduleItemSelectedListener?.invoke(t)
         dismiss()
     }
@@ -96,11 +96,13 @@ class InsertScheduleDialogFragment : BottomSheetDialogFragment(), TextWatcher,
 
     private fun setupViews() {
 
-        addScheduleItemAdapter = AddScheduleItemAdapter(requireContext()) { item, query ->
+        addScheduleItemAdapter = AddScheduleItemAdapter(
+                requireContext(),
+                onItemClickListener = this
+        ) { item, query ->
             item.item.title.contains(query)
-        }.apply {
-            onItemClickListener = this@InsertScheduleDialogFragment
         }
+
         recyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 2)
             adapter = addScheduleItemAdapter

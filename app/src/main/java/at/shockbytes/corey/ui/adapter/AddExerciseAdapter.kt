@@ -16,18 +16,19 @@ import kotlinx.android.synthetic.main.listitem_add_exercise.*
 class AddExerciseAdapter(
     context: Context,
     data: List<Exercise>,
+    onItemClickListener: OnItemClickListener<Exercise>,
     filterPredicate: (Exercise, String) -> Boolean
-) : FilterableBaseAdapter<Exercise>(context, data.toMutableList(), filterPredicate) {
+) : FilterableBaseAdapter<Exercise>(context, data.toMutableList(), onItemClickListener, filterPredicate) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<Exercise>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<Exercise> {
         return ViewHolder(inflater.inflate(R.layout.listitem_add_exercise, parent, false))
     }
 
     internal inner class ViewHolder(
         override val containerView: View
-    ) : BaseAdapter<Exercise>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<Exercise>(containerView), LayoutContainer {
 
-        override fun bindToView(t: Exercise) {
+        override fun bindToView(t: Exercise, position: Int) {
             tv_listitem_add_exercise_title.text = t.getDisplayName(context)
         }
     }

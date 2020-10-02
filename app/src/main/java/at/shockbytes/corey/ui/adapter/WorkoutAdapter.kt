@@ -19,8 +19,9 @@ import kotlinx.android.synthetic.main.item_workout.*
  */
 class WorkoutAdapter(
     cxt: Context,
-    private val onWorkoutPopupItemSelectedListener: OnWorkoutPopupItemSelectedListener?
-) : BaseAdapter<Workout>(cxt) {
+    private val onWorkoutPopupItemSelectedListener: OnWorkoutPopupItemSelectedListener?,
+    onItemClickListener: OnItemClickListener<Workout>
+) : BaseAdapter<Workout>(cxt, onItemClickListener) {
 
     interface OnWorkoutPopupItemSelectedListener {
 
@@ -29,23 +30,25 @@ class WorkoutAdapter(
         fun onEdit(w: Workout?)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<Workout>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<Workout> {
         return ViewHolder(inflater.inflate(R.layout.item_workout, parent, false))
     }
 
     inner class ViewHolder(
         override val containerView: View
-    ) : BaseAdapter<Workout>.ViewHolder(containerView), PopupMenu.OnMenuItemClickListener, LayoutContainer {
+    ) : BaseAdapter.ViewHolder<Workout>(containerView), PopupMenu.OnMenuItemClickListener, LayoutContainer {
 
         private val popupMenu: PopupMenu = PopupMenu(context, item_training_imgbtn_overflow)
+
+        private lateinit var content: Workout
 
         init {
             setupPopupMenu()
         }
 
-        override fun bindToView(t: Workout) {
-            content = t
-            with(t) {
+        override fun bindToView(content: Workout, position: Int) {
+            this.content = content
+            with(content) {
                 item_training_txt_title.text = displayableName
                 item_training_txt_duration.text = context.getString(R.string.duration_with_minutes, duration)
                 item_training_txt_workouts.text = context.getString(R.string.exercises_with_count, exerciseCount)

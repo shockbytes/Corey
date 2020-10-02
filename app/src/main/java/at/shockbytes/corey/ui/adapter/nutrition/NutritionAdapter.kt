@@ -26,15 +26,15 @@ class NutritionAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<NutritionAdapterItem> {
         return NutritionViewHolder(inflater.inflate(R.layout.item_nutrition_day, parent, false))
     }
 
     private inner class NutritionViewHolder(
             override val containerView: View
-    ) : BaseAdapter<NutritionAdapterItem>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<NutritionAdapterItem>(containerView), LayoutContainer {
 
-        override fun bindToView(t: NutritionAdapterItem) {
+        override fun bindToView(t: NutritionAdapterItem, position: Int) {
             with(t) {
                 tv_item_nutrition_day_date.text = formattedDate
                 tv_item_nutrition_day_balance.text = balance
@@ -45,9 +45,9 @@ class NutritionAdapter(
                             context,
                             intake,
                             object : OnItemLongClickListener<NutritionIntakeAdapterItem> {
-                                override fun onItemLongClick(t: NutritionIntakeAdapterItem, v: View) {
-                                    if (t is NutritionIntakeAdapterItem.Intake) {
-                                        onNutritionIntakeClickedListener(t)
+                                override fun onItemLongClick(content: NutritionIntakeAdapterItem, position: Int, v: View) {
+                                    if (content is NutritionIntakeAdapterItem.Intake) {
+                                        onNutritionIntakeClickedListener(content)
                                     }
                                 }
                             })
@@ -67,11 +67,10 @@ class NutritionAdapter(
             context: Context,
             adapterData: List<NutritionIntakeAdapterItem>,
             onItemLongClickListener: OnItemLongClickListener<NutritionIntakeAdapterItem>
-    ) : BaseAdapter<NutritionIntakeAdapterItem>(context) {
+    ) : BaseAdapter<NutritionIntakeAdapterItem>(context, onItemLongClickListener = onItemLongClickListener) {
 
         init {
             data.addAll(adapterData)
-            this.onItemLongClickListener = onItemLongClickListener
         }
 
         override fun getItemViewType(position: Int): Int {
@@ -81,7 +80,7 @@ class NutritionAdapter(
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<NutritionIntakeAdapterItem> {
 
             val view = inflater.inflate(viewType, parent, false)
             return when (viewType) {
@@ -93,8 +92,8 @@ class NutritionAdapter(
 
         inner class NutritionIntakeHeaderViewHolder(
                 override val containerView: View
-        ) : BaseAdapter<NutritionIntakeAdapterItem>.ViewHolder(containerView), LayoutContainer {
-            override fun bindToView(t: NutritionIntakeAdapterItem) {
+        ) : BaseAdapter.ViewHolder<NutritionIntakeAdapterItem>(containerView), LayoutContainer {
+            override fun bindToView(t: NutritionIntakeAdapterItem, position: Int) {
                 with(t as NutritionIntakeAdapterItem.Header) {
                     tv_item_nutrition_day_intake_header.setText(timeNameRes)
                 }
@@ -103,8 +102,8 @@ class NutritionAdapter(
 
         inner class NutritionIntakeViewHolder(
                 override val containerView: View
-        ) : BaseAdapter<NutritionIntakeAdapterItem>.ViewHolder(containerView), LayoutContainer {
-            override fun bindToView(t: NutritionIntakeAdapterItem) {
+        ) : BaseAdapter.ViewHolder<NutritionIntakeAdapterItem>(containerView), LayoutContainer {
+            override fun bindToView(t: NutritionIntakeAdapterItem, position: Int) {
                 with(t as NutritionIntakeAdapterItem.Intake) {
                     tv_item_nutrition_day_intake_title.text = entry.name
                     tv_item_nutrition_day_intake_kcal.text = context.getString(R.string.kcal_format, entry.kcal)
@@ -122,15 +121,15 @@ class NutritionAdapter(
             data.addAll(burned)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<PhysicalActivity> {
             return NutritionBurnedViewHolder(inflater.inflate(R.layout.item_nutrition_day_burned, parent, false))
         }
 
         inner class NutritionBurnedViewHolder(
                 override val containerView: View
-        ) : BaseAdapter<PhysicalActivity>.ViewHolder(containerView), LayoutContainer {
-            override fun bindToView(t: PhysicalActivity) {
-                with(t) {
+        ) : BaseAdapter.ViewHolder<PhysicalActivity>(containerView), LayoutContainer {
+            override fun bindToView(content: PhysicalActivity, position: Int) {
+                with(content) {
                     tv_item_nutrition_day_burned_title.text = activityName(context)
                     tv_item_nutrition_day_burned_kcal.text = context.getString(R.string.kcal_format, kcal)
                 }

@@ -59,7 +59,7 @@ class WorkoutOverviewFragment : TabBaseFragment<AppComponent>(),
         appComponent?.inject(this)
     }
 
-    override fun onItemClick(t: Workout, v: View) {
+    override fun onItemClick(t: Workout, position: Int, v: View) {
 
         val intent = WorkoutDetailActivity.newIntent(requireContext(), t)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -94,14 +94,15 @@ class WorkoutOverviewFragment : TabBaseFragment<AppComponent>(),
 
     override fun setupViews() {
 
-        context?.let { ctx ->
-            workoutOverviewAdapter = WorkoutAdapter(ctx, this).apply {
-                onItemClickListener = this@WorkoutOverviewFragment
-            }
-            fragment_training_rv.apply {
-                layoutManager = layoutManagerForOrientation
-                adapter = workoutOverviewAdapter
-            }
+        workoutOverviewAdapter = WorkoutAdapter(
+                requireContext(),
+                onWorkoutPopupItemSelectedListener = this,
+                onItemClickListener = this
+        )
+
+        fragment_training_rv.apply {
+            layoutManager = layoutManagerForOrientation
+            adapter = workoutOverviewAdapter
         }
     }
 

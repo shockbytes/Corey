@@ -20,18 +20,19 @@ import kotlinx.android.synthetic.main.listitem_add_exercise.*
 class AddScheduleItemAdapter(
     context: Context,
     data: List<ScheduleDisplayItem> = listOf(),
+    onItemClickListener: OnItemClickListener<ScheduleDisplayItem>,
     filterPredicate: (ScheduleDisplayItem, String) -> Boolean
-) : FilterableBaseAdapter<AddScheduleItemAdapter.ScheduleDisplayItem>(context, data.toMutableList(), filterPredicate) {
+) : FilterableBaseAdapter<AddScheduleItemAdapter.ScheduleDisplayItem>(context, data.toMutableList(),onItemClickListener, filterPredicate) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<ScheduleDisplayItem>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<ScheduleDisplayItem> {
         return ViewHolder(inflater.inflate(R.layout.listitem_add_exercise, parent, false))
     }
 
     internal inner class ViewHolder(
         override val containerView: View
-    ) : BaseAdapter<ScheduleDisplayItem>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<ScheduleDisplayItem>(containerView), LayoutContainer {
 
-        override fun bindToView(t: ScheduleDisplayItem) {
+        override fun bindToView(t: ScheduleDisplayItem, position: Int) {
             with(t.item) {
                 tv_listitem_add_exercise_title.text = title
                 iv_listitem_add_exercise_title.apply {

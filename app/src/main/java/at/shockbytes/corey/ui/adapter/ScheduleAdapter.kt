@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
@@ -20,7 +21,6 @@ import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_schedule.*
-import timber.log.Timber
 import java.util.Collections
 
 /**
@@ -31,10 +31,11 @@ class ScheduleAdapter(
     context: Context,
     private val onItemClickedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit),
     private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit),
+    onItemMoveListener: OnItemMoveListener<ScheduleItem>,
     private val weatherResolver: ScheduleWeatherResolver,
     private val schedulers: SchedulerFacade,
     private val userSettings: UserSettings
-) : BaseAdapter<ScheduleItem>(context), ItemTouchHelperAdapter {
+) : BaseAdapter<ScheduleItem>(context, onItemMoveListener = onItemMoveListener), ItemTouchHelperAdapter {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -56,16 +57,11 @@ class ScheduleAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseAdapter<ScheduleItem>.ViewHolder {
+    ): BaseAdapter.ViewHolder<ScheduleItem> {
         return ViewHolder(inflater.inflate(R.layout.item_schedule, parent, false))
     }
 
-    override fun onBindViewHolder(holder: BaseAdapter<ScheduleItem>.ViewHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
-        (holder as? ViewHolder)?.bind(data[position], position)
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: androidx.recyclerview.widget.RecyclerView) {
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
         compositeDisposable.dispose()
     }
@@ -128,12 +124,13 @@ class ScheduleAdapter(
 
     private inner class ViewHolder(
         override val containerView: View
-    ) : BaseAdapter<ScheduleItem>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<ScheduleItem>(containerView), LayoutContainer {
 
         private lateinit var item: ScheduleItem
         private var itemPosition: Int = 0
 
         init {
+            // TODO Rework this...
             item_schedule_txt_name.setOnClickListener {
                 onItemClickedListener.invoke(item, itemView, itemPosition)
             }
@@ -142,10 +139,8 @@ class ScheduleAdapter(
             }
         }
 
-        override fun bindToView(t: ScheduleItem) = Unit
-
-        fun bind(item: ScheduleItem, position: Int) {
-            this.item = item
+        override fun bindToView(content: ScheduleItem, position: Int) {
+            this.item = content
             itemPosition = position
             item_schedule_txt_name.text = item.name
 

@@ -27,7 +27,7 @@ class GoalAdapter(cxt: Context) : BaseAdapter<GoalItem>(cxt) {
         fun onFinishGoalClicked(g: GoalItem)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<GoalItem>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<GoalItem> {
         return ViewHolder(inflater.inflate(R.layout.item_goal, parent, false))
     }
 
@@ -35,7 +35,7 @@ class GoalAdapter(cxt: Context) : BaseAdapter<GoalItem>(cxt) {
         onGoalActionClickedListener = listener
     }
 
-    inner class ViewHolder(itemView: View) : BaseAdapter<GoalItem>.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : BaseAdapter.ViewHolder<GoalItem>(itemView) {
 
         private val txtGoal: TextView by bindView(R.id.item_goal_text)
         private val imgBtnDone: ImageButton by bindView(R.id.item_goal_btn_done)
@@ -44,11 +44,11 @@ class GoalAdapter(cxt: Context) : BaseAdapter<GoalItem>(cxt) {
         private val tvCategory: TextView by bindView(R.id.item_goal_txt_category)
         private val tvDueDate: TextView by bindView(R.id.item_goal_txt_due_date)
 
-        override fun bindToView(t: GoalItem) {
+        override fun bindToView(content: GoalItem, position: Int) {
 
-            txtGoal.text = t.message
+            txtGoal.text = content.message
 
-            if (t.isCompleted) {
+            if (content.isCompleted) {
                 imgBtnDone.setImageResource(R.drawable.ic_cancel)
                 txtGoal.paintFlags = txtGoal.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             } else {
@@ -57,15 +57,15 @@ class GoalAdapter(cxt: Context) : BaseAdapter<GoalItem>(cxt) {
             }
 
             imgBtnDone.setOnClickListener {
-                onClickDone()
+                onClickDone(content)
             }
 
-            ivCategory.setImageResource(t.categoryIcon)
-            tvCategory.setText(t.categoryString)
-            tvDueDate.text = t.dueDateFormatted
+            ivCategory.setImageResource(content.categoryIcon)
+            tvCategory.setText(content.categoryString)
+            tvDueDate.text = content.dueDateFormatted
         }
 
-        private fun onClickDone() {
+        private fun onClickDone(content: GoalItem) {
             if (content.isCompleted) {
                 onGoalActionClickedListener?.onDeleteGoalClicked(content)
             } else {

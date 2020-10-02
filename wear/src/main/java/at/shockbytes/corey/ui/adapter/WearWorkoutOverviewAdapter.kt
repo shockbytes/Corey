@@ -17,22 +17,23 @@ import kotterknife.bindView
  * Date:    14.03.2017
  */
 class WearWorkoutOverviewAdapter(
-    cxt: Context
-) : BaseAdapter<Workout>(cxt) {
+    cxt: Context,
+    onItemClickListener: OnItemClickListener<Workout>
+) : BaseAdapter<Workout>(cxt, onItemClickListener) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<Workout>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<Workout> {
         return ViewHolder(inflater.inflate(R.layout.item_wear_workout_overview, parent, false))
     }
 
-    internal inner class ViewHolder(itemView: View) : BaseAdapter<Workout>.ViewHolder(itemView) {
+    internal inner class ViewHolder(itemView: View) : BaseAdapter.ViewHolder<Workout>(itemView) {
 
         private val txtName: TextView by bindView(R.id.item_wear_workout_overview_txt)
         private val imgView: ImageView by bindView(R.id.item_wear_workout_overview_img)
 
-        override fun bindToView(t: Workout) {
-            txtName.text = t.displayableName
+        override fun bindToView(content: Workout, position: Int) {
+            txtName.text = content.displayableName
             imgView.setImageDrawable(AppUtils.createRoundedBitmapFromResource(context,
-                    t.imageResForBodyRegion, t.colorResForIntensity))
+                    content.imageResForBodyRegion, content.colorResForIntensity))
         }
     }
 }

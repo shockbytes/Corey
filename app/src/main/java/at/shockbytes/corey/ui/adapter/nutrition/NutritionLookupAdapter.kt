@@ -14,15 +14,14 @@ class NutritionLookupAdapter(
         context: Context,
         private val imageLoader: ImageLoader,
         onItemClickCallback: (KcalLookupItem) -> Unit
-): BaseAdapter<KcalLookupItem>(context) {
-
-    init {
-        onItemClickListener = object: OnItemClickListener<KcalLookupItem> {
-            override fun onItemClick(t: KcalLookupItem, v: View) {
-                onItemClickCallback(t)
+) : BaseAdapter<KcalLookupItem>(
+        context,
+        onItemClickListener = object : OnItemClickListener<KcalLookupItem> {
+            override fun onItemClick(content: KcalLookupItem, position: Int, v: View) {
+                onItemClickCallback(content)
             }
         }
-    }
+) {
 
     override fun getItemViewType(position: Int): Int {
         return when (data[position]) {
@@ -31,8 +30,8 @@ class NutritionLookupAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return when(viewType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<KcalLookupItem> {
+        return when (viewType) {
             R.layout.item_nutrition_lookup_picker -> {
                 ImageLookupViewHolder(inflater.inflate(viewType, parent, false))
             }
@@ -42,10 +41,10 @@ class NutritionLookupAdapter(
 
     inner class ImageLookupViewHolder(
             override val containerView: View
-    ): BaseAdapter<KcalLookupItem>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<KcalLookupItem>(containerView), LayoutContainer {
 
-        override fun bindToView(t: KcalLookupItem) {
-            with(t as KcalLookupItem.WithImage) {
+        override fun bindToView(content: KcalLookupItem, position: Int) {
+            with(content as KcalLookupItem.WithImage) {
 
                 tv_nutrition_lookup_name.text = dishName
                 tv_nutrition_lookup_portion.text = context.getString(R.string.kcal_format_w_portion, kcal, portionSize)
