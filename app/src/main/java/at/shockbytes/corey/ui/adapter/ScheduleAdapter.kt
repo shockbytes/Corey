@@ -175,8 +175,9 @@ class ScheduleAdapter(
                             setVisible(true)
                             setWeatherInfo(weatherInfo, unit = "°C", animate = true)
                         }
-                    }, { throwable ->
-                        Timber.e(throwable)
+                    }, {
+                        // Suppress errors
+                        // Timber.e(throwable)
                         item_schedule_weather.setVisible(false)
                     })
                     .addTo(compositeDisposable)

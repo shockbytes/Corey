@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Toast
 import at.shockbytes.corey.common.roundDouble
 import at.shockbytes.corey.data.body.model.WeightDataPoint
-import at.shockbytes.util.AppUtils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.GoogleApiClient
@@ -17,6 +16,7 @@ import com.google.android.gms.fitness.request.DataReadRequest
 import com.google.android.gms.fitness.result.DataReadResult
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import org.joda.time.DateTime
 import java.util.concurrent.TimeUnit
 
 /**
@@ -42,12 +42,50 @@ class CoreyGoogleApiClient(
         apiClient.connect()
     }
 
-    override fun onConnected(bundle: Bundle?) {
-        connectionSubject.onNext(true)
+    private data class A(
+            val timestamp: Long,
+            val calories: Float
+    )
+    fun loadGoogleFitWorkouts(): Observable<GoogleFitWorkouts> {
+        return fitnessHistoryToObservable(buildCaloriesReadRequest()) { result ->
+
+            val temp = result.getDataSet(DataType.TYPE_CALORIES_EXPENDED)
+            val a = temp.dataPoints
+                    .map { dp ->
+                        val timeStamp = dp.getStartTime(TimeUnit.MILLISECONDS)
+                        val calories = dp.getValue(dp.dataType.fields[0]).asFloat()
+                        A(timeStamp, calories)
+                    }
+                    .groupBy { a ->
+                        DateTime(a.timestamp).withTimeAtStartOfDay()
+                    }
+                    .mapValues { (_, a) ->
+                        a.sumByDouble { it.calories.toDouble() }
+                    }
+                    .filter { (_, a) ->
+                        a < 5000 // TODO Extract threshold
+                    }
+
+            a.forEach {
+                println(it)
+            }
+
+            GoogleFitWorkouts()
+        }
+    }
+
+    private fun buildCaloriesReadRequest(
+            startTime: Long = 1L,
+            endTime: Long = System.currentTimeMillis()
+    ): DataReadRequest {
+        return DataReadRequest.Builder()
+                .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
+                .read(DataType.TYPE_CALORIES_EXPENDED)
+                .build()
     }
 
     fun loadGoogleFitUserData(): Observable<GoogleFitUserData> {
-        return fitnessApiToObservable(buildGoogleFitRequest()) { result ->
+        return fitnessHistoryToObservable(buildGoogleFitRequest()) { result ->
 
             val weightHistory = retrieveWeightHistory(result.getDataSet(DataType.TYPE_WEIGHT))
             val height = retrieveHeight(result.getDataSet(DataType.TYPE_HEIGHT))
@@ -56,9 +94,9 @@ class CoreyGoogleApiClient(
         }
     }
 
-    private fun <T> fitnessApiToObservable(
+    private fun <T> fitnessHistoryToObservable(
             readRequest: DataReadRequest,
-            mapper: (DataReadResult)-> T,
+            mapper: (DataReadResult) -> T,
     ): Observable<T> {
         return Observable.create { emitter ->
             Fitness.HistoryApi.readData(apiClient, readRequest)
@@ -67,7 +105,6 @@ class CoreyGoogleApiClient(
                         emitter.onNext(transformed)
                     }
         }
-
     }
 
     private fun buildGoogleFitRequest(
@@ -78,15 +115,19 @@ class CoreyGoogleApiClient(
                 .setTimeRange(startMillis, endMillis, TimeUnit.MILLISECONDS)
                 .read(DataType.TYPE_WEIGHT)
                 .read(DataType.TYPE_HEIGHT)
-                // .read(DataType.TYPE_BODY_FAT_PERCENTAGE)
                 .build()
     }
 
     private fun retrieveWeightHistory(set: DataSet): List<WeightDataPoint> {
         return set.dataPoints.mapTo(mutableListOf()) { dp ->
+
             val timeStamp = dp.getStartTime(TimeUnit.MILLISECONDS)
-            val weight = dp.getValue(dp.dataType.fields[0]).asFloat().toDouble()
-            WeightDataPoint(timeStamp, AppUtils.roundDouble(weight, 1))
+            val weight = dp.getValue(dp.dataType.fields[0])
+                    .asFloat()
+                    .toDouble()
+                    .roundDouble(1)
+
+            WeightDataPoint(timeStamp, weight)
         }
     }
 
@@ -102,15 +143,8 @@ class CoreyGoogleApiClient(
         } else 0
     }
 
-    private fun buildCaloriesReadRequest(
-            startTime: Long = 1L,
-            endTime: Long = System.currentTimeMillis()
-    ): DataReadRequest {
-        return DataReadRequest.Builder()
-                .aggregate(DataType.TYPE_CALORIES_EXPENDED, DataType.AGGREGATE_CALORIES_EXPENDED)
-                .bucketByActivityType(1, TimeUnit.SECONDS)
-                .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
-                .build()
+    override fun onConnected(bundle: Bundle?) {
+        connectionSubject.onNext(true)
     }
 
     override fun onConnectionSuspended(i: Int) {

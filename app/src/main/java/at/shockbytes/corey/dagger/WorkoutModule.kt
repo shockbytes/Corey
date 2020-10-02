@@ -5,10 +5,12 @@ import android.content.SharedPreferences
 import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.common.core.running.DefaultRunningManager
 import at.shockbytes.corey.common.core.running.RunningManager
+import at.shockbytes.corey.data.google.CoreyGoogleApiClient
 import at.shockbytes.corey.data.workout.FirebaseWorkoutRepository
 import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.data.workout.external.DummyExternalWorkoutRepository
 import at.shockbytes.corey.data.workout.external.ExternalWorkoutRepository
+import at.shockbytes.corey.data.workout.external.GoogleFitExternalWorkoutRepository
 import at.shockbytes.corey.storage.running.RunningStorageRepository
 import at.shockbytes.corey.storage.running.SharedPreferencesRunningStorageRepository
 import com.google.firebase.database.FirebaseDatabase
@@ -51,7 +53,9 @@ class WorkoutModule(private val app: Application) {
     }
 
     @Provides
-    fun provideExternalWorkoutRepository(): ExternalWorkoutRepository {
+    fun provideExternalWorkoutRepository(
+            coreyGoogleApiClient: CoreyGoogleApiClient
+    ): ExternalWorkoutRepository {
         return DummyExternalWorkoutRepository()
     }
 }
