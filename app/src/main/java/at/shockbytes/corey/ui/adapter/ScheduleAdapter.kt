@@ -29,13 +29,16 @@ import java.util.Collections
  */
 class ScheduleAdapter(
     context: Context,
-    private val onItemClickedListener: ((item: ScheduleItem, v: View, position: Int) -> Unit),
-    private val onItemDismissedListener: ((item: ScheduleItem, position: Int) -> Unit),
+    onItemClickListener: OnItemClickListener<ScheduleItem>,
     onItemMoveListener: OnItemMoveListener<ScheduleItem>,
     private val weatherResolver: ScheduleWeatherResolver,
     private val schedulers: SchedulerFacade,
     private val userSettings: UserSettings
-) : BaseAdapter<ScheduleItem>(context, onItemMoveListener = onItemMoveListener), ItemTouchHelperAdapter {
+) : BaseAdapter<ScheduleItem>(
+        context,
+        onItemClickListener = onItemClickListener,
+        onItemMoveListener = onItemMoveListener
+), ItemTouchHelperAdapter {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -92,6 +95,10 @@ class ScheduleAdapter(
 
     // -----------------------------Data Section-----------------------------
 
+    fun getItemAt(position: Int): ScheduleItem? {
+        return data.getOrNull(position)
+    }
+
     fun updateData(items: List<ScheduleItem>) {
 
         val filledItems = fillUpScheduleList2(items)
@@ -128,16 +135,6 @@ class ScheduleAdapter(
 
         private lateinit var item: ScheduleItem
         private var itemPosition: Int = 0
-
-        init {
-            // TODO Rework this...
-            item_schedule_txt_name.setOnClickListener {
-                onItemClickedListener.invoke(item, itemView, itemPosition)
-            }
-            item_schedule_btn_clear.setOnClickListener {
-                onItemDismissedListener.invoke(item, itemPosition)
-            }
-        }
 
         override fun bindToView(content: ScheduleItem, position: Int) {
             this.item = content

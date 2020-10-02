@@ -16,30 +16,29 @@ import org.joda.time.LocalDate
  */
 class DaysScheduleAdapter(
     context: Context,
-    data: List<String>
-) : BaseAdapter<String>(context) {
+    data: List<String>,
+    onItemLongClickListener: OnItemLongClickListener<String>
+) : BaseAdapter<String>(
+        context,
+        onItemLongClickListener = onItemLongClickListener
+) {
 
     init {
-        this.data = data.toMutableList()
+        this.data.apply {
+            clear()
+            addAll(data)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<String> {
         return ViewHolder(inflater.inflate(R.layout.item_schedule_days, parent, false))
     }
 
-    override fun onBindViewHolder(holder: BaseAdapter.ViewHolder<String>, position: Int) {
-        val s = data[position] + "_" + position
-        holder.bind(s)
-    }
-
     private inner class ViewHolder(
             override val containerView: View
     ) : BaseAdapter.ViewHolder<String>(containerView), LayoutContainer {
 
-        override fun bindToView(t: String, position: Int) {
-            val split = t.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            val item = split[0]
-            val position = Integer.parseInt(split[1])
+        override fun bindToView(content: String, position: Int) {
 
             val bgColor: Int
             val txtColor: Int
@@ -53,7 +52,7 @@ class DaysScheduleAdapter(
 
             card_item_schedule_days.strokeColor = bgColor
             item_schedule_days_txt_name.apply {
-                text = item
+                text = content
                 setTextColor(txtColor)
             }
         }

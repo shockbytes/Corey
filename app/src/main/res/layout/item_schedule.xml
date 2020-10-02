@@ -29,33 +29,22 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:maxLines="1"
-            tools:text="Freeletics"
             android:padding="12dp"
             android:textColor="@color/coreyBlack"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_schedule_btn_clear"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/item_schedule_btn_clear"
-            style="?attr/borderlessButtonStyle"
-            android:layout_width="32dp"
-            android:layout_height="0dp"
-            android:tint="@color/colorPrimaryText"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_remove" />
+            tools:text="Freeletics" />
 
         <at.shockbytes.weather.view.CondensedWeatherView
             android:id="@+id/item_schedule_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_schedule_btn_clear"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="6°C" />
 

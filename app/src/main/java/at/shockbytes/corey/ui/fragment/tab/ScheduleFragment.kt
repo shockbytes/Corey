@@ -2,6 +2,8 @@ package at.shockbytes.corey.ui.fragment.tab
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.*
 import at.shockbytes.core.scheduler.SchedulerFacade
@@ -29,7 +31,10 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    26.10.2015
  */
-class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMoveListener<ScheduleItem> {
+class ScheduleFragment : TabBaseFragment<AppComponent>(),
+        BaseAdapter.OnItemMoveListener<ScheduleItem>,
+        BaseAdapter.OnItemClickListener<ScheduleItem>
+{
 
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
@@ -50,8 +55,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
     private val scheduleAdapter: ScheduleAdapter by lazy {
         ScheduleAdapter(
                 requireContext(),
-                { item, _, position -> onScheduleItemClicked(item, position) },
-                { item, position -> onItemDismissed(item, position) },
+                onItemClickListener = this,
                 onItemMoveListener = this,
                 weatherResolver,
                 schedulers,
@@ -79,11 +83,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
                 }
     }
 
-    override fun onItemDismissed(t: ScheduleItem, position: Int) {
-        if (!t.isEmpty) {
-            scheduleRepository.deleteScheduleItem(t)
-        }
-    }
+    override fun onItemDismissed(t: ScheduleItem, position: Int) = Unit
 
     override fun bindViewModel() {
 
@@ -105,7 +105,20 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
 
         recyclerViewDays.apply {
             layoutManager = recyclerViewLayoutManager
-            adapter = DaysScheduleAdapter(requireContext(), resources.getStringArray(R.array.days).toList())
+            adapter = DaysScheduleAdapter(
+                    requireContext(),
+                    resources.getStringArray(R.array.days).toList(),
+                    object: BaseAdapter.OnItemLongClickListener<String> {
+                        override fun onItemLongClick(content: String, position: Int, v: View) {
+                            v.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+                            scheduleAdapter.getItemAt(position)?.let { item ->
+                                if (!item.isEmpty) {
+                                    scheduleRepository.deleteScheduleItem(item)
+                                }
+                            }
+                        }
+                    }
+            )
             addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, requireContext())))
         }
 
@@ -125,8 +138,8 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
         appComponent?.inject(this)
     }
 
-    private fun onScheduleItemClicked(item: ScheduleItem, position: Int) {
-        if (item.isEmpty) {
+    override fun onItemClick(content: ScheduleItem, position: Int, v: View) {
+        if (content.isEmpty) {
             InsertScheduleDialogFragment.newInstance()
                     .setOnScheduleItemSelectedListener { i ->
                         scheduleRepository.insertScheduleItem(
@@ -138,7 +151,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(), BaseAdapter.OnItemMove
                                 )
                         )
                     }
-                    .show(childFragmentManager, "dialogfragment-insert-schedule")
+                    .show(childFragmentManager, "dialog-fragment-insert-schedule")
         }
     }
 
