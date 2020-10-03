@@ -10,7 +10,7 @@ data class NutritionAdapterItem(
 
     val formattedDate: String
         get() {
-            val fmt = DateTimeFormat.forPattern("MMM dd")
+            val fmt = DateTimeFormat.forPattern("MMM dd, E")
             return fmt.print(nutritionPerDay.date.dateTime)
         }
 
