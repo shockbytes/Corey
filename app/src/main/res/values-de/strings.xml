@@ -217,7 +217,7 @@
     <string name="item_deleted">%s gelöscht!</string>
     <string name="unable_to_perform_action">Aktion konnte nicht ausgeführt werden!</string>
     <string name="kcal_format_w_portion">%d kcal pro %s</string>
-    <string name="data_provided">Daten bereitgestellt von</string>
+    <string name="data_provided">Daten bereitgestellt von %s</string>
     <string name="nutrition_error">Ein unerwarteter Fehler trat auf: %s.</string>
     <string name="nutrition_lookup_not_found">Keine Resultate für %s.</string>
     <string name="congrats_with_emoji">&#127881; Glückwunsch &#127881;</string>

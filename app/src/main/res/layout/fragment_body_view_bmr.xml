@@ -38,11 +38,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/body_card_bmr"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             tools:text="1800 kcal"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="20dp" />
-
 
         <TextView
             android:id="@+id/tv_fragment_body_card_bmr_active_bmr_header"
@@ -61,11 +60,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/body_card_bmr"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             tools:text="2200 kcal"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="32dp" />
-
 
         <TextView
             android:id="@+id/tv_fragment_body_card_bmr_computation_name"
