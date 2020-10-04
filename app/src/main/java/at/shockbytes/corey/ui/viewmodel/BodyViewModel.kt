@@ -36,7 +36,23 @@ class BodyViewModel @Inject constructor(
                 val weightUnit: String,
                 val weightLines: List<WeightHistoryLine>,
                 val bmr: Bmr,
-        ) : BodyState()
+                val desiredWeightState: DesiredWeightState
+        ) : BodyState() {
+
+            sealed class DesiredWeightState {
+
+                data class Reached(
+                        val desiredWeight: Int,
+                        val weightUnit: String,
+                ) : DesiredWeightState()
+
+                data class NotReached(
+                        val desiredWeight: Int,
+                        val currentWeight: Double,
+                        val weightUnit: String,
+                ) : DesiredWeightState()
+            }
+        }
 
         data class ErrorState(val throwable: Throwable) : BodyState()
     }
@@ -49,13 +65,19 @@ class BodyViewModel @Inject constructor(
             .map { (user, weightUnit, bmr) ->
 
                 val weightLines = buildLinesFromUser(user)
+                val desiredWeightState = buildDesiredWeightState(
+                        user.desiredWeight,
+                        user.currentWeight,
+                        weightUnit
+                )
 
                 BodyState.SuccessState(
                     user,
                     userManager.user,
                     weightUnit.acronym,
                     weightLines,
-                    bmr
+                    bmr,
+                    desiredWeightState
                 )
             }
             .subscribe({ successState ->
@@ -65,6 +87,27 @@ class BodyViewModel @Inject constructor(
                 body.postValue(BodyState.ErrorState(throwable))
             }
             .addTo(compositeDisposable)
+    }
+
+    private fun buildDesiredWeightState(
+            desiredWeight: Int,
+            currentWeight: Double,
+            weightUnit: WeightUnit
+    ): BodyState.SuccessState.DesiredWeightState {
+
+        val diff = currentWeight - desiredWeight
+        return if (diff > 0) {
+            BodyState.SuccessState.DesiredWeightState.NotReached(
+                    desiredWeight = desiredWeight,
+                    currentWeight = currentWeight,
+                    weightUnit = weightUnit.acronym
+            )
+        } else {
+            BodyState.SuccessState.DesiredWeightState.Reached(
+                    desiredWeight = desiredWeight,
+                    weightUnit = weightUnit.acronym
+            )
+        }
     }
 
     private fun buildUserData(): Observable<Triple<User, WeightUnit, Bmr>> {

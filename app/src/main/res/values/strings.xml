@@ -64,22 +64,25 @@
     <string name="cd_imgview_muscles">Pick muscles</string>
     <string name="cd_imgview_training_items">Add training items</string>
 
-    <string name="dreamweight_card_text">until you reach your goal of %s!</string>
+    <string name="desired_weight_card_text">until you reach your goal of %s!</string>
+    <string name="desired_weight_card_text_reached">You reached your goal of %d %s!</string>
     <string name="sign_in_cancelled">Sign in cancelled</string>
     <string name="no_internet_connection">No internet connection available</string>
     <string name="unknown_error">Sorry, something went wrong</string>
     <string name="unknown_sign_in_response">Unknown response</string>
     <string name="default_weight_unit">kg</string>
 
+    <string name="congrats_with_emoji">&#127881; Congratulation &#127881;</string>
+
     <string-array name="dreamweight_motivation">
-        <item>You nearly reached</item>
+        <item>You nearly reached it</item>
         <item>Keep going</item>
         <item>Never give up</item>
         <item>Do it, whatever it takes</item>
         <item>No excuses</item>
         <item>Keep moving</item>
         <item>Give it your all</item>
-        <item>I See progress</item>
+        <item>I see progress</item>
     </string-array>
 
     <string-array name="goal_category_names">

@@ -72,11 +72,7 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
                             state.weightUnit
                     )
 
-                    desiredWeightBodyFragmentView.setDreamWeightData(
-                            state.userBody.desiredWeight,
-                            state.userBody.currentWeight,
-                            state.weightUnit
-                    )
+                    desiredWeightBodyFragmentView.setDesiredWeightState(state.desiredWeightState)
 
                     bmrFragment.setBmr(state.bmr)
 
@@ -124,8 +120,6 @@ class BodyFragment : TabBaseFragment<AppComponent>() {
     }
 
     companion object {
-
-        private const val cardAnimStartDelay = 200
 
         fun newInstance(): BodyFragment {
             return BodyFragment()
