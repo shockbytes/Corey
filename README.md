@@ -4,7 +4,7 @@ Note that this repository is just for my personal usage. It's not intended to be
 All of my personal health data is stored in my Firebase account.
 
 | Nutrition | Schedule | My body |
-|:-|:-|:-|
+|:-:|:-:|:-:|
 | ![Nutrition](screenshots/screenshot_nutrition.png) | ![Schedule](screenshots/screenshot_schedule.png)  | ![My body](screenshots/screenshot_my_body.png) |
 
 ### Version 4.3
