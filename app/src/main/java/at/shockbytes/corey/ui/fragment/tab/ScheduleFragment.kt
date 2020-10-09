@@ -127,7 +127,8 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
     override fun onItemMove(t: ScheduleItem, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() {
-        scheduleAdapter.reorderAfterMove().forEach(viewModel::updateScheduleItem)
+        scheduleAdapter.reorderAfterMove()
+                .let(viewModel::updateScheduleAfterMove)
     }
 
     override fun onItemDismissed(t: ScheduleItem, position: Int) = Unit

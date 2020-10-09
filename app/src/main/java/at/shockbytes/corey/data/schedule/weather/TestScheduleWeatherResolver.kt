@@ -2,6 +2,7 @@ package at.shockbytes.corey.data.schedule.weather
 
 import at.shockbytes.corey.R
 import at.shockbytes.weather.CurrentWeather
+import at.shockbytes.weather.TemperatureUnit
 import io.reactivex.Single
 
 class TestScheduleWeatherResolver : ScheduleWeatherResolver {
@@ -12,6 +13,7 @@ class TestScheduleWeatherResolver : ScheduleWeatherResolver {
                         validUntil = System.currentTimeMillis(),
                         locality = "Vienna",
                         temperature = 17,
+                        temperatureUnit = TemperatureUnit.CELSIUS,
                         iconRes = R.drawable.weather_clear
                 )
         )

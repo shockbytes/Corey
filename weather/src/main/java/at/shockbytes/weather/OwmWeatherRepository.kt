@@ -50,9 +50,7 @@ class OwmWeatherRepository(
     private fun loadCurrentWeatherFromApi(lat: Double, lng: Double): Single<CurrentWeather> {
         return weatherApi
             .getCurrentWeather(lat, lng, OwmWeatherApi.API_KEY, "metric")
-            .map { c ->
-                mapToCurrentWeather(c)
-            }
+            .map(::mapToCurrentWeather)
             .doOnSuccess { current -> weatherStorage.cacheCurrentWeather(current) }
     }
 
@@ -65,7 +63,8 @@ class OwmWeatherRepository(
         return CurrentWeather(
             validityDate,
             iconRes,
-            temperature
+            temperature,
+            TemperatureUnit.CELSIUS
         )
     }
 

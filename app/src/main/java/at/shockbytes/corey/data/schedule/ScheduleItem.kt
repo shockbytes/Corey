@@ -11,7 +11,7 @@ import java.util.UUID
  */
 data class ScheduleItem(
     val name: String = "",
-    var day: Int = -1,
+    val day: Int = -1,
     val id: String = UUID.randomUUID().toString(),
     val locationType: LocationType = LocationType.NONE,
     val workoutIconType: WorkoutIconType = WorkoutIconType.NONE

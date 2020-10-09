@@ -32,7 +32,7 @@ class ScheduleAdapter(
     private val emptyScheduleItemFactory: (position: Int) -> ScheduleItem,
     private val disposableBag: CompositeDisposable
 ) : BaseAdapter<ScheduleItem>(
-        context,
+        context = context,
         onItemClickListener = onItemClickListener,
         onItemMoveListener = onItemMoveListener
 ), ItemTouchHelperAdapter {
@@ -84,12 +84,9 @@ class ScheduleAdapter(
     }
 
     fun reorderAfterMove(): List<ScheduleItem> {
-        // Assign the right day indices to the objects
-        data.forEachIndexed { index, _ ->
-            data[index].day = index
+        return data.mapIndexed { index, scheduleItem ->
+            scheduleItem.copy(day = index)
         }
-        // Only return the filled ones for syncing
-        return data.filter { !it.isEmpty }
     }
 
     private inner class ViewHolder(
@@ -116,7 +113,7 @@ class ScheduleAdapter(
                     .subscribe({ weatherInfo ->
                         item_schedule_weather.apply {
                             setVisible(true)
-                            setWeatherInfo(weatherInfo, unit = "°C", animate = true)
+                            setWeatherInfo(weatherInfo, weatherInfo.temperatureUnit.unit, animate = true)
                         }
                     }, {
                         // Suppress errors Timber.e(throwable)

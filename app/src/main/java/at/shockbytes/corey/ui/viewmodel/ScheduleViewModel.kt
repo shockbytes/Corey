@@ -53,7 +53,14 @@ class ScheduleViewModel @Inject constructor(
         scheduleRepository.insertScheduleItem(scheduleItem)
     }
 
-    fun updateScheduleItem(item: ScheduleItem) {
+    fun updateScheduleAfterMove(items: List<ScheduleItem>) {
+        // TODO Fix the problem here...
+        items
+                .filter { !it.isEmpty }
+                .forEach(::updateScheduleItem)
+    }
+
+    private fun updateScheduleItem(item: ScheduleItem) {
         scheduleRepository.updateScheduleItem(item)
     }
 

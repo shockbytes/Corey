@@ -5,6 +5,7 @@ import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.weather.CurrentWeather
+import at.shockbytes.weather.TemperatureUnit
 import at.shockbytes.weather.WeatherForecast
 import at.shockbytes.weather.WeatherRepository
 import at.shockbytes.weather.util.WeatherResolverHelper
@@ -61,7 +62,8 @@ class DefaultScheduleWeatherResolver(
                 validUntil = validUntil,
                 iconRes = this.icon,
                 temperature = this.temperature,
-                locality = locality
+                locality = locality,
+                temperatureUnit = TemperatureUnit.CELSIUS
         )
     }
 }
