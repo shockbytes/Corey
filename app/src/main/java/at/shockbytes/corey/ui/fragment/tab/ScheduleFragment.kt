@@ -9,22 +9,18 @@ import androidx.recyclerview.widget.*
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
 import at.shockbytes.corey.ui.adapter.ScheduleAdapter
-import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
 import at.shockbytes.corey.ui.viewmodel.ScheduleViewModel
+import at.shockbytes.corey.util.dpToPixel
 import at.shockbytes.corey.util.isPortrait
 import at.shockbytes.corey.util.viewModelOf
-import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -51,7 +47,9 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
                 requireContext(),
                 onItemClickListener = this,
                 onItemMoveListener = this,
-                weatherResolver
+                weatherResolver = weatherResolver,
+                emptyScheduleItemFactory = viewModel::createEmptyScheduleItem,
+                disposableBag = compositeDisposable
         )
     }
 
@@ -59,7 +57,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
         get() = if (isPortrait()) {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         } else {
-            GridLayoutManager(context, ScheduleAdapter.MAX_SCHEDULES)
+            GridLayoutManager(context, ScheduleViewModel.MAX_SCHEDULE_DAYS)
         }
 
     override val layoutId = R.layout.fragment_schedule
@@ -100,7 +98,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
                         }
                     }
             )
-            addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, requireContext())))
+            addItemDecoration(EqualSpaceItemDecoration(context.dpToPixel(4)))
         }
 
         fragment_schedule_rv.apply {
@@ -108,7 +106,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
             isNestedScrollingEnabled = false
             adapter = scheduleAdapter
 
-            addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, requireContext())))
+            addItemDecoration(EqualSpaceItemDecoration(context.dpToPixel(4)))
 
             BaseItemTouchHelper(scheduleAdapter, false, BaseItemTouchHelper.DragAccess.ALL)
                     .let(::ItemTouchHelper)
@@ -129,19 +127,12 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
     override fun onItemMove(t: ScheduleItem, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() {
-        scheduleAdapter.reorderAfterMove()
-                .forEach(viewModel::updateScheduleItem)
+        scheduleAdapter.reorderAfterMove().forEach(viewModel::updateScheduleItem)
     }
 
     override fun onItemDismissed(t: ScheduleItem, position: Int) = Unit
 
     companion object {
-
-        fun newInstance(): ScheduleFragment {
-            val fragment = ScheduleFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance() = ScheduleFragment()
     }
 }

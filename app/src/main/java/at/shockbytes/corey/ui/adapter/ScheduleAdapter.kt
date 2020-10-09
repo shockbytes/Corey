@@ -6,14 +6,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.common.core.workout.model.LocationType
 import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.util.ScheduleItemDiffUtilCallback
+import at.shockbytes.corey.util.isOutdoor
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import io.reactivex.disposables.CompositeDisposable
@@ -30,40 +29,18 @@ class ScheduleAdapter(
     onItemClickListener: OnItemClickListener<ScheduleItem>,
     onItemMoveListener: OnItemMoveListener<ScheduleItem>,
     private val weatherResolver: ScheduleWeatherResolver,
+    private val emptyScheduleItemFactory: (position: Int) -> ScheduleItem,
+    private val disposableBag: CompositeDisposable
 ) : BaseAdapter<ScheduleItem>(
         context,
         onItemClickListener = onItemClickListener,
         onItemMoveListener = onItemMoveListener
 ), ItemTouchHelperAdapter {
 
-    private val compositeDisposable = CompositeDisposable()
-
-    override var data: MutableList<ScheduleItem>
-        get() = super.data
-        set(value) {
-            // TODO Fix this too
-            for (i in data.size - 1 downTo 0) {
-                deleteEntity(i)
-            }
-            fillUpScheduleList2(value).forEach { addEntityAtLast(it) }
-        }
-
-    init {
-        data = mutableListOf()
-    }
-
-    // ----------------------------------------------------------------------
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
+    override fun onCreateViewHolder(parent: ViewGroup,
         viewType: Int
     ): BaseAdapter.ViewHolder<ScheduleItem> {
         return ViewHolder(inflater.inflate(R.layout.item_schedule, parent, false))
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        compositeDisposable.dispose()
     }
 
     override fun onItemMove(from: Int, to: Int): Boolean {
@@ -87,7 +64,7 @@ class ScheduleAdapter(
             onItemMoveListener?.onItemDismissed(entry, entry.day)
         }
         notifyItemRemoved(position)
-        addEntity(position, emptyScheduleItem(position))
+        addEntity(position, emptyScheduleItemFactory(position))
     }
 
     // -----------------------------Data Section-----------------------------
@@ -98,11 +75,10 @@ class ScheduleAdapter(
 
     fun updateData(items: List<ScheduleItem>) {
 
-        val filledItems = fillUpScheduleList2(items)
-        val diffResult = DiffUtil.calculateDiff(ScheduleItemDiffUtilCallback(data, filledItems))
+        val diffResult = DiffUtil.calculateDiff(ScheduleItemDiffUtilCallback(data, items))
 
         data.clear()
-        data.addAll(filledItems)
+        data.addAll(items)
 
         diffResult.dispatchUpdatesTo(this)
     }
@@ -115,18 +91,6 @@ class ScheduleAdapter(
         // Only return the filled ones for syncing
         return data.filter { !it.isEmpty }
     }
-
-    @Deprecated(message = "Use ViewModel implementation instead")
-    private fun fillUpScheduleList2(items: List<ScheduleItem>): List<ScheduleItem> {
-        val def = Array(MAX_SCHEDULES) { emptyScheduleItem(it) }.toMutableList()
-        items.forEach { item ->
-            def[item.day] = item
-        }
-        return def
-    }
-
-    @Deprecated(message = "Use ViewModel implementation instead")
-    private fun emptyScheduleItem(idx: Int) = ScheduleItem("", idx, locationType = LocationType.NONE)
 
     private inner class ViewHolder(
         override val containerView: View
@@ -158,11 +122,7 @@ class ScheduleAdapter(
                         // Suppress errors Timber.e(throwable)
                         item_schedule_weather.setVisible(false)
                     })
-                    .addTo(compositeDisposable)
+                    .addTo(disposableBag)
         }
-    }
-
-    companion object {
-        const val MAX_SCHEDULES = 7
     }
 }

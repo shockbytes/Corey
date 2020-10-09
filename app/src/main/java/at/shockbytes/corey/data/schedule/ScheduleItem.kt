@@ -21,6 +21,4 @@ data class ScheduleItem(
         get() = name.isEmpty()
 
     override fun copyWithNewId(newId: String): FirebaseStorable = copy(id = newId)
-
-    fun isOutdoor(): Boolean = locationType == LocationType.OUTDOOR
 }

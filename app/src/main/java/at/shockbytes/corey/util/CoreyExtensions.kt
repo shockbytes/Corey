@@ -1,6 +1,7 @@
 package at.shockbytes.corey.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -21,11 +22,18 @@ import at.shockbytes.core.viewmodel.BaseViewModel
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.CoreyDate
 import at.shockbytes.corey.common.core.util.FindClosestDiffable
+import at.shockbytes.util.AppUtils
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import org.joda.time.DateTime
 import kotlin.math.absoluteValue
+
+fun Context?.dpToPixel(dp: Int): Int {
+    return this?.let { c ->
+        AppUtils.convertDpInPixel(dp, c)
+    } ?: 0
+}
 
 fun Fragment.isPortrait(): Boolean {
     return this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
