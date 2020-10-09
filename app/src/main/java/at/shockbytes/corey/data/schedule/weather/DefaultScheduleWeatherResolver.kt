@@ -3,6 +3,7 @@ package at.shockbytes.corey.data.schedule.weather
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.common.core.util.CoreyUtils
+import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.weather.CurrentWeather
 import at.shockbytes.weather.WeatherForecast
 import at.shockbytes.weather.WeatherRepository
@@ -12,13 +13,27 @@ import io.reactivex.Single
 class DefaultScheduleWeatherResolver(
     private val weatherRepository: WeatherRepository,
     private val schedulers: SchedulerFacade,
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    private val userSettings: UserSettings
 ) : ScheduleWeatherResolver {
 
     override fun resolveWeatherForScheduleIndex(index: Int): Single<CurrentWeather> {
+        return userSettings.isWeatherForecastEnabled
+                .first(true)
+                .flatMap { isEnabled ->
+                    if (isEnabled) {
+                        resolveWeatherForIndex(index)
+                    } else {
+                        Single.never()
+                    }
+                }
+                .subscribeOn(schedulers.io)
+                .observeOn(schedulers.ui)
+    }
+
+    private fun resolveWeatherForIndex(index: Int): Single<CurrentWeather> {
         return locationRepository
                 .getLastKnownLocation()
-                .subscribeOn(schedulers.io)
                 .flatMap { location ->
                     locationRepository.resolveLocation(location).subscribeOn(schedulers.io)
                 }

@@ -2,6 +2,7 @@ package at.shockbytes.corey.dagger
 
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.common.core.location.LocationRepository
+import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.data.schedule.weather.DefaultScheduleWeatherResolver
 import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.data.weather.InMemoryWeatherStorage
@@ -41,9 +42,10 @@ class WeatherModule {
     fun provideScheduleWeatherResolver(
         weatherRepository: WeatherRepository,
         schedulers: SchedulerFacade,
-        locationRepository: LocationRepository
+        locationRepository: LocationRepository,
+        userSettings: UserSettings
     ): ScheduleWeatherResolver {
-        return DefaultScheduleWeatherResolver(weatherRepository, schedulers, locationRepository)
+        return DefaultScheduleWeatherResolver(weatherRepository, schedulers, locationRepository, userSettings)
     }
 
     @Provides

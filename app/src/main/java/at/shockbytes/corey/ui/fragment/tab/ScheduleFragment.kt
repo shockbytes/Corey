@@ -1,22 +1,19 @@
 package at.shockbytes.corey.ui.fragment.tab
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.*
-import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
 import at.shockbytes.corey.ui.adapter.ScheduleAdapter
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
+import at.shockbytes.corey.util.isPortrait
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
@@ -24,7 +21,7 @@ import at.shockbytes.util.view.EqualSpaceItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import kotterknife.bindView
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -43,30 +40,21 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
     lateinit var scheduleRepository: ScheduleRepository
 
     @Inject
-    lateinit var schedulers: SchedulerFacade
-
-    @Inject
-    lateinit var userSettings: UserSettings
-
-    @Inject
     lateinit var weatherResolver: ScheduleWeatherResolver
 
     private lateinit var touchHelper: ItemTouchHelper
+
     private val scheduleAdapter: ScheduleAdapter by lazy {
         ScheduleAdapter(
                 requireContext(),
                 onItemClickListener = this,
                 onItemMoveListener = this,
-                weatherResolver,
-                schedulers,
-                userSettings
+                weatherResolver
         )
     }
 
-    private val recyclerViewDays: RecyclerView by bindView(R.id.fragment_schedule_rv_days)
-
     private val recyclerViewLayoutManager: RecyclerView.LayoutManager
-        get() = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        get() = if (isPortrait()) {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         } else {
             GridLayoutManager(context, ScheduleAdapter.MAX_SCHEDULES)
@@ -90,12 +78,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
         scheduleRepository.schedule
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ scheduleItems ->
-                    scheduleAdapter.updateData(scheduleItems)
-                }, { throwable ->
-                    throwable.printStackTrace()
-                    Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()
-                })
+                .subscribe(scheduleAdapter::updateData, Timber::e)
                 .addTo(compositeDisposable)
     }
 
@@ -103,7 +86,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
 
     override fun setupViews() {
 
-        recyclerViewDays.apply {
+        fragment_schedule_rv_days.apply {
             layoutManager = recyclerViewLayoutManager
             adapter = DaysScheduleAdapter(
                     requireContext(),

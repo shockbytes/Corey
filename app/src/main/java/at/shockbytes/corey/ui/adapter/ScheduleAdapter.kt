@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
-import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.workout.model.LocationType
 import at.shockbytes.corey.common.setVisible
 import at.shockbytes.corey.data.schedule.ScheduleItem
@@ -32,8 +30,6 @@ class ScheduleAdapter(
     onItemClickListener: OnItemClickListener<ScheduleItem>,
     onItemMoveListener: OnItemMoveListener<ScheduleItem>,
     private val weatherResolver: ScheduleWeatherResolver,
-    private val schedulers: SchedulerFacade,
-    private val userSettings: UserSettings
 ) : BaseAdapter<ScheduleItem>(
         context,
         onItemClickListener = onItemClickListener,
@@ -119,6 +115,7 @@ class ScheduleAdapter(
         return data.filter { !it.isEmpty }
     }
 
+    @Deprecated(message = "Use ViewModel implementation instead")
     private fun fillUpScheduleList2(items: List<ScheduleItem>): List<ScheduleItem> {
         val def = Array(MAX_SCHEDULES) { emptyScheduleItem(it) }.toMutableList()
         items.forEach { item ->
@@ -127,6 +124,7 @@ class ScheduleAdapter(
         return def
     }
 
+    @Deprecated(message = "Use ViewModel implementation instead")
     private fun emptyScheduleItem(idx: Int) = ScheduleItem("", idx, locationType = LocationType.NONE)
 
     private inner class ViewHolder(
@@ -158,10 +156,7 @@ class ScheduleAdapter(
         }
 
         private fun loadWeather(index: Int) {
-            userSettings.isWeatherForecastEnabled
-                    .flatMapSingle { weatherResolver.resolveWeatherForScheduleIndex(index) }
-                    .subscribeOn(schedulers.io)
-                    .observeOn(schedulers.ui)
+            weatherResolver.resolveWeatherForScheduleIndex(index)
                     .subscribe({ weatherInfo ->
                         item_schedule_weather.apply {
                             setVisible(true)
