@@ -39,7 +39,7 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(SignupViewModel::class)
-    internal abstract fun signupViewModel(viewModel: SignupViewModel): ViewModel
+    internal abstract fun signUpViewModel(viewModel: SignupViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -70,6 +70,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NutritionViewModel::class)
     internal abstract fun nutritionViewModel(viewModel: NutritionViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ScheduleViewModel::class)
+    internal abstract fun scheduleViewModel(viewModel: ScheduleViewModel): ViewModel
 
     @Binds
     @IntoMap

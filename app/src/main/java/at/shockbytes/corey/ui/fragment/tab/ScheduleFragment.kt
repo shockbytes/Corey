@@ -3,6 +3,8 @@ package at.shockbytes.corey.ui.fragment.tab
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
@@ -10,10 +12,11 @@ import at.shockbytes.corey.ui.adapter.ScheduleAdapter
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.dagger.AppComponent
 import at.shockbytes.corey.data.schedule.ScheduleItem
-import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.data.schedule.weather.ScheduleWeatherResolver
 import at.shockbytes.corey.ui.fragment.dialog.InsertScheduleDialogFragment
+import at.shockbytes.corey.ui.viewmodel.ScheduleViewModel
 import at.shockbytes.corey.util.isPortrait
+import at.shockbytes.corey.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
@@ -37,12 +40,11 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
 
     @Inject
-    lateinit var scheduleRepository: ScheduleRepository
-
-    @Inject
     lateinit var weatherResolver: ScheduleWeatherResolver
 
-    private lateinit var touchHelper: ItemTouchHelper
+    @Inject
+    lateinit var vmFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: ScheduleViewModel
 
     private val scheduleAdapter: ScheduleAdapter by lazy {
         ScheduleAdapter(
@@ -62,27 +64,23 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
 
     override val layoutId = R.layout.fragment_schedule
 
-    override fun onItemMove(t: ScheduleItem, from: Int, to: Int) = Unit
-
-    override fun onItemMoveFinished() {
-        scheduleAdapter.reorderAfterMove()
-                .forEach { item ->
-                    scheduleRepository.updateScheduleItem(item)
-                }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = viewModelOf(vmFactory)
     }
 
-    override fun onItemDismissed(t: ScheduleItem, position: Int) = Unit
+    override fun injectToGraph(appComponent: AppComponent?) {
+        appComponent?.inject(this)
+    }
 
     override fun bindViewModel() {
-
-        scheduleRepository.schedule
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(scheduleAdapter::updateData, Timber::e)
-                .addTo(compositeDisposable)
+        viewModel.requestSchedule()
+        viewModel.getSchedule().observe(this, Observer(scheduleAdapter::updateData))
     }
 
-    override fun unbindViewModel() = Unit
+    override fun unbindViewModel() {
+        viewModel.getSchedule().removeObservers(this)
+    }
 
     override fun setupViews() {
 
@@ -96,7 +94,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
                             v.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
                             scheduleAdapter.getItemAt(position)?.let { item ->
                                 if (!item.isEmpty) {
-                                    scheduleRepository.deleteScheduleItem(item)
+                                    viewModel.deleteScheduleItem(item)
                                 }
                             }
                         }
@@ -108,35 +106,34 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
         fragment_schedule_rv.apply {
             layoutManager = recyclerViewLayoutManager
             isNestedScrollingEnabled = false
-            addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, requireContext())))
-            val callback = BaseItemTouchHelper(scheduleAdapter, false, BaseItemTouchHelper.DragAccess.ALL)
-
-            touchHelper = ItemTouchHelper(callback)
-            touchHelper.attachToRecyclerView(this)
             adapter = scheduleAdapter
-        }
-    }
 
-    override fun injectToGraph(appComponent: AppComponent?) {
-        appComponent?.inject(this)
+            addItemDecoration(EqualSpaceItemDecoration(AppUtils.convertDpInPixel(4, requireContext())))
+
+            BaseItemTouchHelper(scheduleAdapter, false, BaseItemTouchHelper.DragAccess.ALL)
+                    .let(::ItemTouchHelper)
+                    .attachToRecyclerView(this)
+        }
     }
 
     override fun onItemClick(content: ScheduleItem, position: Int, v: View) {
         if (content.isEmpty) {
             InsertScheduleDialogFragment.newInstance()
-                    .setOnScheduleItemSelectedListener { i ->
-                        scheduleRepository.insertScheduleItem(
-                                ScheduleItem(
-                                        i.item.title,
-                                        position,
-                                        locationType = i.item.locationType,
-                                        workoutIconType = i.item.workoutType
-                                )
-                        )
+                    .setOnScheduleItemSelectedListener { scheduleDisplayItem ->
+                        viewModel.insertScheduleItem(scheduleDisplayItem, position)
                     }
                     .show(childFragmentManager, "dialog-fragment-insert-schedule")
         }
     }
+
+    override fun onItemMove(t: ScheduleItem, from: Int, to: Int) = Unit
+
+    override fun onItemMoveFinished() {
+        scheduleAdapter.reorderAfterMove()
+                .forEach(viewModel::updateScheduleItem)
+    }
+
+    override fun onItemDismissed(t: ScheduleItem, position: Int) = Unit
 
     companion object {
 

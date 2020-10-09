@@ -41,6 +41,7 @@ class ScheduleAdapter(
     override var data: MutableList<ScheduleItem>
         get() = super.data
         set(value) {
+            // TODO Fix this too
             for (i in data.size - 1 downTo 0) {
                 deleteEntity(i)
             }
@@ -131,28 +132,19 @@ class ScheduleAdapter(
         override val containerView: View
     ) : BaseAdapter.ViewHolder<ScheduleItem>(containerView), LayoutContainer {
 
-        private lateinit var item: ScheduleItem
-        private var itemPosition: Int = 0
-
         override fun bindToView(content: ScheduleItem, position: Int) {
-            this.item = content
-            itemPosition = position
-            item_schedule_txt_name.text = item.name
+            item_schedule_txt_name.text = content.name
 
-            if (isOutdoor(item)) {
+            if (content.isOutdoor()) {
                 loadWeather(position)
             }
 
             item_schedule_iv_icon.apply {
-                setImageResource((item.workoutIconType.iconRes ?: 0))
-                item.workoutIconType.iconTint?.let { tintColor ->
+                setImageResource((content.workoutIconType.iconRes ?: 0))
+                content.workoutIconType.iconTint?.let { tintColor ->
                     imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, tintColor))
                 }
             }
-        }
-
-        private fun isOutdoor(item: ScheduleItem): Boolean {
-            return (item.locationType == LocationType.OUTDOOR)
         }
 
         private fun loadWeather(index: Int) {
@@ -163,8 +155,7 @@ class ScheduleAdapter(
                             setWeatherInfo(weatherInfo, unit = "°C", animate = true)
                         }
                     }, {
-                        // Suppress errors
-                        // Timber.e(throwable)
+                        // Suppress errors Timber.e(throwable)
                         item_schedule_weather.setVisible(false)
                     })
                     .addTo(compositeDisposable)
