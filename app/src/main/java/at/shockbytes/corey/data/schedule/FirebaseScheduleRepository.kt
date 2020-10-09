@@ -5,20 +5,13 @@ import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.WorkoutIconType
 import at.shockbytes.corey.data.workout.WorkoutRepository
-import at.shockbytes.corey.util.insertValue
-import at.shockbytes.corey.util.listen
-import at.shockbytes.corey.util.removeValue
-import at.shockbytes.corey.util.updateValue
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import at.shockbytes.corey.util.*
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import timber.log.Timber
 
 /**
  * Author:  Martin Macheiner
@@ -86,7 +79,10 @@ class FirebaseScheduleRepository(
     }
 
     private fun setupFirebase() {
-        firebase.listen(REF_SCHEDULE, scheduleItemSubject, changedChildKeySelector = { it.id })
+        scheduleItemSubject.fromFirebase(
+                dbRef = firebase.getReference(REF_SCHEDULE),
+                changedChildKeySelector = { it.id }
+        )
     }
 
     companion object {

@@ -5,15 +5,27 @@ import com.google.firebase.database.*
 import io.reactivex.subjects.Subject
 import timber.log.Timber
 
+inline fun <reified T, K> Subject<List<T>>.fromFirebase(
+        dbRef: DatabaseReference,
+        crossinline changedChildKeySelector: (T) -> K
+) {
+    dbRef.listen(this, changedChildKeySelector)
+}
+
 inline fun <reified T, K> FirebaseDatabase.listen(
         reference: String,
+        relay: Subject<List<T>>,
+        crossinline changedChildKeySelector: (T) -> K
+) = this.getReference(reference).listen(relay, changedChildKeySelector)
+
+inline fun <reified T, K> DatabaseReference.listen(
         relay: Subject<List<T>>,
         crossinline changedChildKeySelector: (T) -> K
 ) {
 
     val cache = mutableListOf<T>()
 
-    this.getReference(reference).addChildEventListener(object : ChildEventListener {
+    this.addChildEventListener(object : ChildEventListener {
 
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
             dataSnapshot.getValue(T::class.java)?.let { value ->
@@ -74,7 +86,10 @@ inline fun <reified T> FirebaseDatabase.listenForValue(
 }
 
 
-inline fun <reified T: FirebaseStorable> FirebaseDatabase.insertValue(reference: String, value: T): T {
+inline fun <reified T: FirebaseStorable> FirebaseDatabase.insertValue(
+        reference: String,
+        value: T
+): T {
 
     val ref = getReference(reference).push()
     val id = ref.key ?: throw IllegalStateException("Cannot insert value $value into firebase!")

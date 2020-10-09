@@ -21,6 +21,8 @@ class ScheduleViewModel @Inject constructor(
         private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
+    private val emptySchedule = Array(MAX_SCHEDULE_DAYS, ::createEmptyScheduleItem).toList()
+
     private val schedule = MutableLiveData<List<ScheduleItem>>()
     fun getSchedule(): LiveData<List<ScheduleItem>> = schedule
 
@@ -28,18 +30,22 @@ class ScheduleViewModel @Inject constructor(
         scheduleRepository.schedule
                 .subscribeOn(schedulers.io)
                 .observeOn(schedulers.ui)
-                .map { sparseSchedule ->
-                    // TODO Fix problem here...
-                    fillUpScheduleList2(sparseSchedule)
-                }
+                .map(::fillUpSparseSchedule)
                 .subscribe(schedule::setValue, Timber::e)
                 .addTo(compositeDisposable)
     }
 
+    private fun fillUpSparseSchedule(items: List<ScheduleItem>): List<ScheduleItem> {
+        return emptySchedule.mapIndexed { index, emptyItem ->
+            items.find { it.day == index }
+                    ?: emptyItem
+        }
+    }
+
     fun insertScheduleItem(item: AddScheduleItemAdapter.ScheduleDisplayItem, position: Int) {
         val scheduleItem = ScheduleItem(
-                item.item.title,
-                position,
+                name = item.item.title,
+                day = position,
                 locationType = item.item.locationType,
                 workoutIconType = item.item.workoutType
         )
@@ -53,15 +59,6 @@ class ScheduleViewModel @Inject constructor(
 
     fun deleteScheduleItem(item: ScheduleItem) {
         scheduleRepository.deleteScheduleItem(item)
-    }
-
-    @Deprecated(message = "Use ViewModel implementation instead")
-    private fun fillUpScheduleList2(items: List<ScheduleItem>): List<ScheduleItem> {
-        val def = Array(MAX_SCHEDULE_DAYS) { createEmptyScheduleItem(it) }.toMutableList()
-        items.forEach { item ->
-            def[item.day] = item
-        }
-        return def
     }
 
     fun createEmptyScheduleItem(idx: Int) = ScheduleItem("", idx, locationType = LocationType.NONE)
