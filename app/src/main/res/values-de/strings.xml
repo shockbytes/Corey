@@ -38,7 +38,7 @@
     <string name="validation_empty_exercises">Workout muss mindestens eine Übung enthalten</string>
     <string name="validation_empty_intensity">Wähle die Intensität</string>
     <string name="validation_empty_name">Gib den Namen an</string>
-    <string name="hint_search">Übung suchen</string>
+    <string name="hint_search">Workout suchen</string>
     <string name="repetitions">WIEDERHOLUNGEN</string>
     <string name="rest_time">RUHEZEIT</string>
     <string name="workout_time">TRAININGSZEIT</string>

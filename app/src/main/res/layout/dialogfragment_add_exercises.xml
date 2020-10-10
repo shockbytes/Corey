@@ -30,27 +30,32 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/fragment_create_workout_bottom_sheet_edit_filter"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/AppTheme.EditText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
                     android:layout_marginStart="48dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginEnd="48dp"
-                    android:layout_marginRight="16dp"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="16dp"
                     android:hint="@string/hint_search"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:padding="16dp"
-                    android:textColor="@android:color/secondary_text_light"
-                    android:textSize="16sp" />
+                    app:startIconDrawable="@drawable/ic_search"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fragment_create_workout_bottom_sheet_edit_filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                        android:textCursorDrawable="@drawable/cursor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/fragment_create_workout_bottom_sheet_recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp" />
+                    android:layout_height="300dp" />
+
             </LinearLayout>
 
             <RelativeLayout
