@@ -2,6 +2,7 @@ package at.shockbytes.corey.ui.fragment.body
 
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.CoreyUtils
 import at.shockbytes.corey.dagger.AppComponent
@@ -35,14 +36,19 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
             legend.isEnabled = false
             description = null
             isClickable = false
-            axisLeft.setDrawAxisLine(false)
-            axisLeft.setDrawGridLines(false)
-            xAxis.setDrawGridLines(false)
-            xAxis.setDrawAxisLine(false)
+            axisLeft.apply {
+                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                setDrawAxisLine(false)
+                setDrawGridLines(false)
+                textColor = ContextCompat.getColor(requireContext(), R.color.body_card_weight_history)
+            }
+            xAxis.apply {
+                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+                textColor = ContextCompat.getColor(requireContext(), R.color.body_card_weight_history)
+            }
         }
-
-        fragment_body_card_weight_graph_linechart.axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.body_card_weight_history)
-        fragment_body_card_weight_graph_linechart.xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.body_card_weight_history)
     }
 
     fun setWeightData(
@@ -114,6 +120,7 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
             labelPosition = LimitLabelPosition.LEFT_BOTTOM
             textSize = 10f
             textColor = dreamWeightLineColor
+            typeface = ResourcesCompat.getFont(requireContext(), R.font.montserrat)
         }
     }
 }
