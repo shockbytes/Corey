@@ -21,7 +21,7 @@ class ScheduleViewModel @Inject constructor(
         private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
-    private val emptySchedule = Array(MAX_SCHEDULE_DAYS, ::createEmptyScheduleItem).toList()
+    private var cachedSchedule = Array(MAX_SCHEDULE_DAYS, ::createEmptyScheduleItem).toList()
 
     private val schedule = MutableLiveData<List<ScheduleItem>>()
     fun getSchedule(): LiveData<List<ScheduleItem>> = schedule
@@ -36,7 +36,7 @@ class ScheduleViewModel @Inject constructor(
     }
 
     private fun fillUpSparseSchedule(items: List<ScheduleItem>): List<ScheduleItem> {
-        return emptySchedule.mapIndexed { index, emptyItem ->
+        return cachedSchedule.mapIndexed { index, emptyItem ->
             items.find { it.day == index }
                     ?: emptyItem
         }
@@ -54,7 +54,15 @@ class ScheduleViewModel @Inject constructor(
     }
 
     fun updateScheduleAfterMove(items: List<ScheduleItem>) {
-        // TODO Fix the problem here...
+        cacheSchedule(items)
+        updateScheduleItems(items)
+    }
+
+    private fun cacheSchedule(items: List<ScheduleItem>) {
+        cachedSchedule = items
+    }
+
+    private fun updateScheduleItems(items: List<ScheduleItem>) {
         items
                 .filter { !it.isEmpty }
                 .forEach(::updateScheduleItem)
@@ -68,7 +76,9 @@ class ScheduleViewModel @Inject constructor(
         scheduleRepository.deleteScheduleItem(item)
     }
 
-    fun createEmptyScheduleItem(idx: Int) = ScheduleItem("", idx, locationType = LocationType.NONE)
+    fun createEmptyScheduleItem(idx: Int) : ScheduleItem {
+        return ScheduleItem("", idx, locationType = LocationType.NONE)
+    }
 
     companion object {
         const val MAX_SCHEDULE_DAYS = 7
