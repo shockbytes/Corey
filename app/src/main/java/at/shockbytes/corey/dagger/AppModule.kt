@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Vibrator
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import at.shockbytes.core.image.GlideImageLoader
 import at.shockbytes.core.image.ImageLoader
 import at.shockbytes.core.scheduler.AppSchedulerFacade
@@ -20,7 +20,9 @@ import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.reminder.DefaultReminderManager
 import at.shockbytes.corey.data.reminder.ReminderManager
+import at.shockbytes.corey.data.schedule.FirebaseRemoteConfigSchedulableItemResolver
 import at.shockbytes.corey.data.schedule.FirebaseScheduleRepository
+import at.shockbytes.corey.data.schedule.SchedulableItemResolver
 import at.shockbytes.corey.data.schedule.ScheduleRepository
 import at.shockbytes.corey.data.user.FirebaseUserRepository
 import at.shockbytes.corey.data.user.UserRepository
@@ -72,20 +74,30 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideScheduleManager(
-        gson: Gson,
-        workoutManager: WorkoutRepository,
-        remoteConfig: FirebaseRemoteConfig,
+    fun provideScheduleRepository(
+        schedulableItemResolver: SchedulableItemResolver,
         firebase: FirebaseDatabase,
         schedulerFacade: SchedulerFacade
     ): ScheduleRepository {
         return FirebaseScheduleRepository(
+            firebase,
+            schedulerFacade,
+            schedulableItemResolver,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideSchedulableItemResolver(
+        gson: Gson,
+        workoutManager: WorkoutRepository,
+        remoteConfig: FirebaseRemoteConfig,
+    ): SchedulableItemResolver {
+        return FirebaseRemoteConfigSchedulableItemResolver(
             app.applicationContext,
             gson,
             workoutManager,
             remoteConfig,
-            firebase,
-            schedulerFacade
         )
     }
 
