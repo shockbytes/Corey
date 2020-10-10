@@ -28,6 +28,14 @@ class FirebaseScheduleRepository(
         setupFirebase()
     }
 
+    private fun setupFirebase() {
+        scheduleItemSubject.fromFirebase(
+                dbRef = firebase.getReference(REF_SCHEDULE),
+                changedChildKeySelector = { it.id },
+                cancelHandler = { dbError -> Timber.e(dbError.toException()) }
+        )
+    }
+
     override fun insertScheduleItem(item: ScheduleItem): ScheduleItem {
         return firebase.insertValue(REF_SCHEDULE, item)
     }
@@ -37,25 +45,12 @@ class FirebaseScheduleRepository(
     }
 
     override fun deleteScheduleItem(item: ScheduleItem) {
-        firebase.removeValue(REF_SCHEDULE, item.id)
+        firebase.removeChildValue(REF_SCHEDULE, item.id)
     }
 
     override fun deleteAll(): Completable {
-        return Completable
-                .create { emitter ->
-                    firebase.getReference(REF_SCHEDULE).removeValue()
-                            .addOnCompleteListener { emitter.onComplete() }
-                            .addOnFailureListener { throwable -> emitter.onError(throwable) }
-                }
+        return firebase.reactiveRemoveValue(REF_SCHEDULE)
                 .subscribeOn(schedulers.io)
-    }
-
-    private fun setupFirebase() {
-        scheduleItemSubject.fromFirebase(
-                dbRef = firebase.getReference(REF_SCHEDULE),
-                changedChildKeySelector = { it.id },
-                cancelHandler = { dbError -> Timber.e(dbError.toException()) }
-        )
     }
 
     companion object {

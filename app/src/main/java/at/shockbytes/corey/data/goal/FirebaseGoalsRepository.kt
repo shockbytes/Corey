@@ -2,7 +2,7 @@ package at.shockbytes.corey.data.goal
 
 import at.shockbytes.corey.util.insertValue
 import at.shockbytes.corey.util.listen
-import at.shockbytes.corey.util.removeValue
+import at.shockbytes.corey.util.removeChildValue
 import at.shockbytes.corey.util.updateValue
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Observable
@@ -25,7 +25,7 @@ class FirebaseGoalsRepository(
     }
 
     override fun removeBodyGoal(goal: Goal) {
-        firebase.removeValue(REF_GOAL, goal.id)
+        firebase.removeChildValue(REF_GOAL, goal.id)
     }
 
     override fun storeBodyGoal(goal: Goal) {

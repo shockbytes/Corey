@@ -156,7 +156,7 @@ class FirebaseNutritionRepository(
 
     override fun deleteNutritionEntry(id: String): Completable {
         return Completable.fromAction {
-            firebase.removeValue(REF, id)
+            firebase.removeChildValue(REF, id)
         }
     }
 

@@ -2,6 +2,7 @@ package at.shockbytes.corey.util
 
 import at.shockbytes.corey.data.FirebaseStorable
 import com.google.firebase.database.*
+import io.reactivex.Completable
 import io.reactivex.subjects.Subject
 import timber.log.Timber
 
@@ -76,7 +77,7 @@ inline fun <reified T> Subject<T>.fromFirebase(
         dbRef: DatabaseReference,
         noinline errorHandler: ((DatabaseError) -> Unit)? = null
 ) {
-   dbRef.listenForValue(this, errorHandler)
+    dbRef.listenForValue(this, errorHandler)
 }
 
 inline fun <reified T> FirebaseDatabase.listenForValue(
@@ -95,7 +96,7 @@ inline fun <reified T> DatabaseReference.listenForValue(
         noinline errorHandler: ((DatabaseError) -> Unit)? = null
 ) {
 
-    this.addValueEventListener(object: ValueEventListener {
+    this.addValueEventListener(object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             dataSnapshot
                     .getValue(T::class.java)
@@ -109,7 +110,7 @@ inline fun <reified T> DatabaseReference.listenForValue(
 }
 
 
-inline fun <reified T: FirebaseStorable> FirebaseDatabase.insertValue(
+inline fun <reified T : FirebaseStorable> FirebaseDatabase.insertValue(
         reference: String,
         value: T
 ): T {
@@ -128,6 +129,14 @@ fun <T> FirebaseDatabase.updateValue(reference: String, childId: String, value: 
     getReference(reference).child(childId).setValue(value)
 }
 
-fun FirebaseDatabase.removeValue(reference: String, id: String) {
-    getReference(reference).child(id).removeValue()
+fun FirebaseDatabase.removeChildValue(reference: String, childId: String) {
+    getReference(reference).child(childId).removeValue()
+}
+
+fun FirebaseDatabase.reactiveRemoveValue(reference: String): Completable {
+    return Completable.create { emitter ->
+        getReference(reference).removeValue()
+                .addOnCompleteListener { emitter.onComplete() }
+                .addOnFailureListener { throwable -> emitter.onError(throwable) }
+    }
 }
