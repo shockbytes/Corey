@@ -8,7 +8,7 @@ import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.CoreyDate
 import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.data.google.CoreyGoogleApiClient
-import at.shockbytes.corey.util.listenForValue
+import at.shockbytes.corey.util.fromFirebase
 import at.shockbytes.corey.util.updateValue
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Observable
@@ -40,7 +40,7 @@ class GoogleFitBodyRepository(
     }
 
     private fun setupFirebase() {
-        firebase.listenForValue(REF_USER, REF_DESIRED, desiredWeightSubject)
+        desiredWeightSubject.fromFirebase(firebase.getReference(REF_USER.plus(REF_DESIRED)))
     }
 
     override val desiredWeight: Observable<Int>

@@ -7,20 +7,23 @@ import timber.log.Timber
 
 inline fun <reified T, K> Subject<List<T>>.fromFirebase(
         dbRef: DatabaseReference,
-        crossinline changedChildKeySelector: (T) -> K
+        crossinline changedChildKeySelector: (T) -> K,
+        noinline cancelHandler: ((DatabaseError) -> Unit)? = null
 ) {
-    dbRef.listen(this, changedChildKeySelector)
+    dbRef.listen(this, changedChildKeySelector, cancelHandler)
 }
 
 inline fun <reified T, K> FirebaseDatabase.listen(
         reference: String,
         relay: Subject<List<T>>,
-        crossinline changedChildKeySelector: (T) -> K
-) = this.getReference(reference).listen(relay, changedChildKeySelector)
+        crossinline changedChildKeySelector: (T) -> K,
+        noinline cancelHandler: ((DatabaseError) -> Unit)? = null
+) = this.getReference(reference).listen(relay, changedChildKeySelector, cancelHandler)
 
 inline fun <reified T, K> DatabaseReference.listen(
         relay: Subject<List<T>>,
-        crossinline changedChildKeySelector: (T) -> K
+        crossinline changedChildKeySelector: (T) -> K,
+        noinline cancelHandler: ((DatabaseError) -> Unit)? = null
 ) {
 
     val cache = mutableListOf<T>()
@@ -62,26 +65,46 @@ inline fun <reified T, K> DatabaseReference.listen(
 
         override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) = Unit
 
-        override fun onCancelled(databaseError: DatabaseError) = Unit
+        override fun onCancelled(databaseError: DatabaseError) {
+            cancelHandler?.invoke(databaseError)
+        }
     })
 }
 
+
+inline fun <reified T> Subject<T>.fromFirebase(
+        dbRef: DatabaseReference,
+        noinline errorHandler: ((DatabaseError) -> Unit)? = null
+) {
+   dbRef.listenForValue(this, errorHandler)
+}
 
 inline fun <reified T> FirebaseDatabase.listenForValue(
         reference: String,
         childReference: String,
         relay: Subject<T>,
+        noinline errorHandler: ((DatabaseError) -> Unit)? = null
 ) {
 
     val fullRef = reference.plus(childReference)
-    this.getReference(fullRef).addValueEventListener(object: ValueEventListener {
+    getReference(fullRef).listenForValue(relay, errorHandler)
+}
+
+inline fun <reified T> DatabaseReference.listenForValue(
+        relay: Subject<T>,
+        noinline errorHandler: ((DatabaseError) -> Unit)? = null
+) {
+
+    this.addValueEventListener(object: ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             dataSnapshot
                     .getValue(T::class.java)
                     ?.let(relay::onNext)
         }
 
-        override fun onCancelled(p0: DatabaseError) = Unit
+        override fun onCancelled(dbError: DatabaseError) {
+            errorHandler?.invoke(dbError)
+        }
     })
 }
 

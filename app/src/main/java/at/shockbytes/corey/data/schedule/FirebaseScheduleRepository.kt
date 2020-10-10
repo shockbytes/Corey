@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import timber.log.Timber
 
 /**
  * Author:  Martin Macheiner
@@ -81,7 +82,8 @@ class FirebaseScheduleRepository(
     private fun setupFirebase() {
         scheduleItemSubject.fromFirebase(
                 dbRef = firebase.getReference(REF_SCHEDULE),
-                changedChildKeySelector = { it.id }
+                changedChildKeySelector = { it.id },
+                cancelHandler = { dbError -> Timber.e(dbError.toException()) }
         )
     }
 
