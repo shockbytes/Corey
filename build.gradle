@@ -9,9 +9,8 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.28.0'
-        classpath 'com.android.tools.build:gradle:4.0.2'
-		classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.android.tools.build:gradle:4.1.0'
+		classpath 'com.google.gms:google-services:4.3.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -21,7 +20,6 @@ allprojects {
         jcenter()
         google()
         maven { url 'https://maven.google.com' }
-        maven { url 'https://maven.fabric.io/public' }
         maven { url 'https://clojars.org/repo/' }
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
@@ -39,38 +37,38 @@ ext {
     compileSdkVersion = 30
     buildToolsVersion = '29.0.2'
 
-    daggerVersion = "2.17"
+    daggerVersion = "2.27"
     supportVersion = "28.0.0"
-    rxJavaVersion = "2.1.6"
-    rxAndroidVersion = "2.1.0"
+    rxJavaVersion = "2.2.17"
+    rxAndroidVersion = "2.1.1"
 
     shockUtilVersion = "6.1.2"
     shockbytesCoreVersion = "0.3.3.1"
 
-    firebaseVersionDatabase = "17.0.0"
-    firebaseVersionConfig = "17.0.0"
-    firebaseVersionCore = "16.0.9"
-    firebaseVersionAuth = "17.0.0"
+    firebaseVersionDatabase = "19.5.0"
+    firebaseVersionConfig = "19.2.0"
+    firebaseVersionCore = "17.5.1"
+    firebaseVersionAuth = "19.4.0"
 
     rxBindingsVersion = "2.2.0"
 
     firebaseUIVersion = "4.2.1"
 
-    playServicesVersionAuth = "16.0.1"
-    playServicesVersionLocation = "16.0.0"
-    playServicesVersionMaps = "16.1.0"
-    playServicesVersionWearable = "16.0.1"
-    playServicesVersionFitness = "16.0.1"
+    playServicesVersionAuth = "18.1.0"
+    playServicesVersionLocation = "17.1.0"
+    playServicesVersionMaps = "17.0.0"
+    playServicesVersionWearable = "17.0.0"
+    playServicesVersionFitness = "19.0.0"
     archVersion = "1.1.1"
     crashlyticsVersion = "2.10.1"
 
-    workVersion = '2.1.0-beta01'
+    workVersion = '2.5.0-alpha03'
 
-    glideVersion = "4.8.0"
+    glideVersion = "4.11.0"
     retrofitVersion = "2.9.0"
 
-    wearableVersion = "2.4.0"
-    jodaVersion = "2.10.3"
+    wearableVersion = "2.8.1"
+    jodaVersion = "2.10.6.2"
 }
 
 // -------------------- ktlint --------------------

@@ -33,8 +33,8 @@ androidExtensions {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api 'androidx.appcompat:appcompat:1.0.2'
-    api 'com.google.android.material:material:1.0.0'
+    api 'androidx.appcompat:appcompat:1.2.0'
+    api 'com.google.android.material:material:1.2.1'
     api 'androidx.cardview:cardview:1.0.0'
     api 'androidx.percentlayout:percentlayout:1.0.0'
     api 'androidx.preference:preference-ktx:1.1.1'
@@ -46,9 +46,9 @@ dependencies {
     api 'com.jakewharton.timber:timber:4.7.1'
     api 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
 
-    api 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    api 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    api 'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.2.0'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0'
 
     api "com.squareup.retrofit2:retrofit:$retrofitVersion"
     api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
