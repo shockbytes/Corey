@@ -37,6 +37,11 @@
     <string name="prefs_developer_summary" translatable="false">Shockbytes Studio (c) 2015 - 2020</string>
     <string name="prefs_developer_title">Developer</string>
 
+    <string name="prefs_category__appearance">Appearance</string>
+    <string name="prefs_launcher_icon_state_key" translatable="false">prefs_launcher_icon_state_key</string>
+    <string name="prefs_dark_mode_default_value" translatable="false">system</string>
+    <string name="prefs_dark_mode_title">Theme</string>
+
     <string name="prefs_time_countdown_key" translatable="false">sharedprefs_key_time_countdown</string>
     <integer name="prefs_time_countdown_max">10</integer>
     <integer name="prefs_time_countdown_default">5</integer>
