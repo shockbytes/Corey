@@ -28,6 +28,8 @@
 
     <string name="prefs_vibrations_key" translatable="false">sharedprefs_key_vibrations</string>
 
+    <string name="prefs_dark_mode_key" translatable="false">prefs_dark_mode_key</string>
+
     <string name="prefs_category_workout">Workout</string>
     <string name="prefs_category_about">About</string>
     <string name="prefs_category_notifications">Notifications</string>
