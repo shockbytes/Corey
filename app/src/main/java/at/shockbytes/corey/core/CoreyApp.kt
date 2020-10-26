@@ -1,9 +1,12 @@
 package at.shockbytes.corey.core
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import at.shockbytes.core.ShockbytesApp
 import at.shockbytes.corey.dagger.*
+import at.shockbytes.corey.data.settings.CoreySettings
+import at.shockbytes.corey.data.settings.ThemeState
 import net.danlew.android.joda.JodaTimeAndroid
 import javax.inject.Inject
 
@@ -19,10 +22,14 @@ class CoreyApp : ShockbytesApp<AppComponent>() {
     @Inject
     lateinit var myWorkerFactory: WorkerFactory
 
+    @Inject
+    lateinit var coreySettings: CoreySettings
+
     override fun onCreate() {
         super.onCreate()
         appComponent.inject(this)
         initializeWorkManager()
+        setupDarkMode()
     }
 
     override fun initializeLibraries() {
@@ -37,6 +44,15 @@ class CoreyApp : ShockbytesApp<AppComponent>() {
                 .build()
         )
     }
+
+    private fun setupDarkMode() {
+        setupTheme(coreySettings.themeState)
+    }
+
+    private fun setupTheme(theme: ThemeState) {
+        AppCompatDelegate.setDefaultNightMode(theme.themeMode)
+    }
+
 
     override fun setupCustomLogging() = Unit
 

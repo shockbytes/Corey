@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
+    app:np_textColor="@color/colorPrimaryText"
     app:np_dividerColor="@color/colorAccent"
     app:np_dividerThickness="1dp"
     app:np_max="150"
     app:np_min="40"
     app:np_orientation="vertical"
     app:np_textSize="20sp"
+    app:np_dividerDistance="60dp"
     app:np_typeface="sans-serif-light"
     app:np_value="80" />
 

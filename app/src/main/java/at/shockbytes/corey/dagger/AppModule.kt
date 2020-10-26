@@ -24,6 +24,7 @@ import at.shockbytes.corey.data.schedule.FirebaseRemoteConfigSchedulableItemReso
 import at.shockbytes.corey.data.schedule.FirebaseScheduleRepository
 import at.shockbytes.corey.data.schedule.SchedulableItemResolver
 import at.shockbytes.corey.data.schedule.ScheduleRepository
+import at.shockbytes.corey.data.settings.CoreySettings
 import at.shockbytes.corey.data.user.FirebaseUserRepository
 import at.shockbytes.corey.data.user.UserRepository
 import at.shockbytes.corey.wearable.AndroidWearManager
@@ -129,7 +130,7 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideCoreySettings(
+    fun provideUserSettings(
             sharedPrefs: SharedPreferences,
             firebase: FirebaseDatabase
     ): UserSettings {
@@ -157,5 +158,13 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideImageLoader(): ImageLoader {
         return GlideImageLoader(R.drawable.ic_placeholder)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoreySettings(
+        sharedPrefs: SharedPreferences
+    ): CoreySettings {
+        return CoreySettings(app.applicationContext, sharedPrefs)
     }
 }

@@ -31,8 +31,9 @@
         android:layout_width="0dp"
         app:cardElevation="8dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        app:cardBackgroundColor="@color/navigation_bar_color"
         app:layout_constraintEnd_toEndOf="parent"
+        app:cardCornerRadius="0dp"
         app:layout_constraintHeight_min="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >

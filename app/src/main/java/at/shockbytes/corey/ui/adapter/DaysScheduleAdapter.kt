@@ -46,8 +46,8 @@ class DaysScheduleAdapter(
                 bgColor = ContextCompat.getColor(context, R.color.colorAccent)
                 txtColor = ContextCompat.getColor(context, R.color.colorAccent)
             } else {
-                bgColor = ContextCompat.getColor(context, android.R.color.transparent)
-                txtColor = ContextCompat.getColor(context, R.color.coreyBlack)
+                bgColor = ContextCompat.getColor(context, R.color.white)
+                txtColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
             }
 
             card_item_schedule_days.strokeColor = bgColor

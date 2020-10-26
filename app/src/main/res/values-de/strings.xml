@@ -221,5 +221,7 @@
     <string name="nutrition_error">Ein unerwarteter Fehler trat auf: %s.</string>
     <string name="nutrition_lookup_not_found">Keine Resultate für %s.</string>
     <string name="congrats_with_emoji">&#127881; Glückwunsch &#127881;</string>
+    <string name="prefs_category__appearance">Aussehen</string>
+    <string name="prefs_dark_mode_title">Theme</string>
 
 </resources>

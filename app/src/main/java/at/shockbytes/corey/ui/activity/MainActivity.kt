@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import at.shockbytes.core.image.GlideImageLoader
@@ -80,9 +81,9 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
             fabMenuOptions = null,
             overflowIcon = R.drawable.ic_overflow,
             initialAdditionalToolbarAction = additionalToolbarActionItems[1],
-            toolbarColor = R.color.white,
+            toolbarColor = R.color.navigation_bar_color,
             toolbarItemColor = R.color.controls,
-            titleColor = R.color.colorPrimary,
+            titleColor = R.color.title_color,
             navigationBarColor = R.color.navigation_bar_color,
             navigationItemTextColor = R.color.navigation_bar_item_text,
             navigationItemTintColor = R.color.navigation_bar_item_text
@@ -142,7 +143,7 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
             .setTitle(R.string.delete_schedule)
             .setMessage(R.string.delete_schedule_message)
             .setIcon(R.drawable.ic_cancel_red)
-            .setNegativeButton(getString(R.string.cancel).colored(Color.BLACK)) { _, _ -> Unit }
+            .setNegativeButton(getString(R.string.cancel).colored(ContextCompat.getColor(this, R.color.colorPrimaryText))) { _, _ -> Unit }
             .setPositiveButton(getString(R.string.delete).colored(ShockColors.ERROR)) { _, _ ->
                 viewModel.resetSchedule()
             }

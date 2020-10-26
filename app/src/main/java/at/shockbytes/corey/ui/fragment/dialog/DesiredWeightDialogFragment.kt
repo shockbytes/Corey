@@ -6,6 +6,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.content.ContextCompat
+import at.shockbytes.core.util.CoreUtils.colored
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.data.body.BodyRepository
@@ -53,7 +55,11 @@ class DesiredWeightDialogFragment : DialogFragment() {
                     bodyRepository.setDesiredWeight(desiredWeight)
                     dismiss()
                 }
-                .setNegativeButton(R.string.dialogfragment_enter_desiredweight_neg_btn, null)
+                .setNegativeButton(
+                    getString(R.string.dialogfragment_enter_desiredweight_neg_btn)
+                        .colored(ContextCompat.getColor(requireContext(), R.color.colorPrimaryText)),
+                    null
+                )
                 .create()
     }
 

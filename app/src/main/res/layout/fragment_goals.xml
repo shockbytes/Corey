@@ -32,13 +32,13 @@
             android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/ic_tab_goals"
             android:drawablePadding="16dp"
-            android:drawableTint="@color/colorPrimary"
+            app:drawableTint="@color/colorPrimaryText"
             android:gravity="center_vertical"
             android:text="@string/my_goals"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimaryText" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/fragment_goals_cb_hide_finished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
