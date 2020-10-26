@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="current_day">@color/material_red</color>
+
+    <color name="primaryBackground">#212121</color>
+    <color name="controls">#767676</color>
+
+    <color name="title_color">@color/white</color>
+
+    <color name="toolbar_item_color">#424242</color>
+    <color name="navigation_bar_color">#000</color>
+    <color name="navigationBarItemDisabled">#EEE</color>
+    <color name="navigation_bar_item_text">#424242</color>
+    <color name="sb_foreground">#424242</color>
+    <color name="sb_background">#FFF</color>
+    <color name="colorPrimaryText">#FFF</color>
+    <color name="colorSecondaryText">#AAA</color>
+
+
+</resources>

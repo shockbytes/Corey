@@ -9,6 +9,7 @@
             android:entries="@array/prefs_dark_mode_entries"
             android:entryValues="@array/prefs_dark_mode_entry_values"
             android:icon="@drawable/ic_settings_dark_mode"
+            app:useSimpleSummaryProvider="true"
             android:key="@string/prefs_dark_mode_key"
             android:title="@string/prefs_dark_mode_title" />
 

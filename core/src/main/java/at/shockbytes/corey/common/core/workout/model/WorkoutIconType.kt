@@ -17,7 +17,7 @@ enum class WorkoutIconType(
     CHEST(R.drawable.ic_bodyregion_chest, R.color.workout_icon_color),
     FULL_BODY(R.drawable.ic_bodyregion_whole, R.color.workout_icon_color),
     // Custom
-    FREELETICS(R.drawable.ic_freeletics),
+    FREELETICS(R.drawable.ic_freeletics, R.color.workout_icon_color),
     RUNNING(R.drawable.ic_tab_running, R.color.workout_icon_color),
     TENNIS(R.drawable.ic_tennis, R.color.workout_icon_color),
     WALKING(R.drawable.ic_walking, R.color.workout_icon_color),

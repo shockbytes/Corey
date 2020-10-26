@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/coreyBlack</item>
+        <item name="colorPrimaryDark">@color/coreyBlack</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#000</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="android:windowSharedElementEnterTransition">@transition/hero_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/hero_transition</item>
+    </style>
+
+</resources>

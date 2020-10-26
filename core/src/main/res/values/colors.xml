@@ -29,7 +29,7 @@
     <!-- /Workout colors -->
 
     <color name="body_card_dream_weight">#2196F3</color>
-    <color name="body_card_weight_history">#3F51B5</color>
+    <color name="body_card_weight_history">@color/colorPrimary</color>
     <color name="body_card_goals">#FF9800</color>
     <color name="body_card_statistics">#8BC34A</color>
     <color name="body_card_bmr">@color/running_mode_calories</color>
@@ -44,7 +44,7 @@
 
     <color name="menu_item_color">#616161</color>
 
-    <color name="workout_icon_color">#222222</color>
+    <color name="workout_icon_color">@color/coreyBlack</color>
 
     <color name="translucent_dark">#77000000</color>
 

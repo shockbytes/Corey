@@ -1,6 +1,5 @@
 package at.shockbytes.corey.core
 
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.Configuration
 import androidx.work.WorkManager
@@ -51,7 +50,6 @@ class CoreyApp : ShockbytesApp<AppComponent>() {
     }
 
     private fun setupTheme(theme: ThemeState) {
-        Toast.makeText(this, theme.name, Toast.LENGTH_SHORT).show()
         AppCompatDelegate.setDefaultNightMode(theme.themeMode)
     }
 

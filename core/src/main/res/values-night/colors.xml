@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="workout_icon_color">#FFF</color>
+    <color name="color_single_selection_background">#646464</color>
+</resources>

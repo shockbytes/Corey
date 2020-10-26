@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:textColor="@color/coreyBlack"
+                android:textColor="@color/colorPrimaryText"
                 android:text="@string/workout_reminder"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_fragment_reminder_workout_header"
                 app:layout_constraintStart_toEndOf="@+id/iv_fragment_reminder_workout_header"
@@ -56,7 +56,7 @@
                 android:layout_height="32dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="32dp"
-                android:tint="@color/coreyBlack"
+                app:tint="@color/colorPrimaryText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_fragment_reminder_header"
                 app:srcCompat="@drawable/ic_tab_workout" />
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@string/weigh_reminder"
-                android:textColor="@color/coreyBlack"
+                android:textColor="@color/colorPrimaryText"
                 app:layout_constraintBottom_toBottomOf="@id/iv_fragment_reminder_weigh_header"
                 app:layout_constraintStart_toEndOf="@id/iv_fragment_reminder_weigh_header"
                 app:layout_constraintTop_toTopOf="@id/iv_fragment_reminder_weigh_header" />
@@ -100,7 +100,7 @@
                 android:layout_height="32dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="32dp"
-                android:tint="@color/coreyBlack"
+                app:tint="@color/colorPrimaryText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_fragment_reminder_workout"
                 app:srcCompat="@drawable/ic_goal_weight" />
