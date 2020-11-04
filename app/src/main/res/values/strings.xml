@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">Corey</string>
-    <string name="app_version" translatable="false">4.4</string>
+    <string name="app_version" translatable="false">4.4.1</string>
     <string name="action_settings">Settings</string>
 
     <string name="tab_nutrition">Nutrition</string>
@@ -138,6 +138,8 @@
     <string name="prefs_key_activity_level" translatable="false">activity_level</string>
     <string name="prefs_key_weight_unit" translatable="false">weight_unit</string>
     <string name="prefs_key_firebase_access" translatable="false">firebase_access</string>
+
+    <string name="firebase_access_title">Firebase database access</string>
 
     <string-array name="gender">
         <item>Male</item>

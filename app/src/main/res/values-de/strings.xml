@@ -234,5 +234,6 @@
     <string name="prefs_category__appearance">Aussehen</string>
     <string name="prefs_dark_mode_title">Theme</string>
     <string name="prefs_category_data">Datenzugang</string>
+    <string name="firebase_access_title">Firebase Datenbankzugriff</string>
 
 </resources>

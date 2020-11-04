@@ -72,7 +72,7 @@
             app:entries="@array/firebase_access"
             app:entryValues="@array/firebase_access_short"
             app:negativeButtonText="@android:string/cancel"
-            android:title="@string/weight_unit"/>
+            android:title="@string/firebase_access_title"/>
 
     </androidx.preference.PreferenceCategory>
 
