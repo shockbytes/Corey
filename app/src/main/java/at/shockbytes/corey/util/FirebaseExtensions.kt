@@ -1,6 +1,6 @@
 package at.shockbytes.corey.util
 
-import at.shockbytes.corey.data.FirebaseStorable
+import at.shockbytes.corey.data.firebase.FirebaseStorable
 import com.google.firebase.database.*
 import io.reactivex.Completable
 import io.reactivex.subjects.Subject

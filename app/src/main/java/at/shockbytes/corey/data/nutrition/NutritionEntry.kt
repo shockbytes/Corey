@@ -1,7 +1,7 @@
 package at.shockbytes.corey.data.nutrition
 
 import at.shockbytes.corey.common.core.CoreyDate
-import at.shockbytes.corey.data.FirebaseStorable
+import at.shockbytes.corey.data.firebase.FirebaseStorable
 import com.google.firebase.database.Exclude
 
 data class NutritionEntry(

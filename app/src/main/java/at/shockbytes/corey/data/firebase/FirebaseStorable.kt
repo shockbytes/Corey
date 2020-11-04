@@ -1,4 +1,4 @@
-package at.shockbytes.corey.data
+package at.shockbytes.corey.data.firebase
 
 interface FirebaseStorable {
 

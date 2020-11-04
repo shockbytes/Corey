@@ -1,6 +1,6 @@
 package at.shockbytes.corey.data.goal
 
-import at.shockbytes.corey.data.FirebaseStorable
+import at.shockbytes.corey.data.firebase.FirebaseStorable
 
 /**
  * Author:  Martin Macheiner
