@@ -89,6 +89,16 @@
         <item>lb</item>
     </string-array>
 
+    <string-array name="firebase_access">
+        <item>Einzelner Nutzer pro Datenbank - Standard</item>
+        <item>Mehrere Nutzer pro Datenbank - Empfohlen</item>
+    </string-array>
+
+    <string-array name="firebase_access_short">
+        <item>single_user_access</item>
+        <item>user_scoped_access</item>
+    </string-array>
+
     <string-array name="dreamweight_motivation">
         <item>Fast geschafft</item>
         <item>Nur weiter so</item>
@@ -223,5 +233,6 @@
     <string name="congrats_with_emoji">&#127881; Glückwunsch &#127881;</string>
     <string name="prefs_category__appearance">Aussehen</string>
     <string name="prefs_dark_mode_title">Theme</string>
+    <string name="prefs_category_data">Datenzugang</string>
 
 </resources>

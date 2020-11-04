@@ -15,7 +15,11 @@ class CoreySettings(
 ) {
 
     private val darkModeString: String by prefs.stringDelegate(context.getString(R.string.prefs_dark_mode_key), defaultValue = "system")
+    private val accessModeString: String by prefs.stringDelegate(context.getString(R.string.prefs_key_firebase_access), defaultValue = "single_access")
 
     val themeState: ThemeState
         get() = ThemeState.ofString(darkModeString) ?: ThemeState.SYSTEM
+
+    val firebaseAccessMode: FirebaseDatabaseAccessMode
+        get() = FirebaseDatabaseAccessMode.ofString(accessModeString) ?: FirebaseDatabaseAccessMode.SINGLE_ACCESS
 }

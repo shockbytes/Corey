@@ -3,7 +3,7 @@ package at.shockbytes.corey.data.firebase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class DefaultFirebaseAccess(
+class SingleUserFirebaseAccess(
     private val firebase: FirebaseDatabase
 ) : FirebaseDatabaseAccess {
 

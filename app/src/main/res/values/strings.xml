@@ -131,10 +131,13 @@
     <string name="activity_level">Activity level</string>
     <string name="weight_unit">Weight unit</string>
 
+    <string name="prefs_category_data">Data Access</string>
+
     <string name="prefs_key_gender" translatable="false">gender</string>
     <string name="prefs_key_birthday" translatable="false">birthday</string>
     <string name="prefs_key_activity_level" translatable="false">activity_level</string>
     <string name="prefs_key_weight_unit" translatable="false">weight_unit</string>
+    <string name="prefs_key_firebase_access" translatable="false">firebase_access</string>
 
     <string-array name="gender">
         <item>Male</item>
@@ -171,6 +174,17 @@
         <item>kg</item>
         <item>lb</item>
     </string-array>
+
+    <string-array name="firebase_access">
+        <item>Single user database - Default</item>
+        <item>Scoped user database - Recommended</item>
+    </string-array>
+
+    <string-array name="firebase_access_short">
+        <item>single_user_access</item>
+        <item>user_scoped_access</item>
+    </string-array>
+
 
     <string-array name="training_intensity">
         <item>Easy</item>
