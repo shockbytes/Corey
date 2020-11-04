@@ -34,7 +34,6 @@ import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.storage.KeyValueStorage
 import at.shockbytes.corey.storage.SharedPreferencesKeyValueStorage
 import at.shockbytes.corey.util.ReactiveFirebaseUserSettings
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -84,7 +83,7 @@ class AppModule(private val app: Application) {
         return FirebaseScheduleRepository(
             firebase,
             schedulerFacade,
-            schedulableItemResolver,
+            schedulableItemResolver
         )
     }
 
@@ -93,13 +92,13 @@ class AppModule(private val app: Application) {
     fun provideSchedulableItemResolver(
         gson: Gson,
         workoutManager: WorkoutRepository,
-        remoteConfig: FirebaseRemoteConfig,
+        remoteConfig: FirebaseRemoteConfig
     ): SchedulableItemResolver {
         return FirebaseRemoteConfigSchedulableItemResolver(
             app.applicationContext,
             gson,
             workoutManager,
-            remoteConfig,
+            remoteConfig
         )
     }
 
@@ -125,15 +124,15 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideGson(): Gson {
         return GsonBuilder()
-                .registerTypeHierarchyAdapter(Exercise::class.java, ExerciseDeserializer())
-                .create()
+            .registerTypeHierarchyAdapter(Exercise::class.java, ExerciseDeserializer())
+            .create()
     }
 
     @Provides
     @Singleton
     fun provideUserSettings(
-            sharedPrefs: SharedPreferences,
-            firebase: FirebaseDatabaseAccess
+        sharedPrefs: SharedPreferences,
+        firebase: FirebaseDatabaseAccess
     ): UserSettings {
         return ReactiveFirebaseUserSettings(app.applicationContext, sharedPrefs, firebase)
     }
@@ -147,10 +146,10 @@ class AppModule(private val app: Application) {
     @Provides
     @Reusable
     fun provideReminderManager(
-            localStorage: KeyValueStorage,
-            scheduleRepository: ScheduleRepository,
-            bodyRepository: BodyRepository,
-            userSettings: UserSettings
+        localStorage: KeyValueStorage,
+        scheduleRepository: ScheduleRepository,
+        bodyRepository: BodyRepository,
+        userSettings: UserSettings
     ): ReminderManager {
         return DefaultReminderManager(localStorage, scheduleRepository, bodyRepository, userSettings)
     }

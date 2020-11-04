@@ -9,45 +9,44 @@ import at.shockbytes.corey.data.nutrition.lookup.LookupDataSource
 import io.reactivex.Single
 
 class UsdaKcalLookup(
-        private val usdaApi: UsdaApi,
-        private val schedulers: SchedulerFacade
+    private val usdaApi: UsdaApi,
+    private val schedulers: SchedulerFacade
 ) : KcalLookup {
 
     private val requestedNutrients = listOf(
-            UsdaApiNutrients.ENERGY
+        UsdaApiNutrients.ENERGY
     ).map { it.code }
 
     override val dataSource = LookupDataSource(
-            name = "USDA kcal lookup",
-            url = DATA_SOURCE_URL,
-            icon = R.drawable.ic_usda
+        name = "USDA kcal lookup",
+        url = DATA_SOURCE_URL,
+        icon = R.drawable.ic_usda
     )
-
 
     override fun lookup(foodName: String): Single<KcalLookupResult> {
         return usdaApi
-                .search(query = foodName)
-                .flatMap { response ->
-                    usdaApi.lookup(
-                            fdcIds = response.fdcIds,
-                            nutrients = requestedNutrients
-                    )
-                }
-                .map { lookupResponses ->
+            .search(query = foodName)
+            .flatMap { response ->
+                usdaApi.lookup(
+                    fdcIds = response.fdcIds,
+                    nutrients = requestedNutrients
+                )
+            }
+            .map { lookupResponses ->
 
-                    val items = lookupResponses
-                            .filter { it.kcal != null }
-                            .map { response ->
-                                KcalLookupItem.Standard(
-                                        dishName = response.description,
-                                        kcal = response.kcal!!,
-                                        portionSize = STANDARD_PORTION_SIZE,
-                                )
-                            }
+                val items = lookupResponses
+                    .filter { it.kcal != null }
+                    .map { response ->
+                        KcalLookupItem.Standard(
+                            dishName = response.description,
+                            kcal = response.kcal!!,
+                            portionSize = STANDARD_PORTION_SIZE
+                        )
+                    }
 
-                    KcalLookupResult(dataSource, items)
-                }
-                .subscribeOn(schedulers.io)
+                KcalLookupResult(dataSource, items)
+            }
+            .subscribeOn(schedulers.io)
     }
 
     companion object {

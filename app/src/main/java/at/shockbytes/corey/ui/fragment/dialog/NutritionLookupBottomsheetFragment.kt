@@ -25,7 +25,7 @@ import javax.inject.Inject
  * Date:    26.09.2020
  */
 class NutritionLookupBottomsheetFragment : BottomSheetDialogFragment(),
-        BaseAdapter.OnItemClickListener<KcalLookupItem> {
+    BaseAdapter.OnItemClickListener<KcalLookupItem> {
 
     @Inject
     protected lateinit var imageLoader: ImageLoader
@@ -56,7 +56,7 @@ class NutritionLookupBottomsheetFragment : BottomSheetDialogFragment(),
         val contentView = View.inflate(context, R.layout.bottomsheet_fragment_nutrition_lookup, null)
         dialog.setContentView(contentView)
         (contentView.parent as View)
-                .setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
+            .setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
         val layoutParams = (contentView.parent as View).layoutParams as CoordinatorLayout.LayoutParams
         val behavior = layoutParams.behavior
         if (behavior != null && behavior is BottomSheetBehavior<*>) {
@@ -71,7 +71,7 @@ class NutritionLookupBottomsheetFragment : BottomSheetDialogFragment(),
     }
 
     fun setOnLookupItemSelectedListener(
-            listener: (item: KcalLookupItem) -> Unit
+        listener: (item: KcalLookupItem) -> Unit
     ): NutritionLookupBottomsheetFragment {
         return apply {
             this.listener = listener

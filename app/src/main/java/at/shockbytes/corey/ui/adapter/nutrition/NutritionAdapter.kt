@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.item_nutrition_day_intake_header.*
 import java.lang.IllegalStateException
 
 class NutritionAdapter(
-        context: Context,
-        private val onNutritionIntakeClickedListener: (NutritionIntakeAdapterItem.Intake) -> Unit
+    context: Context,
+    private val onNutritionIntakeClickedListener: (NutritionIntakeAdapterItem.Intake) -> Unit
 ) : BaseAdapter<NutritionAdapterItem>(context) {
 
     fun updateData(items: List<NutritionAdapterItem>) {
@@ -31,7 +31,7 @@ class NutritionAdapter(
     }
 
     private inner class NutritionViewHolder(
-            override val containerView: View
+        override val containerView: View
     ) : BaseAdapter.ViewHolder<NutritionAdapterItem>(containerView), LayoutContainer {
 
         override fun bindToView(t: NutritionAdapterItem, position: Int) {
@@ -42,15 +42,15 @@ class NutritionAdapter(
                 rv_item_nutrition_day_intake.apply {
                     layoutManager = LinearLayoutManager(context)
                     adapter = NutritionIntakeAdapter(
-                            context,
-                            intake,
-                            object : OnItemLongClickListener<NutritionIntakeAdapterItem> {
-                                override fun onItemLongClick(content: NutritionIntakeAdapterItem, position: Int, v: View) {
-                                    if (content is NutritionIntakeAdapterItem.Intake) {
-                                        onNutritionIntakeClickedListener(content)
-                                    }
+                        context,
+                        intake,
+                        object : OnItemLongClickListener<NutritionIntakeAdapterItem> {
+                            override fun onItemLongClick(content: NutritionIntakeAdapterItem, position: Int, v: View) {
+                                if (content is NutritionIntakeAdapterItem.Intake) {
+                                    onNutritionIntakeClickedListener(content)
                                 }
-                            })
+                            }
+                        })
                 }
 
                 tv_item_nutrition_day_burned_header.setVisible(burned.isNotEmpty())
@@ -64,9 +64,9 @@ class NutritionAdapter(
     }
 
     private class NutritionIntakeAdapter(
-            context: Context,
-            adapterData: List<NutritionIntakeAdapterItem>,
-            onItemLongClickListener: OnItemLongClickListener<NutritionIntakeAdapterItem>
+        context: Context,
+        adapterData: List<NutritionIntakeAdapterItem>,
+        onItemLongClickListener: OnItemLongClickListener<NutritionIntakeAdapterItem>
     ) : BaseAdapter<NutritionIntakeAdapterItem>(context, onItemLongClickListener = onItemLongClickListener) {
 
         init {
@@ -91,7 +91,7 @@ class NutritionAdapter(
         }
 
         inner class NutritionIntakeHeaderViewHolder(
-                override val containerView: View
+            override val containerView: View
         ) : BaseAdapter.ViewHolder<NutritionIntakeAdapterItem>(containerView), LayoutContainer {
             override fun bindToView(t: NutritionIntakeAdapterItem, position: Int) {
                 with(t as NutritionIntakeAdapterItem.Header) {
@@ -101,7 +101,7 @@ class NutritionAdapter(
         }
 
         inner class NutritionIntakeViewHolder(
-                override val containerView: View
+            override val containerView: View
         ) : BaseAdapter.ViewHolder<NutritionIntakeAdapterItem>(containerView), LayoutContainer {
             override fun bindToView(t: NutritionIntakeAdapterItem, position: Int) {
                 with(t as NutritionIntakeAdapterItem.Intake) {
@@ -113,8 +113,8 @@ class NutritionAdapter(
     }
 
     private class NutritionBurnedAdapter(
-            context: Context,
-            burned: List<PhysicalActivity>
+        context: Context,
+        burned: List<PhysicalActivity>
     ) : BaseAdapter<PhysicalActivity>(context) {
 
         init {
@@ -126,7 +126,7 @@ class NutritionAdapter(
         }
 
         inner class NutritionBurnedViewHolder(
-                override val containerView: View
+            override val containerView: View
         ) : BaseAdapter.ViewHolder<PhysicalActivity>(containerView), LayoutContainer {
             override fun bindToView(content: PhysicalActivity, position: Int) {
                 with(content) {
@@ -136,5 +136,4 @@ class NutritionAdapter(
             }
         }
     }
-
 }

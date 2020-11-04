@@ -9,7 +9,6 @@ import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.WeightUnit
 import at.shockbytes.corey.common.core.CoreyDate
 import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
-import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -52,7 +51,7 @@ class ReactiveFirebaseUserSettings(
                                             isEnabled
                                     )
                                     .apply()
-                        },
+                        }
                 )
         )
     }

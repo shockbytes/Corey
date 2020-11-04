@@ -1,10 +1,8 @@
 package at.shockbytes.corey.data.reminder
 
 import android.content.Context
-import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.data.schedule.ScheduleItem
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Single
 
 interface ReminderManager {

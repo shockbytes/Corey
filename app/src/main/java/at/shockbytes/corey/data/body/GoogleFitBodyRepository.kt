@@ -21,10 +21,10 @@ import timber.log.Timber
  * Date:    04.08.2016
  */
 class GoogleFitBodyRepository(
-        private val coreyGoogleApiClient: CoreyGoogleApiClient,
-        private val preferences: SharedPreferences,
-        private val firebase: FirebaseDatabaseAccess,
-        private val userSettings: UserSettings
+    private val coreyGoogleApiClient: CoreyGoogleApiClient,
+    private val preferences: SharedPreferences,
+    private val firebase: FirebaseDatabaseAccess,
+    private val userSettings: UserSettings
 ) : BodyRepository {
 
     private val compositeDisposable = CompositeDisposable()
@@ -32,7 +32,7 @@ class GoogleFitBodyRepository(
     private val userBodySubject = BehaviorSubject.create<User>()
 
     private val desiredWeightSubject: BehaviorSubject<Int> = BehaviorSubject
-            .createDefault(preferences.getInt(PREF_DREAM_WEIGHT, 0))
+        .createDefault(preferences.getInt(PREF_DREAM_WEIGHT, 0))
 
     init {
         setupFirebase()
@@ -45,9 +45,9 @@ class GoogleFitBodyRepository(
 
     override val desiredWeight: Observable<Int>
         get() = desiredWeightSubject
-                .doOnNext { fbDesiredWeight ->
-                    preferences.edit().putInt(PREF_DREAM_WEIGHT, fbDesiredWeight).apply()
-                }
+            .doOnNext { fbDesiredWeight ->
+                preferences.edit().putInt(PREF_DREAM_WEIGHT, fbDesiredWeight).apply()
+            }
 
     override fun setDesiredWeight(desiredWeight: Int) {
         firebase.access(REF_USER).updateValue(REF_DESIRED, desiredWeight)
@@ -61,59 +61,57 @@ class GoogleFitBodyRepository(
 
     override val currentWeight: Observable<Double>
         get() = user
-                .map { bodyInfo ->
-                    bodyInfo.latestWeightDataPoint?.weight ?: 0.0
-                }
+            .map { bodyInfo ->
+                bodyInfo.latestWeightDataPoint?.weight ?: 0.0
+            }
 
     private data class UserMetadata(
-            val gender: Gender,
-            val birthday: CoreyDate,
-            val desiredWeight: Int,
-            val activityLevel: ActivityLevel
+        val gender: Gender,
+        val birthday: CoreyDate,
+        val desiredWeight: Int,
+        val activityLevel: ActivityLevel
     )
-
 
     private fun setupApiClientCallback() {
         coreyGoogleApiClient.onConnectionEvent()
-                .filter { isConnected -> isConnected }
-                .flatMap { loadUserFromGoogleFit() }
-                .subscribe(userBodySubject::onNext, Timber::e)
-                .addTo(compositeDisposable)
+            .filter { isConnected -> isConnected }
+            .flatMap { loadUserFromGoogleFit() }
+            .subscribe(userBodySubject::onNext, Timber::e)
+            .addTo(compositeDisposable)
     }
-
 
     private fun loadUserFromGoogleFit(): Observable<User> {
         return Observable
-                .combineLatest(
-                        coreyGoogleApiClient.loadGoogleFitUserData(),
-                        gatherUserMetadata(),
-                        { weightHeightPair, userMetadata ->
-                            val (weightDataPoints, height) = weightHeightPair
-                            val (gender, age, dw, activityLevel) = userMetadata
+            .combineLatest(
+                coreyGoogleApiClient.loadGoogleFitUserData(),
+                gatherUserMetadata(),
+                { weightHeightPair, userMetadata ->
+                    val (weightDataPoints, height) = weightHeightPair
+                    val (gender, age, dw, activityLevel) = userMetadata
 
-                            User(
-                                    weightDataPoints,
-                                    height,
-                                    gender,
-                                    age,
-                                    dw,
-                                    activityLevel
-                            )
-                        }
-                )
+                    User(
+                        weightDataPoints,
+                        height,
+                        gender,
+                        age,
+                        dw,
+                        activityLevel
+                    )
+                }
+            )
     }
 
     private fun gatherUserMetadata(): Observable<UserMetadata> {
         return Observable
-                .combineLatest(
-                        userSettings.gender,
-                        userSettings.birthday,
-                        desiredWeight,
-                        userSettings.activityLevel,
-                        { gender, birthDay, desiredWeight, activityLevel ->
-                            UserMetadata(gender, birthDay, desiredWeight, activityLevel)
-                        }
-                )
+            .combineLatest(
+                userSettings.gender,
+                userSettings.birthday,
+                desiredWeight,
+                userSettings.activityLevel,
+                { gender, birthDay, desiredWeight, activityLevel ->
+                    UserMetadata(gender, birthDay, desiredWeight, activityLevel)
+                }
+            )
     }
 
     companion object {

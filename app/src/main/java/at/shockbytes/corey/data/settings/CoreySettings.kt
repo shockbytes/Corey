@@ -11,12 +11,11 @@ import at.shockbytes.corey.common.util.delegate.stringDelegate
  */
 class CoreySettings(
     context: Context,
-    prefs: SharedPreferences,
+    prefs: SharedPreferences
 ) {
 
     private val darkModeString: String by prefs.stringDelegate(context.getString(R.string.prefs_dark_mode_key), defaultValue = "system")
 
     val themeState: ThemeState
         get() = ThemeState.ofString(darkModeString) ?: ThemeState.SYSTEM
-
 }

@@ -130,16 +130,16 @@ import com.google.gson.annotations.SerializedName
 }
  */
 data class EdamamLookupResponse(
-        @SerializedName("text") val searchedKeyword: String,
-        @SerializedName("parsed") protected val result: List<EdamamResult>,
-        @SerializedName("hints") protected val otherHits: List<EdamamResult>
+    @SerializedName("text") val searchedKeyword: String,
+    @SerializedName("parsed") protected val result: List<EdamamResult>,
+    @SerializedName("hints") protected val otherHits: List<EdamamResult>
 ) {
 
     val results: List<EdamamResult>
         get() = result + otherHits
 
     data class EdamamResult(
-            val food: Food
+        val food: Food
     ) {
 
         val image: String?
@@ -147,20 +147,19 @@ data class EdamamLookupResponse(
 
         val kcal: Int?
             get() = food.nutrients.energy.toInt()
-
     }
 
     data class Food(
-            val foodId: String,
-            val label: String,
-            val nutrients: Nutrients,
-            val image: String?
+        val foodId: String,
+        val label: String,
+        val nutrients: Nutrients,
+        val image: String?
     )
 
     data class Nutrients(
-            @SerializedName("ENERC_KCAL") val energy: Double,
-            @SerializedName("PROCNT") val protein: Double,
-            @SerializedName("FAT") val fat: Double,
-            @SerializedName("FIBTG") val fiber: Double
+        @SerializedName("ENERC_KCAL") val energy: Double,
+        @SerializedName("PROCNT") val protein: Double,
+        @SerializedName("FAT") val fat: Double,
+        @SerializedName("FIBTG") val fiber: Double
     )
 }

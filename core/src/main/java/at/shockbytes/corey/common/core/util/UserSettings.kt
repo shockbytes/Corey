@@ -6,7 +6,6 @@ import at.shockbytes.corey.common.core.Gender
 import at.shockbytes.corey.common.core.WeightUnit
 import io.reactivex.Completable
 import io.reactivex.Observable
-import org.joda.time.DateTime
 
 interface UserSettings {
 

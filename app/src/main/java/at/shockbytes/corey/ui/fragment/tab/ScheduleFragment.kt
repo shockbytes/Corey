@@ -5,7 +5,10 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.ui.adapter.DaysScheduleAdapter
 import at.shockbytes.corey.ui.adapter.ScheduleAdapter
@@ -28,9 +31,8 @@ import javax.inject.Inject
  * Date:    26.10.2015
  */
 class ScheduleFragment : TabBaseFragment<AppComponent>(),
-        BaseAdapter.OnItemMoveListener<ScheduleItem>,
-        BaseAdapter.OnItemClickListener<ScheduleItem>
-{
+    BaseAdapter.OnItemMoveListener<ScheduleItem>,
+    BaseAdapter.OnItemClickListener<ScheduleItem> {
 
     override val snackBarBackgroundColorRes: Int = R.color.sb_background
     override val snackBarForegroundColorRes: Int = R.color.sb_foreground
@@ -44,12 +46,12 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
 
     private val scheduleAdapter: ScheduleAdapter by lazy {
         ScheduleAdapter(
-                requireContext(),
-                onItemClickListener = this,
-                onItemMoveListener = this,
-                weatherResolver = weatherResolver,
-                emptyScheduleItemFactory = viewModel::createEmptyScheduleItem,
-                disposableBag = compositeDisposable
+            requireContext(),
+            onItemClickListener = this,
+            onItemMoveListener = this,
+            weatherResolver = weatherResolver,
+            emptyScheduleItemFactory = viewModel::createEmptyScheduleItem,
+            disposableBag = compositeDisposable
         )
     }
 
@@ -85,18 +87,18 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
         fragment_schedule_rv_days.apply {
             layoutManager = recyclerViewLayoutManager
             adapter = DaysScheduleAdapter(
-                    requireContext(),
-                    resources.getStringArray(R.array.days).toList(),
-                    object: BaseAdapter.OnItemLongClickListener<String> {
-                        override fun onItemLongClick(content: String, position: Int, v: View) {
-                            v.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
-                            scheduleAdapter.getItemAt(position)?.let { item ->
-                                if (!item.isEmpty) {
-                                    viewModel.deleteScheduleItem(item)
-                                }
+                requireContext(),
+                resources.getStringArray(R.array.days).toList(),
+                object : BaseAdapter.OnItemLongClickListener<String> {
+                    override fun onItemLongClick(content: String, position: Int, v: View) {
+                        v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                        scheduleAdapter.getItemAt(position)?.let { item ->
+                            if (!item.isEmpty) {
+                                viewModel.deleteScheduleItem(item)
                             }
                         }
                     }
+                }
             )
             addItemDecoration(EqualSpaceItemDecoration(context.dpToPixel(4)))
         }
@@ -109,18 +111,18 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
             addItemDecoration(EqualSpaceItemDecoration(context.dpToPixel(4)))
 
             BaseItemTouchHelper(scheduleAdapter, false, BaseItemTouchHelper.DragAccess.ALL)
-                    .let(::ItemTouchHelper)
-                    .attachToRecyclerView(this)
+                .let(::ItemTouchHelper)
+                .attachToRecyclerView(this)
         }
     }
 
     override fun onItemClick(content: ScheduleItem, position: Int, v: View) {
         if (content.isEmpty) {
             InsertScheduleDialogFragment.newInstance()
-                    .setOnScheduleItemSelectedListener { scheduleDisplayItem ->
-                        viewModel.insertScheduleItem(scheduleDisplayItem, position)
-                    }
-                    .show(childFragmentManager, "dialog-fragment-insert-schedule")
+                .setOnScheduleItemSelectedListener { scheduleDisplayItem ->
+                    viewModel.insertScheduleItem(scheduleDisplayItem, position)
+                }
+                .show(childFragmentManager, "dialog-fragment-insert-schedule")
         }
     }
 
@@ -128,7 +130,7 @@ class ScheduleFragment : TabBaseFragment<AppComponent>(),
 
     override fun onItemMoveFinished() {
         scheduleAdapter.reorderAfterMove()
-                .let(viewModel::updateScheduleAfterMove)
+            .let(viewModel::updateScheduleAfterMove)
     }
 
     override fun onItemDismissed(t: ScheduleItem, position: Int) = Unit

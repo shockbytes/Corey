@@ -10,7 +10,11 @@ import at.shockbytes.corey.data.body.model.User
 import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import at.shockbytes.corey.data.workout.external.ExternalWorkout
 import at.shockbytes.corey.data.workout.external.ExternalWorkoutRepository
-import at.shockbytes.corey.util.*
+import at.shockbytes.corey.util.completableEmitterOf
+import at.shockbytes.corey.util.findClosest
+import at.shockbytes.corey.util.insertValue
+import at.shockbytes.corey.util.listen
+import at.shockbytes.corey.util.removeChildValue
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -18,11 +22,11 @@ import org.joda.time.Years
 import timber.log.Timber
 
 class FirebaseNutritionRepository(
-        private val firebase: FirebaseDatabaseAccess,
-        private val schedulers: SchedulerFacade,
-        private val externalWorkoutRepository: ExternalWorkoutRepository,
-        private val bodyRepository: BodyRepository,
-        private val bmrComputation: BmrComputation
+    private val firebase: FirebaseDatabaseAccess,
+    private val schedulers: SchedulerFacade,
+    private val externalWorkoutRepository: ExternalWorkoutRepository,
+    private val bodyRepository: BodyRepository,
+    private val bmrComputation: BmrComputation
 ) : NutritionRepository {
 
     private val nutritionFirebaseSubject = BehaviorSubject.create<List<NutritionEntry>>()
@@ -38,91 +42,91 @@ class FirebaseNutritionRepository(
 
     override fun computeCurrentBmr(): Observable<Bmr> {
         return buildEnergyBalanceObservable()
-                .map { (_, _, user) -> computeBmr(user) }
+            .map { (_, _, user) -> computeBmr(user) }
     }
 
     override fun prefetchNutritionHistory(): Observable<*> {
         return buildEnergyBalanceObservable()
-                .map(::energyBalanceToNutritionPerDayItems)
-                .subscribeOn(schedulers.io)
-                .observeOn(schedulers.ui)
-                .filter(::isListNotEmpty)
-                .doOnNext(nutritionCacheSubject::onNext)
-                .doOnNext { data ->
-                    Timber.d("Pre-fetched nutrition history with ${data.size} items.")
-                }
+            .map(::energyBalanceToNutritionPerDayItems)
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.ui)
+            .filter(::isListNotEmpty)
+            .doOnNext(nutritionCacheSubject::onNext)
+            .doOnNext { data ->
+                Timber.d("Pre-fetched nutrition history with ${data.size} items.")
+            }
     }
 
     override fun loadNutritionHistory(): Observable<List<NutritionPerDay>> = nutritionCacheSubject
 
     private data class EnergyBalance(
-            val nutritionPerDay: List<NutritionEntry>,
-            val externalWorkouts: List<ExternalWorkout>,
-            val user: User
+        val nutritionPerDay: List<NutritionEntry>,
+        val externalWorkouts: List<ExternalWorkout>,
+        val user: User
     )
 
     private fun buildEnergyBalanceObservable(): Observable<EnergyBalance> {
         return Observable
-                .combineLatest(
-                        nutritionFirebaseSubject,
-                        externalWorkoutRepository.loadExternalWorkouts(),
-                        bodyRepository.user,
-                        { nutritionPerDay, externalWorkouts, user ->
-                            EnergyBalance(nutritionPerDay, externalWorkouts, user)
-                        }
-                )
+            .combineLatest(
+                nutritionFirebaseSubject,
+                externalWorkoutRepository.loadExternalWorkouts(),
+                bodyRepository.user,
+                { nutritionPerDay, externalWorkouts, user ->
+                    EnergyBalance(nutritionPerDay, externalWorkouts, user)
+                }
+            )
     }
 
     private fun energyBalanceToNutritionPerDayItems(
-            energyBalance: EnergyBalance
+        energyBalance: EnergyBalance
     ): List<NutritionPerDay> {
         val (nutrition, externalWorkouts, user) = energyBalance
 
         return nutrition
-                .groupBy { it.date }
-                .map { (date, nutritionEntries) ->
-                    NutritionPerDay(
-                            intake = nutritionEntries,
-                            date = date,
-                            burned = computePhysicalActivityOfDate(date, user, externalWorkouts)
-                    )
-                }
-                .sortedByDescending { it.date.dateTime }
+            .groupBy { it.date }
+            .map { (date, nutritionEntries) ->
+                NutritionPerDay(
+                    intake = nutritionEntries,
+                    date = date,
+                    burned = computePhysicalActivityOfDate(date, user, externalWorkouts)
+                )
+            }
+            .sortedByDescending { it.date.dateTime }
     }
 
     private fun computePhysicalActivityOfDate(
-            date: CoreyDate,
-            user: User,
-            externalWorkouts: List<ExternalWorkout>
+        date: CoreyDate,
+        user: User,
+        externalWorkouts: List<ExternalWorkout>
     ): List<PhysicalActivity> {
         return listOf(computeBmrPhysicalActivity(user, date)) + computeExternalActivity(date, externalWorkouts)
     }
 
     private fun computeBmrPhysicalActivity(
-            user: User,
-            date: CoreyDate,
+        user: User,
+        date: CoreyDate
     ): PhysicalActivity.BasalMetabolicRate {
 
         val userWeightOfDate = user.retrieveUserWeightAt(date)
         val userAgeOfDate = user.retrieveAgeAt(date)
 
         return computeBmr(user, userWeightOfDate, userAgeOfDate)
-                .let(PhysicalActivity::BasalMetabolicRate)
+            .let(PhysicalActivity::BasalMetabolicRate)
     }
 
     private fun computeBmr(
-            user: User,
-            userWeight: Double = user.currentWeight,
-            userAge: Int = user.age
+        user: User,
+        userWeight: Double = user.currentWeight,
+        userAge: Int = user.age
     ): Bmr {
         return bmrComputation
-                .compute(
-                        user.gender,
-                        userWeight,
-                        user.height,
-                        userAge,
-                        user.activityLevel
-                )
+            .compute(
+                user.gender,
+                userWeight,
+                user.height,
+                userAge,
+                user.activityLevel
+            )
     }
 
     private fun User.retrieveUserWeightAt(date: CoreyDate): Double {
@@ -138,14 +142,14 @@ class FirebaseNutritionRepository(
     }
 
     private fun computeExternalActivity(
-            date: CoreyDate,
-            externalWorkouts: List<ExternalWorkout>
+        date: CoreyDate,
+        externalWorkouts: List<ExternalWorkout>
     ): List<PhysicalActivity.Activity> {
         return externalWorkouts
-                .filter { it.date == date }
-                .map { externalWorkout ->
-                    PhysicalActivity.Activity(externalWorkout.name, externalWorkout.burnedEnergy)
-                }
+            .filter { it.date == date }
+            .map { externalWorkout ->
+                PhysicalActivity.Activity(externalWorkout.name, externalWorkout.burnedEnergy)
+            }
     }
 
     override fun addNutritionEntry(entry: NutritionEntry): Completable {

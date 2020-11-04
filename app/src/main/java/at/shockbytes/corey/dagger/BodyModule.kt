@@ -2,7 +2,6 @@ package at.shockbytes.corey.dagger
 
 import android.app.Application
 import android.content.SharedPreferences
-import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.GoogleFitBodyRepository
@@ -12,13 +11,9 @@ import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import at.shockbytes.corey.data.goal.FirebaseGoalsRepository
 import at.shockbytes.corey.data.goal.GoalsRepository
 import at.shockbytes.corey.data.google.CoreyGoogleApiClient
-import at.shockbytes.corey.data.nutrition.FirebaseNutritionRepository
-import at.shockbytes.corey.data.nutrition.NutritionRepository
-import at.shockbytes.corey.data.workout.external.ExternalWorkoutRepository
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RawWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RunningAverageWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.WeightLineFilter
-import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -40,10 +35,10 @@ class BodyModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideBodyRepository(
-            coreyGoogleApiClient: CoreyGoogleApiClient,
-            preferences: SharedPreferences,
-            firebase: FirebaseDatabaseAccess,
-            userSettings: UserSettings
+        coreyGoogleApiClient: CoreyGoogleApiClient,
+        preferences: SharedPreferences,
+        firebase: FirebaseDatabaseAccess,
+        userSettings: UserSettings
     ): BodyRepository {
         return GoogleFitBodyRepository(coreyGoogleApiClient, preferences, firebase, userSettings)
     }

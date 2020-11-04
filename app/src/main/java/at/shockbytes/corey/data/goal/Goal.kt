@@ -12,7 +12,7 @@ data class Goal(
     val id: String = "",
     val category: String = "",
     val dueDate: String = ""
-): FirebaseStorable {
+) : FirebaseStorable {
 
     override fun copyWithNewId(newId: String): FirebaseStorable {
         return copy(id = newId)

@@ -200,7 +200,6 @@ class AddNutritionEntryFragment : BaseFragment<AppComponent>() {
 
     private fun gatherTitle(): String = et_add_nutrition_entry_name.text?.toString()!!
 
-
     override fun unbindViewModel() = Unit
 
     companion object {

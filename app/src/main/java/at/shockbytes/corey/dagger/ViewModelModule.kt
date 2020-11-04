@@ -2,7 +2,15 @@ package at.shockbytes.corey.dagger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import at.shockbytes.corey.ui.viewmodel.*
+import at.shockbytes.corey.ui.viewmodel.BodyViewModel
+import at.shockbytes.corey.ui.viewmodel.GoalsViewModel
+import at.shockbytes.corey.ui.viewmodel.MainViewModel
+import at.shockbytes.corey.ui.viewmodel.NutritionViewModel
+import at.shockbytes.corey.ui.viewmodel.ReminderViewModel
+import at.shockbytes.corey.ui.viewmodel.RunningViewModel
+import at.shockbytes.corey.ui.viewmodel.ScheduleViewModel
+import at.shockbytes.corey.ui.viewmodel.SignupViewModel
+import at.shockbytes.corey.ui.viewmodel.WorkoutOverviewViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module

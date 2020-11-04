@@ -7,7 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 class UserScopedFirebaseDatabaseAccess(
     private val firebase: FirebaseDatabase,
     private val auth: FirebaseAuth
-): FirebaseDatabaseAccess {
+) : FirebaseDatabaseAccess {
 
     override fun access(reference: String): DatabaseReference {
 
@@ -21,7 +21,7 @@ class UserScopedFirebaseDatabaseAccess(
     }
 
     private fun checkReference(reference: String): String {
-        return if(reference.startsWith("/")) {
+        return if (reference.startsWith("/")) {
             reference.substring(1, reference.length)
         } else {
             reference

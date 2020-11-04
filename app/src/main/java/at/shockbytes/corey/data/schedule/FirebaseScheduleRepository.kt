@@ -2,7 +2,11 @@ package at.shockbytes.corey.data.schedule
 
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
-import at.shockbytes.corey.util.*
+import at.shockbytes.corey.util.fromFirebase
+import at.shockbytes.corey.util.insertValue
+import at.shockbytes.corey.util.reactiveRemoveValue
+import at.shockbytes.corey.util.removeChildValue
+import at.shockbytes.corey.util.updateValue
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject

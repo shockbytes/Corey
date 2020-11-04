@@ -32,12 +32,13 @@ class ScheduleAdapter(
     private val emptyScheduleItemFactory: (position: Int) -> ScheduleItem,
     private val disposableBag: CompositeDisposable
 ) : BaseAdapter<ScheduleItem>(
-        context = context,
-        onItemClickListener = onItemClickListener,
-        onItemMoveListener = onItemMoveListener
+    context = context,
+    onItemClickListener = onItemClickListener,
+    onItemMoveListener = onItemMoveListener
 ), ItemTouchHelperAdapter {
 
-    override fun onCreateViewHolder(parent: ViewGroup,
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
         viewType: Int
     ): BaseAdapter.ViewHolder<ScheduleItem> {
         return ViewHolder(inflater.inflate(R.layout.item_schedule, parent, false))
@@ -110,16 +111,16 @@ class ScheduleAdapter(
 
         private fun loadWeather(index: Int) {
             weatherResolver.resolveWeatherForScheduleIndex(index)
-                    .subscribe({ weatherInfo ->
-                        item_schedule_weather.apply {
-                            setVisible(true)
-                            setWeatherInfo(weatherInfo, weatherInfo.temperatureUnit.unit, animate = true)
-                        }
-                    }, {
-                        // Suppress errors Timber.e(throwable)
-                        item_schedule_weather.setVisible(false)
-                    })
-                    .addTo(disposableBag)
+                .subscribe({ weatherInfo ->
+                    item_schedule_weather.apply {
+                        setVisible(true)
+                        setWeatherInfo(weatherInfo, weatherInfo.temperatureUnit.unit, animate = true)
+                    }
+                }, {
+                    // Suppress errors Timber.e(throwable)
+                    item_schedule_weather.setVisible(false)
+                })
+                .addTo(disposableBag)
         }
     }
 }

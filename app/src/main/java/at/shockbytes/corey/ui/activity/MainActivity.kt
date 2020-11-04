@@ -3,7 +3,6 @@ package at.shockbytes.corey.ui.activity
 import androidx.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -26,7 +25,6 @@ import at.shockbytes.corey.ui.fragment.MenuFragment
 import at.shockbytes.corey.ui.fragment.dialog.DesiredWeightDialogFragment
 import at.shockbytes.corey.ui.viewmodel.MainViewModel
 import at.shockbytes.corey.util.ShockColors
-import at.shockbytes.corey.util.accentColored
 import at.shockbytes.corey.util.showBaseFragment
 import at.shockbytes.corey.util.viewModelOfActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -67,7 +65,7 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
         listOf(
             BottomNavigationTab(R.id.nav_item_nutrition, R.drawable.navigation_item, R.drawable.ic_tab_nutrition, getString(R.string.tab_nutrition)),
             BottomNavigationTab(R.id.nav_item_schedule, R.drawable.navigation_item, R.drawable.ic_tab_schedule, getString(R.string.tab_schedule)),
-            BottomNavigationTab(R.id.nav_item_my_body, R.drawable.navigation_item, R.drawable.ic_tab_my_body, getString(R.string.tab_my_body)),
+            BottomNavigationTab(R.id.nav_item_my_body, R.drawable.navigation_item, R.drawable.ic_tab_my_body, getString(R.string.tab_my_body))
         )
     }
 
@@ -120,7 +118,6 @@ class MainActivity : BottomNavigationBarActivity<AppComponent>() {
     }
 
     override fun onFabMenuItemClicked(id: Int): Boolean = false
-
 
     override fun setupDarkMode() = Unit
 

@@ -6,11 +6,9 @@ import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.common.core.workout.model.Workout
 import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
-import at.shockbytes.corey.util.listen
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig

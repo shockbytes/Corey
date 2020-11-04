@@ -170,11 +170,13 @@ class RunningFragment : TabBaseFragment<AppComponent>(),
                 override fun onDown(motionEvent: MotionEvent): Boolean {
                     return true
                 }
-                override fun onShowPress(motionEvent: MotionEvent) { }
+
+                override fun onShowPress(motionEvent: MotionEvent) {}
 
                 override fun onSingleTapUp(motionEvent: MotionEvent): Boolean {
                     return true
                 }
+
                 override fun onScroll(motionEvent: MotionEvent, motionEvent1: MotionEvent, v: Float, v1: Float): Boolean {
                     return false
                 }
@@ -255,7 +257,7 @@ class RunningFragment : TabBaseFragment<AppComponent>(),
 
     private fun animateStartingViews(animateOut: Boolean) {
 
-        if (animateOut)  {
+        if (animateOut) {
 
             fragment_running_btn_start
                 .animate()
@@ -274,7 +276,6 @@ class RunningFragment : TabBaseFragment<AppComponent>(),
                     fragment_running_btn_start.visibility = View.GONE
                 }
                 .start()
-
         } else {
 
             fragment_running_btn_start

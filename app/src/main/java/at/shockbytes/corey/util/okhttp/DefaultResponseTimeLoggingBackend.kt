@@ -12,7 +12,7 @@ class DefaultResponseTimeLoggingBackend : ResponseTimeLoggingBackend {
 
     override fun logResponseError(dataPacket: ResponseTimeDataPacket.Error) {
         with(dataPacket) {
-            Timber.e(exception, "Exception for ${url}: ${exception.message}")
+            Timber.e(exception, "Exception for $url: ${exception.message}")
         }
     }
 }

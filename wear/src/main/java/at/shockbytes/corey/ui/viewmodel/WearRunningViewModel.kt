@@ -8,9 +8,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
-class WearRunningViewModel @Inject constructor(
-
-): BaseViewModel() {
+class WearRunningViewModel @Inject constructor() : BaseViewModel() {
 
     private val pulseLogger = PulseLogger()
 

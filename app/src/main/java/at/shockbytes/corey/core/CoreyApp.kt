@@ -4,7 +4,12 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import at.shockbytes.core.ShockbytesApp
-import at.shockbytes.corey.dagger.*
+import at.shockbytes.corey.dagger.AppComponent
+import at.shockbytes.corey.dagger.AppModule
+import at.shockbytes.corey.dagger.BodyModule
+import at.shockbytes.corey.dagger.DaggerAppComponent
+import at.shockbytes.corey.dagger.WorkerFactory
+import at.shockbytes.corey.dagger.WorkoutModule
 import at.shockbytes.corey.data.settings.CoreySettings
 import at.shockbytes.corey.data.settings.ThemeState
 import net.danlew.android.joda.JodaTimeAndroid
@@ -52,7 +57,6 @@ class CoreyApp : ShockbytesApp<AppComponent>() {
     private fun setupTheme(theme: ThemeState) {
         AppCompatDelegate.setDefaultNightMode(theme.themeMode)
     }
-
 
     override fun setupCustomLogging() = Unit
 

@@ -22,14 +22,14 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-        private val userRepository: UserRepository,
-        private val userSettings: UserSettings,
-        private val scheduleRepository: ScheduleRepository,
-        private val reminderManager: ReminderManager,
-        private val wearableManager: WearableManager,
-        private val bodyRepository: BodyRepository,
-        private val nutritionRepository: NutritionRepository,
-        private val workoutRepository: WorkoutRepository
+    private val userRepository: UserRepository,
+    private val userSettings: UserSettings,
+    private val scheduleRepository: ScheduleRepository,
+    private val reminderManager: ReminderManager,
+    private val wearableManager: WearableManager,
+    private val bodyRepository: BodyRepository,
+    private val nutritionRepository: NutritionRepository,
+    private val workoutRepository: WorkoutRepository
 ) : BaseViewModel() {
 
     private val userEvent = MutableLiveData<LoginUserEvent>()
@@ -48,9 +48,9 @@ class MainViewModel @Inject constructor(
         userEvent.postValue(LoginUserEvent.SuccessEvent(userRepository.user, false))
 
         userSettings.isWeatherForecastEnabled
-                .doOnError { weatherForecastEnabled.postValue(false) }
-                .subscribe(weatherForecastEnabled::postValue, Timber::e)
-                .addTo(compositeDisposable)
+            .doOnError { weatherForecastEnabled.postValue(false) }
+            .subscribe(weatherForecastEnabled::postValue, Timber::e)
+            .addTo(compositeDisposable)
 
         wearableManager.onStart(::onWatchInfoAvailable)
     }
@@ -65,13 +65,13 @@ class MainViewModel @Inject constructor(
 
     fun resetSchedule() {
         scheduleRepository.deleteAll()
-                .subscribe({
-                    toastSubject.onNext(R.string.schedule_deletion_successful)
-                }, { throwable ->
-                    toastSubject.onNext(R.string.schedule_deletion_error)
-                    Timber.e(throwable)
-                })
-                .addTo(compositeDisposable)
+            .subscribe({
+                toastSubject.onNext(R.string.schedule_deletion_successful)
+            }, { throwable ->
+                toastSubject.onNext(R.string.schedule_deletion_error)
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun logout() {
@@ -80,8 +80,8 @@ class MainViewModel @Inject constructor(
 
     fun enableWeatherForecast(isEnabled: Boolean) {
         userSettings.setWeatherForecastEnabled(isEnabled)
-                .subscribe { Timber.d("Weather forecast flag successfully synced to $isEnabled!") }
-                .addTo(compositeDisposable)
+            .subscribe { Timber.d("Weather forecast flag successfully synced to $isEnabled!") }
+            .addTo(compositeDisposable)
     }
 
     override fun onCleared() {
@@ -101,13 +101,13 @@ class MainViewModel @Inject constructor(
     private fun prefetchNutritionHistory() {
         val start = System.currentTimeMillis()
         nutritionRepository.prefetchNutritionHistory()
-                .subscribe({
-                    val diff = System.currentTimeMillis() - start
-                    Timber.d("Successfully pre-fetched nutrition data after ${diff}ms.")
-                }, { throwable ->
-                    Timber.e(throwable)
-                })
-                .addTo(compositeDisposable)
+            .subscribe({
+                val diff = System.currentTimeMillis() - start
+                Timber.d("Successfully pre-fetched nutrition data after ${diff}ms.")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun prefetchWorkouts() {

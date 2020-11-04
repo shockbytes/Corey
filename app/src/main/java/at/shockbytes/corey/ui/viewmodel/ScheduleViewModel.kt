@@ -17,8 +17,8 @@ import javax.inject.Inject
  * Date:    09.10.2020
  */
 class ScheduleViewModel @Inject constructor(
-        private val scheduleRepository: ScheduleRepository,
-        private val schedulers: SchedulerFacade
+    private val scheduleRepository: ScheduleRepository,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     private var cachedSchedule = Array(MAX_SCHEDULE_DAYS, ::createEmptyScheduleItem).toList()
@@ -28,26 +28,26 @@ class ScheduleViewModel @Inject constructor(
 
     fun requestSchedule() {
         scheduleRepository.schedule
-                .subscribeOn(schedulers.io)
-                .observeOn(schedulers.ui)
-                .map(::fillUpSparseSchedule)
-                .subscribe(schedule::setValue, Timber::e)
-                .addTo(compositeDisposable)
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.ui)
+            .map(::fillUpSparseSchedule)
+            .subscribe(schedule::setValue, Timber::e)
+            .addTo(compositeDisposable)
     }
 
     private fun fillUpSparseSchedule(items: List<ScheduleItem>): List<ScheduleItem> {
         return cachedSchedule.mapIndexed { index, emptyItem ->
             items.find { it.day == index }
-                    ?: emptyItem
+                ?: emptyItem
         }
     }
 
     fun insertScheduleItem(item: AddScheduleItemAdapter.ScheduleDisplayItem, position: Int) {
         val scheduleItem = ScheduleItem(
-                name = item.item.title,
-                day = position,
-                locationType = item.item.locationType,
-                workoutIconType = item.item.workoutType
+            name = item.item.title,
+            day = position,
+            locationType = item.item.locationType,
+            workoutIconType = item.item.workoutType
         )
 
         scheduleRepository.insertScheduleItem(scheduleItem)
@@ -64,8 +64,8 @@ class ScheduleViewModel @Inject constructor(
 
     private fun updateScheduleItems(items: List<ScheduleItem>) {
         items
-                .filter { !it.isEmpty }
-                .forEach(::updateScheduleItem)
+            .filter { !it.isEmpty }
+            .forEach(::updateScheduleItem)
     }
 
     private fun updateScheduleItem(item: ScheduleItem) {
@@ -76,7 +76,7 @@ class ScheduleViewModel @Inject constructor(
         scheduleRepository.deleteScheduleItem(item)
     }
 
-    fun createEmptyScheduleItem(idx: Int) : ScheduleItem {
+    fun createEmptyScheduleItem(idx: Int): ScheduleItem {
         return ScheduleItem("", idx, locationType = LocationType.NONE)
     }
 

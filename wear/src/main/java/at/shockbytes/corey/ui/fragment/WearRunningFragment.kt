@@ -26,7 +26,6 @@ import javax.inject.Inject
 
 class WearRunningFragment : WearableBaseFragment(), SensorEventListener {
 
-
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
@@ -36,7 +35,6 @@ class WearRunningFragment : WearableBaseFragment(), SensorEventListener {
 
     private var sensorManager: SensorManager? = null
     private var sensor: Sensor? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,7 +140,6 @@ class WearRunningFragment : WearableBaseFragment(), SensorEventListener {
     companion object {
 
         private const val SENSOR_REQUEST_CODE = 0x4104
-
 
         fun newInstance(): WearRunningFragment {
             return WearRunningFragment().apply {

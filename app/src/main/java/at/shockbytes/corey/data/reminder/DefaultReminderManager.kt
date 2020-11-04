@@ -28,10 +28,10 @@ import org.joda.time.DateTime
 import java.util.concurrent.TimeUnit
 
 class DefaultReminderManager(
-        private val localStorage: KeyValueStorage,
-        private val scheduleRepository: ScheduleRepository,
-        private val bodyRepository: BodyRepository,
-        private val userSettings: UserSettings
+    private val localStorage: KeyValueStorage,
+    private val scheduleRepository: ScheduleRepository,
+    private val bodyRepository: BodyRepository,
+    private val userSettings: UserSettings
 ) : ReminderManager {
 
     override var isWorkoutReminderEnabled: Boolean
@@ -69,9 +69,9 @@ class DefaultReminderManager(
                 val importance = NotificationManager.IMPORTANCE_DEFAULT
 
                 val channel = NotificationChannel(
-                        getString(R.string.corey_notification_channel_id),
-                        name,
-                        importance
+                    getString(R.string.corey_notification_channel_id),
+                    name,
+                    importance
                 ).apply {
                     this.description = description
                     enableLights(true)
@@ -93,7 +93,7 @@ class DefaultReminderManager(
         val weighRequest = buildNotificationRequest(initialWeighDelayOffset, weighTag, WeighNotificationWorker::class.java)
 
         WorkManager.getInstance(context)
-                .enqueueUniquePeriodicWork(weighTag, ExistingPeriodicWorkPolicy.REPLACE, weighRequest)
+            .enqueueUniquePeriodicWork(weighTag, ExistingPeriodicWorkPolicy.REPLACE, weighRequest)
     }
 
     private fun postWorkoutNotificationWorker(context: Context) {
@@ -102,65 +102,65 @@ class DefaultReminderManager(
         val workoutRequest = buildNotificationRequest(initialWorkoutDelayOffset, workoutTag, WorkoutNotificationWorker::class.java)
 
         WorkManager.getInstance(context)
-                .enqueueUniquePeriodicWork(workoutTag, ExistingPeriodicWorkPolicy.REPLACE, workoutRequest)
+            .enqueueUniquePeriodicWork(workoutTag, ExistingPeriodicWorkPolicy.REPLACE, workoutRequest)
     }
 
     private fun buildNotificationRequest(
-            initialDelayOffset: Minutes,
-            tag: String,
-            workerClass: Class<out ListenableWorker>
+        initialDelayOffset: Minutes,
+        tag: String,
+        workerClass: Class<out ListenableWorker>
     ): PeriodicWorkRequest {
         return PeriodicWorkRequest
-                .Builder(
-                        workerClass,
-                        24,
-                        TimeUnit.HOURS,
-                        PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
-                        TimeUnit.MILLISECONDS
-                )
-                .setInitialDelay(initialDelayOffset.minutes, TimeUnit.MINUTES)
-                .addTag(tag)
-                .build()
+            .Builder(
+                workerClass,
+                24,
+                TimeUnit.HOURS,
+                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+                TimeUnit.MILLISECONDS
+            )
+            .setInitialDelay(initialDelayOffset.minutes, TimeUnit.MINUTES)
+            .addTag(tag)
+            .build()
     }
 
     override fun postWorkoutNotification(context: Context): Single<ScheduleItem> {
         return scheduleRepository.schedule
-                .flatMapIterable { it }
-                .filter { item ->
-                    // Filter all days which are not happening on the current day
-                    item.isItemOfCurrentDay(CoreyUtils.getDayOfWeek())
-                }
-                .firstOrError()
-                .doOnSuccess { item ->
-                    postWorkoutNotificationForToday(context, item)
-                }
+            .flatMapIterable { it }
+            .filter { item ->
+                // Filter all days which are not happening on the current day
+                item.isItemOfCurrentDay(CoreyUtils.getDayOfWeek())
+            }
+            .firstOrError()
+            .doOnSuccess { item ->
+                postWorkoutNotificationForToday(context, item)
+            }
     }
 
     override fun postWeighNotification(context: Context): Completable {
         return retrieveWeighData()
-                .doOnNext { (user, weightUnit) ->
+            .doOnNext { (user, weightUnit) ->
 
-                    val notification = ReminderNotificationBuilder.buildWeighNotification(
-                            context,
-                            CoreyUtils.getLocalizedDayOfWeek(context),
-                            weight = String.format("%,.0f", user.currentWeight),
-                            weightUnit = weightUnit.acronym
-                    )
+                val notification = ReminderNotificationBuilder.buildWeighNotification(
+                    context,
+                    CoreyUtils.getLocalizedDayOfWeek(context),
+                    weight = String.format("%,.0f", user.currentWeight),
+                    weightUnit = weightUnit.acronym
+                )
 
-                    getNotificationManager(context).run {
-                        notify(0x90, notification)
-                    }
+                getNotificationManager(context).run {
+                    notify(0x90, notification)
                 }
-                .asCompletable()
+            }
+            .asCompletable()
     }
 
     private fun retrieveWeighData(): Observable<Pair<User, WeightUnit>> {
         return Observable
-                .zip(
-                        bodyRepository.user,
-                        userSettings.weightUnit,
-                        { user, unit -> Pair(user, unit) }
-                )
+            .zip(
+                bodyRepository.user,
+                userSettings.weightUnit,
+                { user, unit -> Pair(user, unit) }
+            )
     }
 
     override fun shouldScheduleWeighReminder(): Boolean {
@@ -170,9 +170,9 @@ class DefaultReminderManager(
     private fun postWorkoutNotificationForToday(context: Context, item: ScheduleItem) {
 
         val notification = ReminderNotificationBuilder.buildWorkoutNotification(
-                context,
-                item.name,
-                item.workoutIconType
+            context,
+            item.name,
+            item.workoutIconType
         )
 
         getNotificationManager(context).run {

@@ -5,6 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class KcalLookupResult(
-        val dataSource: LookupDataSource,
-        val items: List<KcalLookupItem>
+    val dataSource: LookupDataSource,
+    val items: List<KcalLookupItem>
 ) : Parcelable

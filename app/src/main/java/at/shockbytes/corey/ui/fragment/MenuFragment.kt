@@ -112,7 +112,6 @@ class MenuFragment : BottomSheetDialogFragment() {
                                 view.findViewById(R.id.imageViewMenuUser),
                                 circular = true)
                     }
-
                 }
             }
         })

@@ -14,7 +14,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ViewFlipper
 import at.shockbytes.corey.R
-import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.ui.adapter.AddExerciseAdapter
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.TimeExercise

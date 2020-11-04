@@ -11,10 +11,8 @@ import at.shockbytes.corey.data.workout.FirebaseWorkoutRepository
 import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.data.workout.external.DummyExternalWorkoutRepository
 import at.shockbytes.corey.data.workout.external.ExternalWorkoutRepository
-import at.shockbytes.corey.data.workout.external.GoogleFitExternalWorkoutRepository
 import at.shockbytes.corey.storage.running.RunningStorageRepository
 import at.shockbytes.corey.storage.running.SharedPreferencesRunningStorageRepository
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.Module
@@ -55,7 +53,7 @@ class WorkoutModule(private val app: Application) {
 
     @Provides
     fun provideExternalWorkoutRepository(
-            coreyGoogleApiClient: CoreyGoogleApiClient
+        coreyGoogleApiClient: CoreyGoogleApiClient
     ): ExternalWorkoutRepository {
         return DummyExternalWorkoutRepository()
     }

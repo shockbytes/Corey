@@ -11,16 +11,16 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_nutrition_lookup_picker.*
 
 class NutritionLookupAdapter(
-        context: Context,
-        private val imageLoader: ImageLoader,
-        onItemClickCallback: (KcalLookupItem) -> Unit
+    context: Context,
+    private val imageLoader: ImageLoader,
+    onItemClickCallback: (KcalLookupItem) -> Unit
 ) : BaseAdapter<KcalLookupItem>(
-        context,
-        onItemClickListener = object : OnItemClickListener<KcalLookupItem> {
-            override fun onItemClick(content: KcalLookupItem, position: Int, v: View) {
-                onItemClickCallback(content)
-            }
+    context,
+    onItemClickListener = object : OnItemClickListener<KcalLookupItem> {
+        override fun onItemClick(content: KcalLookupItem, position: Int, v: View) {
+            onItemClickCallback(content)
         }
+    }
 ) {
 
     override fun getItemViewType(position: Int): Int {
@@ -40,7 +40,7 @@ class NutritionLookupAdapter(
     }
 
     inner class ImageLookupViewHolder(
-            override val containerView: View
+        override val containerView: View
     ) : BaseAdapter.ViewHolder<KcalLookupItem>(containerView), LayoutContainer {
 
         override fun bindToView(content: KcalLookupItem, position: Int) {
@@ -51,12 +51,12 @@ class NutritionLookupAdapter(
 
                 imageUrl?.let { imgUrl ->
                     imageLoader
-                            .loadImageWithCornerRadius(
-                                    context,
-                                    url = imgUrl,
-                                    target = iv_nutrition_lookup_icon,
-                                    cornerDimension = context.resources.getDimension(R.dimen.dish_lookup_radius).toInt()
-                            )
+                        .loadImageWithCornerRadius(
+                            context,
+                            url = imgUrl,
+                            target = iv_nutrition_lookup_icon,
+                            cornerDimension = context.resources.getDimension(R.dimen.dish_lookup_radius).toInt()
+                        )
                 }
             }
         }

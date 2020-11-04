@@ -3,9 +3,9 @@ package at.shockbytes.corey.data.nutrition
 import at.shockbytes.corey.common.core.CoreyDate
 
 data class NutritionPerDay(
-        val date: CoreyDate,
-        val intake: List<NutritionEntry>,
-        val burned: List<PhysicalActivity>
+    val date: CoreyDate,
+    val intake: List<NutritionEntry>,
+    val burned: List<PhysicalActivity>
 ) {
 
     val balance: NutritionBalance
