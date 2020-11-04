@@ -3,7 +3,6 @@ package at.shockbytes.corey.ui.fragment.workoutpager
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Vibrator
-import android.widget.TextView
 import at.shockbytes.corey.R
 import at.shockbytes.corey.common.addTo
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
@@ -13,7 +12,7 @@ import at.shockbytes.corey.ui.fragment.dialog.WearTimeExerciseCountdownDialogFra
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.fragment_wear_pageritem_time_exercise.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -33,26 +32,23 @@ class WearTimeExercisePagerFragment : WearableBaseFragment() {
     private var isVibrationEnabled: Boolean = false
     private var secondsUntilFinish: Int = 0
 
-    private val txtExercise: TextView by bindView(R.id.fragment_wear_pageritem_time_exercise_txt_exercise)
-    private val btnTime: TextView by bindView(R.id.fragment_wear_pageritem_time_exercise_btn_time)
-
     override val layoutId = R.layout.fragment_wear_pageritem_time_exercise
 
     override fun setupViews() {
 
-        btnTime.isEnabled = true
-        btnTime.setOnClickListener {
+        fragment_wear_pageritem_time_exercise_btn_time.isEnabled = true
+        fragment_wear_pageritem_time_exercise_btn_time.setOnClickListener {
             onClickButtonStart()
-            btnTime.isEnabled = false // Avoid multiple clicks
+            fragment_wear_pageritem_time_exercise_btn_time.isEnabled = false // Avoid multiple clicks
         }
 
         secondsUntilFinish = exercise.workoutDurationInSeconds
 
-        btnTime.text = calculateDisplayString(secondsUntilFinish)
+        fragment_wear_pageritem_time_exercise_btn_time.text = calculateDisplayString(secondsUntilFinish)
         context?.let {
-            txtExercise.text = exercise.getDisplayName(it)
+            fragment_wear_pageritem_time_exercise_txt_exercise.text = exercise.getDisplayName(it)
         }
-        txtExercise.isSelected = true
+        fragment_wear_pageritem_time_exercise_txt_exercise.isSelected = true
 
         timerObservable = Observable.interval(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
@@ -140,7 +136,7 @@ class WearTimeExercisePagerFragment : WearableBaseFragment() {
         }
         vibrate(secondsToGo)
         val formattedSecs: String = if (seconds >= 10) seconds.toString() else "0$seconds"
-        btnTime.text = "$minutes:$formattedSecs"
+        fragment_wear_pageritem_time_exercise_btn_time.text = "$minutes:$formattedSecs"
     }
 
     companion object {

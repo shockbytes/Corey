@@ -27,7 +27,9 @@ class FirebaseModule {
             setConfigSettingsAsync(configSettings).addOnSuccessListener {
                 Timber.d("RemoteConfigSettings set async")
             }
-            setDefaults(R.xml.remote_config_defaults)
+            setDefaultsAsync(R.xml.remote_config_defaults).addOnSuccessListener {
+                Timber.d("Defaults set async")
+            }
         }
     }
 
