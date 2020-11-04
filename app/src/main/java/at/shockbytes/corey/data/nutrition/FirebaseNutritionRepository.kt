@@ -7,10 +7,10 @@ import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.bmr.Bmr
 import at.shockbytes.corey.data.body.bmr.BmrComputation
 import at.shockbytes.corey.data.body.model.User
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import at.shockbytes.corey.data.workout.external.ExternalWorkout
 import at.shockbytes.corey.data.workout.external.ExternalWorkoutRepository
 import at.shockbytes.corey.util.*
-import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -18,7 +18,7 @@ import org.joda.time.Years
 import timber.log.Timber
 
 class FirebaseNutritionRepository(
-        private val firebase: FirebaseDatabase,
+        private val firebase: FirebaseDatabaseAccess,
         private val schedulers: SchedulerFacade,
         private val externalWorkoutRepository: ExternalWorkoutRepository,
         private val bodyRepository: BodyRepository,
@@ -33,7 +33,7 @@ class FirebaseNutritionRepository(
     }
 
     private fun setupFirebase() {
-        firebase.listen(REF, nutritionFirebaseSubject, changedChildKeySelector = { it.id })
+        firebase.access(REF).listen(nutritionFirebaseSubject, changedChildKeySelector = { it.id })
     }
 
     override fun computeCurrentBmr(): Observable<Bmr> {
@@ -150,13 +150,13 @@ class FirebaseNutritionRepository(
 
     override fun addNutritionEntry(entry: NutritionEntry): Completable {
         return completableEmitterOf {
-            firebase.insertValue(REF, entry)
+            firebase.access(REF).insertValue(entry)
         }
     }
 
     override fun deleteNutritionEntry(id: String): Completable {
         return Completable.fromAction {
-            firebase.removeChildValue(REF, id)
+            firebase.access(REF).removeChildValue(id)
         }
     }
 

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.common.core.running.DefaultRunningManager
 import at.shockbytes.corey.common.core.running.RunningManager
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import at.shockbytes.corey.data.google.CoreyGoogleApiClient
 import at.shockbytes.corey.data.workout.FirebaseWorkoutRepository
 import at.shockbytes.corey.data.workout.WorkoutRepository
@@ -33,7 +34,7 @@ class WorkoutModule(private val app: Application) {
     fun provideWorkoutManager(
         gson: Gson,
         remoteConfig: FirebaseRemoteConfig,
-        firebase: FirebaseDatabase
+        firebase: FirebaseDatabaseAccess
     ): WorkoutRepository {
         return FirebaseWorkoutRepository(app.applicationContext, gson, remoteConfig, firebase)
     }

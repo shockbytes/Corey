@@ -3,6 +3,7 @@ package at.shockbytes.corey.dagger
 import at.shockbytes.core.scheduler.SchedulerFacade
 import at.shockbytes.corey.data.body.BodyRepository
 import at.shockbytes.corey.data.body.bmr.BmrComputation
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import at.shockbytes.corey.data.nutrition.FirebaseNutritionRepository
 import at.shockbytes.corey.data.nutrition.NutritionRepository
 import at.shockbytes.corey.data.nutrition.lookup.KcalLookup
@@ -28,7 +29,7 @@ class NutritionModule {
     @Provides
     @Singleton
     fun provideNutritionRepository(
-            firebase: FirebaseDatabase,
+            firebase: FirebaseDatabaseAccess,
             schedulers: SchedulerFacade,
             externalWorkoutRepository: ExternalWorkoutRepository,
             bodyRepository: BodyRepository,

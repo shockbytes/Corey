@@ -110,12 +110,11 @@ inline fun <reified T> DatabaseReference.listenForValue(
 }
 
 
-inline fun <reified T : FirebaseStorable> FirebaseDatabase.insertValue(
-        reference: String,
+inline fun <reified T : FirebaseStorable> DatabaseReference.insertValue(
         value: T
 ): T {
 
-    val ref = getReference(reference).push()
+    val ref = push()
     val id = ref.key ?: throw IllegalStateException("Cannot insert value $value into firebase!")
 
     val updatedValue = value.copyWithNewId(newId = id)
@@ -125,17 +124,17 @@ inline fun <reified T : FirebaseStorable> FirebaseDatabase.insertValue(
 }
 
 
-fun <T> FirebaseDatabase.updateValue(reference: String, childId: String, value: T) {
-    getReference(reference).child(childId).setValue(value)
+fun <T> DatabaseReference.updateValue(childId: String, value: T) {
+    child(childId).setValue(value)
 }
 
-fun FirebaseDatabase.removeChildValue(reference: String, childId: String) {
-    getReference(reference).child(childId).removeValue()
+fun DatabaseReference.removeChildValue(childId: String) {
+    child(childId).removeValue()
 }
 
-fun FirebaseDatabase.reactiveRemoveValue(reference: String): Completable {
+fun DatabaseReference.reactiveRemoveValue(): Completable {
     return Completable.create { emitter ->
-        getReference(reference).removeValue()
+        removeValue()
                 .addOnCompleteListener { emitter.onComplete() }
                 .addOnFailureListener { throwable -> emitter.onError(throwable) }
     }

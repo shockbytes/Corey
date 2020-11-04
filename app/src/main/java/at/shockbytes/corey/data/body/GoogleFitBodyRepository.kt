@@ -7,10 +7,10 @@ import at.shockbytes.corey.common.core.Gender
 import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.CoreyDate
 import at.shockbytes.corey.data.body.model.User
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import at.shockbytes.corey.data.google.CoreyGoogleApiClient
 import at.shockbytes.corey.util.fromFirebase
 import at.shockbytes.corey.util.updateValue
-import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
@@ -23,7 +23,7 @@ import timber.log.Timber
 class GoogleFitBodyRepository(
         private val coreyGoogleApiClient: CoreyGoogleApiClient,
         private val preferences: SharedPreferences,
-        private val firebase: FirebaseDatabase,
+        private val firebase: FirebaseDatabaseAccess,
         private val userSettings: UserSettings
 ) : BodyRepository {
 
@@ -40,7 +40,7 @@ class GoogleFitBodyRepository(
     }
 
     private fun setupFirebase() {
-        desiredWeightSubject.fromFirebase(firebase.getReference(REF_USER.plus(REF_DESIRED)))
+        desiredWeightSubject.fromFirebase(firebase.access(REF_USER.plus(REF_DESIRED)))
     }
 
     override val desiredWeight: Observable<Int>
@@ -50,7 +50,7 @@ class GoogleFitBodyRepository(
                 }
 
     override fun setDesiredWeight(desiredWeight: Int) {
-        firebase.updateValue(REF_USER, REF_DESIRED, desiredWeight)
+        firebase.access(REF_USER).updateValue(REF_DESIRED, desiredWeight)
     }
 
     override fun cleanUp() {

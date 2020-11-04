@@ -1,6 +1,8 @@
 package at.shockbytes.corey.dagger
 
 import at.shockbytes.corey.R
+import at.shockbytes.corey.data.firebase.DefaultFirebaseAccess
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Logger
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -39,6 +41,12 @@ class FirebaseModule {
             }
             .reference
             .database
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseDatabaseAccess(database: FirebaseDatabase): FirebaseDatabaseAccess {
+        return DefaultFirebaseAccess(database)
     }
 
     companion object {

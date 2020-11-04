@@ -18,6 +18,7 @@ import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.util.ExerciseDeserializer
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.data.body.BodyRepository
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import at.shockbytes.corey.data.reminder.DefaultReminderManager
 import at.shockbytes.corey.data.reminder.ReminderManager
 import at.shockbytes.corey.data.schedule.FirebaseRemoteConfigSchedulableItemResolver
@@ -77,7 +78,7 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideScheduleRepository(
         schedulableItemResolver: SchedulableItemResolver,
-        firebase: FirebaseDatabase,
+        firebase: FirebaseDatabaseAccess,
         schedulerFacade: SchedulerFacade
     ): ScheduleRepository {
         return FirebaseScheduleRepository(
@@ -132,7 +133,7 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideUserSettings(
             sharedPrefs: SharedPreferences,
-            firebase: FirebaseDatabase
+            firebase: FirebaseDatabaseAccess
     ): UserSettings {
         return ReactiveFirebaseUserSettings(app.applicationContext, sharedPrefs, firebase)
     }
