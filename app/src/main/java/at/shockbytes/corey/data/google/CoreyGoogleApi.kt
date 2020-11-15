@@ -1,21 +1,19 @@
 package at.shockbytes.corey.data.google
 
 import android.content.Context
-import android.os.Bundle
-import android.widget.Toast
 import at.shockbytes.corey.common.roundDouble
 import at.shockbytes.corey.data.body.model.WeightDataPoint
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.Scopes
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.Scope
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.fitness.Fitness
+import com.google.android.gms.fitness.FitnessOptions
+import com.google.android.gms.fitness.HistoryClient
 import com.google.android.gms.fitness.data.DataSet
 import com.google.android.gms.fitness.data.DataType
+import com.google.android.gms.fitness.data.HealthDataTypes
 import com.google.android.gms.fitness.request.DataReadRequest
-import com.google.android.gms.fitness.result.DataReadResult
+import com.google.android.gms.fitness.result.DataReadResponse
 import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
 import org.joda.time.DateTime
 import java.util.concurrent.TimeUnit
 
@@ -23,26 +21,25 @@ import java.util.concurrent.TimeUnit
  * Author:  Martin Macheiner
  * Date:    30.09.2020
  */
-class CoreyGoogleApiClient(
-    private val context: Context
-) : GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+class CoreyGoogleApi(private val context: Context) {
 
-    private val connectionSubject = BehaviorSubject.createDefault(false)
-    fun onConnectionEvent(): Observable<Boolean> = connectionSubject
-
-    private val apiClient: GoogleApiClient = GoogleApiClient.Builder(context)
-        .addApi(Fitness.HISTORY_API)
-        .addApi(Fitness.RECORDING_API)
-        .addScope(Scope(Scopes.FITNESS_BODY_READ_WRITE))
-        .addScope(Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
-        .addConnectionCallbacks(this)
-        .build()
-
-    init {
-        apiClient.connect()
+    private val signInAccount: GoogleSignInAccount by lazy {
+        GoogleSignIn.getAccountForExtension(
+            context,
+            FitnessOptions.builder()
+                .addDataType(DataType.TYPE_CALORIES_EXPENDED)
+                .addDataType(DataType.TYPE_WEIGHT)
+                .addDataType(DataType.TYPE_HEIGHT)
+                .addDataType(HealthDataTypes.TYPE_BLOOD_PRESSURE)
+                .build()
+        )
     }
 
-    private data class A(
+    private val fitnessHistoryClient: HistoryClient by lazy {
+        Fitness.getHistoryClient(context, signInAccount)
+    }
+
+    private data class IntermediateCalories(
         val timestamp: Long,
         val calories: Float
     )
@@ -55,7 +52,7 @@ class CoreyGoogleApiClient(
                 .map { dp ->
                     val timeStamp = dp.getStartTime(TimeUnit.MILLISECONDS)
                     val calories = dp.getValue(dp.dataType.fields[0]).asFloat()
-                    A(timeStamp, calories)
+                    IntermediateCalories(timeStamp, calories)
                 }
                 .groupBy { a ->
                     DateTime(a.timestamp).withTimeAtStartOfDay()
@@ -85,25 +82,30 @@ class CoreyGoogleApiClient(
             .build()
     }
 
-    fun loadGoogleFitUserData(): Observable<GoogleFitUserData> {
+    fun loadGoogleFitUserData(
+        defaultValue: GoogleFitUserData = GoogleFitUserData(listOf(), 0)
+    ): Observable<GoogleFitUserData> {
         return fitnessHistoryToObservable(buildGoogleFitRequest()) { result ->
 
             val weightHistory = retrieveWeightHistory(result.getDataSet(DataType.TYPE_WEIGHT))
             val height = retrieveHeight(result.getDataSet(DataType.TYPE_HEIGHT))
 
             GoogleFitUserData(weightHistory, height)
-        }
+        }.onErrorReturnItem(defaultValue)
     }
 
     private fun <T> fitnessHistoryToObservable(
         readRequest: DataReadRequest,
-        mapper: (DataReadResult) -> T
+        mapper: (DataReadResponse) -> T
     ): Observable<T> {
         return Observable.create { emitter ->
-            Fitness.HistoryApi.readData(apiClient, readRequest)
-                .setResultCallback { result ->
-                    val transformed = mapper(result)
+            fitnessHistoryClient.readData(readRequest)
+                .addOnSuccessListener { response ->
+                    val transformed = mapper(response)
                     emitter.onNext(transformed)
+                }
+                .addOnFailureListener { exception ->
+                    emitter.tryOnError(exception)
                 }
         }
     }
@@ -142,20 +144,5 @@ class CoreyGoogleApiClient(
                 .times(100)
                 .toInt()
         } else 0
-    }
-
-    override fun onConnected(bundle: Bundle?) {
-        connectionSubject.onNext(true)
-    }
-
-    override fun onConnectionSuspended(i: Int) {
-        Toast.makeText(context, "Connection suspended: $i", Toast.LENGTH_LONG).show()
-    }
-
-    override fun onConnectionFailed(connectionResult: ConnectionResult) {
-        connectionSubject.onNext(false)
-        Toast.makeText(context,
-            "Exception while connecting to Google Play Services: ${connectionResult.errorMessage}",
-            Toast.LENGTH_LONG).show()
     }
 }

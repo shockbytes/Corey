@@ -6,7 +6,7 @@ import at.shockbytes.corey.common.core.location.LocationRepository
 import at.shockbytes.corey.common.core.running.DefaultRunningManager
 import at.shockbytes.corey.common.core.running.RunningManager
 import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
-import at.shockbytes.corey.data.google.CoreyGoogleApiClient
+import at.shockbytes.corey.data.google.CoreyGoogleApi
 import at.shockbytes.corey.data.workout.FirebaseWorkoutRepository
 import at.shockbytes.corey.data.workout.WorkoutRepository
 import at.shockbytes.corey.data.workout.external.DummyExternalWorkoutRepository
@@ -53,7 +53,7 @@ class WorkoutModule(private val app: Application) {
 
     @Provides
     fun provideExternalWorkoutRepository(
-        coreyGoogleApiClient: CoreyGoogleApiClient
+        coreyGoogleApi: CoreyGoogleApi
     ): ExternalWorkoutRepository {
         return DummyExternalWorkoutRepository()
     }

@@ -7,8 +7,10 @@ import at.shockbytes.corey.common.core.Gender
 import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.CoreyDate
 import at.shockbytes.corey.data.body.model.User
+import at.shockbytes.corey.data.body.model.WeightDataPoint
 import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
-import at.shockbytes.corey.data.google.CoreyGoogleApiClient
+import at.shockbytes.corey.data.google.CoreyGoogleApi
+import at.shockbytes.corey.data.google.GoogleFitUserData
 import at.shockbytes.corey.util.fromFirebase
 import at.shockbytes.corey.util.updateValue
 import io.reactivex.Observable
@@ -21,7 +23,7 @@ import timber.log.Timber
  * Date:    04.08.2016
  */
 class GoogleFitBodyRepository(
-    private val coreyGoogleApiClient: CoreyGoogleApiClient,
+    private val coreyGoogleApi: CoreyGoogleApi,
     private val preferences: SharedPreferences,
     private val firebase: FirebaseDatabaseAccess,
     private val userSettings: UserSettings
@@ -34,9 +36,20 @@ class GoogleFitBodyRepository(
     private val desiredWeightSubject: BehaviorSubject<Int> = BehaviorSubject
         .createDefault(preferences.getInt(PREF_DREAM_WEIGHT, 0))
 
+    // TODO Remove this once the OAuth screen is cleared
+    private val defaultValue = GoogleFitUserData(
+        height = 182,
+        weightHistory = listOf(
+            WeightDataPoint(
+                timeStamp = System.currentTimeMillis(),
+                weight = 77.1
+            )
+        )
+    )
+
     init {
         setupFirebase()
-        setupApiClientCallback()
+        loadFitnessData()
     }
 
     private fun setupFirebase() {
@@ -72,10 +85,8 @@ class GoogleFitBodyRepository(
         val activityLevel: ActivityLevel
     )
 
-    private fun setupApiClientCallback() {
-        coreyGoogleApiClient.onConnectionEvent()
-            .filter { isConnected -> isConnected }
-            .flatMap { loadUserFromGoogleFit() }
+    private fun loadFitnessData() {
+        loadUserFromGoogleFit()
             .subscribe(userBodySubject::onNext, Timber::e)
             .addTo(compositeDisposable)
     }
@@ -83,7 +94,7 @@ class GoogleFitBodyRepository(
     private fun loadUserFromGoogleFit(): Observable<User> {
         return Observable
             .combineLatest(
-                coreyGoogleApiClient.loadGoogleFitUserData(),
+                coreyGoogleApi.loadGoogleFitUserData(defaultValue),
                 gatherUserMetadata(),
                 { weightHeightPair, userMetadata ->
                     val (weightDataPoints, height) = weightHeightPair

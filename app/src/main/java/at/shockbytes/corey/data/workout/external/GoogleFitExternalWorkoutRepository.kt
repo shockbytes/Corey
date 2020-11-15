@@ -1,18 +1,16 @@
 package at.shockbytes.corey.data.workout.external
 
-import at.shockbytes.corey.data.google.CoreyGoogleApiClient
+import at.shockbytes.corey.data.google.CoreyGoogleApi
 import at.shockbytes.corey.util.WorkInProgress
 import io.reactivex.Observable
 
 @WorkInProgress
 class GoogleFitExternalWorkoutRepository(
-    private val coreyGoogleApiClient: CoreyGoogleApiClient
+    private val coreyGoogleApi: CoreyGoogleApi
 ) : ExternalWorkoutRepository {
 
     override fun loadExternalWorkouts(): Observable<List<ExternalWorkout>> {
-        return coreyGoogleApiClient.onConnectionEvent()
-            .filter { isConnected -> isConnected }
-            .flatMap { coreyGoogleApiClient.loadGoogleFitWorkouts() }
+        return coreyGoogleApi.loadGoogleFitWorkouts()
             .map { googleFitWorkouts ->
                 listOf()
             }

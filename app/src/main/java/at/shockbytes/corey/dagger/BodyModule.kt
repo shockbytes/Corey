@@ -10,7 +10,7 @@ import at.shockbytes.corey.data.body.bmr.RevisedHarrisBenedictBmrComputation
 import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import at.shockbytes.corey.data.goal.FirebaseGoalsRepository
 import at.shockbytes.corey.data.goal.GoalsRepository
-import at.shockbytes.corey.data.google.CoreyGoogleApiClient
+import at.shockbytes.corey.data.google.CoreyGoogleApi
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RawWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.RunningAverageWeightLineFilter
 import at.shockbytes.corey.ui.fragment.body.weight.filter.WeightLineFilter
@@ -23,8 +23,8 @@ class BodyModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideCoreyGoogleApiClient(): CoreyGoogleApiClient {
-        return CoreyGoogleApiClient(app.applicationContext)
+    fun provideCoreyGoogleApiClient(): CoreyGoogleApi {
+        return CoreyGoogleApi(app.applicationContext)
     }
 
     @Provides
@@ -35,12 +35,12 @@ class BodyModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideBodyRepository(
-        coreyGoogleApiClient: CoreyGoogleApiClient,
+        coreyGoogleApi: CoreyGoogleApi,
         preferences: SharedPreferences,
         firebase: FirebaseDatabaseAccess,
         userSettings: UserSettings
     ): BodyRepository {
-        return GoogleFitBodyRepository(coreyGoogleApiClient, preferences, firebase, userSettings)
+        return GoogleFitBodyRepository(coreyGoogleApi, preferences, firebase, userSettings)
     }
 
     @Provides
