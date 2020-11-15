@@ -1,7 +1,6 @@
 package at.shockbytes.corey.ui.fragment.dialog
 
 import android.app.Dialog
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
@@ -10,7 +9,6 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
-import at.shockbytes.core.util.CoreUtils.colored
 import at.shockbytes.corey.R
 import at.shockbytes.corey.data.goal.Goal
 import at.shockbytes.corey.ui.model.GoalItem

@@ -8,9 +8,9 @@ interface EdamamApi {
 
     @GET("parser")
     fun textSearch(
-            @Query("app_key") appKey: String = APP_KEY,
-            @Query("app_id") appId: String = APP_ID,
-            @Query("ingr") keyword: String
+        @Query("app_key") appKey: String = APP_KEY,
+        @Query("app_id") appId: String = APP_ID,
+        @Query("ingr") keyword: String
     ): Single<EdamamLookupResponse>
 
     companion object {

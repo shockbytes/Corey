@@ -27,28 +27,32 @@ class SignUpFragment : BaseFragment<AppComponent>() {
     override fun onStart() {
         super.onStart()
 
-        // Put this call into the viewmoel
+        // Put this call into the ViewModel
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             openMainActivityWithoutAnimation()
         }
     }
 
-    fun onClickSignup() {
+    private fun onClickSignup() {
 
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setAvailableProviders(listOf(
+                        .setAvailableProviders(
+                            listOf(
                                 AuthUI.IdpConfig.GoogleBuilder()
                                         .build(),
                                 AuthUI.IdpConfig.EmailBuilder()
                                         .setAllowNewAccounts(true)
                                         .setRequireName(true)
-                                        .build()))
+                                        .build()
+                            )
+                        )
                         .setIsSmartLockEnabled(true)
                         .build(),
-                RC_SIGN_IN)
+                RC_SIGN_IN
+        )
     }
 
     override fun bindViewModel() {

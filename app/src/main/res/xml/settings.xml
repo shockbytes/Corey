@@ -60,6 +60,23 @@
 
     </androidx.preference.PreferenceCategory>
 
+    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_data">
+
+
+        <androidx.preference.ListPreference
+            app:useSimpleSummaryProvider="true"
+            android:key="@string/prefs_key_firebase_access"
+            app:positiveButtonText="@string/apply"
+            app:allowDividerBelow="false"
+            app:icon="@drawable/ic_cloud"
+            app:entries="@array/firebase_access"
+            app:entryValues="@array/firebase_access_short"
+            app:negativeButtonText="@android:string/cancel"
+            android:title="@string/firebase_access_title"/>
+
+    </androidx.preference.PreferenceCategory>
+
+
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_about">
 
         <androidx.preference.Preference

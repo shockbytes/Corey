@@ -5,8 +5,8 @@ import androidx.annotation.StringRes
 import at.shockbytes.corey.data.body.model.WeightDataPoint
 
 data class WeightHistoryLine(
-        @StringRes val name: Int,
-        val points: List<WeightDataPoint>,
-        @ColorRes val lineColor: Int,
-        val lineThickness: Float
+    @StringRes val name: Int,
+    val points: List<WeightDataPoint>,
+    @ColorRes val lineColor: Int,
+    val lineThickness: Float
 )

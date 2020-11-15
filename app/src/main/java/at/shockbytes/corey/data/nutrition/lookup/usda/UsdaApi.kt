@@ -8,16 +8,16 @@ interface UsdaApi {
 
     @GET("foods")
     fun lookup(
-            @Query("api_key") apiKey: String = API_KEY,
-            @Query("fdcIds") fdcIds: List<String>,
-            @Query("format") format: String = UsdaApiFormat.ABRIDGED.format,
-            @Query("nutrients") nutrients: List<Int>
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("fdcIds") fdcIds: List<String>,
+        @Query("format") format: String = UsdaApiFormat.ABRIDGED.format,
+        @Query("nutrients") nutrients: List<Int>
     ): Single<List<UsdaLookupResponse>>
 
     @GET("foods/search")
     fun search(
-            @Query("api_key") apiKey: String = API_KEY,
-            @Query("query") query: String
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("query") query: String
     ): Single<UsdaSearchResponse>
 
     companion object {

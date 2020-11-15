@@ -14,17 +14,16 @@ sealed class KcalLookupItem : Parcelable {
 
     @Parcelize
     data class Standard(
-            override val dishName: String,
-            override val portionSize: String,
-            override val kcal: Int
+        override val dishName: String,
+        override val portionSize: String,
+        override val kcal: Int
     ) : KcalLookupItem()
 
     @Parcelize
     data class WithImage(
-            override val dishName: String,
-            override val portionSize: String,
-            override val kcal: Int,
-            val imageUrl: String?
+        override val dishName: String,
+        override val portionSize: String,
+        override val kcal: Int,
+        val imageUrl: String?
     ) : KcalLookupItem()
-
 }

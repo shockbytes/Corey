@@ -50,7 +50,6 @@ abstract class WearableBaseFragment : androidx.fragment.app.Fragment() {
         super.onResume()
     }
 
-
     protected abstract fun setupViews()
 
     protected abstract fun injectToGraph(appComponent: WearAppComponent)

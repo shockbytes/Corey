@@ -1,16 +1,16 @@
 package at.shockbytes.corey.data.nutrition
 
 import at.shockbytes.corey.common.core.CoreyDate
-import at.shockbytes.corey.data.FirebaseStorable
+import at.shockbytes.corey.data.firebase.FirebaseStorable
 import com.google.firebase.database.Exclude
 
 data class NutritionEntry(
-        val id: String = "",
-        val name: String = "",
-        val kcal: Int = -1,
-        val portionCode: String = "",
-        val timeCode: String = "",
-        val date: CoreyDate = CoreyDate()
+    val id: String = "",
+    val name: String = "",
+    val kcal: Int = -1,
+    val portionCode: String = "",
+    val timeCode: String = "",
+    val date: CoreyDate = CoreyDate()
 ) : FirebaseStorable {
 
     @get:Exclude
@@ -25,4 +25,3 @@ data class NutritionEntry(
         return this.copy(id = newId)
     }
 }
-

@@ -3,7 +3,7 @@ package at.shockbytes.corey.util.okhttp
 import com.google.firebase.database.DatabaseReference
 
 class FirebaseResponseTimeLoggingBackend(
-        private val fbDbRef: DatabaseReference
+    private val fbDbRef: DatabaseReference
 ) : ResponseTimeLoggingBackend {
 
     override fun logResponseTime(dataPacket: ResponseTimeDataPacket.Log) {

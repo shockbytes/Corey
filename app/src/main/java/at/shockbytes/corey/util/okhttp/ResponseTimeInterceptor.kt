@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
  * TODO Move to ShockUtil library
  */
 class ResponseTimeInterceptor(
-        private val loggingBackend: ResponseTimeLoggingBackend
+    private val loggingBackend: ResponseTimeLoggingBackend
 ) : Interceptor {
 
     private val model = Build.MODEL
@@ -25,41 +25,41 @@ class ResponseTimeInterceptor(
         val url = request.url
 
         val queryParameters: Map<String, String?> = url
-                .queryParameterNames
-                .associateWith { name -> url.queryParameter(name) }
+            .queryParameterNames
+            .associateWith { name -> url.queryParameter(name) }
 
         val startNs = System.nanoTime()
         return try {
             chain.proceed(request).also {
                 val tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs)
                 loggingBackend.logResponseTime(
-                        ResponseTimeDataPacket.ofLog(
-                                url.withoutQuery,
-                                queryParameters,
-                                model,
-                                sdkVersion,
-                                appVersion,
-                                appVersionCode,
-                                tookMs
-                        )
+                    ResponseTimeDataPacket.ofLog(
+                        url.withoutQuery,
+                        queryParameters,
+                        model,
+                        sdkVersion,
+                        appVersion,
+                        appVersionCode,
+                        tookMs
+                    )
                 )
             }
         } catch (e: Exception) {
             loggingBackend.logResponseError(
-                    ResponseTimeDataPacket.ofError(
-                            url.withoutQuery,
-                            queryParameters,
-                            model,
-                            sdkVersion,
-                            appVersion,
-                            appVersionCode,
-                            e
-                    )
+                ResponseTimeDataPacket.ofError(
+                    url.withoutQuery,
+                    queryParameters,
+                    model,
+                    sdkVersion,
+                    appVersion,
+                    appVersionCode,
+                    e
+                )
             )
             throw e
         }
     }
 
     private val HttpUrl.withoutQuery: String
-        get() = "${scheme}://${host}${encodedPath}"
+        get() = "$scheme://$host$encodedPath"
 }

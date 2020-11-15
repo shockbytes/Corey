@@ -9,7 +9,7 @@ sealed class PhysicalActivity {
     abstract fun activityName(context: Context): String
     abstract val kcal: Int
 
-    data class BasalMetabolicRate(private val bmr: Bmr): PhysicalActivity() {
+    data class BasalMetabolicRate(private val bmr: Bmr) : PhysicalActivity() {
 
         override val kcal: Int
             get() = bmr.kcal
@@ -20,9 +20,9 @@ sealed class PhysicalActivity {
     }
 
     data class Activity(
-            private val externalName: String,
-            override val kcal: Int
-    ): PhysicalActivity() {
+        private val externalName: String,
+        override val kcal: Int
+    ) : PhysicalActivity() {
         override fun activityName(context: Context): String = externalName
     }
 }

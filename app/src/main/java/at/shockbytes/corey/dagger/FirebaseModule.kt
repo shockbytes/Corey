@@ -1,6 +1,12 @@
 package at.shockbytes.corey.dagger
 
 import at.shockbytes.corey.R
+import at.shockbytes.corey.data.firebase.SingleUserFirebaseAccess
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
+import at.shockbytes.corey.data.firebase.UserScopedFirebaseDatabaseAccess
+import at.shockbytes.corey.data.settings.CoreySettings
+import at.shockbytes.corey.data.settings.FirebaseDatabaseAccessMode
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Logger
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -25,7 +31,9 @@ class FirebaseModule {
             setConfigSettingsAsync(configSettings).addOnSuccessListener {
                 Timber.d("RemoteConfigSettings set async")
             }
-            setDefaults(R.xml.remote_config_defaults)
+            setDefaultsAsync(R.xml.remote_config_defaults).addOnSuccessListener {
+                Timber.d("Defaults set async")
+            }
         }
     }
 
@@ -39,6 +47,21 @@ class FirebaseModule {
             }
             .reference
             .database
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseDatabaseAccess(
+        coreySettings: CoreySettings,
+        database: FirebaseDatabase
+    ): FirebaseDatabaseAccess {
+
+        return when (coreySettings.firebaseAccessMode) {
+            FirebaseDatabaseAccessMode.SINGLE_ACCESS -> SingleUserFirebaseAccess(database)
+            FirebaseDatabaseAccessMode.USER_SCOPED_ACCESS -> {
+                UserScopedFirebaseDatabaseAccess(database, FirebaseAuth.getInstance())
+            }
+        }
     }
 
     companion object {

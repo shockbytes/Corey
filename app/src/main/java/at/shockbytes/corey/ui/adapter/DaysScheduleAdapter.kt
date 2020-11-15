@@ -19,8 +19,8 @@ class DaysScheduleAdapter(
     data: List<String>,
     onItemLongClickListener: OnItemLongClickListener<String>
 ) : BaseAdapter<String>(
-        context,
-        onItemLongClickListener = onItemLongClickListener
+    context,
+    onItemLongClickListener = onItemLongClickListener
 ) {
 
     init {
@@ -35,7 +35,7 @@ class DaysScheduleAdapter(
     }
 
     private inner class ViewHolder(
-            override val containerView: View
+        override val containerView: View
     ) : BaseAdapter.ViewHolder<String>(containerView), LayoutContainer {
 
         override fun bindToView(content: String, position: Int) {

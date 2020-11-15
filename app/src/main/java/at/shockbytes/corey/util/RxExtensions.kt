@@ -12,7 +12,7 @@ fun completableOf(action: () -> Unit): Completable {
 }
 
 fun completableEmitterOf(
-        action: () -> Unit
+    action: () -> Unit
 ): Completable {
     return Completable.create { source ->
 
@@ -24,8 +24,9 @@ fun completableEmitterOf(
         }
     }
 }
+
 fun <T> observableEmitterOf(
-        action: () -> T
+    action: () -> T
 ): Observable<T> {
     return Observable.create { source ->
         try {

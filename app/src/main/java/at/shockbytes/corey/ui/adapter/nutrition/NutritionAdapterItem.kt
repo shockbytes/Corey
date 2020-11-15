@@ -5,7 +5,7 @@ import at.shockbytes.corey.data.nutrition.PhysicalActivity
 import org.joda.time.format.DateTimeFormat
 
 data class NutritionAdapterItem(
-        private val nutritionPerDay: NutritionPerDay
+    private val nutritionPerDay: NutritionPerDay
 ) {
 
     val formattedDate: String
@@ -22,15 +22,15 @@ data class NutritionAdapterItem(
 
     val intake: List<NutritionIntakeAdapterItem>
         get() = nutritionPerDay.intake
-                .sortedBy { it.time.ordinal }
-                .groupBy { it.time.nameRes }
-                .map { (timeNameRes, entriesForTime) ->
-                    entriesForTime
-                            .mapTo(mutableListOf(NutritionIntakeAdapterItem.Header(timeNameRes))) { entry ->
-                                NutritionIntakeAdapterItem.Intake(entry)
-                            }
-                }
-                .flatten()
+            .sortedBy { it.time.ordinal }
+            .groupBy { it.time.nameRes }
+            .map { (timeNameRes, entriesForTime) ->
+                entriesForTime
+                    .mapTo(mutableListOf(NutritionIntakeAdapterItem.Header(timeNameRes))) { entry ->
+                        NutritionIntakeAdapterItem.Intake(entry)
+                    }
+            }
+            .flatten()
 
     val burned: List<PhysicalActivity>
         get() = nutritionPerDay.burned

@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
  * Apply equal margin to a RecyclerViewItem
  */
 class LastItemBottomMarginItemDecoration(
-        private val lastItemBottomMargin: Int
+    private val lastItemBottomMargin: Int
 ) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
     ) {
 
         val position = parent.getChildLayoutPosition(view)

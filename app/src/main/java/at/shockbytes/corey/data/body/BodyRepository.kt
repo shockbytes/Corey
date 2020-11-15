@@ -1,7 +1,6 @@
 package at.shockbytes.corey.data.body
 
 import at.shockbytes.corey.data.body.model.User
-import at.shockbytes.corey.common.core.WeightUnit
 import io.reactivex.Observable
 
 /**

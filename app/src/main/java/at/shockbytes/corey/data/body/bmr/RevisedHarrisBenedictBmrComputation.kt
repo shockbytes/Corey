@@ -8,11 +8,11 @@ class RevisedHarrisBenedictBmrComputation : BmrComputation {
     override val name: String = "Revised Harris-Benedict"
 
     override fun compute(
-            gender: Gender,
-            weight: Double,
-            height: Int,
-            age: Int,
-            activityLevel: ActivityLevel
+        gender: Gender,
+        weight: Double,
+        height: Int,
+        age: Int,
+        activityLevel: ActivityLevel
     ): Bmr {
 
         val kcal = when (gender) {

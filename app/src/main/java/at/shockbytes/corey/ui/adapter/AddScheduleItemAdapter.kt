@@ -22,7 +22,7 @@ class AddScheduleItemAdapter(
     data: List<ScheduleDisplayItem> = listOf(),
     onItemClickListener: OnItemClickListener<ScheduleDisplayItem>,
     filterPredicate: (ScheduleDisplayItem, String) -> Boolean
-) : FilterableBaseAdapter<AddScheduleItemAdapter.ScheduleDisplayItem>(context, data.toMutableList(),onItemClickListener, filterPredicate) {
+) : FilterableBaseAdapter<AddScheduleItemAdapter.ScheduleDisplayItem>(context, data.toMutableList(), onItemClickListener, filterPredicate) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<ScheduleDisplayItem> {
         return ViewHolder(inflater.inflate(R.layout.listitem_add_exercise, parent, false))

@@ -72,7 +72,6 @@ class GoalsFragment : BodySubFragment(), GoalAdapter.OnGoalActionClickedListener
         }
 
         animateCard(fragment_body_card_goals)
-
     }
 
     override fun unbindViewModel() {

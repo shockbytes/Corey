@@ -2,7 +2,7 @@ package at.shockbytes.corey.data.schedule
 
 import at.shockbytes.corey.common.core.workout.model.LocationType
 import at.shockbytes.corey.common.core.workout.model.WorkoutIconType
-import at.shockbytes.corey.data.FirebaseStorable
+import at.shockbytes.corey.data.firebase.FirebaseStorable
 import java.util.UUID
 
 /**

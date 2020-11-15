@@ -1,7 +1,9 @@
 package at.shockbytes.corey.navigation
 
 import androidx.fragment.app.Fragment
-import at.shockbytes.corey.ui.fragment.tab.*
+import at.shockbytes.corey.ui.fragment.tab.BodyFragment
+import at.shockbytes.corey.ui.fragment.tab.NutritionFragment
+import at.shockbytes.corey.ui.fragment.tab.ScheduleFragment
 
 object CoreyPageFragmentResolver {
 

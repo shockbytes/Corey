@@ -1,15 +1,15 @@
 package at.shockbytes.corey.data.goal
 
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import at.shockbytes.corey.util.insertValue
 import at.shockbytes.corey.util.listen
 import at.shockbytes.corey.util.removeChildValue
 import at.shockbytes.corey.util.updateValue
-import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
 class FirebaseGoalsRepository(
-    private val firebase: FirebaseDatabase
+    private val firebase: FirebaseDatabaseAccess
 ) : GoalsRepository {
 
     private val goalsSubject = BehaviorSubject.create<List<Goal>>()
@@ -21,19 +21,19 @@ class FirebaseGoalsRepository(
     override val goals: Observable<List<Goal>> = goalsSubject
 
     override fun updateBodyGoal(goal: Goal) {
-        firebase.updateValue(REF_GOAL, goal.id, goal)
+        firebase.access(REF_GOAL).updateValue(goal.id, goal)
     }
 
     override fun removeBodyGoal(goal: Goal) {
-        firebase.removeChildValue(REF_GOAL, goal.id)
+        firebase.access(REF_GOAL).removeChildValue(goal.id)
     }
 
     override fun storeBodyGoal(goal: Goal) {
-        firebase.insertValue(REF_GOAL, goal)
+        firebase.access(REF_GOAL).insertValue(goal)
     }
 
     private fun setupFirebase() {
-        firebase.listen(REF_GOAL, goalsSubject, changedChildKeySelector = { it.id })
+        firebase.access(REF_GOAL).listen(goalsSubject, changedChildKeySelector = { it.id })
     }
 
     companion object {

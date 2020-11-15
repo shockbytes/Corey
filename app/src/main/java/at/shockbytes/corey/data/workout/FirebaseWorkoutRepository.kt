@@ -5,11 +5,10 @@ import at.shockbytes.corey.R
 import at.shockbytes.corey.common.core.workout.model.Exercise
 import at.shockbytes.corey.common.core.workout.model.TimeExercise
 import at.shockbytes.corey.common.core.workout.model.Workout
-import at.shockbytes.corey.util.listen
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -28,7 +27,7 @@ class FirebaseWorkoutRepository(
     private val context: Context,
     private val gson: Gson,
     private val remoteConfig: FirebaseRemoteConfig,
-    private val firebase: FirebaseDatabase
+    private val firebase: FirebaseDatabaseAccess
 ) : WorkoutRepository {
 
     init {
@@ -74,18 +73,18 @@ class FirebaseWorkoutRepository(
     }
 
     override fun storeWorkout(workout: Workout) {
-        firebase.getReference("/workout").push().let { ref ->
+        firebase.access("/workout").push().let { ref ->
             workout.id = ref.key ?: ""
             ref.setValue(workout)
         }
     }
 
     override fun deleteWorkout(workout: Workout) {
-        firebase.getReference("/workout").child(workout.id).removeValue()
+        firebase.access("/workout").child(workout.id).removeValue()
     }
 
     override fun updateWorkout(workout: Workout) {
-        firebase.getReference("/workout").child(workout.id).setValue(workout)
+        firebase.access("/workout").child(workout.id).setValue(workout)
     }
 
     override fun updatePhoneWorkoutInformation(workouts: Int, workoutTime: Int) {
@@ -102,7 +101,7 @@ class FirebaseWorkoutRepository(
 
     private fun incrementIntegerWorkoutInformation(path: String, increment: Int) {
 
-        firebase.getReference(path).runTransaction(object : Transaction.Handler {
+        firebase.access(path).runTransaction(object : Transaction.Handler {
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
 
                 var value = mutableData.getValue(Int::class.java) ?: return Transaction.abort()
@@ -121,7 +120,7 @@ class FirebaseWorkoutRepository(
 
     private fun setupFirebase() {
 
-        firebase.getReference(REF_WORKOUT).addChildEventListener(object : ChildEventListener {
+        firebase.access(REF_WORKOUT).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val w = gson.fromJson(dataSnapshot.value.toString(), Workout::class.java)
 

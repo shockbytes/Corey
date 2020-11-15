@@ -8,7 +8,7 @@ import at.shockbytes.corey.common.core.Gender
 import at.shockbytes.corey.common.core.util.UserSettings
 import at.shockbytes.corey.common.core.WeightUnit
 import at.shockbytes.corey.common.core.CoreyDate
-import com.google.firebase.database.FirebaseDatabase
+import at.shockbytes.corey.data.firebase.FirebaseDatabaseAccess
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -20,7 +20,7 @@ import org.joda.time.DateTime
 class ReactiveFirebaseUserSettings(
     private val context: Context,
     private val sharedPreferences: SharedPreferences,
-    private val firebase: FirebaseDatabase
+    private val firebase: FirebaseDatabaseAccess
 ) : UserSettings {
 
     private val birthdaySubject = BehaviorSubject.create<String>()
@@ -29,12 +29,10 @@ class ReactiveFirebaseUserSettings(
     private val weightUnitSubject = BehaviorSubject.create<String>()
 
     init {
-        firebase.run {
-            listenForValue(REF_USER, BIRTHDAY, birthdaySubject)
-            listenForValue(REF_USER, GENDER, genderSubject)
-            listenForValue(REF_USER, ACTIVITY_LEVEL, activityLevelSubject)
-            listenForValue(REF_SETTINGS, WEIGHT_UNIT, weightUnitSubject)
-        }
+        firebase.access(REF_USER + BIRTHDAY).listenForValue(birthdaySubject)
+        firebase.access(REF_USER + GENDER).listenForValue(genderSubject)
+        firebase.access(REF_USER + ACTIVITY_LEVEL).listenForValue(activityLevelSubject)
+        firebase.access(REF_SETTINGS + WEIGHT_UNIT).listenForValue(weightUnitSubject)
     }
 
     override val isWeatherForecastEnabled: Observable<Boolean>
@@ -44,7 +42,7 @@ class ReactiveFirebaseUserSettings(
         return Completable.merge(
                 listOf(
                         completableOf {
-                            firebase.updateValue(REF_SETTINGS, WEATHER, isEnabled)
+                            firebase.access(REF_SETTINGS).updateValue(WEATHER, isEnabled)
                         },
                         completableOf {
                             sharedPreferences.edit()
@@ -53,7 +51,7 @@ class ReactiveFirebaseUserSettings(
                                             isEnabled
                                     )
                                     .apply()
-                        },
+                        }
                 )
         )
     }
@@ -63,7 +61,7 @@ class ReactiveFirebaseUserSettings(
 
     override fun synchronizeGender(gender: Gender): Completable {
         return completableOf {
-            firebase.updateValue(REF_USER, GENDER, gender.acronym)
+            firebase.access(REF_USER).updateValue(GENDER, gender.acronym)
         }
     }
 
@@ -79,7 +77,7 @@ class ReactiveFirebaseUserSettings(
 
     override fun synchronizeBirthdayFromString(birthdayString: String): Completable {
         return completableOf {
-            firebase.updateValue(REF_USER, BIRTHDAY, birthdayString)
+            firebase.access(REF_USER).updateValue(BIRTHDAY, birthdayString)
         }
     }
 
@@ -88,7 +86,7 @@ class ReactiveFirebaseUserSettings(
 
     override fun synchronizeActivityLevel(level: ActivityLevel): Completable {
         return completableOf {
-            firebase.updateValue(REF_USER, ACTIVITY_LEVEL, level.level)
+            firebase.access(REF_USER).updateValue(ACTIVITY_LEVEL, level.level)
         }
     }
 
@@ -97,7 +95,7 @@ class ReactiveFirebaseUserSettings(
 
     override fun synchronizeWeightUnit(unit: WeightUnit): Completable {
         return completableOf {
-            firebase.updateValue(REF_SETTINGS, WEIGHT_UNIT, unit.acronym)
+            firebase.access(REF_SETTINGS).updateValue(WEIGHT_UNIT, unit.acronym)
         }
     }
 

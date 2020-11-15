@@ -45,24 +45,24 @@ ext {
     shockUtilVersion = "6.1.2"
     shockbytesCoreVersion = "0.3.3.1"
 
-    firebaseVersionDatabase = "19.5.0"
-    firebaseVersionConfig = "19.2.0"
-    firebaseVersionCore = "17.5.1"
-    firebaseVersionAuth = "19.4.0"
+    firebaseVersionDatabase = "19.5.1"
+    firebaseVersionConfig = "20.0.0"
+    firebaseVersionCore = "18.0.0"
+    firebaseVersionAuth = "20.0.0"
 
     rxBindingsVersion = "2.2.0"
 
-    firebaseUIVersion = "4.2.1"
+    firebaseUIVersion = "6.4.0"
 
     playServicesVersionAuth = "18.1.0"
     playServicesVersionLocation = "17.1.0"
     playServicesVersionMaps = "17.0.0"
     playServicesVersionWearable = "17.0.0"
-    playServicesVersionFitness = "19.0.0"
+    playServicesVersionFitness = "20.0.0"
     archVersion = "1.1.1"
     crashlyticsVersion = "2.10.1"
 
-    workVersion = '2.5.0-alpha03'
+    workVersion = '2.5.0-beta01'
 
     glideVersion = "4.11.0"
     retrofitVersion = "2.9.0"

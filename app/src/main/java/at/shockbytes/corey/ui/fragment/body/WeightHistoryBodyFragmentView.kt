@@ -52,9 +52,9 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
     }
 
     fun setWeightData(
-            weightLines: List<WeightHistoryLine>,
-            dreamWeight: Int,
-            weightUnit: String
+        weightLines: List<WeightHistoryLine>,
+        dreamWeight: Int,
+        weightUnit: String
     ) {
 
         if (weightLines.isEmpty()) {
@@ -62,37 +62,36 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
         }
 
         val labels = weightLines
-                .maxByOrNull { it.points.size }
-                ?.points
-                ?.map { p ->
-                    CoreyUtils.formatDate(p.timeStamp, true)
-                }
-                ?: return
-
+            .maxByOrNull { it.points.size }
+            ?.points
+            ?.map { p ->
+                CoreyUtils.formatDate(p.timeStamp, true)
+            }
+            ?: return
 
         val dataSets = weightLines
-                .filter { it.points.isNotEmpty() }
-                .map { weightHistoryLine ->
+            .filter { it.points.isNotEmpty() }
+            .map { weightHistoryLine ->
 
-                    val entries = weightHistoryLine.points.mapIndexed { idx, p ->
-                        Entry(idx.toFloat(), p.weight.toFloat())
-                    }
-
-                    LineDataSet(entries, getString(weightHistoryLine.name)).apply {
-                        mode = LineDataSet.Mode.CUBIC_BEZIER
-                        setDrawCircles(false)
-                        setDrawValues(false)
-                        isHighlightEnabled = false
-                        color = ContextCompat.getColor(requireContext(), weightHistoryLine.lineColor)
-                        lineWidth = weightHistoryLine.lineThickness
-                    }
+                val entries = weightHistoryLine.points.mapIndexed { idx, p ->
+                    Entry(idx.toFloat(), p.weight.toFloat())
                 }
+
+                LineDataSet(entries, getString(weightHistoryLine.name)).apply {
+                    mode = LineDataSet.Mode.CUBIC_BEZIER
+                    setDrawCircles(false)
+                    setDrawValues(false)
+                    isHighlightEnabled = false
+                    color = ContextCompat.getColor(requireContext(), weightHistoryLine.lineColor)
+                    lineWidth = weightHistoryLine.lineThickness
+                }
+            }
 
         // Add dream weight line
         val dreamWeightLine = getDreamWeightLine(
-                dreamWeight.toFloat(),
-                getString(R.string.dreamweight),
-                ContextCompat.getColor(requireContext(), R.color.body_card_weight_history)
+            dreamWeight.toFloat(),
+            getString(R.string.dreamweight),
+            ContextCompat.getColor(requireContext(), R.color.body_card_weight_history)
         )
 
         fragment_body_card_weight_graph_linechart.apply {
@@ -108,9 +107,9 @@ class WeightHistoryBodyFragmentView : BodySubFragment() {
     }
 
     private fun getDreamWeightLine(
-            dreamWeight: Float,
-            title: String,
-            @ColorInt dreamWeightLineColor: Int
+        dreamWeight: Float,
+        title: String,
+        @ColorInt dreamWeightLineColor: Int
     ): LimitLine {
 
         return LimitLine(dreamWeight, title).apply {

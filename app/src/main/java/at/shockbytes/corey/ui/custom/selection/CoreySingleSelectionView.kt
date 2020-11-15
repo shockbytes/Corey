@@ -9,8 +9,8 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.corey_single_selection_view.view.*
 
 class CoreySingleSelectionView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null
+    context: Context,
+    attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs) {
 
     private val activeColor = ContextCompat.getColor(context, R.color.colorPrimary)
@@ -28,10 +28,10 @@ class CoreySingleSelectionView @JvmOverloads constructor(
 
             value.forEach { item ->
                 tabs_corey_single_selection
-                        .addTab(
-                                tabs_corey_single_selection.newTab()
-                                        .apply { text = item.title }
-                        )
+                    .addTab(
+                        tabs_corey_single_selection.newTab()
+                            .apply { text = item.title }
+                    )
             }
         }
 
@@ -53,7 +53,6 @@ class CoreySingleSelectionView @JvmOverloads constructor(
             setTabTextColors(inactiveColor, activeColor)
             setTabIconTintResource(R.color.corey_single_selection_selector)
         }
-
     }
 
     fun selectPosition(position: Int) {

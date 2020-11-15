@@ -13,12 +13,12 @@ import kotlin.math.pow
  * Date:    03.08.2016.
  */
 data class User(
-        val weightDataPoints: List<WeightDataPoint> = listOf(),
-        val height: Int = -1,
-        val gender: Gender,
-        val birthday: CoreyDate,
-        val desiredWeight: Int,
-        val activityLevel: ActivityLevel
+    val weightDataPoints: List<WeightDataPoint> = listOf(),
+    val height: Int = -1,
+    val gender: Gender,
+    val birthday: CoreyDate,
+    val desiredWeight: Int,
+    val activityLevel: ActivityLevel
 ) {
 
     val age: Int
